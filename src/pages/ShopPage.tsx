@@ -3,6 +3,7 @@ import { useParams, Link } from '@tanstack/react-router';
 import { SlidersHorizontal, ChevronDown, X } from 'lucide-react';
 import { products, type Category } from '../data/products';
 import { ProductCard } from '../components/ui/ProductCard';
+import { BundleProductCard } from '../components/ui/BundleProductCard';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { CartDrawer } from '../components/cart/CartDrawer';
@@ -283,7 +284,11 @@ export function ShopPage() {
             ) : (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-5 gap-y-8">
                 {filtered.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                  category === 'training-bundles' ? (
+                    <BundleProductCard key={product.id} product={product} />
+                  ) : (
+                    <ProductCard key={product.id} product={product} />
+                  )
                 ))}
               </div>
             )}
