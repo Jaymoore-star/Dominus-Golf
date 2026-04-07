@@ -489,37 +489,6 @@ export const products: Product[] = [
     rating: 4.9,
     reviewCount: 54,
   },
-  {
-    id: 'dominus-tee-performance-white',
-    name: "Performance Tee — White (Men's)",
-    category: 'apparel',
-    subcategory: "Men's Apparel",
-    price: 14.99,
-    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-18__5cee2081.jpg?alt=media&token=89842c6e-8985-4106-a87a-c4f1429da757',
-    hoverImage: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Fninjapod_11843683_f_4980_00_f__c9a61eee.jpg?alt=media&token=711e7d00-0de7-4691-9561-083071fddf2a',
-    gallery: [
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-18__5cee2081.jpg?alt=media&token=89842c6e-8985-4106-a87a-c4f1429da757',
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Fninjapod_11843683_f_4980_00_f__c9a61eee.jpg?alt=media&token=711e7d00-0de7-4691-9561-083071fddf2a',
-    ],
-    badge: 'New',
-    description: 'Dominus Golf performance tee in white. Lightweight, breathable triblend built for movement—on and off the course.',
-    features: [
-      'Black Dominus icon on white',
-      'Vintage look and extreme softness',
-      'Great recovery and stretch',
-      'Course to gym ready',
-    ],
-    specs: [
-      "Model: Next Level 6010 Men's Triblend Crew",
-      'Fabric: 50% Polyester, 25% Combed Ring-Spun Cotton, 25% Rayon',
-      'Weight: 4.3 oz',
-      'Fit: Athletic',
-    ],
-    variants: [{ label: 'Size', options: ['S', 'M', 'L', 'XL', 'XXL'] }],
-    inStock: true,
-    rating: 4.8,
-    reviewCount: 41,
-  },
 
   // Women's Apparel
   // Group A: Black Icon Tee (unnamed-11 front + unnamed-16 side)
@@ -557,38 +526,6 @@ export const products: Product[] = [
     inStock: true,
     rating: 4.9,
     reviewCount: 32,
-  },
-  // Group B: White Icon Tee (unnamed-13 front + unnamed-12 side)
-  {
-    id: 'dominus-womens-tee-white-icon',
-    name: "Icon Tee — White (Women's)",
-    category: 'apparel',
-    subcategory: "Women's Apparel",
-    price: 14.99,
-    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-13__94ffe0c4.jpg?alt=media&token=e511fa27-43af-49c7-a2cb-dbc281792be2',
-    hoverImage: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-12__3c0a4238.jpg?alt=media&token=c9bfd0f2-c84f-4bc5-80d9-cfaeb745a57d',
-    gallery: [
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-13__94ffe0c4.jpg?alt=media&token=e511fa27-43af-49c7-a2cb-dbc281792be2',
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-12__3c0a4238.jpg?alt=media&token=c9bfd0f2-c84f-4bc5-80d9-cfaeb745a57d',
-    ],
-    badge: 'New',
-    description: "Dominus Golf icon tee for women in white. Lightweight, breathable triblend built for movement—on and off the course.",
-    features: [
-      'Black Dominus icon on white',
-      'Vintage look and extreme softness',
-      'Great recovery and stretch',
-      'Athletic fit',
-    ],
-    specs: [
-      "Model: Next Level 6010 Women's Triblend Crew",
-      'Fabric: 50% Polyester, 25% Combed Ring-Spun Cotton, 25% Rayon',
-      'Weight: 4.3 oz',
-      'Fit: Athletic',
-    ],
-    variants: [{ label: 'Size', options: ['S', 'M', 'L', 'XL', 'XXL'] }],
-    inStock: true,
-    rating: 4.8,
-    reviewCount: 28,
   },
   // Group C: Black Performance Tee (a2d1da0a — standalone)
   {
