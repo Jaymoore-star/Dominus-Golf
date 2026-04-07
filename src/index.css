@@ -7,13 +7,13 @@
 @layer base {
   :root {
     --background: 0 0% 7%;
-    --foreground: 0 0% 95%;
+    --foreground: 0 0% 93%;
     --card: 0 0% 9%;
-    --card-foreground: 0 0% 95%;
+    --card-foreground: 0 0% 93%;
     --popover: 0 0% 9%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 0 0% 95%;
-    --primary-foreground: 0 0% 7%;
+    --popover-foreground: 0 0% 93%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 93%;
     --secondary: 0 0% 13%;
     --secondary-foreground: 0 0% 80%;
     --muted: 0 0% 13%;
@@ -347,15 +347,16 @@
   color: hsl(0 0% 10%);
 }
 
-/* ─── Black button gold hover ─── */
+/* ─── Primary dark button → gold hover ─── */
 .btn-primary-black {
-  background-color: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
+  background-color: hsl(0 0% 18%);
+  color: hsl(0 0% 93%);
   transition: background-color 0.25s ease, transform 0.15s ease;
 }
 
 .btn-primary-black:hover {
   background-color: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
 }
 
 .btn-primary-black:active {
