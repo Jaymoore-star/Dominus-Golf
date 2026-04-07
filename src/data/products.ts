@@ -463,20 +463,17 @@ export const products: Product[] = [
     category: 'apparel',
     subcategory: "Men's Apparel",
     price: 14.99,
-    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Fninjapod_11843683_f_4980_00_f__c9a61eee.jpg?alt=media&token=711e7d00-0de7-4691-9561-083071fddf2a',
-    hoverImage: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-18__5cee2081.jpg?alt=media&token=89842c6e-8985-4106-a87a-c4f1429da757',
+    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-18__5cee2081.jpg?alt=media&token=89842c6e-8985-4106-a87a-c4f1429da757',
     colorVariants: {
-      Black: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Fninjapod_11843683_f_4980_00_f__c9a61eee.jpg?alt=media&token=711e7d00-0de7-4691-9561-083071fddf2a',
       White: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-18__5cee2081.jpg?alt=media&token=89842c6e-8985-4106-a87a-c4f1429da757',
     },
     gallery: [
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Fninjapod_11843683_f_4980_00_f__c9a61eee.jpg?alt=media&token=711e7d00-0de7-4691-9561-083071fddf2a',
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-18__5cee2081.jpg?alt=media&token=89842c6e-8985-4106-a87a-c4f1429da757',
     ],
     badge: 'New',
-    description: 'Dominus Golf performance tee in black. White icon logo on moisture-wicking triblend fabric—train and play in style.',
+    description: 'Dominus Golf performance tee. Back logo with sleeve branding on moisture-wicking triblend fabric—train and play in style.',
     features: [
-      'White Dominus icon on black',
+      'Back logo with sleeve branding',
       'Vintage look and extreme softness',
       'Great recovery and stretch',
       'Course to gym ready',
