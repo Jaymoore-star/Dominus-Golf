@@ -432,15 +432,12 @@ export const products: Product[] = [
     category: 'apparel',
     subcategory: "Men's Apparel",
     price: 14.99,
-    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-17__2eb54519.jpg?alt=media&token=67d61cc4-4dcb-4fdf-a1bf-bf08e9316f53',
-    hoverImage: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F362bd22b-fdf8-4a12-9d27-e2c171733e41__c6e99d68.png?alt=media&token=2f224778-65dc-4ebe-9917-4ba4012a0c1a',
+    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Fninjapod_11843683_f_4980_00_f__c9a61eee.jpg?alt=media&token=711e7d00-0de7-4691-9561-083071fddf2a',
     colorVariants: {
-      White: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-17__2eb54519.jpg?alt=media&token=67d61cc4-4dcb-4fdf-a1bf-bf08e9316f53',
       Black: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Fninjapod_11843683_f_4980_00_f__c9a61eee.jpg?alt=media&token=711e7d00-0de7-4691-9561-083071fddf2a',
     },
     gallery: [
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-17__2eb54519.jpg?alt=media&token=67d61cc4-4dcb-4fdf-a1bf-bf08e9316f53',
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F362bd22b-fdf8-4a12-9d27-e2c171733e41__c6e99d68.png?alt=media&token=2f224778-65dc-4ebe-9917-4ba4012a0c1a',
+      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Fninjapod_11843683_f_4980_00_f__c9a61eee.jpg?alt=media&token=711e7d00-0de7-4691-9561-083071fddf2a',
     ],
     badge: 'New',
     description: 'Bold Dominus Golf wordmark tee. Arched lettering with the iconic D logo—represent the brand on and off the course.',
