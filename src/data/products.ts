@@ -92,7 +92,7 @@ export const products: Product[] = [
     ],
     specs: [
       'Weight: 3.8 lbs',
-      'Length: 16 in',
+      'Length: 18 in',
       'Material: Industrial Steel / Polymer',
       'Color: Black',
     ],

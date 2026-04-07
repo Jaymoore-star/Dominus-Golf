@@ -45,7 +45,7 @@ export function ProductPositioningSection() {
           <div className="grid grid-cols-2 gap-px bg-primary-foreground/10">
             {[
               { value: '3.8 lbs', label: 'Training Weight' },
-              { value: '16 in', label: 'Shaft Length' },
+              { value: '18 in', label: 'Shaft Length' },
               { value: '90-Day', label: 'Training Curriculum' },
               { value: 'No Ball', label: 'Required' },
             ].map((stat) => (
