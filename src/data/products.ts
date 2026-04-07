@@ -258,10 +258,10 @@ export const products: Product[] = [
     category: 'accessories',
     subcategory: 'Training Aid',
     price: 12.99,
-    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FChatGPTImageMar24202605_46_22AM__54a625a7.png?alt=media&token=2a2b45a5-1880-4f98-a3ab-61ec404195a9',
+    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b',
     hoverImage: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBandonarm__c77b5c57.jpg?alt=media&token=9588ee49-ecd7-4c08-ba89-6c5e418216e8',
     gallery: [
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FChatGPTImageMar24202605_46_22AM__54a625a7.png?alt=media&token=2a2b45a5-1880-4f98-a3ab-61ec404195a9',
+      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b',
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBandonarm__c77b5c57.jpg?alt=media&token=9588ee49-ecd7-4c08-ba89-6c5e418216e8',
     ],
     description:
