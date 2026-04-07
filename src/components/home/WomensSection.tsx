@@ -5,18 +5,27 @@ const WOMENS_IMAGE =
 
 export function WomensSection() {
   return (
-    <section className="w-full bg-background border-b border-border py-16 sm:py-20 lg:py-24">
+    <section className="w-full bg-[#0e0e0e] border-b border-white/10 py-16 sm:py-20 lg:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
           {/* Image — left on desktop */}
           <div className="order-2 lg:order-1 flex justify-center lg:justify-start">
-            <div className="w-full max-w-[84vw] sm:max-w-[400px] lg:max-w-[480px]">
+            <div className="w-full max-w-[84vw] sm:max-w-[400px] lg:max-w-[480px] relative">
+              {/* Overlay badge */}
+              <div className="absolute top-4 left-4 z-10 bg-black/70 border border-white/15 px-4 py-2 backdrop-blur-sm">
+                <p className="font-sans text-[10px] font-semibold tracking-[0.3em] uppercase text-accent">
+                  First Release Coming Soon
+                </p>
+              </div>
               <img
                 src={WOMENS_IMAGE}
                 alt="Tour Pure Women — weighted swing trainer"
-                className="w-full h-auto object-contain"
-                style={{ maxHeight: '520px' }}
+                className="w-full h-auto object-contain drop-shadow-[0_8px_40px_rgba(0,0,0,0.5)]"
+                style={{
+                  maxHeight: '520px',
+                  filter: 'contrast(1.04) brightness(0.96)',
+                }}
                 loading="lazy"
               />
             </div>
@@ -27,10 +36,10 @@ export function WomensSection() {
             <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-5">
               Tour Pure Women
             </p>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-foreground leading-tight mb-6">
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white leading-tight mb-6">
               Built for Control.<br />Designed for Consistency.
             </h2>
-            <p className="font-sans text-base text-muted-foreground leading-relaxed mb-8 max-w-[480px]">
+            <p className="font-sans text-base text-white/55 leading-relaxed mb-8 max-w-[480px]">
               The women's Tour Pure training system is designed to help golfers develop more consistent swing mechanics with proper feel and control.
             </p>
             <ul className="space-y-3 mb-10">
@@ -41,29 +50,29 @@ export function WomensSection() {
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3">
                   <span className="mt-[7px] w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
-                  <span className="font-sans text-sm text-foreground leading-relaxed">{item}</span>
+                  <span className="font-sans text-sm text-white/70 leading-relaxed">{item}</span>
                 </li>
               ))}
             </ul>
             <Link
               to="/product/tour-pure-women"
-              className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-8 py-4 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-200"
+              className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-8 py-4 bg-accent text-white hover:bg-accent/90 transition-colors duration-200"
             >
               Reserve Your Tour Pure
             </Link>
 
             {/* Pre-order messaging */}
             <div className="mt-5 space-y-2 max-w-[420px]">
-              <p className="font-sans text-sm text-muted-foreground leading-relaxed">
+              <p className="font-sans text-sm text-white/50 leading-relaxed">
                 Women's models are currently in production. Reserve now for first release access.
               </p>
-              <p className="font-sans text-xs font-semibold text-foreground tracking-wide">
+              <p className="font-sans text-xs font-semibold text-white/80 tracking-wide">
                 Limited first production run. Orders will be fulfilled in the order received.
               </p>
-              <p className="font-sans text-xs text-muted-foreground">
-                Estimated ship date: <span className="font-semibold text-foreground">4–5 weeks</span>
+              <p className="font-sans text-xs text-white/45">
+                Estimated ship date: <span className="font-semibold text-white/75">4–5 weeks</span>
               </p>
-              <p className="font-sans text-xs text-muted-foreground leading-relaxed">
+              <p className="font-sans text-xs text-white/45 leading-relaxed">
                 You will receive order confirmation and shipping updates once your Tour Pure is ready.
               </p>
             </div>
