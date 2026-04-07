@@ -49,8 +49,24 @@ export function WomensSection() {
               to="/product/tour-pure-women"
               className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-8 py-4 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-200"
             >
-              Shop Tour Pure Women
+              Reserve Your Tour Pure
             </Link>
+
+            {/* Pre-order messaging */}
+            <div className="mt-5 space-y-2 max-w-[420px]">
+              <p className="font-sans text-sm text-muted-foreground leading-relaxed">
+                Women's models are currently in production. Reserve now for first release access.
+              </p>
+              <p className="font-sans text-xs font-semibold text-foreground tracking-wide">
+                Limited first production run. Orders will be fulfilled in the order received.
+              </p>
+              <p className="font-sans text-xs text-muted-foreground">
+                Estimated ship date: <span className="font-semibold text-foreground">4–5 weeks</span>
+              </p>
+              <p className="font-sans text-xs text-muted-foreground leading-relaxed">
+                You will receive order confirmation and shipping updates once your Tour Pure is ready.
+              </p>
+            </div>
           </div>
 
         </div>
