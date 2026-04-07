@@ -17,10 +17,10 @@ export function HeroSection() {
             <h1 className="font-serif text-4xl sm:text-5xl lg:text-[3.25rem] font-bold text-white leading-[1.08] mb-6">
               Train Like You<br />Mean It
             </h1>
-            <p className="font-sans text-lg text-white/60 leading-relaxed mb-3 max-w-[500px] font-light tracking-wide">
+            <p className="font-sans text-lg text-white/90 leading-relaxed mb-3 max-w-[500px] font-medium tracking-wide">
               No Ball. No Guessing. Just Repetition.
             </p>
-            <p className="font-sans text-sm text-white/45 leading-relaxed mb-10 max-w-[460px]">
+            <p className="font-sans text-sm text-white/75 leading-relaxed mb-10 max-w-[460px]">
               Built for golfers who want repeatable mechanics, better control, and a more consistent swing.
             </p>
             <div className="flex flex-wrap gap-4">
@@ -32,7 +32,7 @@ export function HeroSection() {
               </Link>
               <Link
                 to="/shop/training-system"
-                className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-8 py-4 border border-white/30 text-white/80 hover:border-white hover:text-white transition-colors duration-200"
+                className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-8 py-4 border border-white/60 text-white hover:border-white transition-colors duration-200"
               >
                 See How It Works
               </Link>
