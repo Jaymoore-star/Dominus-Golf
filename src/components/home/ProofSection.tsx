@@ -1,5 +1,5 @@
 const IN_HAND_IMAGE =
-  'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FIMG_20251125_140758__599b5ef8.jpg?alt=media&token=e2b5f281-5da4-4602-ae92-c0b2207cfc54';
+  'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FGemini_Generated_Image_ofjfkaofjfkaofjf__1e06169b.png?alt=media&token=8b7d6778-29b1-44d2-a5b5-436472032131';
 
 export function ProofSection() {
   return (
