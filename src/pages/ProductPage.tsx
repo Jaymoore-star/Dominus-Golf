@@ -93,28 +93,32 @@ export function ProductPage() {
         {/* Main Product Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
           {/* Images */}
-          <div className="space-y-3">
-            <div className="aspect-square bg-muted overflow-hidden flex items-center justify-center">
-              <img
-                src={galleryImages[activeImage]}
-                alt={product.name}
-                className="w-full h-full object-contain transition-opacity duration-300"
-              />
+          <div className="space-y-4">
+            {/* Main image — constrained, centered, premium presentation */}
+            <div className="w-full flex justify-center items-center bg-muted py-8 px-4">
+              <div className="w-full max-w-[85vw] md:max-w-[520px] lg:max-w-[560px]">
+                <img
+                  src={galleryImages[activeImage]}
+                  alt={product.name}
+                  className="w-full h-auto object-contain transition-opacity duration-300"
+                  style={{ maxHeight: '520px' }}
+                />
+              </div>
             </div>
             {galleryImages.length > 1 && (
-              <div className="flex gap-2">
+              <div className="flex gap-2 px-1">
                 {galleryImages.map((img, i) => (
                   <button
                     key={i}
                     onClick={() => setActiveImage(i)}
-                    className={`w-20 h-20 bg-muted overflow-hidden border-2 transition-colors ${
+                    className={`w-20 h-20 bg-muted overflow-hidden border-2 transition-colors flex items-center justify-center ${
                       activeImage === i ? 'border-foreground' : 'border-transparent hover:border-muted-foreground'
                     }`}
                   >
                     <img
                       src={img}
                       alt={`${product.name} view ${i + 1}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain p-1"
                     />
                   </button>
                 ))}

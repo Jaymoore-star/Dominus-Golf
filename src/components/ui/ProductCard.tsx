@@ -27,7 +27,7 @@ export function ProductCard({ product, aspectRatio = 'square' }: ProductCardProp
         <img
           src={product.image}
           alt={product.name}
-          className="product-image w-full h-full object-cover"
+          className="product-image w-full h-full object-contain p-3 transition-transform duration-300"
         />
 
         {/* Badge */}
