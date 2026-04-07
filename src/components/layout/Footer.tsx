@@ -10,8 +10,10 @@ const footerLinks = {
   'Training Bundles': [
     { label: 'Starter System (Men)', href: '/product/starter-system-men' },
     { label: 'Starter System (Women)', href: '/product/starter-system-women' },
-    { label: 'Core Training System', href: '/product/core-training-system-men' },
-    { label: 'Pro Performance System', href: '/product/pro-performance-system' },
+    { label: 'Core Training System (Men)', href: '/product/core-training-system-men' },
+    { label: 'Core Training System (Women)', href: '/product/core-training-system-women' },
+    { label: 'Pro Performance System (Men)', href: '/product/pro-performance-system' },
+    { label: 'Pro Performance System (Women)', href: '/product/pro-performance-system-women' },
     { label: 'Shop All Bundles', href: '/shop/training-bundles' },
   ],
   'Apparel': [

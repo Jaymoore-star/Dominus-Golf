@@ -51,7 +51,8 @@ const megaMenuData = {
       {
         heading: 'Pro',
         links: [
-          { label: 'Pro Performance System', href: '/product/pro-performance-system' },
+          { label: 'Pro Performance System (Men)', href: '/product/pro-performance-system' },
+          { label: 'Pro Performance System (Women)', href: '/product/pro-performance-system-women' },
           { label: 'All Bundles', href: '/shop/training-bundles' },
         ],
       },
