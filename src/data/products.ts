@@ -189,16 +189,22 @@ export const products: Product[] = [
     price: 67.98,
     compareAtPrice: 72.98,
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FTourPureTrainerW2__165b6582.png?alt=media&token=9e37467f-20f0-4ad2-bde8-1af3d34acfd2',
-    badge: 'Sold Out',
-    description:
-      'Tour Pure + Feel Right Band—built to improve tempo, motion, and consistency with structured training.',
-    features: [
-      'Tour Pure included',
-      'Feel Right Band included',
-      'Improves tempo and control',
-      'Great entry system',
+    gallery: [
+      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FTourPureTrainerW2__165b6582.png?alt=media&token=9e37467f-20f0-4ad2-bde8-1af3d34acfd2',
+      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b',
     ],
-    inStock: false,
+    description:
+      'Tour Pure + Feel Right Band — built to clean up mechanics and create consistency from day one.',
+    features: [
+      'Tour Pure trainer included',
+      'Feel Right Band included',
+      'Builds fundamentals fast',
+      'Great entry-level system',
+    ],
+    inStock: true,
+    includedImages: [
+      { label: 'Feel Right Band', image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b' },
+    ],
   },
   {
     id: 'core-training-system-men',
