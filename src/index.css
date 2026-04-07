@@ -1,0 +1,403 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+    --primary: 0 0% 10%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 38 33% 94%;
+    --secondary-foreground: 0 0% 10%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 38 53% 50%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 88%;
+    --input: 0 0% 88%;
+    --ring: 0 0% 10%;
+    --radius: 0px;
+
+    --chart-1: 38 53% 50%;
+    --chart-2: 0 0% 10%;
+    --chart-3: 38 33% 94%;
+    --chart-4: 0 0% 45%;
+    --chart-5: 0 0% 70%;
+
+    --sidebar: 0 0% 100%;
+    --sidebar-foreground: 0 0% 10%;
+    --sidebar-primary: 0 0% 10%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 38 53% 50%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 88%;
+    --sidebar-ring: 0 0% 10%;
+
+    --font-sans: 'DM Sans', sans-serif;
+    --font-serif: 'Playfair Display', serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+
+    --shadow-2xs: 0px 1px 3px 0px hsl(0 0% 0% / 0.04);
+    --shadow-xs: 0px 2px 4px -1px hsl(0 0% 0% / 0.06);
+    --shadow-sm: 0px 4px 8px -2px hsl(0 0% 0% / 0.08), 0px 1px 2px -1px hsl(0 0% 0% / 0.06);
+    --shadow: 0px 6px 16px -4px hsl(0 0% 0% / 0.10), 0px 2px 4px -2px hsl(0 0% 0% / 0.06);
+    --shadow-md: 0px 8px 24px -6px hsl(0 0% 0% / 0.12), 0px 2px 6px -2px hsl(0 0% 0% / 0.08);
+    --shadow-lg: 0px 12px 32px -8px hsl(0 0% 0% / 0.16), 0px 4px 8px -4px hsl(0 0% 0% / 0.10);
+    --shadow-xl: 0px 20px 48px -12px hsl(0 0% 0% / 0.20), 0px 6px 12px -6px hsl(0 0% 0% / 0.12);
+    --shadow-2xl: 0px 32px 64px -16px hsl(0 0% 0% / 0.28);
+
+    --tracking-normal: 0em;
+    --spacing: 0.25rem;
+  }
+
+  .dark {
+    --background: 0 0% 8%;
+    --foreground: 0 0% 95%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 0 0% 95%;
+    --primary-foreground: 0 0% 10%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 80%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 55%;
+    --accent: 38 53% 50%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 38 53% 50%;
+
+    --sidebar: 0 0% 8%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 38 53% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 15%;
+    --sidebar-accent-foreground: 0 0% 80%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 38 53% 50%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    letter-spacing: var(--tracking-normal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+  }
+}
+
+/* ─── Dominus Golf Custom Utilities ─── */
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+/* ─── Scroll Animations ─── */
+
+@keyframes slideUpFade {
+  from {
+    transform: translateY(30px);
+    filter: blur(4px);
+    opacity: 0.01;
+  }
+  to {
+    transform: translateY(0);
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.96); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes progressBar {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+.scroll-animate {
+  opacity: 0.01;
+}
+
+.scroll-animate.animate-in {
+  animation: slideUpFade 0.7s cubic-bezier(0.0, 0.0, 0.2, 1) both;
+}
+
+.scroll-animate-delay-1.animate-in { animation-delay: 0.1s; }
+.scroll-animate-delay-2.animate-in { animation-delay: 0.2s; }
+.scroll-animate-delay-3.animate-in { animation-delay: 0.3s; }
+.scroll-animate-delay-4.animate-in { animation-delay: 0.4s; }
+
+/* ─── Hero Carousel ─── */
+
+@keyframes heroFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-text-enter {
+  animation: heroFadeIn 0.8s cubic-bezier(0.0, 0.0, 0.2, 1) both;
+}
+
+.hero-text-enter-delay {
+  animation: heroFadeIn 0.8s cubic-bezier(0.0, 0.0, 0.2, 1) 0.2s both;
+}
+
+.hero-text-enter-delay-2 {
+  animation: heroFadeIn 0.8s cubic-bezier(0.0, 0.0, 0.2, 1) 0.4s both;
+}
+
+/* ─── Progress bar animation ─── */
+.progress-animate {
+  animation: progressBar 5s linear both;
+}
+
+/* ─── Product card hover overlay ─── */
+.product-card-overlay {
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+.product-card:hover .product-card-overlay {
+  transform: translateY(0);
+}
+
+.product-card img.product-image {
+  transition: transform 0.5s cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+.product-card:hover img.product-image {
+  transform: scale(1.05);
+}
+
+/* ─── Mega Menu ─── */
+
+.mega-menu {
+  animation: slideUpFade 0.2s ease-out both;
+}
+
+/* ─── Cart Drawer slide ─── */
+
+@keyframes slideInFromRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes slideOutToRight {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+
+/* ─── Gold underline hover ─── */
+
+.gold-underline-hover {
+  position: relative;
+}
+
+.gold-underline-hover::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: hsl(var(--accent));
+  transition: width 0.3s ease-out;
+}
+
+.gold-underline-hover:hover::after {
+  width: 100%;
+}
+
+/* ─── Category card gold line ─── */
+
+.category-gold-line {
+  position: relative;
+}
+
+.category-gold-line::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background-color: hsl(var(--accent));
+  transition: width 0.3s ease-out;
+}
+
+.category-card:hover .category-gold-line::after {
+  width: 40px;
+}
+
+/* ─── Accordion ─── */
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+
+.animate-accordion-down {
+  animation: accordion-down 0.2s ease-out;
+}
+
+.animate-accordion-up {
+  animation: accordion-up 0.2s ease-out;
+}
+
+/* ─── Announcement bar scroll ─── */
+@keyframes marqueeScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.announcement-scroll {
+  animation: marqueeScroll 20s linear infinite;
+}
+
+/* ─── Sharp corners enforcer ─── */
+*, *::before, *::after {
+  border-radius: 0 !important;
+}
+
+/* exceptions for specific circular elements */
+.rounded-full-override {
+  border-radius: 9999px !important;
+}
+
+/* ─── Gold button ─── */
+.btn-gold {
+  background-color: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.btn-gold:hover {
+  background-color: hsl(38 53% 42%);
+}
+
+.btn-gold:active {
+  transform: scale(0.98);
+}
+
+/* ─── Outline white button (hero) ─── */
+.btn-outline-white {
+  border: 1.5px solid white;
+  background: transparent;
+  color: white;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.btn-outline-white:hover {
+  background: white;
+  color: hsl(0 0% 10%);
+}
+
+/* ─── Black button gold hover ─── */
+.btn-primary-black {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  transition: background-color 0.25s ease, transform 0.15s ease;
+}
+
+.btn-primary-black:hover {
+  background-color: hsl(var(--accent));
+}
+
+.btn-primary-black:active {
+  transform: scale(0.98);
+}
+
+/* ─── Image hover scale ─── */
+.img-hover-scale {
+  overflow: hidden;
+}
+
+.img-hover-scale img {
+  transition: transform 0.5s cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+.img-hover-scale:hover img {
+  transform: scale(1.05);
+}
+
+/* ─── Smooth transitions ─── */
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* ─── Fade in animation ─── */
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* ─── Cart badge ─── */
+.cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  background-color: hsl(var(--accent));
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px !important;
+}
