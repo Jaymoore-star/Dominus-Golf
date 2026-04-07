@@ -1,9 +1,6 @@
 import { Link } from '@tanstack/react-router';
 
-// Product images already in the project
-const IMG_TOUR_PURE =
-  'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FPhotoroom-20251125_1425462241__e480e1c6.png?alt=media&token=7c96a611-0b70-415f-a7f7-8bebe5a974a2';
-
+// Included item images (the Tour Pure trainer is the main card image — not repeated here)
 const IMG_FEEL_RIGHT_BAND =
   'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b';
 
@@ -40,7 +37,6 @@ const bundles: Bundle[] = [
     description:
       'Tour Pure + Feel Right Band — built to clean up mechanics and create consistency from day one.',
     items: [
-      { label: 'Tour Pure', image: IMG_TOUR_PURE },
       { label: 'Feel Right Band', image: IMG_FEEL_RIGHT_BAND },
     ],
     href: '/product/starter-system-men',
@@ -54,7 +50,6 @@ const bundles: Bundle[] = [
     description:
       'Tour Pure + Feel Right Band + 90-Day Training Manual — full swing development in one system.',
     items: [
-      { label: 'Tour Pure', image: IMG_TOUR_PURE },
       { label: 'Feel Right Band', image: IMG_FEEL_RIGHT_BAND },
       { label: '90-Day Manual', image: IMG_BOOK },
     ],
@@ -70,7 +65,6 @@ const bundles: Bundle[] = [
     description:
       'The complete system: Tour Pure + Feel Right Band + 90-Day Manual + Dominus Golf Towel.',
     items: [
-      { label: 'Tour Pure', image: IMG_TOUR_PURE },
       { label: 'Feel Right Band', image: IMG_FEEL_RIGHT_BAND },
       { label: '90-Day Manual', image: IMG_BOOK },
       { label: 'Towel', image: IMG_TOWEL },

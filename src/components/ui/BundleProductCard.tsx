@@ -52,14 +52,21 @@ export function BundleProductCard({ product }: BundleProductCardProps) {
         </div>
       </div>
 
-      {/* Included items strip — only shown when includedImages exist */}
-      {product.includedImages && product.includedImages.length > 0 && (
+      {/* Included items strip — deduped against main product image */}
+      {product.includedImages && product.includedImages.length > 0 && (() => {
+        const dedupedItems = product.includedImages!.filter(
+          (item, idx, arr) =>
+            item.image !== product.image &&
+            arr.findIndex((x) => x.image === item.image) === idx
+        );
+        if (dedupedItems.length === 0) return null;
+        return (
         <div className="border-x border-b border-border bg-muted/50 px-3 py-3">
           <p className="font-sans text-[9px] font-semibold tracking-[0.3em] uppercase text-muted-foreground mb-2">
             Also Includes
           </p>
           <div className="flex items-center gap-2">
-            {product.includedImages.map((item, i) => (
+            {dedupedItems.map((item, i) => (
               <div key={item.label} className="flex items-center gap-2">
                 <div className="flex flex-col items-center gap-1">
                   <div className="w-10 h-10 bg-background border border-border flex items-center justify-center overflow-hidden shrink-0">
@@ -74,14 +81,15 @@ export function BundleProductCard({ product }: BundleProductCardProps) {
                     {item.label}
                   </span>
                 </div>
-                {i < product.includedImages!.length - 1 && (
+                {i < dedupedItems.length - 1 && (
                   <span className="text-muted-foreground/50 text-xs pb-3">+</span>
                 )}
               </div>
             ))}
           </div>
         </div>
-      )}
+        );
+      })()}
 
       {/* Product info */}
       <div className="pt-3 pb-1">
