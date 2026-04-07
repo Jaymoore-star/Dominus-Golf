@@ -239,23 +239,33 @@ export function ProductPage() {
 
             {/* Add to Cart */}
             <div className="space-y-4">
-              <button
-                onClick={handleAddToCart}
-                disabled={!product.inStock}
-                className={`w-full py-4 font-sans font-semibold text-sm tracking-widest uppercase transition-colors duration-200 ${
-                  addedEffect
-                    ? 'bg-accent text-accent-foreground'
-                    : product.inStock
-                    ? 'btn-primary-black'
-                    : 'bg-muted text-muted-foreground cursor-not-allowed'
-                }`}
-              >
-                {!product.inStock
-                  ? 'Out of Stock'
-                  : addedEffect
-                  ? 'Added to Bag'
-                  : 'Add to Bag'}
-              </button>
+              {product.id === 'dominus-towel' ? (
+                <div className="w-full">
+                  {/* @ts-ignore — Stripe web component */}
+                  <stripe-buy-button
+                    buy-button-id="buy_btn_1TJiCk8QdBLIlAXjYHUw3HaA"
+                    publishable-key="pk_live_51TJLt48QdBLIlAXjzKGAF7MGzxC2dHsb9wOzbZGdBL2Shzlomq38wETGl0JamyGrdhnHnEry2PumIsn8Vt6pzJtj00jCyzppZD"
+                  />
+                </div>
+              ) : (
+                <button
+                  onClick={handleAddToCart}
+                  disabled={!product.inStock}
+                  className={`w-full py-4 font-sans font-semibold text-sm tracking-widest uppercase transition-colors duration-200 ${
+                    addedEffect
+                      ? 'bg-accent text-accent-foreground'
+                      : product.inStock
+                      ? 'btn-primary-black'
+                      : 'bg-muted text-muted-foreground cursor-not-allowed'
+                  }`}
+                >
+                  {!product.inStock
+                    ? 'Out of Stock'
+                    : addedEffect
+                    ? 'Added to Bag'
+                    : 'Add to Bag'}
+                </button>
+              )}
 
               {/* Shopify-style Trust Info */}
               <div className="grid grid-cols-2 gap-4 py-6 border-y border-border">
@@ -414,31 +424,33 @@ export function ProductPage() {
       <CartDrawer />
 
       {/* Sticky Mobile Add to Cart */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4 z-20 shadow-lg animate-in fade-in slide-in-from-bottom-4 duration-300">
-        <div className="flex items-center gap-4">
-          <div className="flex-1">
-            <p className="font-serif text-sm font-bold text-foreground truncate">
-              {product.name}
-            </p>
-            <p className="font-sans text-xs font-semibold text-accent">
-              ${product.price.toFixed(2)}
-            </p>
+      {product.id !== 'dominus-towel' && (
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4 z-20 shadow-lg animate-in fade-in slide-in-from-bottom-4 duration-300">
+          <div className="flex items-center gap-4">
+            <div className="flex-1">
+              <p className="font-serif text-sm font-bold text-foreground truncate">
+                {product.name}
+              </p>
+              <p className="font-sans text-xs font-semibold text-accent">
+                ${product.price.toFixed(2)}
+              </p>
+            </div>
+            <button
+              onClick={handleAddToCart}
+              disabled={!product.inStock}
+              className={`px-6 py-3 font-sans font-semibold text-xs tracking-widest uppercase transition-colors duration-200 ${
+                addedEffect
+                  ? 'bg-accent text-accent-foreground'
+                  : product.inStock
+                  ? 'btn-primary-black'
+                  : 'bg-muted text-muted-foreground cursor-not-allowed'
+              }`}
+            >
+              {addedEffect ? 'Added' : 'Add to Bag'}
+            </button>
           </div>
-          <button
-            onClick={handleAddToCart}
-            disabled={!product.inStock}
-            className={`px-6 py-3 font-sans font-semibold text-xs tracking-widest uppercase transition-colors duration-200 ${
-              addedEffect
-                ? 'bg-accent text-accent-foreground'
-                : product.inStock
-                ? 'btn-primary-black'
-                : 'bg-muted text-muted-foreground cursor-not-allowed'
-            }`}
-          >
-            {addedEffect ? 'Added' : 'Add to Bag'}
-          </button>
         </div>
-      </div>
+      )}
     </div>
   );
 }
