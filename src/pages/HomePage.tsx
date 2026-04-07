@@ -4,6 +4,7 @@ import { CategoryGrid } from '../components/home/CategoryGrid';
 import { FeaturedProducts } from '../components/home/FeaturedProducts';
 import { TrustBadges } from '../components/home/TrustBadges';
 import { PromoSection } from '../components/home/PromoSection';
+import { ProofSection } from '../components/home/ProofSection';
 import { ProductCarousel } from '../components/home/ProductCarousel';
 import { Footer } from '../components/layout/Footer';
 import { CartDrawer } from '../components/cart/CartDrawer';
@@ -17,6 +18,7 @@ export function HomePage() {
         <TrustBadges />
         <CategoryGrid />
         <FeaturedProducts />
+        <ProofSection />
         <PromoSection />
         <ProductCarousel />
       </main>
