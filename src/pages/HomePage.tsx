@@ -3,6 +3,7 @@ import { HeroSection } from '../components/home/HeroSection';
 import { CredibilitySection } from '../components/home/CredibilitySection';
 import { HowItWorksSection } from '../components/home/HowItWorksSection';
 import { ProductPositioningSection } from '../components/home/ProductPositioningSection';
+import { BundleSection } from '../components/home/BundleSection';
 import { InHandSection } from '../components/home/InHandSection';
 import { MidCTASection } from '../components/home/MidCTASection';
 import { WomensSection } from '../components/home/WomensSection';
@@ -23,13 +24,15 @@ export function HomePage() {
         <HowItWorksSection />
         {/* Section 4 — Product Positioning */}
         <ProductPositioningSection />
-        {/* Section 5 — In-Hand Image */}
+        {/* Section 5 — Bundle System */}
+        <BundleSection />
+        {/* Section 6 — In-Hand Image */}
         <InHandSection />
-        {/* Section 6 — Mid CTA */}
+        {/* Section 7 — Mid CTA */}
         <MidCTASection />
-        {/* Section 7 — Women's */}
+        {/* Section 8 — Women's */}
         <WomensSection />
-        {/* Section 8 — Final CTA */}
+        {/* Section 9 — Final CTA */}
         <FinalCTASection />
       </main>
       <Footer />
