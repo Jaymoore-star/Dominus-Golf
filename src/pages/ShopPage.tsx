@@ -4,6 +4,7 @@ import { SlidersHorizontal, ChevronDown, X } from 'lucide-react';
 import { products, type Category } from '../data/products';
 import { ProductCard } from '../components/ui/ProductCard';
 import { BundleProductCard } from '../components/ui/BundleProductCard';
+import { ApparelProductCard } from '../components/ui/ApparelProductCard';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { CartDrawer } from '../components/cart/CartDrawer';
@@ -40,9 +41,20 @@ export function ShopPage() {
   const heroImage = categoryHeroes[category] ?? categoryHeroes['training-system'];
 
   const filtered = useMemo(() => {
+    // For apparel: only show primary products (those with colorVariants or no duplicate)
+    // Exclude secondary color variants that are already covered by the primary card
+    const APPAREL_SECONDARY_IDS = new Set([
+      'dominus-tee-performance-white',
+      'dominus-womens-tee-white-icon',
+    ]);
+
     let list = products.filter(
       (p) => !category || category === 'all' || p.category === (category as Category),
     );
+
+    if (category === 'apparel') {
+      list = list.filter((p) => !APPAREL_SECONDARY_IDS.has(p.id));
+    }
 
     if (inStockOnly) {
       list = list.filter((p) => p.inStock);
@@ -283,13 +295,15 @@ export function ShopPage() {
               </div>
             ) : (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-5 gap-y-8">
-                {filtered.map((product) => (
+                {filtered.map((product) =>
                   category === 'training-bundles' ? (
                     <BundleProductCard key={product.id} product={product} />
+                  ) : category === 'apparel' ? (
+                    <ApparelProductCard key={product.id} product={product} />
                   ) : (
                     <ProductCard key={product.id} product={product} />
                   )
-                ))}
+                )}
               </div>
             )}
           </main>

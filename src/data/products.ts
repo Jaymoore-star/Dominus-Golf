@@ -30,6 +30,7 @@ export type Product = {
   rating?: number;
   reviewCount?: number;
   includedImages?: { label: string; image: string }[];
+  colorVariants?: Record<string, string>;
 };
 
 export type CategoryCard = {
@@ -392,12 +393,16 @@ export const products: Product[] = [
   // Men's Apparel
   {
     id: 'dominus-tee-icon-white',
-    name: "Dominus Icon Tee — White (Men's)",
+    name: "Icon Tee (Men's)",
     category: 'apparel',
     subcategory: "Men's Apparel",
     price: 14.99,
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F362bd22b-fdf8-4a12-9d27-e2c171733e41__c6e99d68.png?alt=media&token=2f224778-65dc-4ebe-9917-4ba4012a0c1a',
     hoverImage: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-18__5cee2081.jpg?alt=media&token=89842c6e-8985-4106-a87a-c4f1429da757',
+    colorVariants: {
+      White: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F362bd22b-fdf8-4a12-9d27-e2c171733e41__c6e99d68.png?alt=media&token=2f224778-65dc-4ebe-9917-4ba4012a0c1a',
+      Black: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Fninjapod_11843683_f_4980_00_f__c9a61eee.jpg?alt=media&token=711e7d00-0de7-4691-9561-083071fddf2a',
+    },
     gallery: [
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F362bd22b-fdf8-4a12-9d27-e2c171733e41__c6e99d68.png?alt=media&token=2f224778-65dc-4ebe-9917-4ba4012a0c1a',
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-18__5cee2081.jpg?alt=media&token=89842c6e-8985-4106-a87a-c4f1429da757',
@@ -423,12 +428,16 @@ export const products: Product[] = [
   },
   {
     id: 'dominus-tee-wordmark-white',
-    name: "Dominus Wordmark Tee — White (Men's)",
+    name: "Wordmark Tee (Men's)",
     category: 'apparel',
     subcategory: "Men's Apparel",
     price: 14.99,
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-17__2eb54519.jpg?alt=media&token=67d61cc4-4dcb-4fdf-a1bf-bf08e9316f53',
     hoverImage: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F362bd22b-fdf8-4a12-9d27-e2c171733e41__c6e99d68.png?alt=media&token=2f224778-65dc-4ebe-9917-4ba4012a0c1a',
+    colorVariants: {
+      White: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-17__2eb54519.jpg?alt=media&token=67d61cc4-4dcb-4fdf-a1bf-bf08e9316f53',
+      Black: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Fninjapod_11843683_f_4980_00_f__c9a61eee.jpg?alt=media&token=711e7d00-0de7-4691-9561-083071fddf2a',
+    },
     gallery: [
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-17__2eb54519.jpg?alt=media&token=67d61cc4-4dcb-4fdf-a1bf-bf08e9316f53',
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F362bd22b-fdf8-4a12-9d27-e2c171733e41__c6e99d68.png?alt=media&token=2f224778-65dc-4ebe-9917-4ba4012a0c1a',
@@ -454,12 +463,16 @@ export const products: Product[] = [
   },
   {
     id: 'dominus-tee-performance-black',
-    name: "Dominus Performance Tee — Black (Men's)",
+    name: "Performance Tee (Men's)",
     category: 'apparel',
     subcategory: "Men's Apparel",
     price: 14.99,
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Fninjapod_11843683_f_4980_00_f__c9a61eee.jpg?alt=media&token=711e7d00-0de7-4691-9561-083071fddf2a',
     hoverImage: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-18__5cee2081.jpg?alt=media&token=89842c6e-8985-4106-a87a-c4f1429da757',
+    colorVariants: {
+      Black: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Fninjapod_11843683_f_4980_00_f__c9a61eee.jpg?alt=media&token=711e7d00-0de7-4691-9561-083071fddf2a',
+      White: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-18__5cee2081.jpg?alt=media&token=89842c6e-8985-4106-a87a-c4f1429da757',
+    },
     gallery: [
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Fninjapod_11843683_f_4980_00_f__c9a61eee.jpg?alt=media&token=711e7d00-0de7-4691-9561-083071fddf2a',
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-18__5cee2081.jpg?alt=media&token=89842c6e-8985-4106-a87a-c4f1429da757',
@@ -485,7 +498,7 @@ export const products: Product[] = [
   },
   {
     id: 'dominus-tee-performance-white',
-    name: "Dominus Performance Tee — White (Men's)",
+    name: "Performance Tee — White (Men's)",
     category: 'apparel',
     subcategory: "Men's Apparel",
     price: 14.99,
@@ -519,12 +532,16 @@ export const products: Product[] = [
   // Group A: Black Icon Tee (unnamed-11 front + unnamed-16 side)
   {
     id: 'dominus-womens-tee-black-icon',
-    name: "Dominus Icon Tee — Black (Women's)",
+    name: "Icon Tee (Women's)",
     category: 'apparel',
     subcategory: "Women's Apparel",
     price: 14.99,
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-11__fc5a40f7.jpg?alt=media&token=87722e6d-11e3-4e1b-a6b4-7e84ebce8990',
     hoverImage: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-16__4cc41a28.jpg?alt=media&token=ba681f7f-3fbe-49cf-8d7a-d8b6df139f44',
+    colorVariants: {
+      Black: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-11__fc5a40f7.jpg?alt=media&token=87722e6d-11e3-4e1b-a6b4-7e84ebce8990',
+      White: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-13__94ffe0c4.jpg?alt=media&token=e511fa27-43af-49c7-a2cb-dbc281792be2',
+    },
     gallery: [
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-11__fc5a40f7.jpg?alt=media&token=87722e6d-11e3-4e1b-a6b4-7e84ebce8990',
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-16__4cc41a28.jpg?alt=media&token=ba681f7f-3fbe-49cf-8d7a-d8b6df139f44',
@@ -551,7 +568,7 @@ export const products: Product[] = [
   // Group B: White Icon Tee (unnamed-13 front + unnamed-12 side)
   {
     id: 'dominus-womens-tee-white-icon',
-    name: "Dominus Icon Tee — White (Women's)",
+    name: "Icon Tee — White (Women's)",
     category: 'apparel',
     subcategory: "Women's Apparel",
     price: 14.99,
@@ -583,11 +600,15 @@ export const products: Product[] = [
   // Group C: Black Performance Tee (a2d1da0a — standalone)
   {
     id: 'dominus-womens-tee-black-performance',
-    name: "Dominus Performance Tee — Black (Women's)",
+    name: "Performance Tee (Women's)",
     category: 'apparel',
     subcategory: "Women's Apparel",
     price: 14.99,
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Fa2d1da0a-6213-4a84-8dca-5122fd81823a__3ed0e102.png?alt=media&token=477bc876-34dd-41b2-b344-778269d56bd4',
+    colorVariants: {
+      Black: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Fa2d1da0a-6213-4a84-8dca-5122fd81823a__3ed0e102.png?alt=media&token=477bc876-34dd-41b2-b344-778269d56bd4',
+      White: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-13__94ffe0c4.jpg?alt=media&token=e511fa27-43af-49c7-a2cb-dbc281792be2',
+    },
     gallery: [
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Fa2d1da0a-6213-4a84-8dca-5122fd81823a__3ed0e102.png?alt=media&token=477bc876-34dd-41b2-b344-778269d56bd4',
     ],
