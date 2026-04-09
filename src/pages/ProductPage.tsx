@@ -53,13 +53,7 @@ export function ProductPage() {
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
 
-  const stripeUrls: Record<string, string> = {
-    'dominus-towel': 'https://buy.stripe.com/5kQ6oBffi3WQbu396Affy0a',
-    'tour-pure-men': 'https://buy.stripe.com/9B65kx9UY2SMdCb3Mgffy06',
-    'mastering-the-game-book': 'https://buy.stripe.com/6oU28l7MQ2SMfKj4Qkffy09',
-    'feel-right-band': 'https://buy.stripe.com/9B63cpc36bpidCbdmQffy05',
-  };
-  const stripeUrl = stripeUrls[product.id];
+  const stripeUrl = product.stripeUrl;
 
   const handleBuyNow = () => {
     if (stripeUrl) window.open(stripeUrl, '_blank', 'noopener,noreferrer');

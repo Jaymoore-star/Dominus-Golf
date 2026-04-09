@@ -2,13 +2,6 @@ import { X, ShoppingBag, Plus, Minus, Trash2 } from 'lucide-react';
 import { useCart } from '../../store/cartStore';
 import { Link } from '@tanstack/react-router';
 
-const STRIPE_URLS: Record<string, string> = {
-  'dominus-towel': 'https://buy.stripe.com/5kQ6oBffi3WQbu396Affy0a',
-  'tour-pure-men': 'https://buy.stripe.com/9B65kx9UY2SMdCb3Mgffy06',
-  'mastering-the-game-book': 'https://buy.stripe.com/6oU28l7MQ2SMfKj4Qkffy09',
-  'feel-right-band': 'https://buy.stripe.com/9B63cpc36bpidCbdmQffy05',
-};
-
 export function CartDrawer() {
   const { state, closeCart, removeItem, updateQuantity, total, itemCount } =
     useCart();
@@ -190,11 +183,14 @@ export function CartDrawer() {
             {/* Checkout button */}
             <button
               onClick={() => {
-                const firstItem = state.items[0];
-                const stripeUrl = firstItem ? STRIPE_URLS[firstItem.product.id] : undefined;
-                if (stripeUrl) {
-                  window.open(stripeUrl, '_blank', 'noopener,noreferrer');
-                }
+                // Open a Stripe checkout tab for each unique item that has a Stripe link
+                const urls = state.items
+                  .map((item) => item.product.stripeUrl)
+                  .filter((url): url is string => Boolean(url));
+                const uniqueUrls = [...new Set(urls)];
+                uniqueUrls.forEach((url) =>
+                  window.open(url, '_blank', 'noopener,noreferrer')
+                );
                 closeCart();
               }}
               className="btn-gold w-full py-4 font-sans font-semibold tracking-widest uppercase text-sm"

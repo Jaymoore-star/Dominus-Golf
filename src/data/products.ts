@@ -31,6 +31,7 @@ export type Product = {
   reviewCount?: number;
   includedImages?: { label: string; image: string }[];
   colorVariants?: Record<string, string>;
+  stripeUrl?: string;
 };
 
 export type CategoryCard = {
@@ -102,6 +103,7 @@ export const products: Product[] = [
     inStock: true,
     rating: 4.9,
     reviewCount: 4897,
+    stripeUrl: 'https://buy.stripe.com/9B65kx9UY2SMdCb3Mgffy06',
   },
   {
     id: 'tour-pure-women',
@@ -329,6 +331,7 @@ export const products: Product[] = [
     category: 'accessories',
     subcategory: 'Training Aid',
     price: 12.99,
+    stripeUrl: 'https://buy.stripe.com/9B63cpc36bpidCbdmQffy05',
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b',
     hoverImage: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBandonarm__c77b5c57.jpg?alt=media&token=9588ee49-ecd7-4c08-ba89-6c5e418216e8',
     gallery: [
@@ -363,6 +366,7 @@ export const products: Product[] = [
     description: 'Premium Dominus Golf towel—clean, durable, built for the bag.',
     features: ['Durable fabric', 'Bag-ready size', 'Clean branding', 'Premium feel'],
     inStock: true,
+    stripeUrl: 'https://buy.stripe.com/5kQ6oBffi3WQbu396Affy0a',
   },
   {
     id: 'mastering-the-game-book',
@@ -388,6 +392,7 @@ export const products: Product[] = [
       'Length: 90-Day Curriculum',
     ],
     inStock: true,
+    stripeUrl: 'https://buy.stripe.com/6oU28l7MQ2SMfKj4Qkffy09',
   },
 
   // Men's Apparel
