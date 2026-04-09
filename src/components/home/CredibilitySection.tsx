@@ -46,24 +46,29 @@ export function CredibilitySection() {
         </div>
       </div>
 
-      {/* 3-col stats below */}
+      {/* Body copy + bullets */}
       <section className="w-full bg-[#111111] border-b border-white/10 py-16 sm:py-20 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 lg:gap-12">
-            {blocks.map((block) => (
-              <div key={block.number} className="flex flex-col gap-4">
-                <span className="font-sans text-[11px] font-semibold tracking-[0.3em] text-accent">
-                  {block.number}
-                </span>
-                <div className="w-8 h-px bg-accent" />
-                <h3 className="font-serif text-xl font-semibold text-white leading-snug">
-                  {block.title}
-                </h3>
-                <p className="font-sans text-sm text-white/50 leading-relaxed">
-                  {block.body}
-                </p>
-              </div>
-            ))}
+          <div className="max-w-3xl">
+            <p className="font-sans text-base text-white/65 leading-relaxed mb-5">
+              Tour Pure was developed through real performance improvement and built on the same
+              movement patterns used by competitive golfers to train swing path, tempo, and sequencing.
+            </p>
+            <p className="font-sans text-base text-white/65 leading-relaxed mb-10">
+              Most swing trainers create awareness but fail to transfer to real performance. Tour Pure
+              uses added weight to train sequencing, control, and movement that holds up on the course.
+            </p>
+            <ul className="space-y-4 mb-10">
+              {bullets.map((item) => (
+                <li key={item} className="flex items-start gap-4">
+                  <span className="mt-2 w-1.5 h-1.5 bg-accent shrink-0" />
+                  <span className="font-sans text-sm text-white/75 leading-relaxed">{item}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="font-serif text-lg font-semibold text-white/90 leading-snug">
+              This is not a warm-up tool. This is how repeatable swings are built.
+            </p>
           </div>
         </div>
       </section>
