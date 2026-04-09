@@ -142,7 +142,7 @@ export function Footer() {
             <div className="flex items-center gap-4">
               {[
                 { icon: <FacebookIcon />, label: 'Facebook', href: 'https://www.facebook.com/DominusGolf' },
-                { icon: <InstagramIcon />, label: 'Instagram', href: null },
+                { icon: <InstagramIcon />, label: 'Instagram', href: 'https://www.instagram.com/dominus_golf/' },
                 { icon: <YoutubeIcon />, label: 'YouTube', href: null },
                 { icon: <TwitterXIcon />, label: 'X / Twitter', href: null },
               ].map((social) =>
