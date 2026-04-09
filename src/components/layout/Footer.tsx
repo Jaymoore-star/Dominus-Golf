@@ -141,19 +141,32 @@ export function Footer() {
             {/* Social Icons */}
             <div className="flex items-center gap-4">
               {[
-                { icon: <FacebookIcon />, label: 'Facebook' },
-                { icon: <InstagramIcon />, label: 'Instagram' },
-                { icon: <YoutubeIcon />, label: 'YouTube' },
-                { icon: <TwitterXIcon />, label: 'X / Twitter' },
-              ].map((social) => (
-                <button
-                  key={social.label}
-                  aria-label={social.label}
-                  className="w-9 h-9 flex items-center justify-center border border-white/20 text-white/60 hover:text-white hover:border-white transition-colors duration-150"
-                >
-                  {social.icon}
-                </button>
-              ))}
+                { icon: <FacebookIcon />, label: 'Facebook', href: 'https://www.facebook.com/DominusGolf' },
+                { icon: <InstagramIcon />, label: 'Instagram', href: null },
+                { icon: <YoutubeIcon />, label: 'YouTube', href: null },
+                { icon: <TwitterXIcon />, label: 'X / Twitter', href: null },
+              ].map((social) =>
+                social.href ? (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.label}
+                    className="w-9 h-9 flex items-center justify-center border border-white/20 text-white/60 hover:text-white hover:border-white transition-colors duration-150"
+                  >
+                    {social.icon}
+                  </a>
+                ) : (
+                  <button
+                    key={social.label}
+                    aria-label={social.label}
+                    className="w-9 h-9 flex items-center justify-center border border-white/20 text-white/60 hover:text-white hover:border-white transition-colors duration-150"
+                  >
+                    {social.icon}
+                  </button>
+                )
+              )}
             </div>
           </div>
         </div>
