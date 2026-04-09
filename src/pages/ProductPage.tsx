@@ -257,12 +257,14 @@ export function ProductPage() {
                   : 'Add to Bag'}
               </button>
 
-              {(product.id === 'dominus-towel' || product.id === 'tour-pure-men') && product.inStock && (
+              {(product.id === 'dominus-towel' || product.id === 'tour-pure-men' || product.id === 'mastering-the-game-book') && product.inStock && (
                 <a
                   href={
                     product.id === 'dominus-towel'
                       ? 'https://buy.stripe.com/5kQ6oBffi3WQbu396Affy0a'
-                      : 'https://buy.stripe.com/9B65kx9UY2SMdCb3Mgffy06'
+                      : product.id === 'tour-pure-men'
+                      ? 'https://buy.stripe.com/9B65kx9UY2SMdCb3Mgffy06'
+                      : 'https://buy.stripe.com/6oU28l7MQ2SMfKj4Qkffy09'
                   }
                   target="_blank"
                   rel="noopener noreferrer"
@@ -439,12 +441,14 @@ export function ProductPage() {
               ${product.price.toFixed(2)}
             </p>
           </div>
-          {(product.id === 'dominus-towel' || product.id === 'tour-pure-men') && product.inStock ? (
+          {(product.id === 'dominus-towel' || product.id === 'tour-pure-men' || product.id === 'mastering-the-game-book') && product.inStock ? (
             <a
               href={
                 product.id === 'dominus-towel'
                   ? 'https://buy.stripe.com/5kQ6oBffi3WQbu396Affy0a'
-                  : 'https://buy.stripe.com/9B65kx9UY2SMdCb3Mgffy06'
+                  : product.id === 'tour-pure-men'
+                  ? 'https://buy.stripe.com/9B65kx9UY2SMdCb3Mgffy06'
+                  : 'https://buy.stripe.com/6oU28l7MQ2SMfKj4Qkffy09'
               }
               target="_blank"
               rel="noopener noreferrer"
