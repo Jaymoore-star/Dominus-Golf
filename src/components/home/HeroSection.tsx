@@ -26,12 +26,7 @@ export function HeroSection() {
             >
               Start Training Today
             </Link>
-            <Link
-              to="/shop/training-system"
-              className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-10 py-4 border border-white/60 text-white hover:border-white transition-colors duration-200"
-            >
-              See How It Works
-            </Link>
+
           </div>
         </div>
 

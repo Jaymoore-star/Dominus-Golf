@@ -3,22 +3,11 @@
 const PROOF_IMAGE =
   'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F455006441_8098523000236121_7855058451068780943_n__309e2346.jpg?alt=media&token=7db6fb7b-c73a-4676-a591-fa386fa1ca51';
 
-const blocks = [
-  {
-    number: '01',
-    title: 'Developed Through Real Use',
-    body: 'Tour Pure was created to give golfers a better way to train swing mechanics without hitting a ball.',
-  },
-  {
-    number: '02',
-    title: 'Built for Repeatable Training',
-    body: 'Designed to reinforce movement patterns, tempo, and control through structured repetition.',
-  },
-  {
-    number: '03',
-    title: 'Trusted by Competitive Golfers',
-    body: 'Used by golfers focused on improving consistency and swing control.',
-  },
+const bullets = [
+  'Built on proven movement patterns used by competitive golfers',
+  'Added weight forces proper sequencing, tempo, and control',
+  'Trains movements that transfer to real swings—not just practice',
+  'Designed for repetition that builds consistency under pressure',
 ];
 
 export function CredibilitySection() {
@@ -48,10 +37,10 @@ export function CredibilitySection() {
         <div className="relative z-10 flex items-end h-full px-6 sm:px-12 lg:px-20 pb-10 sm:pb-14" style={{ minHeight: '420px' }}>
           <div>
             <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-3">
-              Built From Real Results
+              Proven Results
             </p>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight max-w-xl">
-              Built for Golfers<br />Who Want Control
+              Trusted by 9+ Club Champions
             </h2>
           </div>
         </div>
