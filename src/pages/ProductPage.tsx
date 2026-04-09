@@ -257,6 +257,17 @@ export function ProductPage() {
                   : 'Add to Bag'}
               </button>
 
+              {product.id === 'dominus-towel' && product.inStock && (
+                <a
+                  href="https://buy.stripe.com/5kQ6oBffi3WQbu396Affy0a"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full py-4 font-sans font-semibold text-sm tracking-widest uppercase text-center btn-gold transition-colors duration-200"
+                >
+                  Buy Now
+                </a>
+              )}
+
               {/* Shopify-style Trust Info */}
               <div className="grid grid-cols-2 gap-4 py-6 border-y border-border">
                 <div className="flex items-center gap-3">
