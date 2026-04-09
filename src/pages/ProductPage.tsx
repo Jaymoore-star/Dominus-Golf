@@ -1,6 +1,26 @@
 import { useState } from 'react';
 import { useParams, Link } from '@tanstack/react-router';
-import { Star, Minus, Plus, ChevronDown, ChevronRight } from 'lucide-react';
+import { Star, Minus, Plus, ChevronDown, ChevronRight, Loader2 } from 'lucide-react';
+
+const BACKEND_URL = 'https://45pi183s.backend.blink.new';
+
+async function createCheckoutSession(
+  items: { name: string; price: number; quantity: number; image?: string }[]
+): Promise<string> {
+  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://www.dominusgolf.com';
+  const res = await fetch(`${BACKEND_URL}/api/checkout`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      items,
+      successUrl: `${origin}/?checkout=success`,
+      cancelUrl: `${origin}/?checkout=cancelled`,
+    }),
+  });
+  const data = await res.json() as { url?: string; error?: string };
+  if (!res.ok || !data.url) throw new Error(data.error || 'Failed to create checkout session');
+  return data.url;
+}
 import { products } from '../data/products';
 import { useCart } from '../store/cartStore';
 import { ProductCard } from '../components/ui/ProductCard';
@@ -53,10 +73,23 @@ export function ProductPage() {
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
 
-  const stripeUrl = product.stripeUrl;
+  const [isBuyingNow, setIsBuyingNow] = useState(false);
 
-  const handleBuyNow = () => {
-    if (stripeUrl) window.open(stripeUrl, '_blank', 'noopener,noreferrer');
+  const handleBuyNow = async () => {
+    setIsBuyingNow(true);
+    try {
+      const url = await createCheckoutSession([{
+        name: product.name,
+        price: product.price,
+        quantity,
+        image: product.image,
+      }]);
+      window.open(url, '_blank', 'noopener,noreferrer');
+    } catch (err) {
+      console.error('Checkout error:', err);
+    } finally {
+      setIsBuyingNow(false);
+    }
   };
 
   const handleAddToCart = () => {
@@ -263,12 +296,15 @@ export function ProductPage() {
                   : 'Add to Bag'}
               </button>
 
-              {stripeUrl && product.inStock && (
+              {product.inStock && (
                 <button
                   onClick={handleBuyNow}
-                  className="block w-full py-4 font-sans font-semibold text-sm tracking-widest uppercase text-center btn-gold transition-colors duration-200"
+                  disabled={isBuyingNow}
+                  className="block w-full py-4 font-sans font-semibold text-sm tracking-widest uppercase text-center btn-gold transition-colors duration-200 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  Buy Now
+                  {isBuyingNow ? (
+                    <><Loader2 size={14} className="animate-spin" /> Preparing…</>
+                  ) : 'Buy Now'}
                 </button>
               )}
 
@@ -439,12 +475,15 @@ export function ProductPage() {
               ${product.price.toFixed(2)}
             </p>
           </div>
-          {stripeUrl && product.inStock ? (
+          {product.inStock ? (
             <button
               onClick={handleBuyNow}
-              className="px-6 py-3 font-sans font-semibold text-xs tracking-widest uppercase btn-gold transition-colors duration-200"
+              disabled={isBuyingNow}
+              className="px-6 py-3 font-sans font-semibold text-xs tracking-widest uppercase btn-gold transition-colors duration-200 flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              Buy Now
+              {isBuyingNow ? (
+                <><Loader2 size={12} className="animate-spin" /> Preparing…</>
+              ) : 'Buy Now'}
             </button>
           ) : (
             <button

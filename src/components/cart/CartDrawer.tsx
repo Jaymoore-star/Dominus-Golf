@@ -1,10 +1,56 @@
-import { X, ShoppingBag, Plus, Minus, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import { X, ShoppingBag, Plus, Minus, Trash2, Loader2 } from 'lucide-react';
 import { useCart } from '../../store/cartStore';
 import { Link } from '@tanstack/react-router';
 
+const BACKEND_URL = 'https://45pi183s.backend.blink.new';
+
+async function createCheckoutSession(
+  items: { name: string; price: number; quantity: number; image?: string }[]
+): Promise<string> {
+  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://www.dominusgolf.com';
+  const res = await fetch(`${BACKEND_URL}/api/checkout`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      items,
+      successUrl: `${origin}/?checkout=success`,
+      cancelUrl: `${origin}/?checkout=cancelled`,
+    }),
+  });
+  const data = await res.json() as { url?: string; error?: string };
+  if (!res.ok || !data.url) throw new Error(data.error || 'Failed to create checkout session');
+  return data.url;
+}
+
 export function CartDrawer() {
-  const { state, closeCart, removeItem, updateQuantity, total, itemCount } =
-    useCart();
+  const { state, closeCart, removeItem, updateQuantity, total, itemCount } = useCart();
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
+
+  const handleCheckout = async () => {
+    if (state.items.length === 0) return;
+    setIsCheckingOut(true);
+    setCheckoutError(null);
+
+    try {
+      const lineItems = state.items.map((item) => ({
+        name: item.product.name,
+        price: item.product.price,
+        quantity: item.quantity,
+        image: item.product.image,
+      }));
+
+      const url = await createCheckoutSession(lineItems);
+      window.open(url, '_blank', 'noopener,noreferrer');
+      closeCart();
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Something went wrong';
+      setCheckoutError(message);
+    } finally {
+      setIsCheckingOut(false);
+    }
+  };
 
   return (
     <>
@@ -62,8 +108,8 @@ export function CartDrawer() {
                 </span>
               </div>
               <div className="h-1 w-full bg-border overflow-hidden">
-                <div 
-                  className="h-full bg-accent transition-all duration-500 ease-out" 
+                <div
+                  className="h-full bg-accent transition-all duration-500 ease-out"
                   style={{ width: `${Math.min(100, (total / 150) * 100)}%` }}
                 />
               </div>
@@ -129,9 +175,7 @@ export function CartDrawer() {
                       {/* Quantity */}
                       <div className="flex items-center border border-border">
                         <button
-                          onClick={() =>
-                            updateQuantity(item.product.id, item.quantity - 1)
-                          }
+                          onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
                           className="w-8 h-8 flex items-center justify-center hover:bg-muted transition-colors text-foreground"
                           aria-label="Decrease quantity"
                         >
@@ -141,9 +185,7 @@ export function CartDrawer() {
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() =>
-                            updateQuantity(item.product.id, item.quantity + 1)
-                          }
+                          onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
                           className="w-8 h-8 flex items-center justify-center hover:bg-muted transition-colors text-foreground"
                           aria-label="Increase quantity"
                         >
@@ -180,22 +222,25 @@ export function CartDrawer() {
               Shipping and taxes calculated at checkout.
             </p>
 
+            {/* Error */}
+            {checkoutError && (
+              <p className="font-sans text-[11px] text-red-500">{checkoutError}</p>
+            )}
+
             {/* Checkout button */}
             <button
-              onClick={() => {
-                // Open a Stripe checkout tab for each unique item that has a Stripe link
-                const urls = state.items
-                  .map((item) => item.product.stripeUrl)
-                  .filter((url): url is string => Boolean(url));
-                const uniqueUrls = [...new Set(urls)];
-                uniqueUrls.forEach((url) =>
-                  window.open(url, '_blank', 'noopener,noreferrer')
-                );
-                closeCart();
-              }}
-              className="btn-gold w-full py-4 font-sans font-semibold tracking-widest uppercase text-sm"
+              onClick={handleCheckout}
+              disabled={isCheckingOut}
+              className="btn-gold w-full py-4 font-sans font-semibold tracking-widest uppercase text-sm flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              Checkout
+              {isCheckingOut ? (
+                <>
+                  <Loader2 size={16} className="animate-spin" />
+                  Preparing Checkout…
+                </>
+              ) : (
+                'Checkout'
+              )}
             </button>
 
             {/* View cart link */}
@@ -203,7 +248,7 @@ export function CartDrawer() {
               onClick={closeCart}
               className="w-full text-center font-sans text-xs font-medium tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors py-1 underline underline-offset-4"
             >
-              View Full Cart
+              Continue Shopping
             </button>
           </div>
         )}
