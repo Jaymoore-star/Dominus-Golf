@@ -144,7 +144,7 @@ export function Footer() {
                 { icon: <FacebookIcon />, label: 'Facebook', href: 'https://www.facebook.com/DominusGolf' },
                 { icon: <InstagramIcon />, label: 'Instagram', href: 'https://www.instagram.com/dominus_golf/' },
                 { icon: <YoutubeIcon />, label: 'YouTube', href: 'https://www.youtube.com/@DominusGolf' },
-                { icon: <TwitterXIcon />, label: 'X / Twitter', href: null },
+                { icon: <TwitterXIcon />, label: 'X / Twitter', href: 'https://x.com/GolfDominus' },
               ].map((social) =>
                 social.href ? (
                   <a
