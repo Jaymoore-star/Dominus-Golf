@@ -53,6 +53,18 @@ export function ProductPage() {
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
 
+  const stripeUrls: Record<string, string> = {
+    'dominus-towel': 'https://buy.stripe.com/5kQ6oBffi3WQbu396Affy0a',
+    'tour-pure-men': 'https://buy.stripe.com/9B65kx9UY2SMdCb3Mgffy06',
+    'mastering-the-game-book': 'https://buy.stripe.com/6oU28l7MQ2SMfKj4Qkffy09',
+    'feel-right-band': 'https://buy.stripe.com/9B63cpc36bpidCbdmQffy05',
+  };
+  const stripeUrl = stripeUrls[product.id];
+
+  const handleBuyNow = () => {
+    if (stripeUrl) window.open(stripeUrl, '_blank', 'noopener,noreferrer');
+  };
+
   const handleAddToCart = () => {
     for (let i = 0; i < quantity; i++) {
       addItem(product);
@@ -257,23 +269,13 @@ export function ProductPage() {
                   : 'Add to Bag'}
               </button>
 
-              {(product.id === 'dominus-towel' || product.id === 'tour-pure-men' || product.id === 'mastering-the-game-book' || product.id === 'feel-right-band') && product.inStock && (
-                <a
-                  href={
-                    product.id === 'dominus-towel'
-                      ? 'https://buy.stripe.com/5kQ6oBffi3WQbu396Affy0a'
-                      : product.id === 'tour-pure-men'
-                      ? 'https://buy.stripe.com/9B65kx9UY2SMdCb3Mgffy06'
-                      : product.id === 'mastering-the-game-book'
-                      ? 'https://buy.stripe.com/6oU28l7MQ2SMfKj4Qkffy09'
-                      : 'https://buy.stripe.com/9B63cpc36bpidCbdmQffy05'
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
+              {stripeUrl && product.inStock && (
+                <button
+                  onClick={handleBuyNow}
                   className="block w-full py-4 font-sans font-semibold text-sm tracking-widest uppercase text-center btn-gold transition-colors duration-200"
                 >
                   Buy Now
-                </a>
+                </button>
               )}
 
               {/* Shopify-style Trust Info */}
@@ -443,23 +445,13 @@ export function ProductPage() {
               ${product.price.toFixed(2)}
             </p>
           </div>
-          {(product.id === 'dominus-towel' || product.id === 'tour-pure-men' || product.id === 'mastering-the-game-book' || product.id === 'feel-right-band') && product.inStock ? (
-            <a
-              href={
-                product.id === 'dominus-towel'
-                  ? 'https://buy.stripe.com/5kQ6oBffi3WQbu396Affy0a'
-                  : product.id === 'tour-pure-men'
-                  ? 'https://buy.stripe.com/9B65kx9UY2SMdCb3Mgffy06'
-                  : product.id === 'mastering-the-game-book'
-                  ? 'https://buy.stripe.com/6oU28l7MQ2SMfKj4Qkffy09'
-                  : 'https://buy.stripe.com/9B63cpc36bpidCbdmQffy05'
-              }
-              target="_blank"
-              rel="noopener noreferrer"
+          {stripeUrl && product.inStock ? (
+            <button
+              onClick={handleBuyNow}
               className="px-6 py-3 font-sans font-semibold text-xs tracking-widest uppercase btn-gold transition-colors duration-200"
             >
               Buy Now
-            </a>
+            </button>
           ) : (
             <button
               onClick={handleAddToCart}
