@@ -1,5 +1,5 @@
-const IN_HAND_IMAGE =
-  'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FGemini_Generated_Image_ofjfkaofjfkaofjf__1e06169b.png?alt=media&token=8b7d6778-29b1-44d2-a5b5-436472032131';
+const TROPHY_IMAGE =
+  'https://images.unsplash.com/photo-1637635753380-20bf6f46ede0?crop=entropy&cs=srgb&fm=jpg&ixlib=rb-4.1.0&q=85&w=2400';
 
 export function InHandSection() {
   return (
@@ -18,7 +18,7 @@ export function InHandSection() {
             <p className="font-sans text-base text-white/55 leading-relaxed mb-8 max-w-[460px]">
               Tour Pure is built to give golfers a true feel for training swing path, tempo, and movement patterns without hitting a ball.
             </p>
-            <ul className="space-y-3">
+            <ul className="space-y-3 mb-10">
               {[
                 'Weighted grip trains proper tempo and sequencing',
                 'Full shaft length — 18 in, 3.8 lbs — built for feedback',
@@ -30,26 +30,38 @@ export function InHandSection() {
                 </li>
               ))}
             </ul>
+
+            {/* Trusted by block */}
+            <div className="border-t border-white/10 pt-8">
+              <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-2">
+                Proven Results
+              </p>
+              <p className="font-serif text-2xl font-bold text-white leading-tight">
+                Trusted by 9+ Club Champions
+              </p>
+            </div>
           </div>
 
           {/* Image — right */}
           <div className="order-2 flex flex-col items-center lg:items-end">
             <div className="w-full max-w-[84vw] sm:max-w-[420px] lg:max-w-[480px]">
-              <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-[0_8px_40px_rgba(0,0,0,0.6)]">
+              <div className="relative overflow-hidden shadow-[0_8px_40px_rgba(0,0,0,0.6)]" style={{ aspectRatio: '4/5' }}>
                 <img
-                  src={IN_HAND_IMAGE}
-                  alt="Tour Pure swing trainer held in hand showing real-world size"
-                  className="w-full h-auto object-contain"
+                  src={TROPHY_IMAGE}
+                  alt="Golf championship trophy on course, representing competitive achievement"
+                  className="w-full h-full object-cover"
                   style={{
-                    maxHeight: '540px',
-                    filter: 'contrast(1.06) brightness(0.95)',
+                    objectPosition: 'center 20%',
+                    filter: 'contrast(1.05) brightness(0.92)',
                   }}
                   loading="lazy"
                 />
+                {/* subtle bottom gradient */}
+                <div
+                  className="absolute inset-0"
+                  style={{ background: 'linear-gradient(to top, rgba(17,17,17,0.45) 0%, transparent 50%)' }}
+                />
               </div>
-              <p className="mt-3 text-center font-sans text-[11px] text-white/35 tracking-wide">
-                Shown in hand for scale
-              </p>
             </div>
           </div>
 

@@ -36,11 +36,8 @@ export function CredibilitySection() {
         {/* Overlay text */}
         <div className="relative z-10 flex items-end h-full px-6 sm:px-12 lg:px-20 pb-10 sm:pb-14" style={{ minHeight: '420px' }}>
           <div>
-            <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-3">
-              Proven Results
-            </p>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight max-w-xl">
-              Trusted by 9+ Club Champions
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight max-w-2xl">
+              The trainer builds the body. The system makes it repeatable.
             </h2>
           </div>
         </div>
