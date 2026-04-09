@@ -257,9 +257,13 @@ export function ProductPage() {
                   : 'Add to Bag'}
               </button>
 
-              {product.id === 'dominus-towel' && product.inStock && (
+              {(product.id === 'dominus-towel' || product.id === 'tour-pure-men') && product.inStock && (
                 <a
-                  href="https://buy.stripe.com/5kQ6oBffi3WQbu396Affy0a"
+                  href={
+                    product.id === 'dominus-towel'
+                      ? 'https://buy.stripe.com/5kQ6oBffi3WQbu396Affy0a'
+                      : 'https://buy.stripe.com/9B65kx9UY2SMdCb3Mgffy06'
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block w-full py-4 font-sans font-semibold text-sm tracking-widest uppercase text-center btn-gold transition-colors duration-200"
@@ -435,9 +439,13 @@ export function ProductPage() {
               ${product.price.toFixed(2)}
             </p>
           </div>
-          {product.id === 'dominus-towel' && product.inStock ? (
+          {(product.id === 'dominus-towel' || product.id === 'tour-pure-men') && product.inStock ? (
             <a
-              href="https://buy.stripe.com/5kQ6oBffi3WQbu396Affy0a"
+              href={
+                product.id === 'dominus-towel'
+                  ? 'https://buy.stripe.com/5kQ6oBffi3WQbu396Affy0a'
+                  : 'https://buy.stripe.com/9B65kx9UY2SMdCb3Mgffy06'
+              }
               target="_blank"
               rel="noopener noreferrer"
               className="px-6 py-3 font-sans font-semibold text-xs tracking-widest uppercase btn-gold transition-colors duration-200"
