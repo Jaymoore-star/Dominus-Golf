@@ -435,19 +435,30 @@ export function ProductPage() {
               ${product.price.toFixed(2)}
             </p>
           </div>
-          <button
-            onClick={handleAddToCart}
-            disabled={!product.inStock}
-            className={`px-6 py-3 font-sans font-semibold text-xs tracking-widest uppercase transition-colors duration-200 ${
-              addedEffect
-                ? 'bg-accent text-accent-foreground'
-                : product.inStock
-                ? 'btn-primary-black'
-                : 'bg-muted text-muted-foreground cursor-not-allowed'
-            }`}
-          >
-            {addedEffect ? 'Added' : 'Add to Bag'}
-          </button>
+          {product.id === 'dominus-towel' && product.inStock ? (
+            <a
+              href="https://buy.stripe.com/5kQ6oBffi3WQbu396Affy0a"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-6 py-3 font-sans font-semibold text-xs tracking-widest uppercase btn-gold transition-colors duration-200"
+            >
+              Buy Now
+            </a>
+          ) : (
+            <button
+              onClick={handleAddToCart}
+              disabled={!product.inStock}
+              className={`px-6 py-3 font-sans font-semibold text-xs tracking-widest uppercase transition-colors duration-200 ${
+                addedEffect
+                  ? 'bg-accent text-accent-foreground'
+                  : product.inStock
+                  ? 'btn-primary-black'
+                  : 'bg-muted text-muted-foreground cursor-not-allowed'
+              }`}
+            >
+              {addedEffect ? 'Added' : 'Add to Bag'}
+            </button>
+          )}
         </div>
       </div>
     </div>
