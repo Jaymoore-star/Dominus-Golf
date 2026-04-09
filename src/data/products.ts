@@ -352,7 +352,7 @@ export const products: Product[] = [
     name: 'Dominus Golf Towel',
     category: 'accessories',
     subcategory: 'Accessories',
-    price: 14.99,
+    price: 19.99,
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FChatGPTImageMar24202607_40_17PM__db70f8cf.png?alt=media&token=6b657a6c-36d1-4a74-b3d2-d28b5a2de9c9',
     hoverImage: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FChatGPTImageMar24202607_39_41PM__213ac69a.png?alt=media&token=13055075-bd93-454a-9faf-30bdd6a757b8',
     gallery: [
