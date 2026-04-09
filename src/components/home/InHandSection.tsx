@@ -1,5 +1,5 @@
 const TROPHY_IMAGE =
-  'https://images.unsplash.com/photo-1637635753380-20bf6f46ede0?crop=entropy&cs=srgb&fm=jpg&ixlib=rb-4.1.0&q=85&w=2400';
+  'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F05e7c204-d2a6-4a57-bd3e-b27b347a8ccb__e06f2841.png?alt=media&token=6bbfac5d-44f4-481f-a625-81e3eb4e2699';
 
 export function InHandSection() {
   return (
