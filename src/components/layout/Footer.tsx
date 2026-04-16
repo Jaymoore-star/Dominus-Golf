@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link } from '@tanstack/react-router';
 
 const footerLinks = {
@@ -73,6 +74,19 @@ function TwitterXIcon() {
 }
 
 export function Footer() {
+  useEffect(() => {
+    const scriptId = 'kit-07115b1734';
+    if (document.getElementById(scriptId)) return;
+    const script = document.createElement('script');
+    script.id = scriptId;
+    script.src = 'https://dominus-golf.kit.com/07115b1734/index.js';
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+      document.getElementById(scriptId)?.remove();
+    };
+  }, []);
+
   return (
     <footer className="bg-primary text-primary-foreground">
       {/* Email Signup */}
@@ -87,16 +101,7 @@ export function Footer() {
                 Get the latest product launches, tour news, and exclusive offers.
               </p>
             </div>
-            <div className="flex w-full sm:w-auto gap-0">
-              <input
-                type="email"
-                placeholder="Your email address"
-                className="flex-1 sm:w-64 px-4 py-3 bg-white/10 border border-white/20 text-white placeholder:text-white/40 font-sans text-sm focus:outline-none focus:border-accent"
-              />
-              <button className="btn-gold px-6 py-3 font-sans font-semibold text-xs tracking-widest uppercase shrink-0">
-                Subscribe
-              </button>
-            </div>
+            <div className="w-full sm:w-auto min-w-[320px]" data-uid="07115b1734" />
           </div>
         </div>
       </div>
