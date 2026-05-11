@@ -8,6 +8,7 @@ import { InHandSection } from '../components/home/InHandSection';
 import { MidCTASection } from '../components/home/MidCTASection';
 import { WomensSection } from '../components/home/WomensSection';
 import { ProDirectorySection } from '../components/home/ProDirectorySection';
+import { FAQSection } from '../components/home/FAQSection';
 import { FinalCTASection } from '../components/home/FinalCTASection';
 import { Footer } from '../components/layout/Footer';
 import { CartDrawer } from '../components/cart/CartDrawer';
@@ -35,7 +36,9 @@ export function HomePage() {
         <WomensSection />
         {/* Section 9 — Pro Directory */}
         <ProDirectorySection />
-        {/* Section 10 — Final CTA */}
+        {/* Section 10 — FAQ */}
+        <FAQSection />
+        {/* Section 11 — Final CTA */}
         <FinalCTASection />
       </main>
       <Footer />
