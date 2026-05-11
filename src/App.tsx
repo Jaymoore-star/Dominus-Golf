@@ -14,6 +14,7 @@ import { TeamPage } from './pages/TeamPage';
 import { ContactPage } from './pages/ContactPage';
 import { CareersPage } from './pages/CareersPage';
 import { SustainabilityPage } from './pages/SustainabilityPage';
+import { GabeSalvaneraPage } from './pages/GabeSalvaneraPage';
 
 const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -42,6 +43,7 @@ const teamRoute = createRoute({ getParentRoute: () => rootRoute, path: '/about/t
 const contactRoute = createRoute({ getParentRoute: () => rootRoute, path: '/about/contact', component: ContactPage });
 const careersRoute = createRoute({ getParentRoute: () => rootRoute, path: '/about/careers', component: CareersPage });
 const sustainabilityRoute = createRoute({ getParentRoute: () => rootRoute, path: '/about/sustainability', component: SustainabilityPage });
+const gabeSalvaneraRoute = createRoute({ getParentRoute: () => rootRoute, path: '/gabe-salvanera', component: GabeSalvaneraPage });
 
 const routeTree = rootRoute.addChildren([
   indexRoute,
@@ -52,6 +54,7 @@ const routeTree = rootRoute.addChildren([
   contactRoute,
   careersRoute,
   sustainabilityRoute,
+  gabeSalvaneraRoute,
 ]);
 
 const router = createRouter({ routeTree });
