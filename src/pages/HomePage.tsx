@@ -7,6 +7,7 @@ import { BundleSection } from '../components/home/BundleSection';
 import { InHandSection } from '../components/home/InHandSection';
 import { MidCTASection } from '../components/home/MidCTASection';
 import { WomensSection } from '../components/home/WomensSection';
+import { ProDirectorySection } from '../components/home/ProDirectorySection';
 import { FinalCTASection } from '../components/home/FinalCTASection';
 import { Footer } from '../components/layout/Footer';
 import { CartDrawer } from '../components/cart/CartDrawer';
@@ -32,7 +33,9 @@ export function HomePage() {
         <MidCTASection />
         {/* Section 8 — Women's */}
         <WomensSection />
-        {/* Section 9 — Final CTA */}
+        {/* Section 9 — Pro Directory */}
+        <ProDirectorySection />
+        {/* Section 10 — Final CTA */}
         <FinalCTASection />
       </main>
       <Footer />
