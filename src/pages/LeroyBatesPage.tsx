@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link } from '@tanstack/react-router';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
@@ -36,6 +37,27 @@ const sessionTypes = [
 ];
 
 export function LeroyBatesPage() {
+  useEffect(() => {
+    // Inject Acuity stylesheet
+    const styleId = 'acuity-button-styles';
+    if (!document.getElementById(styleId)) {
+      const link = document.createElement('link');
+      link.id = styleId;
+      link.rel = 'stylesheet';
+      link.href = 'https://embed.acuityscheduling.com/embed/button/39236931.css';
+      document.head.appendChild(link);
+    }
+    // Inject Acuity script
+    const scriptId = 'acuity-button-script';
+    if (!document.getElementById(scriptId)) {
+      const script = document.createElement('script');
+      script.id = scriptId;
+      script.src = 'https://embed.acuityscheduling.com/embed/button/39236931.js';
+      script.async = true;
+      document.body.appendChild(script);
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
@@ -87,10 +109,12 @@ export function LeroyBatesPage() {
                 </div>
 
                 <a
-                  href="#book"
+                  href="https://app.acuityscheduling.com/schedule.php?owner=39236931&calendarID=14032949&ref=booking_button"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-10 py-4 bg-accent text-white hover:bg-accent/90 transition-colors duration-200"
                 >
-                  Book a Session
+                  Schedule Appointment
                 </a>
               </div>
 
@@ -189,10 +213,12 @@ export function LeroyBatesPage() {
                 on-course session.
               </p>
               <a
-                href="mailto:leroy@dominusgolf.com"
+                href="https://app.acuityscheduling.com/schedule.php?owner=39236931&calendarID=14032949&ref=booking_button"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-12 py-4 bg-accent text-white hover:bg-accent/90 transition-colors duration-200"
               >
-                Contact Leroy
+                Schedule Appointment
               </a>
             </div>
           </div>
