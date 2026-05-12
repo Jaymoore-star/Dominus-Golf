@@ -9,9 +9,9 @@ const pros = [
     affiliation: 'PGA TOUR AMERICAS | GRASS LEAGUE',
     bio: 'Specialist in Swing Mechanics and Technical Performance Optimization.',
     href: '/pros',
-    city: 'Phoenix',
+     city: 'Phoenix',
     state: 'AZ',
-    photo: null,
+    photo: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FGabeSand__d54af4a2.jpg?alt=media&token=d72b1d09-ca90-4b79-a2ee-0017eac6c957',
   },
   {
     id: 'leroy-bates',

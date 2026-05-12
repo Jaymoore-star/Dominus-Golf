@@ -36,7 +36,7 @@ const pros: Pro[] = [
     bio: 'Specialist in Swing Mechanics and Performance Optimization.',
     fullBio:
       'Gabe Salvanera is a PGA Tour Americas and Grass League professional who has built his reputation on elite swing mechanics and performance optimization. His sessions focus on building tour-level habits on the range that translate directly to better ball striking and lower scores.',
-    photo: null,
+    photo: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FGabeSand__d54af4a2.jpg?alt=media&token=d72b1d09-ca90-4b79-a2ee-0017eac6c957',
     credentials: [
       'PGA Tour Americas competitor',
       'Grass League professional',
