@@ -22,12 +22,12 @@ const steps = [
   {
     number: '03',
     step: 'Step 3',
-    overlayTitle: 'Repeat Without Guessing',
-    title: 'Transfer to the Course',
-    body: 'The patterns trained with Tour Pure carry directly onto the course — a more stable, repeatable swing every round.',
-    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F455040396_8098531156901972_191203825751922657_n__0cf04f01.jpg?alt=media&token=6f5ef5d7-f349-4589-8f5b-37aaba47dc2a',
-    alt: 'Golfer using Tour Pure on the putting green to train path and stroke',
-    objectPosition: 'center 30%',
+    overlayTitle: 'Master Your Break',
+    title: 'Precision Putting Alignment',
+    body: 'Use Tour Pure as a putting alignment tool to align and help understand your putting break.',
+    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F455082619_8098523016902786_920092106083080418_n__592fb000.jpg?alt=media&token=5bd2467b-27fc-4f71-8f3d-e9a4c8354f49',
+    alt: 'Golfer using Tour Pure on the putting green as an alignment tool to read the break',
+    objectPosition: 'center 40%',
   },
 ];
 
