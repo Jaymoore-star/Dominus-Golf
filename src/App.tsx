@@ -16,6 +16,11 @@ import { CareersPage } from './pages/CareersPage';
 import { SustainabilityPage } from './pages/SustainabilityPage';
 import { GabeSalvaneraPage } from './pages/GabeSalvaneraPage';
 import { LeroyBatesPage } from './pages/LeroyBatesPage';
+import { SafetyDisclaimerPage } from './pages/SafetyDisclaimerPage';
+import { ShippingPolicyPage } from './pages/ShippingPolicyPage';
+import { TermsPage } from './pages/TermsPage';
+import { BeginnersPage } from './pages/BeginnersPage';
+import { PracticeWithProsPage } from './pages/PracticeWithProsPage';
 
 const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -46,6 +51,11 @@ const careersRoute = createRoute({ getParentRoute: () => rootRoute, path: '/abou
 const sustainabilityRoute = createRoute({ getParentRoute: () => rootRoute, path: '/about/sustainability', component: SustainabilityPage });
 const gabeSalvaneraRoute = createRoute({ getParentRoute: () => rootRoute, path: '/gabe-salvanera', component: GabeSalvaneraPage });
 const leroyBatesRoute = createRoute({ getParentRoute: () => rootRoute, path: '/leroy-bates', component: LeroyBatesPage });
+const safetyRoute = createRoute({ getParentRoute: () => rootRoute, path: '/safety-disclaimer', component: SafetyDisclaimerPage });
+const shippingRoute = createRoute({ getParentRoute: () => rootRoute, path: '/shipping-policy', component: ShippingPolicyPage });
+const termsRoute = createRoute({ getParentRoute: () => rootRoute, path: '/terms', component: TermsPage });
+const beginnersRoute = createRoute({ getParentRoute: () => rootRoute, path: '/beginners', component: BeginnersPage });
+const practiceWithProsRoute = createRoute({ getParentRoute: () => rootRoute, path: '/practice-with-pros', component: PracticeWithProsPage });
 
 const routeTree = rootRoute.addChildren([
   indexRoute,
@@ -58,6 +68,11 @@ const routeTree = rootRoute.addChildren([
   sustainabilityRoute,
   gabeSalvaneraRoute,
   leroyBatesRoute,
+  safetyRoute,
+  shippingRoute,
+  termsRoute,
+  beginnersRoute,
+  practiceWithProsRoute,
 ]);
 
 const router = createRouter({ routeTree });

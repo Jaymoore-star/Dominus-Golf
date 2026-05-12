@@ -116,6 +116,21 @@ const megaMenuData = {
           { label: 'Sustainability', href: '/about/sustainability' },
         ],
       },
+      {
+        heading: 'Coaching & Guides',
+        links: [
+          { label: 'Practice With the Pros', href: '/practice-with-pros' },
+          { label: 'Beginners Guide', href: '/beginners' },
+        ],
+      },
+      {
+        heading: 'Legal',
+        links: [
+          { label: 'Safety Disclaimer', href: '/safety-disclaimer' },
+          { label: 'Shipping Policy', href: '/shipping-policy' },
+          { label: 'Terms & Conditions', href: '/terms' },
+        ],
+      },
     ],
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FPhotoroom-20251125_1425462241__e480e1c6.png?alt=media&token=7c96a611-0b70-415f-a7f7-8bebe5a974a2',
     imageCaption: 'Veteran-Owned. Coach-Led.',
