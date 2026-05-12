@@ -3,7 +3,6 @@ import { Link } from '@tanstack/react-router';
 
 const footerLinks = {
   'Training Systems': [
-    { label: 'Bundles (Save Now)', href: '/bundles' },
     { label: 'Tour Pure Men', href: '/product/tour-pure-men' },
     { label: 'Tour Pure Women', href: '/product/tour-pure-women' },
     { label: 'Tour Pure Jr', href: '/product/tour-pure-jr' },

@@ -213,45 +213,6 @@ export function ProductInfo({
           ))}
         </ul>
       </div>
-
-      {/* What's Included — bundle products only */}
-      {product.includedImages && product.includedImages.length > 0 && (() => {
-        const dedupedItems = product.includedImages!.filter(
-          (item, idx, arr) =>
-            item.image !== product.image &&
-            arr.findIndex((x) => x.image === item.image) === idx
-        );
-        if (dedupedItems.length === 0) return null;
-        return (
-          <div className="mb-8 p-5 border border-border">
-            <p className="font-sans text-[10px] font-semibold tracking-widest uppercase text-muted-foreground mb-4">
-              What's Included
-            </p>
-            <div className="flex items-center gap-4 flex-wrap">
-              {dedupedItems.map((item, i) => (
-                <div key={item.label} className="flex items-center gap-4">
-                  <div className="flex flex-col items-center gap-2">
-                    <div className="w-16 h-16 bg-muted border border-border flex items-center justify-center overflow-hidden shrink-0">
-                      <img
-                        src={item.image}
-                        alt={item.label}
-                        className="w-full h-full object-contain p-1.5"
-                        loading="lazy"
-                      />
-                    </div>
-                    <span className="font-sans text-[9px] font-medium tracking-wide text-muted-foreground text-center max-w-[64px] leading-tight">
-                      {item.label}
-                    </span>
-                  </div>
-                  {i < dedupedItems.length - 1 && (
-                    <span className="text-muted-foreground/50 text-sm mb-4">+</span>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-      })()}
     </div>
   );
 }
