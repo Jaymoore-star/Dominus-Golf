@@ -109,7 +109,7 @@ const REGIONS = ['All Regions', 'Southwest', 'Southeast', 'Northeast', 'Midwest'
 
 function ProModal({ pro, onClose }: { pro: Pro; onClose: () => void }) {
   const overlayRef = useRef<HTMLDivElement>(null);
-  const [activeSessionFilter, setActiveSessionFilter] = useState('All Sessions');
+  const [activeSessionFilter, setActiveSessionFilter] = useState('Full Swing');
 
   // Close on Escape
   useEffect(() => {
@@ -196,7 +196,7 @@ function ProModal({ pro, onClose }: { pro: Pro; onClose: () => void }) {
 
             {/* Session Filters */}
             <div className="flex flex-wrap gap-2 mb-6">
-              {['All Sessions', 'Full Swing', 'Putting', 'Pitch & Chip'].map((f) => (
+              {['Full Swing', 'Putting', 'Pitch & Chip'].map((f) => (
                 <button
                   key={f}
                   onClick={() => setActiveSessionFilter(f)}
@@ -213,7 +213,7 @@ function ProModal({ pro, onClose }: { pro: Pro; onClose: () => void }) {
 
             <div className="space-y-3">
               {pro.sessions
-                .filter((s) => activeSessionFilter === 'All Sessions' || s.title === activeSessionFilter)
+                .filter((s) => s.title === activeSessionFilter)
                 .map((s) => (
                   <div key={s.title} className="bg-[#1a1a1a] border border-white/10 p-5">
                     <div className="flex items-baseline justify-between gap-3 mb-2">
