@@ -12,7 +12,7 @@ const stats = [
 
 const credentials = [
   'Golf Junkyz Foundation certified professional',
-  'First Tee instructor and youth development coach',
+  'First Tee instructor and youth development Pro',
   'Specialist in swing consistency and repeatable mechanics',
   'Dedicated to technical improvement on the range',
 ];
@@ -92,7 +92,7 @@ export function LeroyBatesPage() {
                 </h1>
                 <p className="font-sans text-base text-white/55 leading-relaxed max-w-lg mb-10">
                   Leroy Bates is a Golf Junkyz Foundation professional and First Tee instructor whose entire
-                  coaching career is built around one goal: consistency. He gives everyday golfers a
+                  Pro career is built around one goal: consistency. He gives everyday golfers a
                   structured, repeatable path to lower scores through elite technical range sessions.
                 </p>
 
@@ -157,7 +157,7 @@ export function LeroyBatesPage() {
 
               <div className="bg-[#1a1a1a] border border-white/10 p-8">
                 <p className="font-sans text-[10px] font-semibold tracking-[0.3em] uppercase text-accent mb-4">
-                  Coaching Philosophy
+                  Instructional Philosophy
                 </p>
                 <blockquote className="font-serif text-xl text-white/80 leading-relaxed italic">
                   "Consistency isn't a talent — it's a habit. I help golfers build the right habits

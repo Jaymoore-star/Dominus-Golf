@@ -24,7 +24,7 @@ export function AboutPage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-20">
         <div className="prose-dominus space-y-6 font-sans text-base leading-relaxed text-foreground/80">
           <p>
-            Dominus Golf wasn't born in a boardroom; it was born on the range. Our founder, a U.S. Army Veteran and dedicated coach, realized that most training aids were either too light to build strength or too complex to use.
+            Dominus Golf wasn't born in a boardroom; it was born on the range. Our founder, a U.S. Army Veteran and dedicated Pro, realized that most training aids were either too light to build strength or too complex to use.
           </p>
           <p>
             After developing the Tour Pure system, he watched his own handicap drop from a 13 to a 3 in just three months. We don't sell gimmicks or "swing-fixes" that break after a season. We sell a repeatable, professional-grade swing path built on the same discipline required in military service.
@@ -38,7 +38,7 @@ export function AboutPage() {
         <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-8">
           {[
             { label: 'Veteran-Owned', desc: 'Founded on the discipline and integrity of U.S. military service.' },
-            { label: 'Coach-Led', desc: 'Every product designed around professional coaching methodology.' },
+            { label: 'Pro-Led', desc: 'Every product designed around professional-grade technical instruction.' },
             { label: 'Precision-Built', desc: 'Industrial-grade materials built to outlast any training season.' },
           ].map((val) => (
             <div key={val.label} className="border-t-2 border-accent pt-5">

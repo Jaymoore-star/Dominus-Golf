@@ -10,7 +10,7 @@ const faqs = [
   },
   {
     id: 2,
-    question: 'Can I improve my handicap without a full-time coach?',
+    question: 'Can I improve my handicap without a full-time Pro?',
     answer:
       'Absolutely. Our Pros provide a 90-day blueprint during your on-range session, giving you a self-improvement method that actually works.',
   },

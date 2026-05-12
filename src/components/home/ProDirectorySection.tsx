@@ -99,7 +99,7 @@ export function ProDirectorySection() {
             Elite Range Mentorship
           </h2>
           <p className="font-sans text-base text-white/50 max-w-xl mx-auto leading-relaxed">
-            Professional-grade technical instruction from the best in the game. Find your coach, view their technical sessions, and book direct.
+            Professional-grade technical instruction from the best in the game. Find your Pro, view their technical sessions, and book direct.
           </p>
         </div>
 

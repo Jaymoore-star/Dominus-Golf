@@ -38,7 +38,7 @@ const pros: Pro[] = [
     credentials: [
       'PGA Tour Americas competitor',
       'Grass League professional',
-      'Certified performance coach',
+      'Certified performance Pro',
       'Specialist in swing optimization and practice structure',
     ],
     sessions: [
@@ -72,11 +72,11 @@ const pros: Pro[] = [
     state: 'CA',
     bio: 'Expert in Consistency and Technical Proficiency.',
     fullBio:
-      'Leroy Bates is a Golf Junkyz Foundation professional and First Tee instructor whose entire coaching career is built around one goal: consistency. He gives everyday golfers a structured, repeatable path to lower scores through elite technical range sessions.',
+      'Leroy Bates is a Golf Junkyz Foundation professional and First Tee instructor whose entire Pro career is built around one goal: consistency. He gives everyday golfers a structured, repeatable path to lower scores through elite technical range sessions.',
     photo: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F1000010452__3764dc88.jpg?alt=media&token=22783388-9f93-4757-9fa9-a5e992497359',
     credentials: [
       'Golf Junkyz Foundation certified professional',
-      'First Tee instructor and youth development coach',
+      'First Tee instructor and youth development Pro',
       'Specialist in swing consistency and repeatable mechanics',
       'Dedicated to technical improvement on the range',
     ],
@@ -368,7 +368,7 @@ export function ProDirectoryPage() {
             Practice with a Pro
           </h1>
           <p className="font-sans text-base text-white/55 max-w-xl mx-auto leading-relaxed">
-            Professional-grade mentorship from Dominus Golf's national network of pros. Find your coach, view their sessions, and book direct.
+            Professional-grade mentorship from Dominus Golf's national network of pros. Find your Pro, view their sessions, and book direct.
           </p>
         </div>
       </section>

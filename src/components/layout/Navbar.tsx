@@ -110,9 +110,9 @@ const megaMenuData = {
         ],
       },
       {
-        heading: 'Coaching & Guides',
+        heading: 'Instruction & Guides',
         links: [
-          { label: 'Practice With the Pros', href: '/practice-with-pros' },
+          { label: 'Practice with a Pro', href: '/practice-with-pros' },
           { label: 'Beginners Guide', href: '/beginners' },
         ],
       },

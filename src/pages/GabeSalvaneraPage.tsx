@@ -14,7 +14,7 @@ const stats = [
 const credentials = [
   'PGA Tour Americas competitor',
   'Grass League professional',
-  'Certified performance coach',
+  'Certified performance Pro',
   'Specialist in swing optimization and practice structure',
 ];
 
@@ -161,7 +161,7 @@ export function GabeSalvaneraPage() {
 
               <div className="bg-[#1a1a1a] border border-white/10 p-8">
                 <p className="font-sans text-[10px] font-semibold tracking-[0.3em] uppercase text-accent mb-4">
-                  Coaching Philosophy
+                  Instructional Philosophy
                 </p>
                 <blockquote className="font-serif text-xl text-white/80 leading-relaxed italic">
                   "Range practice builds mechanics. Focused range sessions build golfers. I help you

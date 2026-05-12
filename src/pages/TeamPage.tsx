@@ -24,10 +24,10 @@ export function TeamPage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-20">
         <div className="space-y-6 font-sans text-base leading-relaxed text-foreground/80">
           <p>
-            Our team is comprised of Veterans, elite coaches, and performance experts who understand that discipline is the bridge between goals and accomplishment. Headquartered in Florence, Arizona, we serve a community of golfers who demand more from their gear.
+            Our team is comprised of Veterans, elite Pros, and performance experts who understand that discipline is the bridge between goals and accomplishment. Headquartered in Florence, Arizona, we serve a community of golfers who demand more from their gear.
           </p>
           <p>
-            When you join Team Dominus, you aren't just a customer; you are part of a stable of golfers committed to elite performance. We bring a "no-nonsense" coaching philosophy to everything we build, ensuring that every product in our line has a specific, result-driven purpose.
+            When you join Team Dominus, you aren't just a customer; you are part of a stable of golfers committed to elite performance. We bring a "no-nonsense" Pro-led philosophy to everything we build, ensuring that every product in our line has a specific, result-driven purpose.
           </p>
         </div>
 

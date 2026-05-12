@@ -29,7 +29,7 @@ const packages = [
   {
     title: 'Technical Masterclass',
     duration: '1 Hour Session',
-    description: 'The complete technical experience. Your pro analyzes your swing on the range, coaching in real-time on every repetition and drill.',
+    description: 'The complete technical experience. Your pro analyzes your swing on the range, providing technical instruction in real-time on every repetition and drill.',
   },
   {
     title: 'Swing Diagnostic',
@@ -53,7 +53,7 @@ const benefits = [
   },
   {
     title: '90-Day Blueprint',
-    body: 'Every session ends with a personalized 90-day technical roadmap. You leave with a structured plan you can execute on your own — no full-time coach required.',
+    body: 'Every session ends with a personalized 90-day technical roadmap. You leave with a structured plan you can execute on your own — no full-time Pro required.',
   },
 ];
 
