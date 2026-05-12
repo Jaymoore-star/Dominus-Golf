@@ -69,7 +69,7 @@ export function PracticeWithProsPage() {
             Elite Range Training
           </p>
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-8">
-            Practice with the Pros
+            Practice with a Pro
           </h1>
           <p className="font-sans text-lg text-white/70 max-w-2xl mx-auto leading-relaxed mb-10">
             Professional-grade mentorship from Dominus Golf's national network of pros. Refine your technique,

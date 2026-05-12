@@ -365,7 +365,7 @@ export function ProDirectoryPage() {
             Professional Coaching
           </p>
           <h1 className="font-serif text-4xl sm:text-5xl font-bold text-white leading-tight mb-5">
-            Pro Directory
+            Practice with a Pro
           </h1>
           <p className="font-sans text-base text-white/55 max-w-xl mx-auto leading-relaxed">
             Professional-grade mentorship from Dominus Golf's national network of pros. Find your coach, view their sessions, and book direct.

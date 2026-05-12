@@ -80,7 +80,7 @@ const megaMenuData = {
   pros: {
     columns: [
       {
-        heading: 'On-Course Coaching',
+        heading: 'Professional Coaching',
         links: [
           { label: 'Pro Directory', href: '/pros' },
           { label: 'Gabe Salvanera', href: '/gabe-salvanera' },
@@ -180,7 +180,7 @@ export function Navbar() {
     { label: 'Training Systems', key: 'training' },
     { label: 'Apparel', key: 'apparel' },
     { label: 'Accessories', key: 'accessories' },
-    { label: 'Pros', key: 'pros' },
+    { label: 'Practice with a Pro', key: 'pros' },
     { label: 'Company', key: 'company' },
   ];
 

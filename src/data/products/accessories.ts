@@ -1,0 +1,115 @@
+import { Product } from '../types';
+
+export const accessories: Product[] = [
+  {
+    id: 'feel-right-band',
+    name: 'Feel Right Band',
+    category: 'accessories',
+    subcategory: 'Training Aid',
+    price: 12.99,
+    stripeUrl: 'https://buy.stripe.com/9B63cpc36bpidCbdmQffy05',
+    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b',
+    hoverImage: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBandonarm__c77b5c57.jpg?alt=media&token=9588ee49-ecd7-4c08-ba89-6c5e418216e8',
+    gallery: [
+      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b',
+      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBandonarm__c77b5c57.jpg?alt=media&token=9588ee49-ecd7-4c08-ba89-6c5e418216e8',
+    ],
+    description:
+      'Helps train proper arm structure and connection to build a more repeatable and efficient swing.',
+    features: [
+      'Improves arm structure',
+      'Promotes connection',
+      'Fast feedback',
+      'Easy to use anywhere',
+    ],
+    inStock: true,
+    rating: 4.8,
+    reviewCount: 1324,
+    reviews: [
+      {
+        id: 'rev-b1',
+        author: 'Robert T.',
+        rating: 5,
+        date: '2024-03-10',
+        title: 'Essential for connection',
+        body: 'The band really helps keep the arms connected. Simple but very effective.',
+        verified: true,
+      },
+    ],
+  },
+  {
+    id: 'dominus-towel',
+    name: 'Dominus Golf Towel',
+    category: 'accessories',
+    subcategory: 'Accessories',
+    price: 19.99,
+    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FChatGPTImageMar24202607_40_17PM__db70f8cf.png?alt=media&token=6b657a6c-36d1-4a74-b3d2-d28b5a2de9c9',
+    hoverImage: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FChatGPTImageMar24202607_39_41PM__213ac69a.png?alt=media&token=13055075-bd93-454a-9faf-30bdd6a757b8',
+    gallery: [
+      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FChatGPTImageMar24202607_40_17PM__db70f8cf.png?alt=media&token=6b657a6c-36d1-4a74-b3d2-d28b5a2de9c9',
+      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FChatGPTImageMar24202607_39_41PM__213ac69a.png?alt=media&token=13055075-bd93-454a-9faf-30bdd6a757b8',
+      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FGolfTowel2__dfa91d93.png?alt=media&token=f24c8a91-7d2c-4962-854f-5c6ce02557d2',
+    ],
+    description: 'Premium Dominus Golf towel—clean, durable, built for the bag.',
+    features: ['Durable fabric', 'Bag-ready size', 'Clean branding', 'Premium feel'],
+    inStock: true,
+    reviews: [
+      {
+        id: 'rev-t1',
+        author: 'Kevin B.',
+        rating: 5,
+        date: '2024-03-15',
+        title: 'Premium quality',
+        body: 'Large size, absorbent, and looks great on the bag. The material is much better than my previous towel.',
+        verified: true,
+      },
+    ],
+    stripeUrl: 'https://buy.stripe.com/5kQ6oBffi3WQbu396Affy0a',
+  },
+  {
+    id: 'mastering-the-game-book',
+    name: 'The Ultimate Guide to Mastering the Game (90-Day Training Manual)',
+    category: 'accessories',
+    subcategory: 'Education',
+    price: 24.99,
+    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FScreenshot_20260324_042207_SamsungInternet__2f2a1710.jpg?alt=media&token=4e6db837-c08e-4745-b0c4-9d9e5d607413',
+    gallery: [
+      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FScreenshot_20260324_042207_SamsungInternet__2f2a1710.jpg?alt=media&token=4e6db837-c08e-4745-b0c4-9d9e5d607413',
+    ],
+    badge: 'New',
+    description:
+      'Stop guessing and start grinding with purpose. The Ultimate Guide to Mastering the Game is a structured, day-by-day training curriculum designed to bridge the gap between "having a tool" and "having a game." Built specifically to complement the Tour Pure system, this manual takes you through a professional-grade progression to achieve locked-in mechanics and elite tempo. Whether you prefer a physical copy for the bag or a digital version for your phone, we have you covered.',
+    features: [
+      'The 90-Day Transformation: A step-by-step daily calendar of drills to build permanent muscle memory',
+      '"Feel vs. Real" Breakdown: Learn how to interpret feedback from your Tour Pure trainer to fix your swing path in real-time',
+      'Progress Tracking: Dedicated sections to log your stats and watch your handicap drop',
+      'Complements the Tour Pure training system',
+    ],
+    specs: [
+      'Formats Available: Physical Spiral-bound Hard Copy (stays flat on the range) & Instant Downloadable PDF',
+      'Length: 90-Day Curriculum',
+    ],
+    inStock: true,
+    reviews: [
+      {
+        id: 'rev-g1',
+        author: 'Thomas W.',
+        rating: 5,
+        date: '2024-03-18',
+        title: 'Game changer',
+        body: 'The structured plan in this guide is what I was missing. It gives you a clear path for every range session.',
+        verified: true,
+      },
+      {
+        id: 'rev-g2',
+        author: 'Mark P.',
+        rating: 5,
+        date: '2024-02-25',
+        title: 'Best training curriculum',
+        body: 'I use the PDF version on my phone at the range. The drills are clear and the progress tracking keeps me honest.',
+        verified: true,
+      },
+    ],
+    stripeUrl: 'https://buy.stripe.com/6oU28l7MQ2SMfKj4Qkffy09',
+  },
+];
