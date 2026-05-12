@@ -21,7 +21,7 @@ const pros = [
     href: '/pros',
     city: 'Los Angeles',
     state: 'CA',
-    photo: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Fdownload1__0ceeca07.jpg?alt=media&token=48b3c092-7ae6-4b14-80c2-73f05790f4be',
+    photo: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F1000010452__3764dc88.jpg?alt=media&token=22783388-9f93-4757-9fa9-a5e992497359',
   },
 ];
 
