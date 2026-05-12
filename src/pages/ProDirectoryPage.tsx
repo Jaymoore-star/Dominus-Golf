@@ -66,9 +66,9 @@ const pros: Pro[] = [
     id: 'leroy-bates',
     name: 'Leroy Bates',
     affiliation: 'Golf Junkyz Foundation · First Tee',
-    region: 'Southeast',
-    city: 'Atlanta',
-    state: 'GA',
+    region: 'West',
+    city: 'Los Angeles',
+    state: 'CA',
     bio: 'Expert in Consistency and on-course performance.',
     fullBio:
       'Leroy Bates is a Golf Junkyz Foundation professional and First Tee instructor whose entire coaching career is built around one goal: consistency. He gives everyday golfers a structured, repeatable path to lower scores without needing a full-time coach.',

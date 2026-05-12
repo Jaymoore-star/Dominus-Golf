@@ -19,8 +19,8 @@ const pros = [
     affiliation: 'GOLF JUNKYZ FOUNDATION | FIRST TEE',
     bio: 'Expert in Consistency and on-course performance.',
     href: '/pros',
-    city: 'Atlanta',
-    state: 'GA',
+    city: 'Los Angeles',
+    state: 'CA',
     photo: null,
   },
 ];
