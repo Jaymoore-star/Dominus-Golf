@@ -13,21 +13,23 @@ export function WomensSection() {
           <div className="order-2 lg:order-1 flex justify-center lg:justify-start">
             <div className="w-full max-w-[84vw] sm:max-w-[400px] lg:max-w-[480px] relative">
               {/* Overlay badge */}
-              <div className="absolute top-4 left-4 z-10 bg-black/70 border border-white/15 px-4 py-2 backdrop-blur-sm">
+              <div className="absolute top-4 left-4 z-10 bg-white/90 border border-border px-4 py-2 backdrop-blur-sm">
                 <p className="font-sans text-[10px] font-semibold tracking-[0.3em] uppercase text-accent">
                   First Release Coming Soon
                 </p>
               </div>
-              <img
-                src={WOMENS_IMAGE}
-                alt="Tour Pure Women — weighted swing trainer"
-                className="w-full h-auto object-contain drop-shadow-[0_8px_40px_rgba(0,0,0,0.5)]"
-                style={{
-                  maxHeight: '520px',
-                  filter: 'contrast(1.04) brightness(0.96)',
-                }}
-                loading="lazy"
-              />
+              <div className="bg-white rounded-xl p-8 border border-white/10 shadow-2xl">
+                <img
+                  src={WOMENS_IMAGE}
+                  alt="Tour Pure Women — weighted swing trainer"
+                  className="w-full h-auto object-contain"
+                  style={{
+                    maxHeight: '520px',
+                    filter: 'contrast(1.05) brightness(1.05)',
+                  }}
+                  loading="lazy"
+                />
+              </div>
             </div>
           </div>
 
@@ -60,22 +62,6 @@ export function WomensSection() {
             >
               Reserve Your Tour Pure
             </Link>
-
-            {/* Pre-order messaging */}
-            <div className="mt-5 space-y-2 max-w-[420px]">
-              <p className="font-sans text-sm text-white/50 leading-relaxed">
-                Women's models are currently in production. Reserve now for first release access.
-              </p>
-              <p className="font-sans text-xs font-semibold text-white/80 tracking-wide">
-                Limited first production run. Orders will be fulfilled in the order received.
-              </p>
-              <p className="font-sans text-xs text-white/45">
-                Estimated ship date: <span className="font-semibold text-white/75">4–5 weeks</span>
-              </p>
-              <p className="font-sans text-xs text-white/45 leading-relaxed">
-                You will receive order confirmation and shipping updates once your Tour Pure is ready.
-              </p>
-            </div>
           </div>
 
         </div>

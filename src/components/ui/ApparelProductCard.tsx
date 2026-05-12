@@ -35,11 +35,11 @@ export function ApparelProductCard({ product }: ApparelProductCardProps) {
   return (
     <Link to={`/product/$id`} params={{ id: product.id }} className="block group product-card">
       {/* Image */}
-      <div className="relative aspect-square overflow-hidden bg-muted">
+      <div className="relative aspect-square overflow-hidden bg-white border border-border">
         <img
           src={displayImage}
           alt={`${product.name}${selectedColor ? ` — ${selectedColor}` : ''}`}
-          className="w-full h-full object-contain p-3 transition-all duration-300"
+          className="w-full h-full object-contain p-3 transition-all duration-300 group-hover:scale-105"
         />
 
         {/* Badge */}

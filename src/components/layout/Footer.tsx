@@ -77,38 +77,8 @@ function TwitterXIcon() {
 }
 
 export function Footer() {
-  useEffect(() => {
-    const scriptId = 'kit-07115b1734';
-    if (document.getElementById(scriptId)) return;
-    const script = document.createElement('script');
-    script.id = scriptId;
-    script.src = 'https://dominus-golf.kit.com/07115b1734/index.js';
-    script.async = true;
-    document.body.appendChild(script);
-    return () => {
-      document.getElementById(scriptId)?.remove();
-    };
-  }, []);
-
   return (
     <footer className="bg-primary text-primary-foreground">
-      {/* Email Signup */}
-      <div className="border-b border-white/10">
-        <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-            <div>
-              <h3 className="font-serif font-semibold text-xl text-white mb-1">
-                Sign Up For Dominus Golf News
-              </h3>
-              <p className="font-sans text-xs text-white/60 tracking-wide">
-                Get the latest product launches, tour news, and exclusive offers.
-              </p>
-            </div>
-            <div className="w-full sm:w-auto min-w-[320px]" data-uid="07115b1734" />
-          </div>
-        </div>
-      </div>
-
       {/* Main Links Grid */}
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 lg:gap-12">

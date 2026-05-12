@@ -142,7 +142,7 @@ export function CartDrawer() {
                     to={`/product/$id`}
                     params={{ id: item.product.id }}
                     onClick={closeCart}
-                    className="shrink-0 w-20 h-20 bg-muted overflow-hidden"
+                    className="shrink-0 w-20 h-20 bg-white border border-border overflow-hidden"
                   >
                     <img
                       src={item.product.image}
