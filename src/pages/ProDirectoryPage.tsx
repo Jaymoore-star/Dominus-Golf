@@ -45,7 +45,7 @@ const pros: Pro[] = [
         title: 'Full Swing',
         duration: '8 holes',
         description:
-          'Play 8 holes alongside Gabe. He reads every lie, coaches every decision, and gives you real-time feedback on your course management.',
+          'Pro will be hitting balls on the range. Golfers will have to pay for their golf balls on the range. Play 8 holes alongside Gabe. He reads every lie, coaches every decision, and gives you real-time feedback on your course management.',
       },
       {
         title: 'Putting',
@@ -84,7 +84,7 @@ const pros: Pro[] = [
         title: 'Full Swing',
         duration: '18 holes',
         description:
-          'Play a full round with Leroy and build the habits that lower scores. He identifies pattern breakdowns and fixes them in real-time on the course.',
+          'Pro will be hitting balls on the range. Golfers will have to pay for their golf balls on the range. Play a full round with Leroy and build the habits that lower scores. He identifies pattern breakdowns and fixes them in real-time on the course.',
       },
       {
         title: 'Putting',

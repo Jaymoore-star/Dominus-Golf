@@ -26,7 +26,12 @@ export function HeroSection() {
             >
               Start Training Today
             </Link>
-
+            <Link
+              to="/pros"
+              className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-10 py-4 border border-white/20 text-white hover:border-white hover:bg-white/5 transition-all duration-200"
+            >
+              Practice with a Pro
+            </Link>
           </div>
         </div>
 
