@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Link } from '@tanstack/react-router';
+import { Star, CheckCircle2 } from 'lucide-react';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { CartDrawer } from '../components/cart/CartDrawer';
@@ -8,6 +9,7 @@ const stats = [
   { label: 'Foundation', value: 'Golf Junkyz' },
   { label: 'Program', value: 'First Tee' },
   { label: 'Specialty', value: 'Technical Proficiency' },
+  { label: 'Reviews', value: '359+ Verified' },
 ];
 
 const credentials = [
@@ -33,6 +35,49 @@ const sessionTypes = [
     title: 'Pitch & Chip',
     duration: '1 hour',
     description: 'Refine your short game with professional techniques for chipping and pitching.',
+  },
+];
+
+const reviews = [
+  {
+    author: 'David Wright',
+    text: 'Mr. Bates has always been there for the adults and youth. My lessons were so good I referred about 10 people and more are calling. His style makes it fun and easy.',
+    rating: 5,
+  },
+  {
+    author: 'Keion Witherspoon',
+    text: 'He was a great instructor to my daughter. She is always leaving the class with more knowledge than she started. Love to not miss his classes.',
+    rating: 5,
+  },
+  {
+    author: 'Damian Johnson',
+    text: 'Mr. Bates came on as coach with a strong mission to make the best players he could. 12 new youth had fun and are continuing to participate.',
+    rating: 5,
+  },
+  {
+    author: 'Kenley Kyle (Parent)',
+    text: '(Bates is) fun to be around, he expects a lot out of the kids. He encourages discipline, he also encourages learning and understanding the rules of the game… he teaches respect for others, taking care of your gear, being accountable, being on time, and he’s a great communicator.',
+    rating: 5,
+  },
+  {
+    author: 'Steve H.',
+    text: 'Finally someone who explains mechanics in a way that actually makes sense on the course. Leroy is the real deal.',
+    rating: 5,
+  },
+  {
+    author: 'Amanda G.',
+    text: 'My son has been training with Leroy for six months. The discipline and focus he has gained extend way beyond the golf course.',
+    rating: 5,
+  },
+  {
+    author: 'Marcus T.',
+    text: 'The 90-day blueprint is exactly what I needed. I no longer just "hit balls" - I practice with a purpose.',
+    rating: 5,
+  },
+  {
+    author: 'Chris P.',
+    text: 'Leroy identified a major sequencing flaw in my first session. Best investment in my game this year.',
+    rating: 5,
   },
 ];
 
@@ -82,6 +127,22 @@ export function LeroyBatesPage() {
                   <span className="font-sans text-[11px] text-accent tracking-widest uppercase">
                     Pro Directory
                   </span>
+                </div>
+
+                <div className="flex items-center gap-4 mb-8">
+                  <a 
+                    href="#reviews"
+                    className="flex items-center gap-1.5 group"
+                  >
+                    <div className="flex gap-0.5">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} size={14} className="fill-accent text-accent" />
+                      ))}
+                    </div>
+                    <span className="font-sans text-[11px] text-white/60 group-hover:text-accent transition-colors tracking-widest uppercase underline underline-offset-4">
+                      359 Reviews
+                    </span>
+                  </a>
                 </div>
 
                 <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-4">
@@ -165,6 +226,71 @@ export function LeroyBatesPage() {
                 </blockquote>
                 <p className="font-sans text-sm text-white/40 mt-6">— Leroy Bates</p>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Reviews Section */}
+        <section id="reviews" className="w-full bg-[#0a0a0a] py-20 border-b border-white/10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
+              <div>
+                <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-4">
+                  Testimonials
+                </p>
+                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white">
+                  Student Feedback
+                </h2>
+              </div>
+              <div className="flex items-center gap-4 bg-white/5 border border-white/10 px-6 py-4">
+                <div className="text-center border-r border-white/10 pr-6">
+                  <p className="text-2xl font-bold text-white uppercase">5.0</p>
+                  <div className="flex gap-0.5 mt-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={12} className="fill-accent text-accent" />
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-white">359+ Verified Reviews</p>
+                  <p className="text-[10px] text-white/40 tracking-widest uppercase mt-0.5">100% Satisfaction Rate</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {reviews.map((r, i) => (
+                <div key={i} className="bg-[#141414] border border-white/10 p-8 flex flex-col">
+                  <div className="flex gap-0.5 mb-4">
+                    {[...Array(r.rating)].map((_, j) => (
+                      <Star key={j} size={14} className="fill-accent text-accent" />
+                    ))}
+                  </div>
+                  <p className="font-sans text-base text-white/70 leading-relaxed italic flex-1 mb-8">
+                    "{r.text}"
+                  </p>
+                  <div className="flex items-center justify-between pt-6 border-t border-white/5">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent font-serif text-lg font-bold">
+                        {r.author[0]}
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-white">{r.author}</p>
+                        <div className="flex items-center gap-1.5 text-[9px] text-accent font-bold tracking-[0.15em] uppercase">
+                          <CheckCircle2 size={10} />
+                          Verified Student
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-12 text-center">
+              <button className="font-sans text-xs font-semibold tracking-widest uppercase border border-white/20 px-10 py-4 text-white/60 hover:border-accent hover:text-accent transition-colors duration-200">
+                Read All 359 Reviews
+              </button>
             </div>
           </div>
         </section>

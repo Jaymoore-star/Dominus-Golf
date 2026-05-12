@@ -21,6 +21,8 @@ export type Pro = {
   sessions: { title: string; duration: string; description: string }[];
   acuityUrl: string | null;
   contactEmail: string;
+  rating?: number;
+  reviewCount?: number;
 };
 
 const pros: Pro[] = [
@@ -101,6 +103,8 @@ const pros: Pro[] = [
     acuityUrl:
       'https://app.acuityscheduling.com/schedule.php?owner=39236931&calendarID=14032949&ref=booking_button',
     contactEmail: 'leroy@dominusgolf.com',
+    rating: 5.0,
+    reviewCount: 359,
   },
 ];
 
