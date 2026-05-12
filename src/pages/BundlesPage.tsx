@@ -13,7 +13,7 @@ type BundleTier = {
   price: number;
   description: string;
   badge?: string;
-  items: string[];
+  features: string[];
   image: string;
   stripeUrl?: string;
 };
@@ -193,7 +193,7 @@ export function BundlesPage() {
                   <div className="p-8 pt-6 flex-1 flex flex-col">
                     <p className="text-[10px] font-bold text-muted-foreground tracking-widest uppercase mb-4">What's Included:</p>
                     <ul className="space-y-3 mb-8 flex-1">
-                      {bundle.items.map((item, idx) => (
+                      {bundle.features.map((item, idx) => (
                         <li key={idx} className="flex items-start gap-3 text-sm">
                           <Check size={16} className="text-accent shrink-0 mt-0.5" />
                           <span className="text-primary/80">{item}</span>
