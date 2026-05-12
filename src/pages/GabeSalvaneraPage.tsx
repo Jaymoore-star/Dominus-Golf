@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link } from '@tanstack/react-router';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
@@ -20,10 +21,10 @@ const credentials = [
 
 const sessionTypes = [
   {
-    title: 'On-Course Strategy Session',
-    duration: '18 holes',
+    title: 'Practice with Gabe — Full Swing Session',
+    duration: '8 holes',
     description:
-      'Play a full round alongside Gabe. He reads every lie, coaches every decision, and gives you real-time feedback on your course management.',
+      'Play 8 holes alongside Gabe. He reads every lie, coaches every decision, and gives you real-time feedback on your course management.',
   },
   {
     title: 'Tournament Prep Round',
@@ -40,6 +41,27 @@ const sessionTypes = [
 ];
 
 export function GabeSalvaneraPage() {
+  useEffect(() => {
+    // Inject Acuity stylesheet
+    const styleId = 'acuity-button-styles';
+    if (!document.getElementById(styleId)) {
+      const link = document.createElement('link');
+      link.id = styleId;
+      link.rel = 'stylesheet';
+      link.href = 'https://embed.acuityscheduling.com/embed/button/39236931.css';
+      document.head.appendChild(link);
+    }
+    // Inject Acuity script
+    const scriptId = 'acuity-button-script';
+    if (!document.getElementById(scriptId)) {
+      const script = document.createElement('script');
+      script.id = scriptId;
+      script.src = 'https://embed.acuityscheduling.com/embed/button/39236931.js';
+      script.async = true;
+      document.body.appendChild(script);
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
@@ -196,10 +218,12 @@ export function GabeSalvaneraPage() {
                 on-course session.
               </p>
               <a
-                href="mailto:gabe@dominusgolf.com"
+                href="https://app.acuityscheduling.com/schedule.php?owner=39236931&calendarID=14047266&ref=booking_button"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-12 py-4 bg-accent text-white hover:bg-accent/90 transition-colors duration-200"
               >
-                Contact Gabe
+                Schedule Appointment
               </a>
             </div>
           </div>
