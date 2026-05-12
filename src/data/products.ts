@@ -228,7 +228,7 @@ export const products: Product[] = [
     name: "Icon Tee (Men's)",
     category: 'apparel',
     subcategory: "Men's Apparel",
-    price: 14.99,
+    price: 19.99,
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FGemini_Generated_Image_a1fmgba1fmgba1fm__03713416.png?alt=media&token=afc5cc88-76e1-4650-aa6c-bf8b715c5047',
     hoverImage: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FGemini_Generated_Image_j0e7ykj0e7ykj0e7__7f763146.png?alt=media&token=0f58dc3d-d40b-4a86-9e50-1ab43d2506ec',
     colorVariants: {
@@ -262,7 +262,7 @@ export const products: Product[] = [
     name: "Wordmark Tee (Men's)",
     category: 'apparel',
     subcategory: "Men's Apparel",
-    price: 14.99,
+    price: 19.99,
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Fninjapod_11843683_f_4980_00_f__c9a61eee.jpg?alt=media&token=711e7d00-0de7-4691-9561-083071fddf2a',
     colorVariants: {
       Black: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Fninjapod_11843683_f_4980_00_f__c9a61eee.jpg?alt=media&token=711e7d00-0de7-4691-9561-083071fddf2a',
@@ -294,7 +294,7 @@ export const products: Product[] = [
     name: "Performance Tee (Men's)",
     category: 'apparel',
     subcategory: "Men's Apparel",
-    price: 14.99,
+    price: 19.99,
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-18__5cee2081.jpg?alt=media&token=89842c6e-8985-4106-a87a-c4f1429da757',
     colorVariants: {
       White: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-18__5cee2081.jpg?alt=media&token=89842c6e-8985-4106-a87a-c4f1429da757',
@@ -329,7 +329,7 @@ export const products: Product[] = [
     name: "Icon Tee (Women's)",
     category: 'apparel',
     subcategory: "Women's Apparel",
-    price: 14.99,
+    price: 19.99,
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-11__fc5a40f7.jpg?alt=media&token=87722e6d-11e3-4e1b-a6b4-7e84ebce8990',
     hoverImage: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-16__4cc41a28.jpg?alt=media&token=ba681f7f-3fbe-49cf-8d7a-d8b6df139f44',
     colorVariants: {
@@ -365,7 +365,7 @@ export const products: Product[] = [
     name: "Performance Tee (Women's)",
     category: 'apparel',
     subcategory: "Women's Apparel",
-    price: 14.99,
+    price: 19.99,
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Fa2d1da0a-6213-4a84-8dca-5122fd81823a__3ed0e102.png?alt=media&token=477bc876-34dd-41b2-b344-778269d56bd4',
     colorVariants: {
       Black: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Fa2d1da0a-6213-4a84-8dca-5122fd81823a__3ed0e102.png?alt=media&token=477bc876-34dd-41b2-b344-778269d56bd4',

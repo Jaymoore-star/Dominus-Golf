@@ -16,8 +16,9 @@ const megaMenuData = {
   training: {
     columns: [
       {
-        heading: 'Training Systems',
+        heading: 'Bundles & Systems',
         links: [
+          { label: 'Bundles (Save Now)', href: '/bundles' },
           { label: 'Tour Pure Men', href: '/product/tour-pure-men' },
           { label: 'Tour Pure Women', href: '/product/tour-pure-women' },
           { label: 'Tour Pure Jr', href: '/product/tour-pure-jr' },
@@ -175,6 +176,7 @@ export function Navbar() {
   }, [mobileOpen]);
 
   const navLinks: { label: string; key: MegaMenuKey; href?: string }[] = [
+    { label: 'Bundles', key: null, href: '/bundles' },
     { label: 'Training Systems', key: 'training' },
     { label: 'Apparel', key: 'apparel' },
     { label: 'Accessories', key: 'accessories' },

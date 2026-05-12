@@ -26,10 +26,15 @@ const pros = [
 ];
 
 function ProCard({ pro }: { pro: typeof pros[0] }) {
+  const profileTo = `/${pro.id}`;
+
   return (
     <div className="bg-[#141414] border border-white/10 flex flex-col overflow-hidden group hover:border-accent/50 transition-colors duration-300">
       {/* Photo */}
-      <div className="relative h-[260px] bg-[#1e1e1e] overflow-hidden flex items-center justify-center">
+      <Link 
+        to={profileTo}
+        className="relative h-[260px] bg-[#1e1e1e] overflow-hidden flex items-center justify-center cursor-pointer"
+      >
         {pro.photo ? (
           <img
             src={pro.photo}
@@ -47,7 +52,7 @@ function ProCard({ pro }: { pro: typeof pros[0] }) {
         )}
         {/* Accent bar on hover */}
         <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-      </div>
+      </Link>
 
       {/* Content */}
       <div className="p-6 flex flex-col flex-1">
@@ -56,12 +61,12 @@ function ProCard({ pro }: { pro: typeof pros[0] }) {
           {pro.affiliation}
         </p>
         <p className="font-sans text-sm text-white/55 leading-relaxed flex-1 mb-6">{pro.bio}</p>
-        <a
-          href="/pros"
+        <Link
+          to={profileTo}
           className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-6 py-3 bg-accent text-white hover:bg-accent/90 transition-colors duration-200 text-center"
         >
           View Profile &amp; Book
-        </a>
+        </Link>
       </div>
     </div>
   );

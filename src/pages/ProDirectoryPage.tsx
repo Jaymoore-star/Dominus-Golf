@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { X, Search, MapPin, ExternalLink } from 'lucide-react';
+import { X, Search, MapPin, ExternalLink, User } from 'lucide-react';
+import { Link } from '@tanstack/react-router';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { CartDrawer } from '../components/cart/CartDrawer';
@@ -249,6 +250,13 @@ function ProModal({ pro, onClose }: { pro: Pro; onClose: () => void }) {
               Contact {pro.name.split(' ')[0]}
             </a>
           )}
+          <Link
+            to={`/${pro.id}`}
+            className="flex-1 inline-flex items-center justify-center gap-2 font-sans font-semibold text-xs tracking-widest uppercase px-6 py-3.5 border border-white/20 text-white hover:border-accent hover:text-accent transition-colors duration-200"
+          >
+            Full Profile
+            <User size={12} />
+          </Link>
           <button
             onClick={onClose}
             className="flex-1 sm:flex-none font-sans font-semibold text-xs tracking-widest uppercase px-6 py-3.5 border border-white/20 text-white/60 hover:border-white hover:text-white transition-colors duration-200"
@@ -264,13 +272,15 @@ function ProModal({ pro, onClose }: { pro: Pro; onClose: () => void }) {
 // ─── Pro Card ─────────────────────────────────────────────────────────────────
 
 function ProCard({ pro, onClick }: { pro: Pro; onClick: () => void }) {
+  const profileTo = `/${pro.id}`;
+
   return (
-    <button
-      onClick={onClick}
-      className="w-full text-left bg-[#141414] border border-white/10 flex flex-col overflow-hidden group hover:border-accent/50 transition-colors duration-300 focus:outline-none focus:border-accent"
-    >
+    <div className="w-full bg-[#141414] border border-white/10 flex flex-col overflow-hidden group hover:border-accent/50 transition-colors duration-300">
       {/* Photo */}
-      <div className="relative h-[220px] bg-[#1e1e1e] overflow-hidden flex items-center justify-center">
+      <Link
+        to={profileTo}
+        className="relative h-[220px] bg-[#1e1e1e] overflow-hidden flex items-center justify-center cursor-pointer"
+      >
         {pro.photo ? (
           <img
             src={pro.photo}
@@ -291,7 +301,7 @@ function ProCard({ pro, onClick }: { pro: Pro; onClick: () => void }) {
         </span>
         {/* Hover bar */}
         <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-      </div>
+      </Link>
 
       {/* Content */}
       <div className="p-6 flex flex-col flex-1">
@@ -306,11 +316,22 @@ function ProCard({ pro, onClick }: { pro: Pro; onClick: () => void }) {
           </p>
         )}
         <p className="font-sans text-sm text-white/55 leading-relaxed flex-1 mb-5">{pro.bio}</p>
-        <span className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-5 py-2.5 bg-accent text-white group-hover:bg-accent/90 transition-colors duration-200 text-center">
-          View Profile &amp; Book
-        </span>
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            onClick={onClick}
+            className="font-sans font-semibold text-[10px] tracking-widest uppercase py-2.5 border border-white/20 text-white/60 hover:border-white hover:text-white transition-colors duration-200"
+          >
+            Quick View
+          </button>
+          <Link
+            to={profileTo}
+            className="font-sans font-semibold text-[10px] tracking-widest uppercase py-2.5 bg-accent text-white group-hover:bg-accent/90 transition-colors duration-200 text-center"
+          >
+            View Profile
+          </Link>
+        </div>
       </div>
-    </button>
+    </div>
   );
 }
 

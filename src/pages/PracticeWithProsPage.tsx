@@ -180,19 +180,21 @@ export function PracticeWithProsPage() {
                     <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
                   </svg>
                 </div>
-                <h3 className="font-serif text-xl font-bold text-white mb-1 group-hover:text-accent/90 transition-colors">
-                  {pro.title}
-                </h3>
+                <Link to={pro.href}>
+                  <h3 className="font-serif text-xl font-bold text-white mb-1 group-hover:text-accent/90 transition-colors">
+                    {pro.title}
+                  </h3>
+                </Link>
                 <p className="font-sans text-[10px] font-semibold tracking-widest uppercase text-accent mb-4">
                   {pro.role}
                 </p>
                 <p className="font-sans text-sm text-white/50 leading-relaxed mb-6">{pro.bio}</p>
-                <a
-                  href={pro.href}
-                  className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-6 py-3 bg-accent text-white hover:bg-accent/90 transition-colors duration-200"
+                <Link
+                  to={pro.href}
+                  className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-6 py-3 bg-accent text-white hover:bg-accent/90 transition-colors duration-200 text-center"
                 >
                   View Profile &amp; Book
-                </a>
+                </Link>
               </div>
             ))}
           </div>
