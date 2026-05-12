@@ -176,7 +176,6 @@ export function Navbar() {
   }, [mobileOpen]);
 
   const navLinks: { label: string; key: MegaMenuKey; href?: string }[] = [
-    { label: 'Bundles', key: null, href: '/bundles' },
     { label: 'Training Systems', key: 'training' },
     { label: 'Apparel', key: 'apparel' },
     { label: 'Accessories', key: 'accessories' },

@@ -182,11 +182,11 @@ export function BundlesPage() {
                     <p className="text-muted-foreground text-sm leading-relaxed mb-6">{bundle.description}</p>
                   </div>
 
-                  <div className="px-8 aspect-square overflow-hidden bg-secondary/50 flex items-center justify-center p-4">
+                  <div className="px-8 aspect-square overflow-hidden bg-white flex items-center justify-center p-4">
                     <img 
                       src={bundle.image} 
                       alt={bundle.name} 
-                      className="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-700"
+                      className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700"
                     />
                   </div>
 

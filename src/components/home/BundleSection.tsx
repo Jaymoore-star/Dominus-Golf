@@ -114,7 +114,7 @@ function BundleCard({ bundle }: { bundle: Bundle }) {
             <div key={item.label} className="flex items-center gap-3">
               {/* Item image */}
               <div className="flex flex-col items-center gap-1.5">
-                <div className="w-16 h-16 bg-[#1a1a1a] border border-white/8 flex items-center justify-center overflow-hidden">
+                <div className="w-16 h-16 bg-white border border-white/8 flex items-center justify-center overflow-hidden">
                   <img
                     src={item.image}
                     alt={item.label}

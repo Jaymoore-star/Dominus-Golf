@@ -20,7 +20,7 @@ export function BundleProductCard({ product }: BundleProductCardProps) {
   return (
     <Link to={`/product/$id`} params={{ id: product.id }} className="block group product-card">
       {/* Main product image */}
-      <div className="relative aspect-square overflow-hidden bg-muted">
+      <div className="relative aspect-square overflow-hidden bg-white border border-border">
         <img
           src={product.image}
           alt={product.name}

@@ -23,7 +23,7 @@ export function ProductCard({ product, aspectRatio = 'square' }: ProductCardProp
 
   return (
     <Link to={`/product/$id`} params={{ id: product.id }} className="block group product-card">
-      <div className={`relative ${aspectClass} overflow-hidden bg-muted`}>
+      <div className={`relative ${aspectClass} overflow-hidden bg-white border border-border`}>
         <img
           src={product.image}
           alt={product.name}
