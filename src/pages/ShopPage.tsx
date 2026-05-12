@@ -3,7 +3,6 @@ import { useParams, Link } from '@tanstack/react-router';
 import { SlidersHorizontal, ChevronDown, X } from 'lucide-react';
 import { products, type Category } from '../data/products';
 import { ProductCard } from '../components/ui/ProductCard';
-import { BundleProductCard } from '../components/ui/BundleProductCard';
 import { ApparelProductCard } from '../components/ui/ApparelProductCard';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
@@ -13,7 +12,6 @@ type SortKey = 'featured' | 'price-asc' | 'price-desc' | 'newest';
 
 const categoryLabels: Record<string, string> = {
   'training-system': 'Training Systems',
-  'training-bundles': 'Training Bundles',
   'apparel': 'Dominus Golf Apparel',
   'accessories': 'Accessories',
   'mens-gear': "Men's Gear",
@@ -22,7 +20,6 @@ const categoryLabels: Record<string, string> = {
 
 const categoryHeroes: Record<string, string> = {
   'training-system': 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FPhotoroom-20251125_1425462241__e480e1c6.png?alt=media&token=7c96a611-0b70-415f-a7f7-8bebe5a974a2',
-  'training-bundles': 'https://images.unsplash.com/photo-1473174038344-40656aad79bf?w=1400&q=80',
   'apparel': 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-11__fc5a40f7.jpg?alt=media&token=87722e6d-11e3-4e1b-a6b4-7e84ebce8990',
   'accessories': 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FScreenshot_20260324_042207_SamsungInternet__2f2a1710.jpg?alt=media&token=4e6db837-c08e-4745-b0c4-9d9e5d607413',
   'mens-gear': 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=1400&q=80',
@@ -296,9 +293,7 @@ export function ShopPage() {
             ) : (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-5 gap-y-8">
                 {filtered.map((product) =>
-                  category === 'training-bundles' ? (
-                    <BundleProductCard key={product.id} product={product} />
-                  ) : category === 'apparel' ? (
+                  category === 'apparel' ? (
                     <ApparelProductCard key={product.id} product={product} />
                   ) : (
                     <ProductCard key={product.id} product={product} />

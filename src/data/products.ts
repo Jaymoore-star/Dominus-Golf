@@ -1,6 +1,5 @@
 export type Category =
   | 'training-system'
-  | 'training-bundles'
   | 'apparel'
   | 'accessories';
 
@@ -47,12 +46,6 @@ export const categoryCards: CategoryCard[] = [
     label: 'Training Systems',
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FPhotoroom-20251125_1425462241__e480e1c6.png?alt=media&token=7c96a611-0b70-415f-a7f7-8bebe5a974a2',
     href: '/shop/training-system',
-  },
-  {
-    id: 'training-bundles',
-    label: 'Training Bundles',
-    image: 'https://images.unsplash.com/photo-1473174038344-40656aad79bf?w=600&q=80',
-    href: '/shop/training-bundles',
   },
   {
     id: 'accessories',
@@ -156,172 +149,6 @@ export const products: Product[] = [
     inStock: false,
     rating: 4.7,
     reviewCount: 966,
-  },
-
-  // Training Bundles — images pending new assets
-  {
-    id: 'starter-system-men',
-    name: 'Starter System (Men)',
-    category: 'training-bundles',
-    subcategory: 'Starter',
-    price: 67.98,
-    compareAtPrice: 72.98,
-    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FPhotoroom-20251125_1425462241__e480e1c6.png?alt=media&token=7c96a611-0b70-415f-a7f7-8bebe5a974a2',
-    gallery: [
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FPhotoroom-20251125_1425462241__e480e1c6.png?alt=media&token=7c96a611-0b70-415f-a7f7-8bebe5a974a2',
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b',
-    ],
-    description:
-      'Tour Pure + Feel Right Band — built to clean up mechanics and create consistency from day one.',
-    features: [
-      'Tour Pure trainer included',
-      'Feel Right Band included',
-      'Builds fundamentals fast',
-      'Great entry-level system',
-    ],
-    inStock: true,
-    includedImages: [
-      { label: 'Feel Right Band', image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b' },
-    ],
-  },
-  {
-    id: 'starter-system-women',
-    name: 'Starter System (Women)',
-    category: 'training-bundles',
-    subcategory: 'Starter',
-    price: 67.98,
-    compareAtPrice: 72.98,
-    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FTourPureTrainerW2__165b6582.png?alt=media&token=9e37467f-20f0-4ad2-bde8-1af3d34acfd2',
-    gallery: [
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FTourPureTrainerW2__165b6582.png?alt=media&token=9e37467f-20f0-4ad2-bde8-1af3d34acfd2',
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b',
-    ],
-    description:
-      'Tour Pure + Feel Right Band — built to clean up mechanics and create consistency from day one.',
-    features: [
-      'Tour Pure trainer included',
-      'Feel Right Band included',
-      'Builds fundamentals fast',
-      'Great entry-level system',
-    ],
-    inStock: true,
-    includedImages: [
-      { label: 'Feel Right Band', image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b' },
-    ],
-  },
-  {
-    id: 'core-training-system-men',
-    name: 'Core Training System (Men)',
-    category: 'training-bundles',
-    subcategory: 'Core',
-    price: 87.97,
-    compareAtPrice: 92.97,
-    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FPhotoroom-20251125_1425462241__e480e1c6.png?alt=media&token=7c96a611-0b70-415f-a7f7-8bebe5a974a2',
-    gallery: [
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FPhotoroom-20251125_1425462241__e480e1c6.png?alt=media&token=7c96a611-0b70-415f-a7f7-8bebe5a974a2',
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b',
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FScreenshot_20260324_042207_SamsungInternet__2f2a1710.jpg?alt=media&token=4e6db837-c08e-4745-b0c4-9d9e5d607413',
-    ],
-    description:
-      'Tour Pure + Feel Right Band + 90-Day Training Manual — full swing development in one system.',
-    features: [
-      'Tour Pure trainer included',
-      'Feel Right Band included',
-      '90-day training manual included',
-      'Full swing development',
-    ],
-    inStock: true,
-    includedImages: [
-      { label: 'Feel Right Band', image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b' },
-      { label: '90-Day Manual', image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FScreenshot_20260324_042207_SamsungInternet__2f2a1710.jpg?alt=media&token=4e6db837-c08e-4745-b0c4-9d9e5d607413' },
-    ],
-  },
-  {
-    id: 'core-training-system-women',
-    name: 'Core Training System (Women)',
-    category: 'training-bundles',
-    subcategory: 'Core',
-    price: 87.97,
-    compareAtPrice: 92.97,
-    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FTourPureTrainerW2__165b6582.png?alt=media&token=9e37467f-20f0-4ad2-bde8-1af3d34acfd2',
-    gallery: [
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FTourPureTrainerW2__165b6582.png?alt=media&token=9e37467f-20f0-4ad2-bde8-1af3d34acfd2',
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b',
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FScreenshot_20260324_042207_SamsungInternet__2f2a1710.jpg?alt=media&token=4e6db837-c08e-4745-b0c4-9d9e5d607413',
-    ],
-    description:
-      'Tour Pure + Feel Right Band + 90-Day Training Manual — full swing development in one system.',
-    features: [
-      'Tour Pure trainer included',
-      'Feel Right Band included',
-      '90-day training manual included',
-      'Full swing development',
-    ],
-    inStock: true,
-    includedImages: [
-      { label: 'Feel Right Band', image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b' },
-      { label: '90-Day Manual', image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FScreenshot_20260324_042207_SamsungInternet__2f2a1710.jpg?alt=media&token=4e6db837-c08e-4745-b0c4-9d9e5d607413' },
-    ],
-  },
-  {
-    id: 'pro-performance-system',
-    name: 'Pro Performance System',
-    category: 'training-bundles',
-    subcategory: 'Pro',
-    price: 109.99,
-    compareAtPrice: 124.98,
-    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FPhotoroom-20251125_1425462241__e480e1c6.png?alt=media&token=7c96a611-0b70-415f-a7f7-8bebe5a974a2',
-    gallery: [
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FPhotoroom-20251125_1425462241__e480e1c6.png?alt=media&token=7c96a611-0b70-415f-a7f7-8bebe5a974a2',
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b',
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FScreenshot_20260324_042207_SamsungInternet__2f2a1710.jpg?alt=media&token=4e6db837-c08e-4745-b0c4-9d9e5d607413',
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FChatGPTImageMar24202607_40_17PM__db70f8cf.png?alt=media&token=6b657a6c-36d1-4a74-b3d2-d28b5a2de9c9',
-    ],
-    description:
-      'The complete system: Tour Pure + Feel Right Band + 90-Day Manual + Dominus Golf Towel.',
-    features: [
-      'Tour Pure trainer included',
-      'Feel Right Band included',
-      '90-day training manual included',
-      'Dominus Golf towel included',
-      'Built for consistency and performance',
-    ],
-    inStock: true,
-    includedImages: [
-      { label: 'Feel Right Band', image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b' },
-      { label: '90-Day Manual', image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FScreenshot_20260324_042207_SamsungInternet__2f2a1710.jpg?alt=media&token=4e6db837-c08e-4745-b0c4-9d9e5d607413' },
-      { label: 'Towel', image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FChatGPTImageMar24202607_40_17PM__db70f8cf.png?alt=media&token=6b657a6c-36d1-4a74-b3d2-d28b5a2de9c9' },
-    ],
-  },
-  {
-    id: 'pro-performance-system-women',
-    name: 'Pro Performance System (Women)',
-    category: 'training-bundles',
-    subcategory: 'Pro',
-    price: 109.99,
-    compareAtPrice: 124.98,
-    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FTourPureTrainerW2__165b6582.png?alt=media&token=9e37467f-20f0-4ad2-bde8-1af3d34acfd2',
-    gallery: [
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FTourPureTrainerW2__165b6582.png?alt=media&token=9e37467f-20f0-4ad2-bde8-1af3d34acfd2',
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b',
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FScreenshot_20260324_042207_SamsungInternet__2f2a1710.jpg?alt=media&token=4e6db837-c08e-4745-b0c4-9d9e5d607413',
-      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FChatGPTImageMar24202607_40_17PM__db70f8cf.png?alt=media&token=6b657a6c-36d1-4a74-b3d2-d28b5a2de9c9',
-    ],
-    description:
-      'The complete system: Tour Pure + Feel Right Band + 90-Day Manual + Dominus Golf Towel.',
-    features: [
-      'Tour Pure trainer included',
-      'Feel Right Band included',
-      '90-day training manual included',
-      'Dominus Golf towel included',
-      'Built for consistency and performance',
-    ],
-    inStock: true,
-    includedImages: [
-      { label: 'Feel Right Band', image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b' },
-      { label: '90-Day Manual', image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FScreenshot_20260324_042207_SamsungInternet__2f2a1710.jpg?alt=media&token=4e6db837-c08e-4745-b0c4-9d9e5d607413' },
-      { label: 'Towel', image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FChatGPTImageMar24202607_40_17PM__db70f8cf.png?alt=media&token=6b657a6c-36d1-4a74-b3d2-d28b5a2de9c9' },
-    ],
   },
 
   // Accessories (Feel Right Band + Towel + Book)

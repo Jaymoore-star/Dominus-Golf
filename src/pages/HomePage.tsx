@@ -3,8 +3,6 @@ import { HeroSection } from '../components/home/HeroSection';
 import { CredibilitySection } from '../components/home/CredibilitySection';
 import { HowItWorksSection } from '../components/home/HowItWorksSection';
 import { ProductPositioningSection } from '../components/home/ProductPositioningSection';
-import { BundleSection } from '../components/home/BundleSection';
-import { InHandSection } from '../components/home/InHandSection';
 import { MidCTASection } from '../components/home/MidCTASection';
 import { WomensSection } from '../components/home/WomensSection';
 import { ProDirectorySection } from '../components/home/ProDirectorySection';
@@ -26,10 +24,6 @@ export function HomePage() {
         <HowItWorksSection />
         {/* Section 4 — Product Positioning */}
         <ProductPositioningSection />
-        {/* Section 5 — Bundle System */}
-        <BundleSection />
-        {/* Section 6 — In-Hand Image */}
-        <InHandSection />
         {/* Section 7 — Mid CTA */}
         <MidCTASection />
         {/* Section 8 — Women's */}

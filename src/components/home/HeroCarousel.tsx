@@ -27,8 +27,8 @@ const slides = [
     label: 'Putting',
     title: 'Sink Every\nPutt',
     subtitle: 'Train your putting stroke with proven Dominus systems',
-    cta: 'Shop Bundles',
-    href: '/shop/training-bundles',
+    cta: 'Shop Now',
+    href: '/shop/training-system',
   },
   {
     id: 3,

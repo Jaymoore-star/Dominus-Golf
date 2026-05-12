@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { useCart } from '../../store/cartStore';
 
-type MegaMenuKey = 'training' | 'bundles' | 'apparel' | 'accessories' | 'company' | null;
+type MegaMenuKey = 'training' | 'apparel' | 'accessories' | 'company' | null;
 
 const megaMenuData = {
   training: {
@@ -31,34 +31,6 @@ const megaMenuData = {
     ],
     image: 'https://images.unsplash.com/photo-1627934147169-854be8cb7e0c?w=600&q=80',
     imageCaption: 'Tour Pure — Build Your Best Swing',
-  },
-  bundles: {
-    columns: [
-      {
-        heading: 'Starter',
-        links: [
-          { label: 'Starter System (Men)', href: '/product/starter-system-men' },
-          { label: 'Starter System (Women)', href: '/product/starter-system-women' },
-        ],
-      },
-      {
-        heading: 'Core',
-        links: [
-          { label: 'Core System (Men)', href: '/product/core-training-system-men' },
-          { label: 'Core System (Women)', href: '/product/core-training-system-women' },
-        ],
-      },
-      {
-        heading: 'Pro',
-        links: [
-          { label: 'Pro Performance System (Men)', href: '/product/pro-performance-system' },
-          { label: 'Pro Performance System (Women)', href: '/product/pro-performance-system-women' },
-          { label: 'All Bundles', href: '/shop/training-bundles' },
-        ],
-      },
-    ],
-    image: 'https://images.unsplash.com/photo-1473174038344-40656aad79bf?w=600&q=80',
-    imageCaption: 'Training Bundles — Complete Systems',
   },
   apparel: {
     columns: [
@@ -184,7 +156,6 @@ export function Navbar() {
 
   const navLinks: { label: string; key: MegaMenuKey; href?: string }[] = [
     { label: 'Training Systems', key: 'training' },
-    { label: 'Bundles', key: 'bundles' },
     { label: 'Apparel', key: 'apparel' },
     { label: 'Accessories', key: 'accessories' },
     { label: 'Company', key: 'company' },
