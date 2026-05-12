@@ -19,14 +19,18 @@ const footerLinks = {
     { label: 'The Ultimate Guide (Book)', href: '/product/mastering-the-game-book' },
     { label: 'Shop All Accessories', href: '/shop/accessories' },
   ],
+  'Coaching': [
+    { label: 'Pro Directory', href: '/pros' },
+    { label: 'Gabe Salvanera', href: '/gabe-salvanera' },
+    { label: 'Leroy Bates', href: '/leroy-bates' },
+    { label: 'Beginners Guide', href: '/beginners' },
+  ],
   Company: [
     { label: 'About Dominus Golf', href: '/about' },
     { label: 'Team Dominus Golf', href: '/about/team' },
     { label: 'Contact Us', href: '/about/contact' },
     { label: 'Careers', href: '/about/careers' },
     { label: 'Sustainability', href: '/about/sustainability' },
-    { label: 'Pro Directory', href: '/pros' },
-    { label: 'Beginners Guide', href: '/beginners' },
   ],
   Legal: [
     { label: 'Safety Disclaimer', href: '/safety-disclaimer' },

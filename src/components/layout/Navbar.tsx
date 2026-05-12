@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { useCart } from '../../store/cartStore';
 
-type MegaMenuKey = 'training' | 'apparel' | 'accessories' | 'company' | null;
+type MegaMenuKey = 'training' | 'apparel' | 'accessories' | 'pros' | 'company' | null;
 
 const megaMenuData = {
   training: {
@@ -75,6 +75,26 @@ const megaMenuData = {
     ],
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FScreenshot_20260324_042207_SamsungInternet__2f2a1710.jpg?alt=media&token=4e6db837-c08e-4745-b0c4-9d9e5d607413',
     imageCaption: 'Dominus Golf Accessories',
+  },
+  pros: {
+    columns: [
+      {
+        heading: 'On-Course Coaching',
+        links: [
+          { label: 'Pro Directory', href: '/pros' },
+          { label: 'Gabe Salvanera', href: '/gabe-salvanera' },
+          { label: 'Leroy Bates', href: '/leroy-bates' },
+        ],
+      },
+      {
+        heading: 'Guides',
+        links: [
+          { label: 'Beginners Guide', href: '/beginners' },
+        ],
+      },
+    ],
+    image: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=600&q=80',
+    imageCaption: 'Expert Coaching. Professional Results.',
   },
   company: {
     columns: [
@@ -158,6 +178,7 @@ export function Navbar() {
     { label: 'Training Systems', key: 'training' },
     { label: 'Apparel', key: 'apparel' },
     { label: 'Accessories', key: 'accessories' },
+    { label: 'Pros', key: 'pros' },
     { label: 'Company', key: 'company' },
   ];
 
