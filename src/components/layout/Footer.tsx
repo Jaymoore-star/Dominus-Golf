@@ -34,7 +34,7 @@ const footerLinks = {
     { label: 'Contact Us', href: '/about/contact' },
     { label: 'Careers', href: '/about/careers' },
     { label: 'Sustainability', href: '/about/sustainability' },
-    { label: 'Practice With the Pros', href: '/practice-with-pros' },
+    { label: 'Pro Directory', href: '/pros' },
     { label: 'Beginners Guide', href: '/beginners' },
   ],
   Legal: [

@@ -57,7 +57,7 @@ function ProCard({ pro }: { pro: typeof pros[0] }) {
         </p>
         <p className="font-sans text-sm text-white/55 leading-relaxed flex-1 mb-6">{pro.bio}</p>
         <a
-          href={pro.href}
+          href="/pros"
           className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-6 py-3 bg-accent text-white hover:bg-accent/90 transition-colors duration-200 text-center"
         >
           View Profile &amp; Book
