@@ -39,26 +39,23 @@ const pros: Pro[] = [
       'Grass League professional',
       'Certified on-course performance coach',
       'Specialist in pre-round strategy and course management',
-      '90-Day On-Course Blueprint instructor',
     ],
     sessions: [
       {
-        title: 'Practice with Gabe — Full Swing Session',
+        title: 'Full Swing',
         duration: '8 holes',
         description:
           'Play 8 holes alongside Gabe. He reads every lie, coaches every decision, and gives you real-time feedback on your course management.',
       },
       {
-        title: 'Tournament Prep Round',
-        duration: 'Half day',
-        description:
-          'Simulate tournament conditions — game plans, mental frameworks, pressure management, and shot selection under realistic stress.',
+        title: 'Putting',
+        duration: '1 hour',
+        description: 'Elite putting instruction focusing on path, tempo, and green reading.',
       },
       {
-        title: '90-Day Blueprint Consultation',
-        duration: '2 hours',
-        description:
-          'Walk away with a personalised self-improvement roadmap. Gabe maps your weaknesses and builds a structured practice plan.',
+        title: 'Pitch & Chip',
+        duration: '1 hour',
+        description: 'Refine your short game with professional techniques for chipping and pitching.',
       },
     ],
     acuityUrl:
@@ -72,35 +69,32 @@ const pros: Pro[] = [
     region: 'Southeast',
     city: 'Atlanta',
     state: 'GA',
-    bio: 'Expert in Consistency and the 90-Day On-Course Blueprint.',
+    bio: 'Expert in Consistency and on-course performance.',
     fullBio:
-      'Leroy Bates is a Golf Junkyz Foundation professional and First Tee instructor whose entire coaching career is built around one goal: consistency. His 90-Day On-Course Blueprint gives everyday golfers a structured, repeatable path to lower scores without needing a full-time coach.',
+      'Leroy Bates is a Golf Junkyz Foundation professional and First Tee instructor whose entire coaching career is built around one goal: consistency. He gives everyday golfers a structured, repeatable path to lower scores without needing a full-time coach.',
     photo: null,
     credentials: [
       'Golf Junkyz Foundation certified professional',
       'First Tee instructor and youth development coach',
       'Specialist in swing consistency and repeatable mechanics',
-      '90-Day On-Course Blueprint architect',
       'Dedicated to growing the game at every level',
     ],
     sessions: [
       {
-        title: 'Consistency Coaching Round',
+        title: 'Full Swing',
         duration: '18 holes',
         description:
           'Play a full round with Leroy and build the habits that lower scores. He identifies pattern breakdowns and fixes them in real-time on the course.',
       },
       {
-        title: '90-Day Blueprint Session',
-        duration: 'Half day',
-        description:
-          'Walk away with a step-by-step self-improvement plan. Leroy maps your game, diagnoses your tendencies, and builds a structured 90-day practice roadmap.',
+        title: 'Putting',
+        duration: '1 hour',
+        description: 'Elite putting instruction focusing on path, tempo, and green reading.',
       },
       {
-        title: 'Youth Development Clinic',
-        duration: '2 hours',
-        description:
-          'Group or individual sessions for junior golfers. Leroy combines his First Tee experience with the Tour Pure system to develop fundamentals and love of the game.',
+        title: 'Pitch & Chip',
+        duration: '1 hour',
+        description: 'Refine your short game with professional techniques for chipping and pitching.',
       },
     ],
     acuityUrl: null,
@@ -114,6 +108,7 @@ const REGIONS = ['All Regions', 'Southwest', 'Southeast', 'Northeast', 'Midwest'
 
 function ProModal({ pro, onClose }: { pro: Pro; onClose: () => void }) {
   const overlayRef = useRef<HTMLDivElement>(null);
+  const [activeSessionFilter, setActiveSessionFilter] = useState('All Sessions');
 
   // Close on Escape
   useEffect(() => {
@@ -197,18 +192,38 @@ function ProModal({ pro, onClose }: { pro: Pro; onClose: () => void }) {
             <p className="font-sans text-[10px] font-semibold tracking-widest uppercase text-accent mb-4">
               Session Types
             </p>
-            <div className="space-y-3">
-              {pro.sessions.map((s) => (
-                <div key={s.title} className="bg-[#1a1a1a] border border-white/10 p-5">
-                  <div className="flex items-baseline justify-between gap-3 mb-2">
-                    <h4 className="font-sans text-sm font-semibold text-white">{s.title}</h4>
-                    <span className="font-sans text-[10px] font-semibold tracking-widest uppercase text-white/30 shrink-0">
-                      {s.duration}
-                    </span>
-                  </div>
-                  <p className="font-sans text-xs text-white/50 leading-relaxed">{s.description}</p>
-                </div>
+
+            {/* Session Filters */}
+            <div className="flex flex-wrap gap-2 mb-6">
+              {['All Sessions', 'Full Swing', 'Putting', 'Pitch & Chip'].map((f) => (
+                <button
+                  key={f}
+                  onClick={() => setActiveSessionFilter(f)}
+                  className={`font-sans text-[9px] font-semibold tracking-widest uppercase px-3 py-1.5 border transition-colors duration-150 ${
+                    activeSessionFilter === f
+                      ? 'border-accent bg-accent text-white'
+                      : 'border-white/10 text-white/40 hover:border-white/20 hover:text-white/60'
+                  }`}
+                >
+                  {f}
+                </button>
               ))}
+            </div>
+
+            <div className="space-y-3">
+              {pro.sessions
+                .filter((s) => activeSessionFilter === 'All Sessions' || s.title === activeSessionFilter)
+                .map((s) => (
+                  <div key={s.title} className="bg-[#1a1a1a] border border-white/10 p-5">
+                    <div className="flex items-baseline justify-between gap-3 mb-2">
+                      <h4 className="font-sans text-sm font-semibold text-white">{s.title}</h4>
+                      <span className="font-sans text-[10px] font-semibold tracking-widest uppercase text-white/30 shrink-0">
+                        {s.duration}
+                      </span>
+                    </div>
+                    <p className="font-sans text-xs text-white/50 leading-relaxed">{s.description}</p>
+                  </div>
+                ))}
             </div>
           </div>
         </div>

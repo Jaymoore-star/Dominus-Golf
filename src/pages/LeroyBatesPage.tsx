@@ -7,35 +7,31 @@ const stats = [
   { label: 'Foundation', value: 'Golf Junkyz' },
   { label: 'Program', value: 'First Tee' },
   { label: 'Specialty', value: 'Consistency' },
-  { label: 'Focus', value: '90-Day Blueprint' },
 ];
 
 const credentials = [
   'Golf Junkyz Foundation certified professional',
   'First Tee instructor and youth development coach',
   'Specialist in swing consistency and repeatable mechanics',
-  '90-Day On-Course Blueprint architect',
   'Dedicated to growing the game at every level',
 ];
 
 const sessionTypes = [
   {
-    title: 'Consistency Coaching Round',
+    title: 'Full Swing',
     duration: '18 holes',
     description:
       'Play a full round with Leroy and build the habits that lower scores. He identifies pattern breakdowns and fixes them in real-time on the course.',
   },
   {
-    title: '90-Day Blueprint Session',
-    duration: 'Half day',
-    description:
-      'Walk away with a step-by-step self-improvement plan. Leroy maps your game, diagnoses your tendencies, and builds a structured 90-day practice roadmap.',
+    title: 'Putting',
+    duration: '1 hour',
+    description: 'Elite putting instruction focusing on path, tempo, and green reading.',
   },
   {
-    title: 'Youth Development Clinic',
-    duration: '2 hours',
-    description:
-      'Group or individual sessions for junior golfers. Leroy combines his First Tee experience with the Tour Pure system to develop fundamentals and love of the game.',
+    title: 'Pitch & Chip',
+    duration: '1 hour',
+    description: 'Refine your short game with professional techniques for chipping and pitching.',
   },
 ];
 
@@ -74,9 +70,8 @@ export function LeroyBatesPage() {
                 </h1>
                 <p className="font-sans text-base text-white/55 leading-relaxed max-w-lg mb-10">
                   Leroy Bates is a Golf Junkyz Foundation professional and First Tee instructor whose entire
-                  coaching career is built around one goal: consistency. His 90-Day On-Course Blueprint
-                  gives everyday golfers a structured, repeatable path to lower scores without needing a
-                  full-time coach.
+                  coaching career is built around one goal: consistency. He gives everyday golfers a 
+                  structured, repeatable path to lower scores without needing a full-time coach.
                 </p>
 
                 {/* Stats row */}
@@ -144,8 +139,7 @@ export function LeroyBatesPage() {
                 </p>
                 <blockquote className="font-serif text-xl text-white/80 leading-relaxed italic">
                   "Consistency isn't a talent — it's a habit. I help golfers build the right habits
-                  on the course, one round at a time, with a blueprint they can follow for 90 days
-                  and beyond."
+                  on the course, one round at a time, with a plan they can follow for long-term improvement."
                 </blockquote>
                 <p className="font-sans text-sm text-white/40 mt-6">— Leroy Bates</p>
               </div>

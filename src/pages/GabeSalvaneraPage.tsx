@@ -16,27 +16,24 @@ const credentials = [
   'Grass League professional',
   'Certified on-course performance coach',
   'Specialist in pre-round strategy and course management',
-  '90-Day On-Course Blueprint instructor',
 ];
 
 const sessionTypes = [
   {
-    title: 'Practice with Gabe — Full Swing Session',
+    title: 'Full Swing',
     duration: '8 holes',
     description:
       'Play 8 holes alongside Gabe. He reads every lie, coaches every decision, and gives you real-time feedback on your course management.',
   },
   {
-    title: 'Tournament Prep Round',
-    duration: 'Half day',
-    description:
-      'Simulate tournament conditions — game plans, mental frameworks, pressure management, and shot selection under realistic stress.',
+    title: 'Putting',
+    duration: '1 hour',
+    description: 'Elite putting instruction focusing on path, tempo, and green reading.',
   },
   {
-    title: '90-Day Blueprint Consultation',
-    duration: '2 hours',
-    description:
-      'Walk away with a personalised self-improvement roadmap. Gabe maps your weaknesses and builds a structured practice plan.',
+    title: 'Pitch & Chip',
+    duration: '1 hour',
+    description: 'Refine your short game with professional techniques for chipping and pitching.',
   },
 ];
 
