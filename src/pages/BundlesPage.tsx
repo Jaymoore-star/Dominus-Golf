@@ -121,7 +121,7 @@ export function BundlesPage() {
           </div>
           
           <div className="max-w-7xl mx-auto text-center relative z-10">
-            <p className="text-accent font-semibold tracking-widest uppercase text-sm mb-4">Training Bundles</p>
+            <p className="text-accent font-semibold tracking-widest uppercase text-sm mb-4">Bundles (Save Now)</p>
             <h1 className="font-serif text-5xl md:text-7xl font-bold mb-6">Build Your Game</h1>
             <p className="text-lg md:text-xl text-primary-foreground/70 max-w-2xl mx-auto mb-10 leading-relaxed">
               Unlock tour-level consistency with our precision-engineered training bundles. 

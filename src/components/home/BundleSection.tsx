@@ -160,7 +160,7 @@ export function BundleSection() {
         {/* Header */}
         <div className="mb-12 lg:mb-16 max-w-2xl">
           <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-4">
-            Training Bundles
+            Bundles (Save Now)
           </p>
           <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white leading-tight">
             Build Your Complete System

@@ -80,7 +80,7 @@ export function HowItWorksSection() {
                       className="absolute inset-0 w-full h-full object-cover"
                       style={{
                         objectPosition: s.objectPosition,
-                        filter: 'contrast(1.08) brightness(0.80)',
+                        filter: 'contrast(1.05) brightness(1.05)',
                       }}
                       loading="lazy"
                     />
@@ -89,7 +89,7 @@ export function HowItWorksSection() {
                       className="absolute inset-0"
                       style={{
                         background:
-                          'linear-gradient(to top, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.25) 50%, transparent 100%)',
+                          'linear-gradient(to top, rgba(0,0,0,0.50) 0%, rgba(0,0,0,0.15) 50%, transparent 100%)',
                       }}
                     />
                     {/* Overlay headline */}

@@ -7,9 +7,9 @@ const tabs = ['For You', 'Trending', 'New Arrivals'] as const;
 type Tab = (typeof tabs)[number];
 
 const tabProducts: Record<Tab, string[]> = {
-  'For You': ['tour-pure-men', 'cya-tour-pure', 'tour-pure-women', 'feel-right-band', 'core-training-system-men', 'starter-system-men', 'pro-performance-system', 'tour-pure-jr'],
-  Trending: ['tour-pure-men', 'cya-tour-pure', 'feel-right-band', 'core-training-system-men', 'tour-pure-women', 'pro-performance-system', 'starter-system-men', 'dominus-towel'],
-  'New Arrivals': ['cya-tour-pure', 'tour-pure-women', 'pro-performance-system', 'core-training-system-women', 'starter-system-women', 'feel-right-band', 'tour-pure-jr', 'dominus-towel'],
+  'For You': ['tour-pure-men', 'cya-tour-pure', 'tour-pure-women', 'feel-right-band', 'tour-pure-jr', 'dominus-towel'],
+  Trending: ['tour-pure-men', 'cya-tour-pure', 'feel-right-band', 'tour-pure-women', 'dominus-towel'],
+  'New Arrivals': ['cya-tour-pure', 'tour-pure-women', 'feel-right-band', 'tour-pure-jr', 'dominus-towel'],
 };
 
 export function FeaturedProducts() {
