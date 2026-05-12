@@ -30,22 +30,22 @@ const pros: Pro[] = [
     region: 'Southwest',
     city: 'Phoenix',
     state: 'AZ',
-    bio: 'Specialist in On-Course Strategy and Tournament Performance.',
+    bio: 'Specialist in Swing Mechanics and Performance Optimization.',
     fullBio:
-      'Gabe Salvanera is a PGA Tour Americas and Grass League professional who has built his reputation on elite on-course strategy and tournament performance coaching. His sessions bridge the gap between the range and the scorecard — helping serious golfers think, manage, and compete like a tour pro.',
+      'Gabe Salvanera is a PGA Tour Americas and Grass League professional who has built his reputation on elite swing mechanics and performance optimization. His sessions focus on building tour-level habits on the range that translate directly to better ball striking and lower scores.',
     photo: null,
     credentials: [
       'PGA Tour Americas competitor',
       'Grass League professional',
-      'Certified on-course performance coach',
-      'Specialist in pre-round strategy and course management',
+      'Certified performance coach',
+      'Specialist in swing optimization and practice structure',
     ],
     sessions: [
       {
         title: 'Full Swing',
-        duration: '8 holes',
+        duration: '1 hour',
         description:
-          'Pro will be hitting balls on the range. Golfers will have to pay for their golf balls on the range. Play 8 holes alongside Gabe. He reads every lie, coaches every decision, and gives you real-time feedback on your course management.',
+          'Pro will be hitting balls on the range. Golfers will have to pay for their golf balls on the range. Gabe provides real-time feedback on your swing mechanics, ball flight, and practice habits.',
       },
       {
         title: 'Putting',
@@ -69,22 +69,22 @@ const pros: Pro[] = [
     region: 'West',
     city: 'Los Angeles',
     state: 'CA',
-    bio: 'Expert in Consistency and on-course performance.',
+    bio: 'Expert in Consistency and Technical Proficiency.',
     fullBio:
-      'Leroy Bates is a Golf Junkyz Foundation professional and First Tee instructor whose entire coaching career is built around one goal: consistency. He gives everyday golfers a structured, repeatable path to lower scores without needing a full-time coach.',
+      'Leroy Bates is a Golf Junkyz Foundation professional and First Tee instructor whose entire coaching career is built around one goal: consistency. He gives everyday golfers a structured, repeatable path to lower scores through elite technical range sessions.',
     photo: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F1000010452__3764dc88.jpg?alt=media&token=22783388-9f93-4757-9fa9-a5e992497359',
     credentials: [
       'Golf Junkyz Foundation certified professional',
       'First Tee instructor and youth development coach',
       'Specialist in swing consistency and repeatable mechanics',
-      'Dedicated to growing the game at every level',
+      'Dedicated to technical improvement on the range',
     ],
     sessions: [
       {
         title: 'Full Swing',
-        duration: '18 holes',
+        duration: '1 hour',
         description:
-          'Pro will be hitting balls on the range. Golfers will have to pay for their golf balls on the range. Play a full round with Leroy and build the habits that lower scores. He identifies pattern breakdowns and fixes them in real-time on the course.',
+          'Pro will be hitting balls on the range. Golfers will have to pay for their golf balls on the range. Leroy identifies pattern breakdowns and helps you build the repeatable habits that translate to lower scores.',
       },
       {
         title: 'Putting',
@@ -341,13 +341,13 @@ export function ProDirectoryPage() {
       <section className="w-full bg-[#0a0a0a] border-b border-white/10 py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-4">
-            On-Course Coaching
+            Professional Coaching
           </p>
           <h1 className="font-serif text-4xl sm:text-5xl font-bold text-white leading-tight mb-5">
             Pro Directory
           </h1>
           <p className="font-sans text-base text-white/55 max-w-xl mx-auto leading-relaxed">
-            Professional-grade on-course mentorship from Dominus Golf's national network of pros. Find your coach, view their sessions, and book direct.
+            Professional-grade mentorship from Dominus Golf's national network of pros. Find your coach, view their sessions, and book direct.
           </p>
         </div>
       </section>

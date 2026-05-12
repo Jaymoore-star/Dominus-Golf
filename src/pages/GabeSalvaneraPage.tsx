@@ -7,23 +7,23 @@ import { CartDrawer } from '../components/cart/CartDrawer';
 const stats = [
   { label: 'Tour', value: 'PGA Tour Americas' },
   { label: 'League', value: 'Grass League' },
-  { label: 'Specialty', value: 'On-Course Strategy' },
-  { label: 'Focus', value: 'Tournament Performance' },
+  { label: 'Specialty', value: 'Swing Mechanics' },
+  { label: 'Focus', value: 'Performance Optimization' },
 ];
 
 const credentials = [
   'PGA Tour Americas competitor',
   'Grass League professional',
-  'Certified on-course performance coach',
-  'Specialist in pre-round strategy and course management',
+  'Certified performance coach',
+  'Specialist in swing optimization and practice structure',
 ];
 
 const sessionTypes = [
   {
     title: 'Full Swing',
-    duration: '8 holes',
+    duration: '1 hour',
     description:
-      'Pro will be hitting balls on the range. Golfers will have to pay for their golf balls on the range. Play 8 holes alongside Gabe. He reads every lie, coaches every decision, and gives you real-time feedback on your course management.',
+      'Pro will be hitting balls on the range. Golfers will have to pay for their golf balls on the range. Gabe provides real-time feedback on your swing mechanics, ball flight, and practice habits.',
   },
   {
     title: 'Putting',
@@ -93,9 +93,9 @@ export function GabeSalvaneraPage() {
                 </h1>
                 <p className="font-sans text-base text-white/55 leading-relaxed max-w-lg mb-10">
                   Gabe Salvanera is a PGA Tour Americas and Grass League professional who has built his
-                  reputation on elite on-course strategy and tournament performance coaching. His
-                  sessions bridge the gap between the range and the scorecard — helping serious golfers
-                  think, manage, and compete like a tour pro.
+                  reputation on elite swing mechanics and performance optimization. His
+                  sessions focus on building tour-level habits on the range that translate directly to
+                  better ball striking and lower scores.
                 </p>
 
                 {/* Stats row */}
@@ -147,7 +147,7 @@ export function GabeSalvaneraPage() {
                   Credentials
                 </p>
                 <h2 className="font-serif text-3xl font-bold text-white mb-8">
-                  Tour-Proven Experience
+                  Professional Experience
                 </h2>
                 <ul className="space-y-4">
                   {credentials.map((c) => (
@@ -164,8 +164,8 @@ export function GabeSalvaneraPage() {
                   Coaching Philosophy
                 </p>
                 <blockquote className="font-serif text-xl text-white/80 leading-relaxed italic">
-                  "Range practice builds mechanics. On-course sessions build golfers. I help you make
-                  better decisions, manage real pressure, and turn your practice into scores."
+                  "Range practice builds mechanics. Focused range sessions build golfers. I help you
+                  optimize your swing, manage your practice time, and turn your repetitions into results."
                 </blockquote>
                 <p className="font-sans text-sm text-white/40 mt-6">— Gabe Salvanera</p>
               </div>
@@ -184,7 +184,7 @@ export function GabeSalvaneraPage() {
                 Train with Gabe
               </h2>
               <p className="font-sans text-base text-white/50 max-w-lg mx-auto leading-relaxed">
-                Choose the session format that fits your goals. All sessions are conducted on-course.
+                Choose the session format that fits your goals. All sessions are conducted on the range.
               </p>
             </div>
 
@@ -208,11 +208,11 @@ export function GabeSalvaneraPage() {
             {/* Booking CTA */}
             <div className="bg-[#141414] border border-white/10 p-8 sm:p-12 text-center">
               <h3 className="font-serif text-2xl font-bold text-white mb-3">
-                Ready to Play with a Pro?
+                Ready to Practice with a Pro?
               </h3>
               <p className="font-sans text-sm text-white/50 leading-relaxed mb-8 max-w-md mx-auto">
                 Contact Gabe directly to check availability, discuss your goals, and schedule your
-                on-course session.
+                on-range session.
               </p>
               <a
                 href="https://app.acuityscheduling.com/schedule.php?owner=39236931&calendarID=14047266&ref=booking_button"

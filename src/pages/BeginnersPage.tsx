@@ -21,8 +21,8 @@ const steps = [
   },
   {
     number: '04',
-    title: 'Take It to the Course',
-    body: `Once your swing path and tempo feel consistent at the range, take the Tour Pure system to the course for a "Practice with a Pro" session. Our pros help you understand course management, real-world lie handling, and pressure performance.`,
+    title: 'Take Your Training Further',
+    body: `Once your swing path and tempo feel consistent, take your game to the next level with a "Practice with a Pro" session. Our pros help you refine your technique, optimize your mechanics, and build a tour-level practice routine.`,
   },
 ];
 
@@ -32,8 +32,8 @@ const myths = [
     truth: 'Speed comes from proper sequencing and centrifugal force — not brute strength. Train the path first.',
   },
   {
-    myth: '"Range lessons will fix my on-course game."',
-    truth: 'Range practice builds mechanics. On-course practice builds scores. You need both.',
+    myth: '"Standard range lessons will fix my game."',
+    truth: 'Range practice builds mechanics. Technical instruction builds consistency. You need both.',
   },
   {
     myth: '"Training aids are just gimmicks."',

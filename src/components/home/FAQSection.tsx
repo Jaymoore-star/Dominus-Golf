@@ -6,19 +6,19 @@ const faqs = [
     id: 1,
     question: 'Are training aids really worth the money?',
     answer:
-      'Only if they deliver results. Our "Practicing with a Pro" sessions use the Tour Pure system to bridge the gap between range practice and on-course performance.',
+      'Only if they deliver results. Our "Practicing with a Pro" sessions use the Tour Pure system to bridge the gap between range practice and competitive performance.',
   },
   {
     id: 2,
     question: 'Can I improve my handicap without a full-time coach?',
     answer:
-      'Absolutely. Our Pros provide a 90-day blueprint during your on-course session, giving you a self-improvement method that actually works.',
+      'Absolutely. Our Pros provide a 90-day blueprint during your on-range session, giving you a self-improvement method that actually works.',
   },
   {
     id: 3,
-    question: 'How do on-course sessions differ from range lessons?',
+    question: 'How do Pro sessions differ from standard range lessons?',
     answer:
-      'Range lessons fix swings; on-course sessions fix scores. We focus on real-world lies, course management, and the pressure of a live round.',
+      'Standard lessons often focus on quick fixes; Pro range sessions focus on long-term performance. We focus on technical proficiency, practice structure, and tour-level ball striking.',
   },
 ];
 

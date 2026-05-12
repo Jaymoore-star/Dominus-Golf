@@ -7,22 +7,22 @@ import { CartDrawer } from '../components/cart/CartDrawer';
 const stats = [
   { label: 'Foundation', value: 'Golf Junkyz' },
   { label: 'Program', value: 'First Tee' },
-  { label: 'Specialty', value: 'Consistency' },
+  { label: 'Specialty', value: 'Technical Proficiency' },
 ];
 
 const credentials = [
   'Golf Junkyz Foundation certified professional',
   'First Tee instructor and youth development coach',
   'Specialist in swing consistency and repeatable mechanics',
-  'Dedicated to growing the game at every level',
+  'Dedicated to technical improvement on the range',
 ];
 
 const sessionTypes = [
   {
     title: 'Full Swing',
-    duration: '18 holes',
+    duration: '1 hour',
     description:
-      'Pro will be hitting balls on the range. Golfers will have to pay for their golf balls on the range. Play a full round with Leroy and build the habits that lower scores. He identifies pattern breakdowns and fixes them in real-time on the course.',
+      'Pro will be hitting balls on the range. Golfers will have to pay for their golf balls on the range. Leroy identifies pattern breakdowns and helps you build the repeatable habits that translate to lower scores.',
   },
   {
     title: 'Putting',
@@ -92,8 +92,8 @@ export function LeroyBatesPage() {
                 </h1>
                 <p className="font-sans text-base text-white/55 leading-relaxed max-w-lg mb-10">
                   Leroy Bates is a Golf Junkyz Foundation professional and First Tee instructor whose entire
-                  coaching career is built around one goal: consistency. He gives everyday golfers a 
-                  structured, repeatable path to lower scores without needing a full-time coach.
+                  coaching career is built around one goal: consistency. He gives everyday golfers a
+                  structured, repeatable path to lower scores through elite technical range sessions.
                 </p>
 
                 {/* Stats row */}
@@ -143,7 +143,7 @@ export function LeroyBatesPage() {
                   Credentials
                 </p>
                 <h2 className="font-serif text-3xl font-bold text-white mb-8">
-                  Built on the Game's Foundation
+                  Technical Expertise
                 </h2>
                 <ul className="space-y-4">
                   {credentials.map((c) => (
@@ -161,7 +161,7 @@ export function LeroyBatesPage() {
                 </p>
                 <blockquote className="font-serif text-xl text-white/80 leading-relaxed italic">
                   "Consistency isn't a talent — it's a habit. I help golfers build the right habits
-                  on the course, one round at a time, with a plan they can follow for long-term improvement."
+                  on the range, one session at a time, with a technical plan they can follow for long-term improvement."
                 </blockquote>
                 <p className="font-sans text-sm text-white/40 mt-6">— Leroy Bates</p>
               </div>
@@ -180,7 +180,7 @@ export function LeroyBatesPage() {
                 Train with Leroy
               </h2>
               <p className="font-sans text-base text-white/50 max-w-lg mx-auto leading-relaxed">
-                Choose the session format that fits your goals. All sessions are conducted on-course.
+                Choose the session format that fits your goals. All sessions are conducted on the range.
               </p>
             </div>
 
@@ -208,7 +208,7 @@ export function LeroyBatesPage() {
               </h3>
               <p className="font-sans text-sm text-white/50 leading-relaxed mb-8 max-w-md mx-auto">
                 Contact Leroy directly to check availability, discuss your goals, and schedule your
-                on-course session.
+                on-range session.
               </p>
               <a
                 href="https://app.acuityscheduling.com/schedule.php?owner=39236931&calendarID=14032949&ref=booking_button"

@@ -7,7 +7,7 @@ const pros = [
     id: 'gabe-salvanera',
     name: 'Gabe Salvanera',
     affiliation: 'PGA TOUR AMERICAS | GRASS LEAGUE',
-    bio: 'Specialist in On-Course Strategy and Tournament Performance.',
+    bio: 'Specialist in Swing Mechanics and Technical Performance Optimization.',
     href: '/pros',
     city: 'Phoenix',
     state: 'AZ',
@@ -17,7 +17,7 @@ const pros = [
     id: 'leroy-bates',
     name: 'Leroy Bates',
     affiliation: 'GOLF JUNKYZ FOUNDATION | FIRST TEE',
-    bio: 'Expert in Consistency and on-course performance.',
+    bio: 'Expert in Consistency and Technical Proficiency.',
     href: '/pros',
     city: 'Los Angeles',
     state: 'CA',
@@ -88,13 +88,13 @@ export function ProDirectorySection() {
         {/* Header */}
         <div className="text-center mb-12">
           <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-4">
-            Dominus Golf Pros
+            Practice with a Pro
           </p>
           <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">
-            Our National Network of Pros
+            Elite Range Mentorship
           </h2>
           <p className="font-sans text-base text-white/50 max-w-xl mx-auto leading-relaxed">
-            Professional-grade on-course mentorship from the best in the game.
+            Professional-grade technical instruction from the best in the game. Find your coach, view their technical sessions, and book direct.
           </p>
         </div>
 

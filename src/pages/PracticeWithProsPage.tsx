@@ -3,58 +3,57 @@ import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { CartDrawer } from '../components/cart/CartDrawer';
 
-const benefits = [
-  {
-    title: 'Real-World Lies',
-    body: 'No two shots on a golf course are the same. Our pros coach you through uneven lies, tight fairways, and awkward stances — conditions the range can never replicate.',
-  },
-  {
-    title: 'Course Management',
-    body: 'Scoring isn\'t just about swing mechanics. Our pros teach you when to attack, when to lay up, how to read greens, and how to manage your game from the first tee to the 18th hole.',
-  },
-  {
-    title: 'Pressure Performance',
-    body: 'Playing with a pro simulates the mental pressure of competition. You learn how to breathe through difficult shots, reset after bad holes, and carry your practice into real rounds.',
-  },
-  {
-    title: '90-Day Blueprint',
-    body: 'Every session ends with a personalised 90-day improvement roadmap. You leave with a structured plan you can execute on your own — no full-time coach required.',
-  },
+const stats = [
+  { label: 'Network', value: 'National' },
+  { label: 'Focus', value: 'Technical Proficiency' },
+  { label: 'System', value: 'Tour Pure Integration' },
+  { label: 'Method', value: 'Range-Based diagnostic' },
 ];
 
-const pros = [
+const features = [
   {
-    name: 'Gabe Salvanera',
-    title: 'PGA Tour Americas · Grass League',
-    bio: 'Specialist in on-course strategy and tournament performance. Gabe helps serious golfers think, manage, and compete like a tour pro.',
+    title: 'Gabe Salvanera',
+    role: 'PGA Tour Americas Professional',
+    bio: 'Specialist in technical optimization and performance. Gabe helps serious golfers refine their mechanics and practice with tour-level purpose.',
     href: '/gabe-salvanera',
   },
   {
-    name: 'Leroy Bates',
-    title: 'Golf Junkyz Foundation · First Tee',
-    bio: 'Expert in consistency and the 90-Day On-Course Blueprint. Leroy builds repeatable habits that lower scores for everyday golfers.',
+    title: 'Leroy Bates',
+    role: 'Golf Junkyz Foundation Pro',
+    bio: 'Expert in swing consistency and technical proficiency. Leroy provides a structured, repeatable path to technical mastery.',
     href: '/leroy-bates',
   },
 ];
 
-const sessionFormats = [
+const packages = [
   {
-    format: 'Full Round (18 Holes)',
-    time: 'Approx. 4–5 hours',
-    description: 'The complete on-course experience. Your pro plays alongside you for all 18 holes, coaching in real-time on every shot, lie, and decision.',
-    featured: true,
+    title: 'Technical Masterclass',
+    duration: '1 Hour Session',
+    description: 'The complete technical experience. Your pro analyzes your swing on the range, coaching in real-time on every repetition and drill.',
   },
   {
-    format: 'Half Round (9 Holes)',
-    time: 'Approx. 2–3 hours',
-    description: 'A focused session on the front or back nine. Great for targeting a specific area of your game — scoring, short game, or mental strategy.',
-    featured: false,
+    title: 'Swing Diagnostic',
+    duration: 'Single Session',
+    description: 'A range-based diagnostic and planning session. Your pro evaluates your technique and builds your 90-day technical roadmap.',
+  },
+];
+
+const benefits = [
+  {
+    title: 'Technical Precision',
+    body: 'Master the mechanics that matter. Our pros focus on swing optimization, ball flight consistency, and tour-level impact positions.',
   },
   {
-    format: '90-Day Blueprint Consult',
-    time: 'Approx. 2 hours',
-    description: 'An on-course diagnostic and planning session. No full round — your pro evaluates your game and builds your 90-day improvement roadmap.',
-    featured: false,
+    title: 'Practice Structure',
+    body: 'Technical proficiency is built on the range. Our pros teach you how to practice with purpose, providing structured drills that translate to elite performance.',
+  },
+  {
+    title: 'Pressure Training',
+    body: 'Simulate the pressure of competition through targeted range drills. Learn to maintain your technique under stress and build a repeatable routine.',
+  },
+  {
+    title: '90-Day Blueprint',
+    body: 'Every session ends with a personalized 90-day technical roadmap. You leave with a structured plan you can execute on your own — no full-time coach required.',
   },
 ];
 
@@ -66,14 +65,15 @@ export function PracticeWithProsPage() {
       {/* Hero */}
       <section className="w-full bg-[#0a0a0a] pt-24 pb-20 px-4 border-b border-white/10">
         <div className="max-w-4xl mx-auto text-center">
-          <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-5">
-            On-Course Coaching
+          <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-4">
+            Elite Range Training
           </p>
-          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-7">
-            Practice With<br />the Pros
+          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-8">
+            Practice with the Pros
           </h1>
-          <p className="font-sans text-base text-white/60 leading-relaxed max-w-xl mx-auto mb-10">
-            Range lessons fix swings. On-course sessions fix scores. Play alongside a Dominus Golf Pro and transform the way you think about, manage, and score the game.
+          <p className="font-sans text-lg text-white/70 max-w-2xl mx-auto leading-relaxed mb-10">
+            Professional-grade mentorship from Dominus Golf's national network of pros. Refine your technique,
+            build tour-level mechanics, and master your practice on the range.
           </p>
           <a
             href="#book"
@@ -90,16 +90,16 @@ export function PracticeWithProsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-start">
             <div>
               <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-4">
-                Why On-Course?
+                Why Range Practice?
               </p>
               <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white leading-tight mb-6">
-                Range Practice Has Limits.
+                Master Your Technique.
               </h2>
               <p className="font-sans text-sm text-white/60 leading-relaxed mb-5">
-                Range lessons are valuable for mechanics. But they can't simulate the decisions, lies, and mental pressure of an actual round. That's where our on-course coaching program changes everything.
+                Range lessons are invaluable for refining swing mechanics. Our pros focus on the technical aspects of your game, ensuring you build a repeatable and powerful swing.
               </p>
               <p className="font-sans text-sm text-white/60 leading-relaxed">
-                Our Pros don't stand on a mat and watch you hit balls. They walk the course with you, coach every shot in real-time, and give you a 90-day blueprint to keep improving long after the session is over.
+                Our Pros don't just watch you hit balls. They analyze your swing, provide targeted drills, and help you understand the biomechanics behind a tour-level game.
               </p>
             </div>
 
@@ -130,9 +130,9 @@ export function PracticeWithProsPage() {
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {sessionFormats.map((s) => (
+            {packages.map((s) => (
               <div
-                key={s.format}
+                key={s.title}
                 className={`p-7 flex flex-col ${
                   s.featured
                     ? 'bg-[#1a1a1a] border-2 border-accent'
@@ -144,9 +144,9 @@ export function PracticeWithProsPage() {
                     Most Popular
                   </span>
                 )}
-                <h3 className="font-serif text-xl font-bold text-white mb-2">{s.format}</h3>
+                <h3 className="font-serif text-xl font-bold text-white mb-2">{s.title}</h3>
                 <p className="font-sans text-[11px] font-semibold tracking-widest uppercase text-white/30 mb-4">
-                  {s.time}
+                  {s.duration}
                 </p>
                 <p className="font-sans text-sm text-white/55 leading-relaxed flex-1">{s.description}</p>
               </div>
@@ -168,9 +168,9 @@ export function PracticeWithProsPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
-            {pros.map((pro) => (
+            {features.map((pro) => (
               <div
-                key={pro.name}
+                key={pro.title}
                 className="bg-[#141414] border border-white/10 p-7 hover:border-accent/40 transition-colors group"
               >
                 {/* Photo placeholder */}
@@ -181,10 +181,10 @@ export function PracticeWithProsPage() {
                   </svg>
                 </div>
                 <h3 className="font-serif text-xl font-bold text-white mb-1 group-hover:text-accent/90 transition-colors">
-                  {pro.name}
+                  {pro.title}
                 </h3>
                 <p className="font-sans text-[10px] font-semibold tracking-widest uppercase text-accent mb-4">
-                  {pro.title}
+                  {pro.role}
                 </p>
                 <p className="font-sans text-sm text-white/50 leading-relaxed mb-6">{pro.bio}</p>
                 <a
@@ -205,7 +205,7 @@ export function PracticeWithProsPage() {
           <div className="flex items-start gap-4 bg-accent/5 border border-accent/20 p-6">
             <span className="text-accent text-lg shrink-0 mt-0.5">⚠</span>
             <p className="font-sans text-sm text-white/70 leading-relaxed">
-              <span className="font-semibold text-accent">Safety Notice:</span> All on-course sessions incorporate Tour Pure training exercises. Participants should review the{' '}
+              <span className="font-semibold text-accent">Safety Notice:</span> All on-range sessions incorporate Tour Pure training exercises. Participants should review the{' '}
               <Link to="/safety-disclaimer" className="text-accent hover:underline">
                 Safety Disclaimer
               </Link>{' '}
