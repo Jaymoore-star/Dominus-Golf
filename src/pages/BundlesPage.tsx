@@ -93,7 +93,6 @@ const comparisonFeatures = [
   { name: 'Feel Right Connection Band', starter: true, alone: false, pro: true },
   { name: 'Premium Dominus Golf Towel', starter: false, alone: false, pro: true },
   { name: 'Priority Support', starter: true, alone: false, pro: true },
-  { name: 'Lifetime Access to Drills', starter: true, alone: true, pro: true },
 ];
 
 export function BundlesPage() {
@@ -289,16 +288,7 @@ export function BundlesPage() {
 
         {/* Value Props */}
         <section className="py-24 px-4 bg-secondary">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div className="flex flex-col items-center text-center">
-              <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mb-6">
-                <ShieldCheck size={32} className="text-accent" />
-              </div>
-              <h4 className="font-serif text-2xl font-bold mb-3">Lifetime Guarantee</h4>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                Every Dominus Golf tool is built with industrial-grade materials designed to last a lifetime.
-              </p>
-            </div>
+          <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
             <div className="flex flex-col items-center text-center">
               <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mb-6">
                 <Truck size={32} className="text-accent" />
