@@ -78,7 +78,7 @@ export const accessories: Product[] = [
     ],
     badge: 'New',
     description:
-      'Stop guessing and start grinding with purpose. The Ultimate Guide to Mastering the Game is a structured, day-by-day training curriculum designed to bridge the gap between "having a tool" and "having a game." Built specifically to complement the Tour Pure system, this manual takes you through a professional-grade progression to achieve locked-in mechanics and elite tempo. Whether you prefer a physical copy for the bag or a digital version for your phone, we have you covered.',
+      'Stop guessing and start grinding with purpose. The Ultimate Guide to Mastering the Game is a structured, day-by-day training curriculum designed to bridge the gap between "having a tool" and "having a game." Built specifically to complement the Tour Pure system. FREE (PDF Version) with the purchase of any Tour Pure trainer.',
     features: [
       'The 90-Day Transformation: A step-by-step daily calendar of drills to build permanent muscle memory',
       '"Feel vs. Real" Breakdown: Learn how to interpret feedback from your Tour Pure trainer to fix your swing path in real-time',
@@ -111,5 +111,25 @@ export const accessories: Product[] = [
       },
     ],
     stripeUrl: 'https://buy.stripe.com/6oU28l7MQ2SMfKj4Qkffy09',
+  },
+  {
+    id: 'training-manual-pdf',
+    name: 'Ultimate Guide to Mastering the Game (PDF Version)',
+    category: 'accessories',
+    subcategory: 'Education',
+    price: 0.00,
+    compareAtPrice: 14.99,
+    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FScreenshot_20260324_042207_SamsungInternet__2f2a1710.jpg?alt=media&token=4e6db837-c08e-4745-b0c4-9d9e5d607413',
+    badge: 'FREE WITH TRAINER',
+    description:
+      'The complete 90-day training curriculum in digital PDF format. FREE with the purchase of any Tour Pure swing trainer. Instant access to tour-level drills, progress tracking, and technical mechanical breakdowns.',
+    features: [
+      'Instant Digital Download',
+      '90-Day Structured Curriculum',
+      'Mobile-Friendly Format',
+      'Progress Tracking Sheets',
+      'Technical Mechanical Breakdowns',
+    ],
+    inStock: true,
   },
 ];

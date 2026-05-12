@@ -17,8 +17,9 @@ export const trainingSystems: Product[] = [
     ],
     badge: 'Best Seller',
     description:
-      'Weighted swing trainer built to improve tempo, sequencing, swing path, and ball-striking consistency through structured repetition.',
+      'Weighted swing trainer built to improve tempo, sequencing, swing path, and ball-striking consistency. Includes FREE 90-Day Training Manual (PDF).',
     features: [
+      'FREE 90-Day Training Manual (PDF)',
       'Improves tempo and sequencing',
       'Promotes repeatable swing path',
       'Builds golf-specific strength',
@@ -79,8 +80,9 @@ export const trainingSystems: Product[] = [
     ],
     badge: 'Sold Out',
     description:
-      'Precision weighted swing trainer designed to develop smooth tempo, proper sequencing, and a consistent swing motion.',
+      'Precision weighted swing trainer designed to develop smooth tempo, proper sequencing, and a consistent swing motion. Includes FREE 90-Day Training Manual (PDF).',
     features: [
+      'FREE 90-Day Training Manual (PDF)',
       'Smooth weighted feel',
       'Improves rhythm and control',
       'Promotes consistent mechanics',
@@ -126,8 +128,9 @@ export const trainingSystems: Product[] = [
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FR__3951d4b9.png?alt=media&token=9d723d63-318c-4122-b7cd-b70a10e0520f',
     badge: 'Out of Stock',
     description:
-      'Junior swing trainer designed to build balance, sequencing, and proper mechanics early—without overwhelming weight.',
+      'Junior swing trainer designed to build balance, sequencing, and proper mechanics early—without overwhelming weight. Includes FREE 90-Day Training Manual (PDF).',
     features: [
+      'FREE 90-Day Training Manual (PDF)',
       'Junior-friendly weight',
       'Builds balance and timing',
       'Promotes good mechanics',
@@ -136,5 +139,51 @@ export const trainingSystems: Product[] = [
     inStock: false,
     rating: 4.7,
     reviewCount: 966,
+  },
+  {
+    id: 'cya-tour-pure',
+    name: 'CYA Tour Pure',
+    category: 'training-system',
+    subcategory: 'Premium',
+    price: 69.99,
+    compareAtPrice: 89.99,
+    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FPhotoroom-20251125_1425462241__e480e1c6.png?alt=media&token=7c96a611-0b70-415f-a7f7-8bebe5a974a2',
+    hoverImage: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F2021-03-09__196c2c33.jpg?alt=media&token=dbaecb63-0518-44cc-beaa-4817b99a8fb5',
+    gallery: [
+      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FPhotoroom-20251125_1425462241__e480e1c6.png?alt=media&token=7c96a611-0b70-415f-a7f7-8bebe5a974a2',
+      'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F2021-03-09__196c2c33.jpg?alt=media&token=dbaecb63-0518-44cc-beaa-4817b99a8fb5',
+    ],
+    badge: 'Limited Edition',
+    description:
+      'The CYA edition of the Tour Pure system. Advanced technical feedback for those who demand the absolute best in range training. Includes FREE 90-Day Training Manual (PDF).',
+    features: [
+      'FREE 90-Day Training Manual (PDF)',
+      'Advanced technical feedback',
+      'Premium industrial finish',
+      'Enhanced grip mechanics',
+      'Elite-level weight distribution',
+    ],
+    specs: [
+      'Weight: 4.1 lbs',
+      'Length: 18 in',
+      'Material: Carbon Steel / Reinforced Polymer',
+      'Color: Stealth Black',
+    ],
+    variants: [{ label: 'Color', options: ['Stealth Black'] }],
+    inStock: true,
+    rating: 5.0,
+    reviewCount: 42,
+    reviews: [
+      {
+        id: 'rev-cya1',
+        author: 'Tyler J.',
+        rating: 5,
+        date: '2024-04-10',
+        title: 'Stealth and effective',
+        body: 'The finish on the CYA edition is incredible. The extra weight really helps with the release point.',
+        verified: true,
+      },
+    ],
+    stripeUrl: 'https://buy.stripe.com/9B65kx9UY2SMdCb3Mgffy06',
   },
 ];
