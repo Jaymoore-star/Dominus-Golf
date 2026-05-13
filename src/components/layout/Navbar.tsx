@@ -9,6 +9,7 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { useCart } from '../../store/cartStore';
+import { SearchOverlay } from './SearchOverlay';
 
 type MegaMenuKey = 'training' | 'apparel' | 'accessories' | 'pros' | 'company' | null;
 
@@ -135,6 +136,7 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileAccordion, setMobileAccordion] = useState<string | null>(null);
   const [announcementIndex, setAnnouncementIndex] = useState(0);
+  const [searchOpen, setSearchOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
 
   const announcements = [
@@ -260,6 +262,7 @@ export function Navbar() {
             {/* Right Icons */}
             <div className="flex items-center gap-1">
               <button
+                onClick={() => setSearchOpen(true)}
                 className="p-2 text-foreground hover:text-accent transition-colors"
                 aria-label="Search"
               >
@@ -414,7 +417,13 @@ export function Navbar() {
 
           {/* Mobile Footer Icons */}
           <div className="flex items-center justify-around px-6 py-5 border-t border-border shrink-0">
-            <button className="flex flex-col items-center gap-1 text-foreground">
+            <button 
+              onClick={() => {
+                setMobileOpen(false);
+                setSearchOpen(true);
+              }}
+              className="flex flex-col items-center gap-1 text-foreground"
+            >
               <Search size={20} />
               <span className="font-sans text-[10px] tracking-widest uppercase">Search</span>
             </button>
@@ -438,6 +447,8 @@ export function Navbar() {
           </div>
         </div>
       )}
+
+      <SearchOverlay isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </header>
   );
 }
