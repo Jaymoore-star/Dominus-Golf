@@ -303,7 +303,7 @@ export function Navbar() {
                       {col.links.map((link) => (
                         <li key={link.label}>
                           <Link
-                            to={link.href}
+                            to={link.href as any}
                             onClick={() => setActiveMega(null)}
                             className="font-sans text-sm text-foreground hover:text-accent transition-colors duration-150 gold-underline-hover inline-block"
                           >
@@ -387,7 +387,7 @@ export function Navbar() {
                             {col.links.map((l) => (
                               <Link
                                 key={l.label}
-                                to={l.href}
+                                to={l.href as any}
                                 onClick={() => setMobileOpen(false)}
                                 className="block py-1.5 font-sans text-sm text-foreground hover:text-accent transition-colors"
                               >

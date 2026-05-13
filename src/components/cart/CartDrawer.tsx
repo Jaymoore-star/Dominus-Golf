@@ -139,7 +139,7 @@ export function CartDrawer() {
                 <li key={item.product.id} className="flex gap-4 px-6 py-5">
                   {/* Image */}
                   <Link
-                    to={`/product/$id`}
+                    to="/product/$id"
                     params={{ id: item.product.id }}
                     onClick={closeCart}
                     className="shrink-0 w-20 h-20 bg-white border border-border overflow-hidden"

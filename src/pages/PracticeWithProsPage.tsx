@@ -30,11 +30,13 @@ const packages = [
     title: 'Technical Masterclass',
     duration: '1 Hour Session',
     description: 'The complete technical experience. Your pro analyzes your swing on the range, providing technical instruction in real-time on every repetition and drill.',
+    featured: true,
   },
   {
     title: 'Swing Diagnostic',
     duration: 'Single Session',
     description: 'A range-based diagnostic and planning session. Your pro evaluates your technique and builds your 90-day technical roadmap.',
+    featured: false,
   },
 ];
 

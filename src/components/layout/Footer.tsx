@@ -90,7 +90,7 @@ export function Footer() {
                 {links.map((link) => (
                   <li key={link.label}>
                     <Link
-                      to={link.href}
+                      to={link.href as any}
                       className="font-sans text-sm text-white/60 hover:text-white transition-colors duration-150"
                     >
                       {link.label}

@@ -21,7 +21,8 @@ export function HeroSection() {
           </p>
           <div className="flex flex-wrap gap-4">
             <Link
-              to="/product/tour-pure-men"
+              to="/product/$id"
+              params={{ id: 'tour-pure-men' }}
               className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-10 py-4 bg-accent text-white hover:bg-accent/90 transition-colors duration-200"
             >
               Start Training Today

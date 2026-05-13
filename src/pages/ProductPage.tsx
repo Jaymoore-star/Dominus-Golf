@@ -125,7 +125,7 @@ export function ProductPage() {
           </Link>
           <ChevronRight size={10} />
           <Link
-            to={`/shop/$category`}
+            to="/shop/$category"
             params={{ category: product.category }}
             className="hover:text-foreground transition-colors capitalize"
           >

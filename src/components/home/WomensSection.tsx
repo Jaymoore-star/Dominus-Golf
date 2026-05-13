@@ -57,7 +57,8 @@ export function WomensSection() {
               ))}
             </ul>
             <Link
-              to="/product/tour-pure-women"
+              to="/product/$id"
+              params={{ id: 'tour-pure-women' }}
               className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-8 py-4 bg-accent text-white hover:bg-accent/90 transition-colors duration-200"
             >
               Reserve Your Tour Pure

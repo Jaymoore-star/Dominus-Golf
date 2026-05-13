@@ -33,7 +33,7 @@ export function ApparelProductCard({ product }: ApparelProductCardProps) {
   };
 
   return (
-    <Link to={`/product/$id`} params={{ id: product.id }} className="block group product-card">
+    <Link to="/product/$id" params={{ id: product.id }} className="block group product-card">
       {/* Image */}
       <div className="relative aspect-square overflow-hidden bg-white border border-border">
         <img

@@ -255,7 +255,7 @@ function ProModal({ pro, onClose }: { pro: Pro; onClose: () => void }) {
             </a>
           )}
           <Link
-            to={`/${pro.id}`}
+            to={pro.id === 'gabe-salvanera' ? '/gabe-salvanera' : '/leroy-bates'}
             className="flex-1 inline-flex items-center justify-center gap-2 font-sans font-semibold text-xs tracking-widest uppercase px-6 py-3.5 border border-white/20 text-white hover:border-accent hover:text-accent transition-colors duration-200"
           >
             Full Profile
@@ -276,7 +276,7 @@ function ProModal({ pro, onClose }: { pro: Pro; onClose: () => void }) {
 // ─── Pro Card ─────────────────────────────────────────────────────────────────
 
 function ProCard({ pro, onClick }: { pro: Pro; onClick: () => void }) {
-  const profileTo = `/${pro.id}`;
+  const profileTo = pro.id === 'gabe-salvanera' ? '/gabe-salvanera' : '/leroy-bates';
 
   return (
     <div className="w-full bg-[#141414] border border-white/10 flex flex-col overflow-hidden group hover:border-accent/50 transition-colors duration-300">

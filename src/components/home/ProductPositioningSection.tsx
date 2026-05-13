@@ -42,7 +42,8 @@ export function ProductPositioningSection() {
               ))}
             </ul>
             <Link
-              to="/shop/training-system"
+              to="/shop/$category"
+              params={{ category: 'training-system' }}
               className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-8 py-4 border border-white/30 text-white/80 hover:border-white hover:text-white transition-colors duration-200"
             >
               Explore the System

@@ -98,7 +98,7 @@ export function ShopPage() {
           {Object.entries(categoryLabels).map(([key, label]) => (
             <li key={key}>
               <Link
-                to={`/shop/$category`}
+                to="/shop/$category"
                 params={{ category: key }}
                 className={`font-sans text-sm transition-colors ${
                   key === category

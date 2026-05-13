@@ -34,7 +34,8 @@ export function PromoSection() {
               Improve tempo, sequencing, and ball-striking with structured repetition.
             </p>
             <Link
-              to="/shop/training-system"
+              to="/shop/$category"
+              params={{ category: 'training-system' }}
               className="btn-gold inline-block px-8 py-4 font-sans font-semibold text-sm tracking-widest uppercase"
             >
               Shop Systems
@@ -58,7 +59,8 @@ export function PromoSection() {
               Join the Dominus Golf community. Get training tips, exclusive offers, and early product access.
             </p>
             <Link
-              to="/shop/balls"
+              to="/shop/$category"
+              params={{ category: 'balls' }}
               className="btn-primary-black inline-block px-8 py-4 font-sans font-semibold text-sm tracking-widest uppercase"
             >
               Join Now

@@ -14,7 +14,8 @@ export function MidCTASection() {
           Tour Pure helps golfers train movement patterns, tempo, and swing path without hitting a ball.
         </p>
         <Link
-          to="/product/tour-pure-men"
+          to="/product/$id"
+          params={{ id: 'tour-pure-men' }}
           className="inline-block font-sans font-semibold text-sm tracking-widest uppercase px-10 py-4 bg-accent text-white hover:bg-accent/90 transition-colors duration-200"
         >
           Get Tour Pure — $59.99

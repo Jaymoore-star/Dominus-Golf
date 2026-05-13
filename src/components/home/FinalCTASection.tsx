@@ -15,13 +15,15 @@ export function FinalCTASection() {
         </p>
         <div className="flex flex-wrap justify-center gap-4">
           <Link
-            to="/product/tour-pure-men"
+            to="/product/$id"
+            params={{ id: 'tour-pure-men' }}
             className="inline-block font-sans font-semibold text-sm tracking-widest uppercase px-10 py-4 bg-accent text-accent-foreground hover:bg-accent/90 transition-colors duration-200"
           >
             Order Tour Pure Now
           </Link>
           <Link
-            to="/shop/training-system"
+            to="/shop/$category"
+            params={{ category: 'training-system' }}
             className="inline-block font-sans font-semibold text-sm tracking-widest uppercase px-10 py-4 border border-white/25 text-white/70 hover:border-white hover:text-white transition-colors duration-200"
           >
             View All Products

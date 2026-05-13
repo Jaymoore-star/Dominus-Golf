@@ -21,6 +21,7 @@ import { SafetyDisclaimerPage } from './pages/SafetyDisclaimerPage';
 import { ShippingPolicyPage } from './pages/ShippingPolicyPage';
 import { TermsPage } from './pages/TermsPage';
 import { BeginnersPage } from './pages/BeginnersPage';
+import { PracticeWithProsPage } from './pages/PracticeWithProsPage';
 
 const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -56,6 +57,7 @@ const safetyRoute = createRoute({ getParentRoute: () => rootRoute, path: '/safet
 const shippingRoute = createRoute({ getParentRoute: () => rootRoute, path: '/shipping-policy', component: ShippingPolicyPage });
 const termsRoute = createRoute({ getParentRoute: () => rootRoute, path: '/terms', component: TermsPage });
 const beginnersRoute = createRoute({ getParentRoute: () => rootRoute, path: '/beginners', component: BeginnersPage });
+const practiceWithProsRoute = createRoute({ getParentRoute: () => rootRoute, path: '/practice-with-pros', component: PracticeWithProsPage });
 
 const routeTree = rootRoute.addChildren([
   indexRoute,
@@ -73,6 +75,7 @@ const routeTree = rootRoute.addChildren([
   shippingRoute,
   termsRoute,
   beginnersRoute,
+  practiceWithProsRoute,
 ]);
 
 const router = createRouter({ routeTree });

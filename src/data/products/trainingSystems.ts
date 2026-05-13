@@ -60,7 +60,7 @@ export const trainingSystems: Product[] = [
         rating: 4,
         date: '2024-02-15',
         title: 'Great feedback',
-        body: 'Immediate feedback on my swing path. Only wish I bought the bundle with the band.',
+        body: 'Immediate feedback on my swing path. Essential training aid.',
         verified: true,
       },
     ],

@@ -147,13 +147,15 @@ export function BeginnersPage() {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
-              to="/product/tour-pure-men"
+              to="/product/$id"
+              params={{ id: 'tour-pure-men' }}
               className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-10 py-4 bg-accent text-white hover:bg-accent/90 transition-colors duration-200"
             >
               Shop Tour Pure Men
             </Link>
             <Link
-              to="/product/tour-pure-women"
+              to="/product/$id"
+              params={{ id: 'tour-pure-women' }}
               className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-10 py-4 border border-white/20 text-white/70 hover:border-white hover:text-white transition-colors duration-200"
             >
               Shop Tour Pure Women
