@@ -185,72 +185,229 @@ export function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-30" ref={navRef}>
-      {/* Announcement Bar */}
-      <div className="bg-primary text-primary-foreground h-9 flex items-center justify-center relative overflow-hidden px-4">
-        {announcements.map((text, i) => (
-          <div
-            key={i}
-            className={`absolute inset-0 flex items-center justify-center transition-all duration-700 ease-in-out px-4 ${
-              i === announcementIndex
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 -translate-y-4'
-            }`}
-          >
-            <span className="font-sans text-[11px] font-medium tracking-widest uppercase text-accent text-center">
-              {text}
-            </span>
-          </div>
-        ))}
-      </div>
-
-      {/* Main Nav */}
-      <nav className="bg-background border-b border-border">
-        <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            {/* Mobile hamburger */}
-            <button
-              className="lg:hidden p-2 text-foreground hover:text-accent transition-colors"
-              onClick={() => setMobileOpen(true)}
-              aria-label="Open menu"
+    <>
+      <header className="sticky top-0 z-30" ref={navRef}>
+        {/* Announcement Bar */}
+        <div className="bg-primary text-primary-foreground h-9 flex items-center justify-center relative overflow-hidden px-4">
+          {announcements.map((text, i) => (
+            <div
+              key={i}
+              className={`absolute inset-0 flex items-center justify-center transition-all duration-700 ease-in-out px-4 ${
+                i === announcementIndex
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 -translate-y-4'
+              }`}
             >
-              <Menu size={22} />
-            </button>
+              <span className="font-sans text-[11px] font-medium tracking-widest uppercase text-accent text-center">
+                {text}
+              </span>
+            </div>
+          ))}
+        </div>
 
-            {/* Wordmark */}
-            <Link
-              to="/"
-              className="flex-shrink-0 font-serif font-bold tracking-[0.22em] text-[22px] text-foreground hover:text-accent transition-colors duration-200"
-            >
-              DOMINUS GOLF
-            </Link>
+        {/* Main Nav */}
+        <nav className="bg-background border-b border-border">
+          <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between h-16">
+              {/* Mobile hamburger */}
+              <button
+                className="lg:hidden p-2 text-foreground hover:text-accent transition-colors"
+                onClick={() => setMobileOpen(true)}
+                aria-label="Open menu"
+              >
+                <Menu size={22} />
+              </button>
 
-            {/* Desktop Nav Links */}
-            <div className="hidden lg:flex items-center gap-1">
-              {navLinks.map((link) => (
-                <div key={link.label} className="relative">
-                  {link.key ? (
-                    <button
-                      onMouseEnter={() => setActiveMega(link.key)}
-                      onClick={() =>
-                        setActiveMega(activeMega === link.key ? null : link.key)
-                      }
-                      className={`flex items-center gap-1 px-3 py-2 font-sans text-[13px] font-medium tracking-wide text-foreground hover:text-accent transition-colors duration-150 ${
-                        activeMega === link.key ? 'text-accent' : ''
-                      }`}
-                    >
-                      {link.label}
-                      <ChevronDown
-                        size={13}
-                        className={`transition-transform duration-200 ${
-                          activeMega === link.key ? 'rotate-180' : ''
+              {/* Wordmark */}
+              <Link
+                to="/"
+                className="flex-shrink-0 font-serif font-bold tracking-[0.22em] text-[22px] text-foreground hover:text-accent transition-colors duration-200"
+              >
+                DOMINUS GOLF
+              </Link>
+
+              {/* Desktop Nav Links */}
+              <div className="hidden lg:flex items-center gap-1">
+                {navLinks.map((link) => (
+                  <div key={link.label} className="relative">
+                    {link.key ? (
+                      <button
+                        onMouseEnter={() => setActiveMega(link.key)}
+                        onClick={() =>
+                          setActiveMega(activeMega === link.key ? null : link.key)
+                        }
+                        className={`flex items-center gap-1 px-3 py-2 font-sans text-[13px] font-medium tracking-wide text-foreground hover:text-accent transition-colors duration-150 ${
+                          activeMega === link.key ? 'text-accent' : ''
                         }`}
-                      />
-                    </button>
+                      >
+                        {link.label}
+                        <ChevronDown
+                          size={13}
+                          className={`transition-transform duration-200 ${
+                            activeMega === link.key ? 'rotate-180' : ''
+                          }`}
+                        />
+                      </button>
+                    ) : (
+                      <Link
+                        to={link.href ?? '/'}
+                        className="px-3 py-2 font-sans text-[13px] font-medium tracking-wide text-foreground hover:text-accent transition-colors duration-150"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* Right Icons */}
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => setSearchOpen(true)}
+                  className="p-2 text-foreground hover:text-accent transition-colors"
+                  aria-label="Search"
+                >
+                  <Search size={20} />
+                </button>
+                <button
+                  className="p-2 text-foreground hover:text-accent transition-colors hidden lg:flex"
+                  aria-label="Account"
+                >
+                  <User size={20} />
+                </button>
+                <button
+                  onClick={toggleCart}
+                  className="relative p-2 text-foreground hover:text-accent transition-colors"
+                  aria-label="Cart"
+                >
+                  <ShoppingBag size={20} />
+                  {itemCount > 0 && (
+                    <span className="cart-badge">{itemCount > 9 ? '9+' : itemCount}</span>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Mega Menu */}
+          {activeMega && megaMenuData[activeMega] && (
+            <div
+              className="mega-menu absolute top-full left-0 right-0 bg-background border-t border-b border-border shadow-xl z-20"
+              onMouseLeave={() => setActiveMega(null)}
+            >
+              <div className="max-w-screen-xl mx-auto px-8 py-10 grid grid-cols-[1fr_auto] gap-12">
+                {/* Columns */}
+                <div className="grid grid-cols-3 gap-8">
+                  {megaMenuData[activeMega].columns.map((col) => (
+                    <div key={col.heading}>
+                      <p className="font-sans text-[10px] font-semibold tracking-widest uppercase text-muted-foreground mb-3 pb-2 border-b border-border">
+                        {col.heading}
+                      </p>
+                      <ul className="space-y-2">
+                        {col.links.map((link) => (
+                          <li key={link.label}>
+                            <Link
+                              to={link.href as any}
+                              onClick={() => setActiveMega(null)}
+                              className="font-sans text-sm text-foreground hover:text-accent transition-colors duration-150 gold-underline-hover inline-block"
+                            >
+                              {link.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Feature Image */}
+                <div className="w-52 shrink-0">
+                  <div className="aspect-[3/4] overflow-hidden bg-muted">
+                    <img
+                      src={megaMenuData[activeMega].image}
+                      alt={megaMenuData[activeMega].imageCaption}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <p className="font-sans text-xs text-muted-foreground mt-2">
+                    {megaMenuData[activeMega].imageCaption}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </nav>
+
+        {/* Mobile Menu Overlay */}
+        {mobileOpen && (
+          <div className="fixed inset-0 bg-background z-50 flex flex-col lg:hidden">
+            {/* Mobile Header */}
+            <div className="flex items-center justify-between px-4 h-16 border-b border-border shrink-0">
+              <Link
+                to="/"
+                onClick={() => setMobileOpen(false)}
+                className="font-serif font-bold tracking-[0.22em] text-[20px] text-foreground"
+              >
+                DOMINUS GOLF
+              </Link>
+              <button
+                onClick={() => setMobileOpen(false)}
+                className="p-2 text-foreground"
+                aria-label="Close menu"
+              >
+                <X size={22} />
+              </button>
+            </div>
+
+            {/* Mobile Links */}
+            <div className="flex-1 overflow-y-auto py-4">
+              {navLinks.map((link) => (
+                <div key={link.label} className="border-b border-border">
+                  {link.key ? (
+                    <>
+                      <button
+                        onClick={() =>
+                          setMobileAccordion(
+                            mobileAccordion === link.label ? null : link.label,
+                          )
+                        }
+                        className="flex items-center justify-between w-full px-6 py-4 font-sans font-medium text-foreground text-sm tracking-wide"
+                      >
+                        {link.label}
+                        <ChevronDown
+                          size={16}
+                          className={`transition-transform duration-200 ${
+                            mobileAccordion === link.label ? 'rotate-180' : ''
+                          }`}
+                        />
+                      </button>
+                      {mobileAccordion === link.label && (
+                        <div className="px-6 pb-4 space-y-3 bg-muted/50">
+                          {megaMenuData[link.key]?.columns.map((col) => (
+                            <div key={col.heading}>
+                              <p className="font-sans text-[10px] font-semibold tracking-widest uppercase text-muted-foreground mt-3 mb-1">
+                                {col.heading}
+                              </p>
+                              {col.links.map((l) => (
+                                <Link
+                                  key={l.label}
+                                  to={l.href as any}
+                                  onClick={() => setMobileOpen(false)}
+                                  className="block py-1.5 font-sans text-sm text-foreground hover:text-accent transition-colors"
+                                >
+                                  {l.label}
+                                </Link>
+                              ))}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </>
                   ) : (
                     <Link
                       to={link.href ?? '/'}
-                      className="px-3 py-2 font-sans text-[13px] font-medium tracking-wide text-foreground hover:text-accent transition-colors duration-150"
+                      onClick={() => setMobileOpen(false)}
+                      className="block px-6 py-4 font-sans font-medium text-foreground text-sm tracking-wide hover:text-accent transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -259,196 +416,41 @@ export function Navbar() {
               ))}
             </div>
 
-            {/* Right Icons */}
-            <div className="flex items-center gap-1">
+            {/* Mobile Footer Icons */}
+            <div className="flex items-center justify-around px-6 py-5 border-t border-border shrink-0">
               <button
-                onClick={() => setSearchOpen(true)}
-                className="p-2 text-foreground hover:text-accent transition-colors"
-                aria-label="Search"
+                onClick={() => {
+                  setMobileOpen(false);
+                  setSearchOpen(true);
+                }}
+                className="flex flex-col items-center gap-1 text-foreground"
               >
                 <Search size={20} />
+                <span className="font-sans text-[10px] tracking-widest uppercase">Search</span>
               </button>
-              <button
-                className="p-2 text-foreground hover:text-accent transition-colors hidden lg:flex"
-                aria-label="Account"
-              >
+              <button className="flex flex-col items-center gap-1 text-foreground">
                 <User size={20} />
+                <span className="font-sans text-[10px] tracking-widest uppercase">Account</span>
               </button>
               <button
-                onClick={toggleCart}
-                className="relative p-2 text-foreground hover:text-accent transition-colors"
-                aria-label="Cart"
+                onClick={() => {
+                  setMobileOpen(false);
+                  toggleCart();
+                }}
+                className="relative flex flex-col items-center gap-1 text-foreground"
               >
                 <ShoppingBag size={20} />
                 {itemCount > 0 && (
                   <span className="cart-badge">{itemCount > 9 ? '9+' : itemCount}</span>
                 )}
+                <span className="font-sans text-[10px] tracking-widest uppercase">Bag</span>
               </button>
             </div>
           </div>
-        </div>
-
-        {/* Mega Menu */}
-        {activeMega && megaMenuData[activeMega] && (
-          <div
-            className="mega-menu absolute top-full left-0 right-0 bg-background border-t border-b border-border shadow-xl z-20"
-            onMouseLeave={() => setActiveMega(null)}
-          >
-            <div className="max-w-screen-xl mx-auto px-8 py-10 grid grid-cols-[1fr_auto] gap-12">
-              {/* Columns */}
-              <div className="grid grid-cols-3 gap-8">
-                {megaMenuData[activeMega].columns.map((col) => (
-                  <div key={col.heading}>
-                    <p className="font-sans text-[10px] font-semibold tracking-widest uppercase text-muted-foreground mb-3 pb-2 border-b border-border">
-                      {col.heading}
-                    </p>
-                    <ul className="space-y-2">
-                      {col.links.map((link) => (
-                        <li key={link.label}>
-                          <Link
-                            to={link.href as any}
-                            onClick={() => setActiveMega(null)}
-                            className="font-sans text-sm text-foreground hover:text-accent transition-colors duration-150 gold-underline-hover inline-block"
-                          >
-                            {link.label}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-
-              {/* Feature Image */}
-              <div className="w-52 shrink-0">
-                <div className="aspect-[3/4] overflow-hidden bg-muted">
-                  <img
-                    src={megaMenuData[activeMega].image}
-                    alt={megaMenuData[activeMega].imageCaption}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <p className="font-sans text-xs text-muted-foreground mt-2">
-                  {megaMenuData[activeMega].imageCaption}
-                </p>
-              </div>
-            </div>
-          </div>
         )}
-      </nav>
-
-      {/* Mobile Menu Overlay */}
-      {mobileOpen && (
-        <div className="fixed inset-0 bg-background z-50 flex flex-col lg:hidden">
-          {/* Mobile Header */}
-          <div className="flex items-center justify-between px-4 h-16 border-b border-border shrink-0">
-            <Link
-              to="/"
-              onClick={() => setMobileOpen(false)}
-              className="font-serif font-bold tracking-[0.22em] text-[20px] text-foreground"
-            >
-              DOMINUS GOLF
-            </Link>
-            <button
-              onClick={() => setMobileOpen(false)}
-              className="p-2 text-foreground"
-              aria-label="Close menu"
-            >
-              <X size={22} />
-            </button>
-          </div>
-
-          {/* Mobile Links */}
-          <div className="flex-1 overflow-y-auto py-4">
-            {navLinks.map((link) => (
-              <div key={link.label} className="border-b border-border">
-                {link.key ? (
-                  <>
-                    <button
-                      onClick={() =>
-                        setMobileAccordion(
-                          mobileAccordion === link.label ? null : link.label,
-                        )
-                      }
-                      className="flex items-center justify-between w-full px-6 py-4 font-sans font-medium text-foreground text-sm tracking-wide"
-                    >
-                      {link.label}
-                      <ChevronDown
-                        size={16}
-                        className={`transition-transform duration-200 ${
-                          mobileAccordion === link.label ? 'rotate-180' : ''
-                        }`}
-                      />
-                    </button>
-                    {mobileAccordion === link.label && (
-                      <div className="px-6 pb-4 space-y-3 bg-muted/50">
-                        {megaMenuData[link.key]?.columns.map((col) => (
-                          <div key={col.heading}>
-                            <p className="font-sans text-[10px] font-semibold tracking-widest uppercase text-muted-foreground mt-3 mb-1">
-                              {col.heading}
-                            </p>
-                            {col.links.map((l) => (
-                              <Link
-                                key={l.label}
-                                to={l.href as any}
-                                onClick={() => setMobileOpen(false)}
-                                className="block py-1.5 font-sans text-sm text-foreground hover:text-accent transition-colors"
-                              >
-                                {l.label}
-                              </Link>
-                            ))}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <Link
-                    to={link.href ?? '/'}
-                    onClick={() => setMobileOpen(false)}
-                    className="block px-6 py-4 font-sans font-medium text-foreground text-sm tracking-wide hover:text-accent transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* Mobile Footer Icons */}
-          <div className="flex items-center justify-around px-6 py-5 border-t border-border shrink-0">
-            <button 
-              onClick={() => {
-                setMobileOpen(false);
-                setSearchOpen(true);
-              }}
-              className="flex flex-col items-center gap-1 text-foreground"
-            >
-              <Search size={20} />
-              <span className="font-sans text-[10px] tracking-widest uppercase">Search</span>
-            </button>
-            <button className="flex flex-col items-center gap-1 text-foreground">
-              <User size={20} />
-              <span className="font-sans text-[10px] tracking-widest uppercase">Account</span>
-            </button>
-            <button
-              onClick={() => {
-                setMobileOpen(false);
-                toggleCart();
-              }}
-              className="relative flex flex-col items-center gap-1 text-foreground"
-            >
-              <ShoppingBag size={20} />
-              {itemCount > 0 && (
-                <span className="cart-badge">{itemCount > 9 ? '9+' : itemCount}</span>
-              )}
-              <span className="font-sans text-[10px] tracking-widest uppercase">Bag</span>
-            </button>
-          </div>
-        </div>
-      )}
+      </header>
 
       <SearchOverlay isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
-    </header>
+    </>
   );
 }

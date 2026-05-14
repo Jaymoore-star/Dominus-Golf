@@ -13,6 +13,17 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
   const [query, setQuery] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Close on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 100);
@@ -37,9 +48,9 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex flex-col bg-background animate-in fade-in duration-300">
+    <div className="fixed inset-0 z-[9999] flex flex-col bg-background animate-in fade-in zoom-in-95 duration-300">
       {/* Header */}
-      <div className="border-b border-border">
+      <div className="border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-20">
         <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center h-20 gap-4">
             <Search size={20} className="text-muted-foreground shrink-0" />
