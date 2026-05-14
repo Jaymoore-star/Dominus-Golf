@@ -17,8 +17,9 @@ export const trainingSystems: Product[] = [
     ],
     badge: 'Best Seller',
     description:
-      'Weighted swing trainer built to improve tempo, sequencing, swing path, and ball-striking consistency. Includes FREE 90-Day Training Manual (PDF).',
+      'Weighted swing trainer built to improve tempo, sequencing, swing path, and ball-striking consistency. Includes FREE Ultimate Guide to Mastering the Game (90-Day Training Manual) in PDF format.',
     features: [
+      'FREE Ultimate Guide to Mastering the Game (PDF)',
       'FREE 90-Day Training Manual (PDF)',
       'Improves tempo and sequencing',
       'Promotes repeatable swing path',
@@ -80,8 +81,9 @@ export const trainingSystems: Product[] = [
     ],
     badge: 'Sold Out',
     description:
-      'Precision weighted swing trainer designed to develop smooth tempo, proper sequencing, and a consistent swing motion. Includes FREE 90-Day Training Manual (PDF).',
+      'Precision weighted swing trainer designed to develop smooth tempo, proper sequencing, and a consistent swing motion. Includes FREE Ultimate Guide to Mastering the Game (90-Day Training Manual) in PDF format.',
     features: [
+      'FREE Ultimate Guide to Mastering the Game (PDF)',
       'FREE 90-Day Training Manual (PDF)',
       'Smooth weighted feel',
       'Improves rhythm and control',

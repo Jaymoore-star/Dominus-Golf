@@ -18,6 +18,7 @@ export function HeroSection() {
           </p>
           <p className="font-sans text-base text-white/75 leading-relaxed mb-12 max-w-[560px]">
             Built for golfers who want repeatable mechanics, better control, and a more consistent swing.
+            <span className="block mt-2 text-accent font-semibold underline underline-offset-4 decoration-accent/30">Includes FREE Ultimate Guide to Mastering the Game (PDF) with every purchase.</span>
           </p>
           <div className="flex flex-wrap gap-4">
             <Link
