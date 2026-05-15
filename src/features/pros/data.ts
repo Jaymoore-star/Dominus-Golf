@@ -5,7 +5,6 @@ export const pros: Pro[] = [
     id: 'gabe-salvanera',
     name: 'Gabe Salvanera',
     affiliation: 'PGA Tour Americas · Grass League',
-    region: 'Southwest',
     city: 'Phoenix',
     state: 'AZ',
     bio: 'Specialist in Swing Mechanics and Performance Optimization.',
@@ -44,7 +43,6 @@ export const pros: Pro[] = [
     id: 'leroy-bates',
     name: 'Leroy Bates',
     affiliation: 'Golf Junkyz Foundation · First Tee',
-    region: 'West',
     city: 'Los Angeles',
     state: 'CA',
     bio: 'Expert in Consistency and Technical Proficiency.',
@@ -82,5 +80,3 @@ export const pros: Pro[] = [
     reviewCount: 359,
   },
 ];
-
-export const REGIONS = ['All Regions', 'Southwest', 'Southeast', 'Northeast', 'Midwest', 'West'];

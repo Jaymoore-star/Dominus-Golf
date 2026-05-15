@@ -31,10 +31,6 @@ export function ProCard({ pro, onClick }: ProCardProps) {
             </svg>
           </div>
         )}
-        {/* Region pill */}
-        <span className="absolute top-3 left-3 font-sans text-[9px] font-semibold tracking-widest uppercase bg-black/60 text-white/60 px-2.5 py-1 border border-white/10">
-          {pro.region}
-        </span>
         {/* Hover bar */}
         <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
       </Link>

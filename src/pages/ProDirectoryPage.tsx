@@ -6,12 +6,11 @@ import { CartDrawer } from '../components/cart/CartDrawer';
 import { ProCard } from '../features/pros/components/ProCard';
 import { ProModal } from '../features/pros/components/ProModal';
 import { MethodologySection } from '../features/pros/components/MethodologySection';
-import { pros, REGIONS } from '../features/pros/data';
+import { pros } from '../features/pros/data';
 import { Pro } from '../features/pros/types';
 
 export function ProDirectoryPage() {
   const [search, setSearch] = useState('');
-  const [region, setRegion] = useState('All Regions');
   const [selected, setSelected] = useState<Pro | null>(null);
 
   const filtered = pros.filter((p) => {
@@ -22,8 +21,7 @@ export function ProDirectoryPage() {
       p.city.toLowerCase().includes(q) ||
       p.state.toLowerCase().includes(q) ||
       p.affiliation.toLowerCase().includes(q);
-    const matchRegion = region === 'All Regions' || p.region === region;
-    return matchSearch && matchRegion;
+    return matchSearch;
   });
 
   return (
@@ -48,11 +46,10 @@ export function ProDirectoryPage() {
       {/* Instruction vs. Integration Section */}
       <MethodologySection />
 
-      {/* Filters */}
+      {/* Search Filter */}
       <section className="w-full bg-[#0e0e0e] border-b border-white/10 py-6 px-4 sticky top-[90px] z-20">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row gap-3">
-          {/* Search */}
-          <div className="relative flex-1 max-w-sm">
+        <div className="max-w-7xl mx-auto">
+          <div className="relative max-w-sm">
             <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none" />
             <input
               type="text"
@@ -62,29 +59,20 @@ export function ProDirectoryPage() {
               className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/15 text-white placeholder:text-white/30 font-sans text-sm focus:outline-none focus:border-accent transition-colors duration-200"
             />
           </div>
-
-          {/* Region filter */}
-          <div className="flex flex-wrap gap-2">
-            {REGIONS.map((r) => (
-              <button
-                key={r}
-                onClick={() => setRegion(r)}
-                className={`font-sans text-[11px] font-semibold tracking-widest uppercase px-4 py-2.5 border transition-colors duration-150 ${
-                  region === r
-                    ? 'border-accent bg-accent text-white'
-                    : 'border-white/15 text-white/50 hover:border-white/40 hover:text-white/80'
-                }`}
-              >
-                {r}
-              </button>
-            ))}
-          </div>
         </div>
       </section>
 
       {/* Grid */}
       <section className="w-full bg-[#0e0e0e] py-12 sm:py-16 px-4 min-h-[400px]">
         <div className="max-w-7xl mx-auto">
+          <div className="mb-12">
+            <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-4">
+              Directory
+            </p>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white">
+              Our Professional Golfers
+            </h2>
+          </div>
           {filtered.length > 0 ? (
             <>
               <p className="font-sans text-[11px] text-white/30 tracking-widest uppercase mb-8">
@@ -103,10 +91,10 @@ export function ProDirectoryPage() {
                 Try a different search term or region.
               </p>
               <button
-                onClick={() => { setSearch(''); setRegion('All Regions'); }}
+                onClick={() => setSearch('')}
                 className="mt-6 font-sans text-xs tracking-widest uppercase text-accent hover:underline"
               >
-                Clear filters
+                Clear search
               </button>
             </div>
           )}

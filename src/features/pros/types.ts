@@ -2,7 +2,6 @@ export type Pro = {
   id: string;
   name: string;
   affiliation: string;
-  region: string;
   city: string;
   state: string;
   bio: string;
