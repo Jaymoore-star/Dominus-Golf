@@ -82,15 +82,16 @@ const megaMenuData = {
       {
         heading: 'Professional Coaching',
         links: [
-          { label: 'Pro Directory', href: '/pros' },
-          { label: 'Gabe Salvanera', href: '/gabe-salvanera' },
-          { label: 'Leroy Bates', href: '/leroy-bates' },
+          { label: 'Overview & Methodology', href: '/practice-with-pros' },
+          { label: 'Find Your Pro', href: '/pros' },
+          { label: 'Beginners Guide', href: '/beginners' },
         ],
       },
       {
-        heading: 'Guides',
+        heading: 'Tour Professionals',
         links: [
-          { label: 'Beginners Guide', href: '/beginners' },
+          { label: 'Gabe Salvanera', href: '/gabe-salvanera' },
+          { label: 'Leroy Bates', href: '/leroy-bates' },
         ],
       },
     ],

@@ -68,21 +68,28 @@ export function PracticeWithProsPage() {
       <section className="w-full bg-[#0a0a0a] pt-24 pb-20 px-4 border-b border-white/10">
         <div className="max-w-4xl mx-auto text-center">
           <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-4">
-            Elite Range Training
+            Professional Coaching
           </p>
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-8">
             Practice with a Pro
           </h1>
           <p className="font-sans text-lg text-white/70 max-w-2xl mx-auto leading-relaxed mb-10">
-            Professional-grade mentorship from Dominus Golf's national network of pros. Refine your technique,
-            build tour-level mechanics, and master your practice on the range.
+            Professional-grade mentorship from Dominus Golf's national network of pros. Find your Pro, view their sessions, and book direct.
           </p>
-          <a
-            href="#book"
-            className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-12 py-4 bg-accent text-white hover:bg-accent/90 transition-colors duration-200"
-          >
-            Book a Session
-          </a>
+          <div className="flex flex-wrap justify-center gap-4">
+            <a
+              href="#book"
+              className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-12 py-4 bg-accent text-white hover:bg-accent/90 transition-colors duration-200"
+            >
+              Book a Session
+            </a>
+            <Link
+              to="/pros"
+              className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-12 py-4 border border-white/20 text-white hover:bg-white/5 transition-colors duration-200"
+            >
+              Find Your Pro
+            </Link>
+          </div>
         </div>
       </section>
 
