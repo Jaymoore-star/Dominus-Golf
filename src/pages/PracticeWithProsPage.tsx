@@ -269,10 +269,10 @@ export function PracticeWithProsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-4">
-              Our Pros
+              Professional Golfers
             </p>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white">
-              Meet the Pros
+              Our Professional Golfers
             </h2>
           </div>
 

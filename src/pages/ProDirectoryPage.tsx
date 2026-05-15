@@ -46,28 +46,26 @@ export function ProDirectoryPage() {
       {/* Instruction vs. Integration Section */}
       <MethodologySection />
 
-      {/* Search Filter */}
-      <section className="w-full bg-[#0e0e0e] border-b border-white/10 py-6 px-4 sticky top-[90px] z-20">
-        <div className="max-w-7xl mx-auto">
-          <div className="relative max-w-sm">
-            <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by name, city, affiliation…"
-              className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/15 text-white placeholder:text-white/30 font-sans text-sm focus:outline-none focus:border-accent transition-colors duration-200"
-            />
-          </div>
-        </div>
-      </section>
-
       {/* Grid */}
-      <section className="w-full bg-[#0e0e0e] py-12 sm:py-16 px-4 min-h-[400px]">
+      <section className="w-full bg-[#0e0e0e] py-12 sm:py-20 px-4 min-h-[400px]">
         <div className="max-w-7xl mx-auto">
+          {/* Search Bar */}
+          <div className="mb-16">
+            <div className="relative max-w-md">
+              <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none" />
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search our professionals…"
+                className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 text-white placeholder:text-white/20 font-sans text-sm focus:outline-none focus:border-accent transition-all duration-300"
+              />
+            </div>
+          </div>
+
           <div className="mb-12">
             <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-4">
-              Directory
+              Professional Golfers
             </p>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white">
               Our Professional Golfers
@@ -88,7 +86,7 @@ export function ProDirectoryPage() {
             <div className="flex flex-col items-center justify-center py-24 text-center">
               <p className="font-serif text-xl text-white/30 mb-3">No pros found</p>
               <p className="font-sans text-sm text-white/25">
-                Try a different search term or region.
+                Try a different search term.
               </p>
               <button
                 onClick={() => setSearch('')}
