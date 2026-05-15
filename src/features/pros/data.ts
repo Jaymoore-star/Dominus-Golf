@@ -7,6 +7,7 @@ export const pros: Pro[] = [
     affiliation: 'PGA Tour Americas · Grass League',
     city: 'Phoenix',
     state: 'AZ',
+    country: 'USA',
     bio: 'Specialist in Swing Mechanics and Performance Optimization.',
     fullBio:
       'Gabe Salvanera is a PGA Tour Americas and Grass League professional who has built his reputation on elite swing mechanics and performance optimization. His sessions focus on building tour-level habits on the range that translate directly to better ball striking and lower scores.',
@@ -45,6 +46,7 @@ export const pros: Pro[] = [
     affiliation: 'Golf Junkyz Foundation · First Tee',
     city: 'Los Angeles',
     state: 'CA',
+    country: 'USA',
     bio: 'Expert in Consistency and Technical Proficiency.',
     fullBio:
       'Leroy Bates is a Golf Junkyz Foundation professional and First Tee instructor whose entire Pro career is built around one goal: consistency. He gives everyday golfers a structured, repeatable path to lower scores through elite technical range sessions.',

@@ -20,6 +20,7 @@ export function ProDirectoryPage() {
       p.name.toLowerCase().includes(q) ||
       p.city.toLowerCase().includes(q) ||
       p.state.toLowerCase().includes(q) ||
+      p.country.toLowerCase().includes(q) ||
       p.affiliation.toLowerCase().includes(q);
     return matchSearch;
   });
@@ -49,27 +50,25 @@ export function ProDirectoryPage() {
       {/* Grid */}
       <section className="w-full bg-[#0e0e0e] py-12 sm:py-20 px-4 min-h-[400px]">
         <div className="max-w-7xl mx-auto">
-          {/* Search Bar */}
-          <div className="mb-16">
+          <div className="mb-12">
+            <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-4">
+              Professional Golfers
+            </p>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-8">
+              Our Professional Golfers
+            </h2>
+
+            {/* Search Bar inside Directory */}
             <div className="relative max-w-md">
               <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none" />
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search our professionals…"
+                placeholder="Search by name, city, state, or country…"
                 className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 text-white placeholder:text-white/20 font-sans text-sm focus:outline-none focus:border-accent transition-all duration-300"
               />
             </div>
-          </div>
-
-          <div className="mb-12">
-            <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-4">
-              Professional Golfers
-            </p>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white">
-              Our Professional Golfers
-            </h2>
           </div>
           {filtered.length > 0 ? (
             <>

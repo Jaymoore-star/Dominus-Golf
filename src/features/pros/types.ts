@@ -4,6 +4,7 @@ export type Pro = {
   affiliation: string;
   city: string;
   state: string;
+  country: string;
   bio: string;
   fullBio: string;
   photo: string | null;
