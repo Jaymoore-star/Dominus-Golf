@@ -4,56 +4,53 @@ export function TourPureOverview() {
   const steps = [
     {
       number: '01',
-      title: 'Get familiar with the feel',
+      title: 'P1 to P2: The Takeaway',
       icon: <Activity className="w-5 h-5 text-accent" />,
-      content: 'Pick up the trainer and take slow half-swings. The added weight is intentional — it forces you to engage the correct muscles and develop awareness of club position throughout the swing.'
+      content: (
+        <div className="space-y-3">
+          <p className="font-bold text-foreground">Address to Shaft Parallel.</p>
+          <p>Start with a balanced setup. As you move to P2 (club shaft parallel to the ground), focus on a one-piece takeaway. The extra weight of the Tour Pure barrel prevents your hands from flipping, forcing your larger torso muscles to drive the initial movement.</p>
+        </div>
+      )
     },
     {
       number: '02',
-      title: 'Work through the swing sequence',
+      title: 'P3: The Half-Backswing',
       icon: <Zap className="w-5 h-5 text-accent" />,
       content: (
-        <ul className="space-y-2 mt-2">
-          <li className="flex items-start gap-2">
-            <span className="w-1.5 h-1.5 bg-accent/40 mt-1.5 shrink-0" />
-            <span>Set up above the ball in your normal address position.</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="w-1.5 h-1.5 bg-accent/40 mt-1.5 shrink-0" />
-            <span>Make a controlled takeaway, pausing at waist height to check club face and path.</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="w-1.5 h-1.5 bg-accent/40 mt-1.5 shrink-0" />
-            <span>Proceed to the top of the backswing — the weight will expose any breakdown in your wrist or arm position.</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="w-1.5 h-1.5 bg-accent/40 mt-1.5 shrink-0" />
-            <span>Swing through to impact and follow-through, letting the weight teach proper sequencing and tempo.</span>
-          </li>
-          <li className="flex items-start gap-2 italic text-muted-foreground">
-            <span className="w-1.5 h-1.5 bg-accent/20 mt-1.5 shrink-0" />
-            <span>Do this 5–10 times, slowly, building feel rather than speed.</span>
-          </li>
-        </ul>
+        <div className="space-y-3">
+          <p className="font-bold text-foreground">Lead Arm Parallel to Ground.</p>
+          <p>At P3, your lead arm is parallel to the ground and the club shaft points upward. The Tour Pure accentuates the hinge of your wrists. If you over-swing or lose control here, the weighted barrel will immediately pull your hands out of position, giving you instant physical feedback.</p>
+        </div>
       )
     },
     {
       number: '03',
-      title: 'Use it as a putting aid too',
+      title: 'P4 to P5: The Top and Transition',
       icon: <Target className="w-5 h-5 text-accent" />,
-      content: 'The Tour Pure doubles as a putting trainer. Use it on the putting green to reinforce a consistent stroke path and feel for distance control.'
+      content: (
+        <div className="space-y-3">
+          <p className="font-bold text-foreground">Top of Swing to Downswing Initiative.</p>
+          <p>From the top of the swing (P4), the transition to the downswing (P5) must be driven by the lower body. Keep your upper body passive. Let the gravity and weight of the barrel naturally drop the club into the slot, preventing an "over-the-top" slicing motion.</p>
+        </div>
+      )
     },
     {
       number: '04',
-      title: 'Transition to your real club',
+      title: 'P6 to P7: Impact Delivery',
       icon: <Waves className="w-5 h-5 text-accent" />,
-      content: 'After several reps with the Tour Pure, set it aside and pick up your normal club. Your real club will feel lighter and faster — try to replicate the tempo and positions you felt with the trainer.'
+      content: (
+        <div className="space-y-3">
+          <p className="font-bold text-foreground">Shaft Parallel to Impact.</p>
+          <p>As the club travels from P6 (shaft parallel to the ground on the downswing) to P7 (impact), focus on the lateral roll of your lead ankle. Rolling the ankle correctly clears your hips and allows the weighted barrel to release precisely through the hitting zone, squaring the clubface naturally.</p>
+        </div>
+      )
     },
     {
       number: '05',
-      title: 'Fitness use',
+      title: 'Fitness & Putting Use',
       icon: <Activity className="w-5 h-5 text-accent" />,
-      content: 'The weighted design also doubles as a fitness tool. Golfers can use it for swing-specific warm-up exercises and strength-building routines off the course.'
+      content: 'The weighted design also doubles as a fitness tool for swing-specific warm-ups and a putting aid to reinforce a consistent stroke path and distance control.'
     }
   ];
 
@@ -113,10 +110,12 @@ export function TourPureOverview() {
             Methodology
           </p>
           <h2 className="font-serif text-3xl sm:text-4xl font-bold mb-6">
-            How to Use the Trainer
+            Swing Methodology — The Step-by-Step Sequence
           </h2>
-          <p className="font-sans text-muted-foreground max-w-2xl mx-auto italic">
-            Based on what Dominus Golf and comparable weighted swing trainer methodology recommends:
+          <p className="font-sans text-muted-foreground max-w-3xl mx-auto italic leading-relaxed">
+            To build a repeatable, bulletproof swing, we map the movement using the dynamic P Position system. 
+            By utilizing the unique feedback of the Tour Pure and its 3.8 weighted barrel, you can feel exactly 
+            where the clubhead is at every critical transition point, ensuring proper body rotation and perfect sequencing.
           </p>
         </div>
 
