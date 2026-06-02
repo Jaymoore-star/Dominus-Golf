@@ -17,7 +17,7 @@ const megaMenuData = {
   training: {
     columns: [
       {
-        heading: 'Training Systems',
+        heading: 'How to use Tour Pure',
         links: [
           { label: 'Tour Pure Men', href: '/product/tour-pure-men' },
           { label: 'Tour Pure Women', href: '/product/tour-pure-women' },
@@ -179,7 +179,7 @@ export function Navbar() {
   }, [mobileOpen]);
 
   const navLinks: { label: string; key: MegaMenuKey; href?: string }[] = [
-    { label: 'Training Systems', key: 'training' },
+    { label: 'How to use Tour Pure', key: 'training' },
     { label: 'Apparel', key: 'apparel' },
     { label: 'Accessories', key: 'accessories' },
     { label: 'Practice with a Pro', key: 'pros' },

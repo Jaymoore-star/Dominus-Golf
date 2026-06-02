@@ -20,7 +20,7 @@ export function HeroSection() {
         <div className="max-w-3xl">
           <div className="flex flex-wrap items-center gap-4 mb-6">
             <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent">
-              Tour Pure Training System
+              How to use Tour Pure
             </p>
             <div className="relative">
               <button
