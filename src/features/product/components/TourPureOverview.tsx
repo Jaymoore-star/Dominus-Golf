@@ -60,7 +60,7 @@ export function TourPureOverview() {
   const tips = [
     'Go slow first. The weight will expose swing flaws quickly — rushing defeats the purpose.',
     'Pause at key positions — takeaway, top of backswing, and impact — to build body memory.',
-    'Just minutes a day counts. Even 10–15 purposeful swings daily will reinforce muscle memory over time.',
+    'Just minutes a day counts. Even 50–100 purposeful swings daily will reinforce muscle memory over time.',
     'Don\'t grip too tight. A tense grip with the added weight will cause fatigue and bad habits.',
     'Use it to warm up before rounds, not just at the range — the weight primes your swing muscles effectively.'
   ];
