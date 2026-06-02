@@ -68,7 +68,7 @@ export function TourPureOverview() {
   return (
     <div className="mt-20 space-y-24">
       {/* Overview Section */}
-      <section className="relative overflow-hidden bg-black text-white py-20 px-6 border border-white/10">
+      <section id="overview" className="relative overflow-hidden bg-black text-white py-20 px-6 border border-white/10">
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col items-center text-center mb-12">
             <p className="font-sans text-[11px] font-semibold tracking-[0.4em] uppercase text-accent mb-4">
@@ -107,7 +107,7 @@ export function TourPureOverview() {
       </section>
 
       {/* Usage Guide */}
-      <section className="max-w-5xl mx-auto px-4">
+      <section id="methodology" className="max-w-5xl mx-auto px-4">
         <div className="flex flex-col items-center text-center mb-16">
           <p className="font-sans text-[11px] font-semibold tracking-[0.4em] uppercase text-accent mb-4">
             Methodology
@@ -144,7 +144,7 @@ export function TourPureOverview() {
       </section>
 
       {/* Key Tips */}
-      <section className="bg-accent/5 border-y border-accent/10 py-20 px-4">
+      <section id="tips" className="bg-accent/5 border-y border-accent/10 py-20 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center gap-4 mb-10">
             <Target className="text-accent" size={32} />

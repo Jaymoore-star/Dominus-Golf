@@ -38,10 +38,9 @@ const megaMenuData = {
       {
         heading: 'How to use Tour Pure',
         links: [
-          { label: 'Official Guide Overview', href: '/tour-pure-guide' },
-          { label: 'Swing Methodology', href: '/tour-pure-guide' },
-          { label: 'Training Tips', href: '/tour-pure-guide' },
-          { label: 'Fitness & Warm-up', href: '/tour-pure-guide' },
+          { label: 'Swing Methodology — The Step-by-Step Sequence', href: '/tour-pure-guide' },
+          { label: 'Training Tips — Key Results & Muscle Memory', href: '/tour-pure-guide' },
+          { label: 'Fitness & Warm-up — Strength & Flexibility', href: '/tour-pure-guide' },
         ],
       },
       {

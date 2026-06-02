@@ -7,10 +7,9 @@ export function HeroSection() {
   const [systemsOpen, setSystemsOpen] = useState(false);
 
   const guideLinks = [
-    { label: 'Overview', icon: <BookOpen size={14} />, href: '/tour-pure-guide' },
-    { label: 'Methodology', icon: <Target size={14} />, href: '/tour-pure-guide' },
-    { label: 'Key Tips', icon: <Zap size={14} />, href: '/tour-pure-guide' },
-    { label: 'Fitness Use', icon: <Activity size={14} />, href: '/tour-pure-guide' },
+    { label: 'Swing Methodology — Step Sequence', icon: <Target size={14} />, href: '/tour-pure-guide' },
+    { label: 'Training Tips — Muscle Memory', icon: <Zap size={14} />, href: '/tour-pure-guide' },
+    { label: 'Fitness & Warm-up — Strength', icon: <Activity size={14} />, href: '/tour-pure-guide' },
   ];
 
   const systemLinks = [
