@@ -313,15 +313,28 @@ export function PracticeWithProsPage() {
       {/* Safety Note */}
       <section className="w-full bg-[#0a0a0a] border-b border-white/10 py-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-start gap-4 bg-accent/5 border border-accent/20 p-6">
-            <span className="text-accent text-lg shrink-0 mt-0.5">⚠</span>
-            <p className="font-sans text-sm text-white/70 leading-relaxed">
-              <span className="font-semibold text-accent">Safety Notice:</span> All on-range sessions incorporate Tour Pure training exercises. Participants should review the{' '}
-              <Link to="/safety-disclaimer" className="text-accent hover:underline">
-                Safety Disclaimer
-              </Link>{' '}
-              before their session.
-            </p>
+          <div className="flex flex-col md:flex-row gap-6">
+            <div className="flex-1 flex items-start gap-4 bg-accent/5 border border-accent/20 p-6">
+              <span className="text-accent text-lg shrink-0 mt-0.5">⚠</span>
+              <p className="font-sans text-sm text-white/70 leading-relaxed">
+                <span className="font-semibold text-accent">Safety Notice:</span> All on-range sessions incorporate Tour Pure training exercises. Participants should review the{' '}
+                <Link to="/safety-disclaimer" className="text-accent hover:underline">
+                  Safety Disclaimer
+                </Link>{' '}
+                before their session.
+              </p>
+            </div>
+            <div className="flex-1 flex items-start gap-4 bg-white/5 border border-white/10 p-6 group hover:border-accent/30 transition-colors">
+              <span className="text-accent text-lg shrink-0 mt-0.5">ⓘ</span>
+              <div>
+                <p className="font-sans text-sm text-white/70 leading-relaxed mb-3">
+                  <span className="font-semibold text-white">Guide:</span> Learn how to master your mechanics with the official Tour Pure Swing Trainer Guide.
+                </p>
+                <Link to="/tour-pure-guide" className="font-sans text-[11px] font-semibold tracking-widest uppercase text-accent hover:text-white transition-colors">
+                  View Guide →
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>

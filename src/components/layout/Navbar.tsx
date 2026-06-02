@@ -22,6 +22,7 @@ const megaMenuData = {
           { label: 'Tour Pure Men', href: '/product/tour-pure-men' },
           { label: 'Tour Pure Women', href: '/product/tour-pure-women' },
           { label: 'Tour Pure Jr', href: '/product/tour-pure-jr' },
+          { label: 'Tour Pure Guide', href: '/tour-pure-guide' },
           { label: 'All Training Systems', href: '/shop/training-system' },
         ],
       },

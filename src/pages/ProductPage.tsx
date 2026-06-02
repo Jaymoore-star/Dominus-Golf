@@ -31,6 +31,7 @@ import { ProductGallery } from '../features/product/components/ProductGallery';
 import { ProductInfo } from '../features/product/components/ProductInfo';
 import { ProductAccordion } from '../features/product/components/ProductAccordion';
 import { ProductReviews } from '../features/product/components/ProductReviews';
+import { TourPureOverview } from '../features/product/components/TourPureOverview';
 
 export function ProductPage() {
   const { id } = useParams({ from: '/product/$id' });
@@ -165,6 +166,9 @@ export function ProductPage() {
             />
           </div>
         </div>
+
+        {/* Tour Pure Overview (Conditional) */}
+        {product.id.startsWith('tour-pure') && <TourPureOverview />}
 
         {/* Related Products */}
         {related.length > 0 && (

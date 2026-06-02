@@ -22,6 +22,7 @@ import { ShippingPolicyPage } from './pages/ShippingPolicyPage';
 import { TermsPage } from './pages/TermsPage';
 import { BeginnersPage } from './pages/BeginnersPage';
 import { PracticeWithProsPage } from './pages/PracticeWithProsPage';
+import { TourPureGuidePage } from './pages/TourPureGuidePage';
 
 const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -58,6 +59,7 @@ const shippingRoute = createRoute({ getParentRoute: () => rootRoute, path: '/shi
 const termsRoute = createRoute({ getParentRoute: () => rootRoute, path: '/terms', component: TermsPage });
 const beginnersRoute = createRoute({ getParentRoute: () => rootRoute, path: '/beginners', component: BeginnersPage });
 const practiceWithProsRoute = createRoute({ getParentRoute: () => rootRoute, path: '/practice-with-pros', component: PracticeWithProsPage });
+const tourPureGuideRoute = createRoute({ getParentRoute: () => rootRoute, path: '/tour-pure-guide', component: TourPureGuidePage });
 
 const routeTree = rootRoute.addChildren([
   indexRoute,
@@ -76,6 +78,7 @@ const routeTree = rootRoute.addChildren([
   termsRoute,
   beginnersRoute,
   practiceWithProsRoute,
+  tourPureGuideRoute,
 ]);
 
 const router = createRouter({ routeTree });
