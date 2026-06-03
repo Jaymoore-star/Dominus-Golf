@@ -11,7 +11,7 @@ export function MidCTASection() {
           Start Building a More Consistent Swing Today
         </h2>
         <p className="font-sans text-base text-white/50 leading-relaxed mb-10 max-w-xl mx-auto">
-          Tour Pure helps golfers train movement patterns, tempo, and swing path without hitting a ball.
+          Tour Pure helps golfers train movement patterns, tempo, and swing path — at home, at the range, or on the green.
         </p>
         <Link
           to="/product/$id"

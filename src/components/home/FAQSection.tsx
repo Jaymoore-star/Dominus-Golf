@@ -4,9 +4,9 @@ import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 const faqs = [
   {
     id: 1,
-    question: 'Are training aids really worth the money?',
+    question: 'What is Tour Pure?',
     answer:
-      'Only if they deliver results. Our "Practicing with a Pro" sessions use the Tour Pure system to bridge the gap between range practice and competitive performance.',
+      'Tour Pure helps golfers train movement patterns, tempo, and swing path — at home, at the range, or on the green.',
   },
   {
     id: 2,
