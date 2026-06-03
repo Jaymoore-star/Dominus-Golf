@@ -32,6 +32,7 @@ import { ProductInfo } from '../features/product/components/ProductInfo';
 import { ProductAccordion } from '../features/product/components/ProductAccordion';
 import { ProductReviews } from '../features/product/components/ProductReviews';
 import { TourPureOverview } from '../features/product/components/TourPureOverview';
+import { FeelRightBandOverview } from '../features/product/components/FeelRightBandOverview';
 
 export function ProductPage() {
   const { id } = useParams({ from: '/product/$id' });
@@ -169,6 +170,7 @@ export function ProductPage() {
 
         {/* Tour Pure Overview (Conditional) */}
         {product.id.startsWith('tour-pure') && <TourPureOverview />}
+        {product.id === 'feel-right-band' && <FeelRightBandOverview />}
 
         {/* Related Products */}
         {related.length > 0 && (

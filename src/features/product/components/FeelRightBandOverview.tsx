@@ -97,7 +97,7 @@ export function FeelRightBandOverview() {
         </div>
       </section>
 
-      {/* The Logo System Section */}
+      {/* Logo System Section */}
       <section id="logo-system" className="max-w-5xl mx-auto px-4">
         <div className="flex flex-col items-center text-center mb-16">
           <p className="font-sans text-[11px] font-semibold tracking-[0.4em] uppercase text-accent mb-4">
@@ -106,24 +106,24 @@ export function FeelRightBandOverview() {
           <h2 className="font-serif text-3xl sm:text-4xl font-bold mb-6">
             Your Visual Checkpoint
           </h2>
-          <p className="font-sans text-muted-foreground max-w-2xl mx-auto italic mb-10">
+          <p className="font-sans text-muted-foreground max-w-2xl mx-auto italic mb-10 text-center">
             The Dominus Golf logo on the band is your checkpoint at every key position in the swing. Learn these three positions and you'll always know if your swing is on track.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left w-full">
-            <div className="bg-white/5 border border-border/10 p-8 rounded-lg">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left w-full mt-12">
+            <div className="bg-white/5 border border-border/10 p-8 rounded-lg shadow-sm">
               <h3 className="font-serif text-xl font-bold mb-4">Position 1: Address</h3>
               <p className="font-sans text-sm text-muted-foreground leading-relaxed">
                 Logo faces the target. Trail arm is connected, relaxed, and in front of the body. This is your starting reference point.
               </p>
             </div>
-            <div className="bg-white/5 border border-border/10 p-8 rounded-lg">
+            <div className="bg-white/5 border border-border/10 p-8 rounded-lg shadow-sm">
               <h3 className="font-serif text-xl font-bold mb-4">Position 2: Top of Backswing</h3>
               <p className="font-sans text-sm text-muted-foreground leading-relaxed">
                 Logo faces the sky. The trail arm has separated naturally from the body as the shoulders turn. This is correct — do not try to keep the band pinned to your side during the backswing.
               </p>
             </div>
-            <div className="bg-white/5 border border-border/10 p-8 rounded-lg">
+            <div className="bg-white/5 border border-border/10 p-8 rounded-lg shadow-sm">
               <h3 className="font-serif text-xl font-bold mb-4">Position 3: Downswing & Impact</h3>
               <p className="font-sans text-sm text-muted-foreground leading-relaxed">
                 Logo returns to face the target. This is the moment that matters. The band must reconnect to the body before impact — driven by body rotation, not by the arm pulling itself back in. If the logo is facing the sky at impact, the trail arm never reconnected.
@@ -133,8 +133,8 @@ export function FeelRightBandOverview() {
         </div>
       </section>
 
-      {/* How to Use Section */}
-      <section id="how-to-use" className="max-w-5xl mx-auto px-4">
+      {/* Methodology Guide */}
+      <section id="methodology" className="max-w-5xl mx-auto px-4">
         <div className="flex flex-col items-center text-center mb-16">
           <p className="font-sans text-[11px] font-semibold tracking-[0.4em] uppercase text-accent mb-4">
             Methodology
@@ -167,7 +167,7 @@ export function FeelRightBandOverview() {
         </div>
       </section>
 
-      {/* Key Tips Section */}
+      {/* Key Tips */}
       <section id="tips" className="bg-accent/5 border-y border-accent/10 py-20 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center gap-4 mb-10">
