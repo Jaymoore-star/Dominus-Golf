@@ -33,27 +33,6 @@ const megaMenuData = {
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FPhotoroom-20251125_1425462241__e480e1c6.png?alt=media&token=7c96a611-0b70-415f-a7f7-8bebe5a974a2',
     imageCaption: 'Tour Pure — Build Your Best Swing',
   },
-  guide: {
-    columns: [
-      {
-        heading: 'How to use Tour Pure',
-        links: [
-          { label: 'Swing Methodology — The Step-by-Step Sequence', href: '/tour-pure-guide' },
-          { label: 'Training Tips — Key Results & Muscle Memory', href: '/tour-pure-guide' },
-          { label: 'Fitness & Warm-up — Strength & Flexibility', href: '/tour-pure-guide' },
-        ],
-      },
-      {
-        heading: 'Instruction',
-        links: [
-          { label: 'Practice with a Pro', href: '/practice-with-pros' },
-          { label: 'Beginners Guide', href: '/beginners' },
-        ],
-      },
-    ],
-    image: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=600&q=80',
-    imageCaption: 'Master the Dominus Method',
-  },
   apparel: {
     columns: [
       {
@@ -200,7 +179,6 @@ export function Navbar() {
 
   const navLinks: { label: string; key: MegaMenuKey; href?: string }[] = [
     { label: 'Training Systems', key: 'training' },
-    { label: 'How to use Tour Pure', key: 'guide' },
     { label: 'Apparel', key: 'apparel' },
     { label: 'Accessories', key: 'accessories' },
     { label: 'Practice with a Pro', key: 'pros' },
