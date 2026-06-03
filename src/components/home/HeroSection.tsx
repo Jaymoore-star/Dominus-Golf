@@ -84,13 +84,13 @@ export function HeroSection() {
             </div>
           </div>
           <h1 className="font-serif text-5xl sm:text-6xl lg:text-[4rem] font-bold text-white leading-[1.06] mb-7">
-            Train Like You<br />Mean It
+            A More Consistent Swing Starts Here
           </h1>
           <p className="font-sans text-xl text-white/90 leading-relaxed mb-4 font-medium tracking-wide">
-            No Ball. No Guessing. Just Repetition.
+            Dominus Golf combines weighted swing training with elite professional coaching — at home, at the range, or on the green.
           </p>
           <p className="font-sans text-base text-white/75 leading-relaxed mb-12 max-w-[560px]">
-            Built for golfers who want repeatable mechanics, better control, and a more consistent swing.
+            Built for golfers who want repeatable mechanics, better control, and a more consistent swing at every level of the game.
             <span className="block mt-2 text-accent font-semibold underline underline-offset-4 decoration-accent/30">Includes FREE Ultimate Guide to Mastering the Game (PDF) with every purchase.</span>
           </p>
           <div className="flex flex-wrap gap-4">
