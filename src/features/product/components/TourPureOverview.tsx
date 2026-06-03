@@ -63,7 +63,7 @@ export function TourPureOverview() {
     'Pause at key positions — takeaway, top of backswing, and impact — to build body memory.',
     'Just minutes a day counts. Even 50–100 purposeful swings daily will reinforce muscle memory over time.',
     'Don\'t grip too tight. A tense grip with the added weight will cause fatigue and bad habits.',
-    'Use it to warm up before rounds, not just at the range — the weight primes your swing muscles effectively.'
+    'Use it before rounds, at the range, or on the green — the weight primes your swing muscles wherever you play.'
   ];
 
   return (
@@ -100,7 +100,7 @@ export function TourPureOverview() {
               <div className="flex justify-center"><Zap className="text-accent" size={24} /></div>
               <h3 className="font-serif text-xl font-bold italic underline decoration-accent/30 underline-offset-8 decoration-2">The Promise</h3>
               <p className="font-sans text-sm text-white/60 leading-relaxed">
-                Designed to create a stronger and more powerful golf swing in just minutes a day — particularly for golfers working on ball control, increasing distance, and getting into golfing shape.
+                Designed to build a more consistent, repeatable swing in just minutes a day — for golfers serious about developing real mechanics, better tempo, and lasting improvement on the course.
               </p>
             </div>
           </div>
@@ -124,7 +124,7 @@ export function TourPureOverview() {
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="swing-methodology" className="border-border/10">
                 <AccordionTrigger className="font-serif text-xl sm:text-2xl font-bold hover:no-underline py-6">
-                  Swing Methodology — The Step-by-Step Sequence
+                  The P Position Swing Sequence
                 </AccordionTrigger>
                 <AccordionContent className="font-sans text-muted-foreground leading-relaxed pt-2 pb-8">
                   <p className="mb-6">
