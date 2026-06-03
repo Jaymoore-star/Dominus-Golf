@@ -12,12 +12,6 @@ const stats = [
 
 const features = [
   {
-    title: 'Gabe Salvanera',
-    role: 'PGA Tour Americas Professional',
-    bio: 'Specialist in technical optimization and performance. Gabe helps serious golfers refine their mechanics and practice with tour-level purpose.',
-    href: '/gabe-salvanera',
-  },
-  {
     title: 'Leroy Bates',
     role: 'Golf Junkyz Foundation Pro',
     bio: 'Expert in swing consistency and technical proficiency. Leroy provides a structured, repeatable path to technical mastery.',

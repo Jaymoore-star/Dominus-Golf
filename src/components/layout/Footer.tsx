@@ -21,7 +21,6 @@ const footerLinks = {
   ],
   'Coaching': [
     { label: 'Pro Directory', href: '/pros' },
-    { label: 'Gabe Salvanera', href: '/gabe-salvanera' },
     { label: 'Leroy Bates', href: '/leroy-bates' },
     { label: 'Beginners Guide', href: '/beginners' },
   ],

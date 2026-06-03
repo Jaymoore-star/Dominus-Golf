@@ -14,7 +14,6 @@ import { TeamPage } from './pages/TeamPage';
 import { ContactPage } from './pages/ContactPage';
 import { CareersPage } from './pages/CareersPage';
 import { SustainabilityPage } from './pages/SustainabilityPage';
-import { GabeSalvaneraPage } from './pages/GabeSalvaneraPage';
 import { LeroyBatesPage } from './pages/LeroyBatesPage';
 import { ProDirectoryPage } from './pages/ProDirectoryPage';
 import { SafetyDisclaimerPage } from './pages/SafetyDisclaimerPage';
@@ -52,7 +51,6 @@ const teamRoute = createRoute({ getParentRoute: () => rootRoute, path: '/about/t
 const contactRoute = createRoute({ getParentRoute: () => rootRoute, path: '/about/contact', component: ContactPage });
 const careersRoute = createRoute({ getParentRoute: () => rootRoute, path: '/about/careers', component: CareersPage });
 const sustainabilityRoute = createRoute({ getParentRoute: () => rootRoute, path: '/about/sustainability', component: SustainabilityPage });
-const gabeSalvaneraRoute = createRoute({ getParentRoute: () => rootRoute, path: '/gabe-salvanera', component: GabeSalvaneraPage });
 const leroyBatesRoute = createRoute({ getParentRoute: () => rootRoute, path: '/leroy-bates', component: LeroyBatesPage });
 const prosRoute = createRoute({ getParentRoute: () => rootRoute, path: '/pros', component: ProDirectoryPage });
 const safetyRoute = createRoute({ getParentRoute: () => rootRoute, path: '/safety-disclaimer', component: SafetyDisclaimerPage });
@@ -72,7 +70,6 @@ const routeTree = rootRoute.addChildren([
   contactRoute,
   careersRoute,
   sustainabilityRoute,
-  gabeSalvaneraRoute,
   leroyBatesRoute,
   prosRoute,
   safetyRoute,

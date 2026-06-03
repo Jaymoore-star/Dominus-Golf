@@ -2,45 +2,6 @@ import { Pro } from './types';
 
 export const pros: Pro[] = [
   {
-    id: 'gabe-salvanera',
-    name: 'Gabe Salvanera',
-    affiliation: 'PGA Tour Americas · Grass League',
-    city: 'Phoenix',
-    state: 'AZ',
-    country: 'USA',
-    bio: 'Specialist in Swing Mechanics and Performance Optimization.',
-    fullBio:
-      'Gabe Salvanera is a PGA Tour Americas and Grass League professional who has built his reputation on elite swing mechanics and performance optimization. His sessions focus on building tour-level habits on the range that translate directly to better ball striking and lower scores.',
-    photo: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FGabeSand__d54af4a2.jpg?alt=media&token=d72b1d09-ca90-4b79-a2ee-0017eac6c957',
-    credentials: [
-      'PGA Tour Americas competitor',
-      'Grass League professional',
-      'Certified performance Pro',
-      'Specialist in swing optimization and practice structure',
-    ],
-    sessions: [
-      {
-        title: 'Full Swing',
-        duration: '1 hour',
-        description:
-          'Pro will be hitting balls on the range. Golfers will have to pay for their golf balls on the range. Gabe provides real-time feedback on your swing mechanics, ball flight, and practice habits.',
-      },
-      {
-        title: 'Putting',
-        duration: '1 hour',
-        description: 'Elite putting instruction focusing on path, tempo, and green reading.',
-      },
-      {
-        title: 'Pitch & Chip',
-        duration: '1 hour',
-        description: 'Refine your short game with professional techniques for chipping and pitching.',
-      },
-    ],
-    acuityUrl:
-      'https://app.acuityscheduling.com/schedule.php?owner=39236931&calendarID=14047266&ref=booking_button',
-    contactEmail: 'gabe@dominusgolf.com',
-  },
-  {
     id: 'leroy-bates',
     name: 'Leroy Bates',
     affiliation: 'Golf Junkyz Foundation · First Tee',

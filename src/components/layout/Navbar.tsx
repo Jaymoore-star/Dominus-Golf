@@ -90,7 +90,6 @@ const megaMenuData = {
       {
         heading: 'Tour Professionals',
         links: [
-          { label: 'Gabe Salvanera', href: '/gabe-salvanera' },
           { label: 'Leroy Bates', href: '/leroy-bates' },
         ],
       },

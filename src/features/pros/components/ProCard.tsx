@@ -8,7 +8,7 @@ interface ProCardProps {
 }
 
 export function ProCard({ pro, onClick }: ProCardProps) {
-  const profileTo = pro.id === 'gabe-salvanera' ? '/gabe-salvanera' : '/leroy-bates';
+  const profileTo = `/${pro.id}`;
 
   return (
     <div className="w-full bg-[#141414] border border-white/10 flex flex-col overflow-hidden group hover:border-accent/50 transition-colors duration-300">
