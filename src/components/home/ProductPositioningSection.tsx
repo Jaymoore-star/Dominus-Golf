@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router';
 
 const bullets = [
-  'Train without hitting a ball',
+  'Train at home, at the range, or on the green',
   'Build consistent movement patterns',
   'Improve tempo and control',
 ];
@@ -56,7 +56,7 @@ export function ProductPositioningSection() {
               { value: '3.8 lbs', label: 'Training Weight' },
               { value: '18 in', label: 'Shaft Length' },
               { value: '90-Day', label: 'Training Curriculum' },
-              { value: 'No Ball', label: 'Required' },
+              { value: 'Range Ready', label: 'Course Ready' },
             ].map((stat) => (
               <div
                 key={stat.label}
