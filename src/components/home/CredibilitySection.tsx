@@ -64,7 +64,7 @@ export function CredibilitySection() {
               ))}
             </ul>
             <p className="font-serif text-lg font-semibold text-white/90 leading-snug">
-              This is not a warm-up tool. This is how repeatable swings are built.
+              Built for the range, the green, and everywhere your game is made.
             </p>
           </div>
         </div>
