@@ -23,6 +23,7 @@ import { TermsPage } from './pages/TermsPage';
 import { BeginnersPage } from './pages/BeginnersPage';
 import { PracticeWithProsPage } from './pages/PracticeWithProsPage';
 import { TourPureGuidePage } from './pages/TourPureGuidePage';
+import { FeelRightBandGuidePage } from './pages/FeelRightBandGuidePage';
 
 const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -60,6 +61,7 @@ const termsRoute = createRoute({ getParentRoute: () => rootRoute, path: '/terms'
 const beginnersRoute = createRoute({ getParentRoute: () => rootRoute, path: '/beginners', component: BeginnersPage });
 const practiceWithProsRoute = createRoute({ getParentRoute: () => rootRoute, path: '/practice-with-pros', component: PracticeWithProsPage });
 const tourPureGuideRoute = createRoute({ getParentRoute: () => rootRoute, path: '/tour-pure-guide', component: TourPureGuidePage });
+const feelRightBandGuideRoute = createRoute({ getParentRoute: () => rootRoute, path: '/feel-right-band-guide', component: FeelRightBandGuidePage });
 
 const routeTree = rootRoute.addChildren([
   indexRoute,
@@ -79,6 +81,7 @@ const routeTree = rootRoute.addChildren([
   beginnersRoute,
   practiceWithProsRoute,
   tourPureGuideRoute,
+  feelRightBandGuideRoute,
 ]);
 
 const router = createRouter({ routeTree });
