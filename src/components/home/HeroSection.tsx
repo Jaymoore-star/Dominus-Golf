@@ -87,10 +87,10 @@ export function HeroSection() {
             A More Consistent Swing Starts Here
           </h1>
           <p className="font-sans text-xl text-white/90 leading-relaxed mb-4 font-medium tracking-wide">
-            Dominus Golf combines weighted swing training with elite professional coaching — at home, at the range, or on the green.
+            Everything a serious golfer needs to train, develop, and improve — in one place.
           </p>
           <p className="font-sans text-base text-white/75 leading-relaxed mb-12 max-w-[560px]">
-            Built for golfers who want repeatable mechanics, better control, and a more consistent swing at every level of the game.
+            Tour Pure builds the repetition. Our Pros refine the technique. And we're just getting started.
             <span className="block mt-2 text-accent font-semibold underline underline-offset-4 decoration-accent/30">Includes FREE Ultimate Guide to Mastering the Game (PDF) with every purchase.</span>
           </p>
           <div className="flex flex-wrap gap-4">
