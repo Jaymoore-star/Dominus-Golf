@@ -62,27 +62,51 @@ export function FeelRightBandOverview() {
             <div className="w-20 h-1 bg-accent mb-8" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
+          <div className="max-w-3xl mx-auto text-center">
             <div className="space-y-4">
-              <div className="flex justify-start"><Info className="text-accent" size={24} /></div>
+              <div className="flex justify-center"><Info className="text-accent" size={24} /></div>
               <h3 className="font-serif text-xl font-bold italic underline decoration-accent/30 underline-offset-8 decoration-2">What it is</h3>
-              <p className="font-sans text-sm text-white/60 leading-relaxed">
+              <p className="font-sans text-base text-white/80 leading-relaxed">
                 The Feel Right Band is a connection training aid worn around the trail arm bicep. It replicates the biomechanics of the tour-famous "floatie drill"—teaching the trail arm to stay structured through the backswing and seamlessly reconnect to the body during the downswing. This is the single most important sequencing move for a repeatable golf swing.
               </p>
             </div>
-            <div className="space-y-4">
-              <div className="flex justify-start"><Target className="text-accent" size={24} /></div>
-              <h3 className="font-serif text-xl font-bold italic underline decoration-accent/30 underline-offset-8 decoration-2">The Connection: Why the "Floatie" Works</h3>
-              <p className="font-sans text-sm text-white/60 leading-relaxed">
+          </div>
+        </div>
+      </section>
+
+      {/* Connection Callout Box */}
+      <section className="max-w-5xl mx-auto px-4 -mt-12 relative z-10">
+        <div className="bg-accent/5 border border-accent/20 p-8 sm:p-12 rounded-lg shadow-2xl backdrop-blur-sm">
+          <div className="flex flex-col md:flex-row gap-10 items-start">
+            <div className="flex-shrink-0">
+              <div className="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center">
+                <Target className="text-accent" size={32} />
+              </div>
+            </div>
+            <div className="space-y-6">
+              <h3 className="font-serif text-2xl sm:text-3xl font-bold text-foreground">
+                The Connection: Why the "Floatie" Works
+              </h3>
+              <p className="font-sans text-muted-foreground leading-relaxed text-lg">
                 If you’ve seen world #1 Nelly Korda warming up on the range, you’ve likely seen her swinging with an inflatable floatie on her trail arm. Why? Because it prevents the trailing elbow from getting stuck behind the hip or flying outward.
               </p>
-              <p className="font-sans text-sm text-white/60 leading-relaxed">
+              <p className="font-sans text-muted-foreground leading-relaxed">
                 The Feel Right Band gives you that exact same tour-proven feel without the bulk. It provides immediate tactile feedback:
               </p>
-              <ul className="space-y-2 font-sans text-xs text-white/50 italic">
-                <li>• <strong className="text-white/70">In the Backswing:</strong> It keeps the trail arm from over-folding, maintaining the critical width and structural support your swing needs.</li>
-                <li>• <strong className="text-white/70">On the Downswing:</strong> As your body rotates, the band naturally guides your trail arm back into the "slot" against your ribcage, perfectly syncing your arms with your torso.</li>
-              </ul>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="bg-white/5 p-5 border border-border/10 rounded-sm">
+                  <p className="font-sans text-sm">
+                    <strong className="text-accent block mb-1 uppercase tracking-widest text-[10px]">In the Backswing</strong>
+                    It keeps the trail arm from over-folding, maintaining the critical width and structural support your swing needs.
+                  </p>
+                </div>
+                <div className="bg-white/5 p-5 border border-border/10 rounded-sm">
+                  <p className="font-sans text-sm">
+                    <strong className="text-accent block mb-1 uppercase tracking-widest text-[10px]">On the Downswing</strong>
+                    As your body rotates, the band naturally guides your trail arm back into the "slot" against your ribcage, perfectly syncing your arms with your torso.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -94,7 +118,7 @@ export function FeelRightBandOverview() {
           <p className="font-sans text-[11px] font-semibold tracking-[0.4em] uppercase text-accent mb-4">
             Methodology
           </p>
-          <h2 className="font-serif text-3xl sm:text-4xl font-bold mb-6">
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold mb-6 text-foreground">
             How to Use the Feel Right Band
           </h2>
         </div>
@@ -111,7 +135,9 @@ export function FeelRightBandOverview() {
                 </div>
                 <div className="flex-grow">
                   <div className="hidden sm:block mb-4">{step.icon}</div>
-                  <h3 className="font-serif text-2xl font-bold mb-3">{step.title}</h3>
+                  <h3 className="font-serif text-2xl font-bold mb-3">
+                    {step.number} | {step.title}
+                  </h3>
                   <div className="font-sans text-muted-foreground leading-relaxed">
                     {step.content}
                   </div>
