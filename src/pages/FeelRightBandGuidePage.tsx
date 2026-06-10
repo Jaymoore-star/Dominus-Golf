@@ -25,8 +25,8 @@ export function FeelRightBandGuidePage() {
             <h1 className="font-serif text-4xl sm:text-5xl font-bold text-foreground mb-4">
               Feel Right Band Training Guide
             </h1>
-            <p className="font-sans text-lg text-muted-foreground max-w-2xl mx-auto">
-              Train the one move that separates consistent ball strikers from everyone else — trail arm connection.
+            <p className="font-sans text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Master the tour-level "floatie drill" mechanics used by world #1 Nelly Korda to build a more repeatable and efficient swing.
             </p>
           </div>
           

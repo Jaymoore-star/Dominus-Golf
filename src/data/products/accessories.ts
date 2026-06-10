@@ -15,7 +15,7 @@ export const accessories: Product[] = [
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBandonarm__c77b5c57.jpg?alt=media&token=9588ee49-ecd7-4c08-ba89-6c5e418216e8',
     ],
     description:
-      'Helps train proper arm structure and connection to build a more repeatable and efficient swing.',
+      'Helps train proper arm structure and connection to build a more repeatable and efficient swing. Inspired by the famous "floatie drill" used on tour by world #1 Nelly Korda, this band gives you the exact same structural feedback in a sleek, premium design.',
     features: [
       'Improves arm structure',
       'Promotes connection',

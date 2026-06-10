@@ -7,43 +7,43 @@ export function FeelRightBandOverview() {
       number: '01',
       title: 'Set up the band',
       icon: <Activity className="w-5 h-5 text-accent" />,
-      content: 'Slide the Feel Right Band up your trail arm and position it around the bicep. Check that the Dominus Golf logo faces the target at address. The band should sit comfortably — not tight enough to restrict blood flow, not loose enough to slide down during the swing.'
+      content: 'Slide the Feel Right Band up your trail arm and position it around the bicep—just like Nelly places her training floatie. Check that the Dominus Golf logo faces the target at address. The band should sit comfortably against your upper arm.'
     },
     {
       number: '02',
       title: 'Take your address position',
       icon: <Target className="w-5 h-5 text-accent" />,
-      content: 'Set up normally with your club. Feel the band resting lightly against your ribcage. Logo faces the target. This is your connected starting position — your trail arm, torso, and club are one unit.'
+      content: 'Set up normally with your club. Feel the band resting lightly against your ribcage. Logo faces the target. This is your connected starting position—your trail arm, torso, and club form a single, unified structure.'
     },
     {
       number: '03',
       title: 'Make your takeaway',
       icon: <Zap className="w-5 h-5 text-accent" />,
-      content: 'Begin the backswing with a one-piece takeaway — hands, arms, chest, and shoulders moving together. As the shoulders turn, the band will naturally separate from the body. This is correct. Do not try to keep it pinned. Let it go.'
+      content: 'Begin the backswing with a one-piece takeaway—hands, arms, chest, and shoulders moving together. As the shoulders turn, the band will naturally separate from the body, maintaining proper arm width without letting the elbow fly wide.'
     },
     {
       number: '04',
       title: 'Reach the top of the backswing',
       icon: <Activity className="w-5 h-5 text-accent" />,
-      content: 'At the top, the logo should face the sky. Your trail elbow points toward the ground, your shoulders are fully turned, and the band is away from the body. Pause here and confirm the logo position before starting down.'
+      content: 'At the top, the logo should face the sky. Your trail elbow points toward the ground, keeping the arm structured and wide. Pause here and confirm the logo position before starting down.'
     },
     {
       number: '05',
       title: 'Start the downswing with your body',
       icon: <Activity className="w-5 h-5 text-accent" />,
-      content: 'Begin the downswing from the ground up — hips first, then torso. As your body rotates toward the target, it will naturally pull the trail arm back in. Do not force the band back with your arm. Let your body rotation do the work.'
+      content: 'Begin the downswing from the ground up—hips first, then torso. As your body rotates toward the target, it will naturally pull the trail arm back in. Do not force the band back with your arm; let your core rotation do the work.'
     },
     {
       number: '06',
       title: 'Feel the reconnection',
       icon: <Zap className="w-5 h-5 text-accent" />,
-      content: 'As the trail arm drops into the slot, the band will make contact with your ribcage again and the logo will return to face the target. This reconnection should happen before impact. When you feel it, your sequencing is correct.'
+      content: 'As the trail arm drops into the slot, the band will make contact with your ribcage again and the logo will return to face the target. This delivers the exact "reconnection feel" of the floatie drill, happening smoothly just before impact.'
     },
     {
       number: '07',
       title: 'Hit balls with it on',
       icon: <Target className="w-5 h-5 text-accent" />,
-      content: 'Unlike many training aids, the Feel Right Band can be used while hitting real shots at the range. Start with short irons and half swings. Work up to full swings as the reconnection becomes automatic.'
+      content: 'Unlike bulky makeshift training aids, the streamlined Feel Right Band is designed for live fire. Start with short irons and half swings to capture that signature tour-level sequencing, then work up to full swings as the reconnection becomes automatic.'
     }
   ];
 
@@ -71,27 +71,27 @@ export function FeelRightBandOverview() {
             <div className="w-20 h-1 bg-accent mb-8" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
             <div className="space-y-4">
-              <div className="flex justify-center"><Info className="text-accent" size={24} /></div>
+              <div className="flex justify-start"><Info className="text-accent" size={24} /></div>
               <h3 className="font-serif text-xl font-bold italic underline decoration-accent/30 underline-offset-8 decoration-2">What it is</h3>
               <p className="font-sans text-sm text-white/60 leading-relaxed">
-                The Feel Right Band is a connection training aid worn around the trail arm bicep. It teaches the trail arm to reconnect to the body during the downswing — the single most important sequencing move in a repeatable golf swing.
+                The Feel Right Band is a connection training aid worn around the trail arm bicep. It replicates the biomechanics of the tour-famous "floatie drill"—teaching the trail arm to stay structured through the backswing and seamlessly reconnect to the body during the downswing. This is the single most important sequencing move for a repeatable golf swing.
               </p>
             </div>
             <div className="space-y-4">
-              <div className="flex justify-center"><Target className="text-accent" size={24} /></div>
-              <h3 className="font-serif text-xl font-bold italic underline decoration-accent/30 underline-offset-8 decoration-2">Who it's for</h3>
+              <div className="flex justify-start"><Target className="text-accent" size={24} /></div>
+              <h3 className="font-serif text-xl font-bold italic underline decoration-accent/30 underline-offset-8 decoration-2">The Connection: Why the "Floatie" Works</h3>
               <p className="font-sans text-sm text-white/60 leading-relaxed">
-                Any golfer who slices, casts, comes over the top, or loses power through impact. If your arms and body are working independently, the Feel Right Band fixes it.
+                If you’ve seen world #1 Nelly Korda warming up on the range, you’ve likely seen her swinging with an inflatable floatie on her trail arm. Why? Because it prevents the trailing elbow from getting stuck behind the hip or flying outward.
               </p>
-            </div>
-            <div className="space-y-4">
-              <div className="flex justify-center"><Zap className="text-accent" size={24} /></div>
-              <h3 className="font-serif text-xl font-bold italic underline decoration-accent/30 underline-offset-8 decoration-2">The Promise</h3>
               <p className="font-sans text-sm text-white/60 leading-relaxed">
-                Real, immediate feedback on every swing. No guessing. The band either reconnects or it doesn't — and you'll feel the difference instantly.
+                The Feel Right Band gives you that exact same tour-proven feel without the bulk. It provides immediate tactile feedback:
               </p>
+              <ul className="space-y-2 font-sans text-xs text-white/50 italic">
+                <li>• <strong className="text-white/70">In the Backswing:</strong> It keeps the trail arm from over-folding, maintaining the critical width and structural support your swing needs.</li>
+                <li>• <strong className="text-white/70">On the Downswing:</strong> As your body rotates, the band naturally guides your trail arm back into the "slot" against your ribcage, perfectly syncing your arms with your torso.</li>
+              </ul>
             </div>
           </div>
         </div>
