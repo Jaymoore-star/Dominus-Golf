@@ -7,7 +7,7 @@
     <title>Dominus Golf — Premium Golf Equipment</title>
     <meta name="description" content="Dominus Golf — premium golf balls, clubs, and gear for every level of player. Shop drivers, irons, wedges, putters, and more." />
       <!-- CRITICAL: DO NOT REMOVE/MODIFY THIS COMMENT OR THE SCRIPT BELOW -->
-        <!-- BLINK_PICKER_RUNTIME_V2:a9e92594608b -->
+        <!-- BLINK_PICKER_RUNTIME_V2:1c5e461e0258 -->
     <script>(function(){
   'use strict';
   // ---- version handshake ----
@@ -24,12 +24,9 @@
   var hoverEl = null;
   var hoverOutline = null;
   var stampQueued = false;
-  // Inline-edit state — click-again-to-edit (Figma / Webflow / Replit pattern).
-  // First click selects (emits ELEMENT_CLICKED); a SECOND click within the
-  // window on the SAME element transitions to caret/contentEditable text edit.
-  var lastSelectedId = null;
-  var lastSelectedAt = 0;
-  var SECOND_CLICK_WINDOW_MS = 5000;
+  // Inline-edit state — single-click-to-edit (Figma / Webflow / Replit pattern).
+  // A plain click on inline-editable text selects AND enters caret edit in one
+  // step (text-input feel); modifier-clicks stay multi-select. No second click.
   // When non-null: { el, originalText, onKey, onBlur } — suppresses hover ring
   // and Escape-toggles, and the click handler routes clicks inside the editing
   // element through native browser caret behaviour.
@@ -283,6 +280,7 @@
     if (inlineEditing) return; // hover ring would compete with the caret
     var el = closestTagged(e.target);
     if (el === hoverEl) return;
+    setEditHover(hoverEl, el); // editable text shows an I-beam before you click
     hoverEl = el;
     drawHover(el);
   }, true);
@@ -302,19 +300,17 @@
     e.preventDefault();
     e.stopPropagation();
     if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
-    // Second click on the same selected element within the window enters
-    // caret edit mode — but only without modifiers (Cmd-click stays as
-    // multi-select toggle) and only for inline-editable elements.
-    var id = el.dataset.blnkId;
-    var now = Date.now();
+    // A plain click on an inline-editable text element selects it AND drops a
+    // caret so it behaves like a text input (Kai's ask — no hidden second
+    // click). ELEMENT_CLICKED fires first so the inspector still opens for
+    // style; then we enter caret edit. Modifier-clicks (Cmd/Ctrl/Shift) stay
+    // multi-select and never edit; non-text elements just select.
     var noMods = !(e.metaKey || e.ctrlKey || e.shiftKey);
-    var isSecondClick = id && id === lastSelectedId && (now - lastSelectedAt) < SECOND_CLICK_WINDOW_MS;
-    if (isSecondClick && noMods && isInlineEditable(el)) {
-      lastSelectedId = id; lastSelectedAt = now;
+    if (noMods && isInlineEditable(el)) {
+      emitElementClicked(el, { meta: false, shift: false });
       enterInlineEdit(el, e);
       return;
     }
-    lastSelectedId = id; lastSelectedAt = now;
     // Track modifier so parent can dispatch single-select (replace) vs
     // multi-select toggle (Cmd/Ctrl-click — Lovable/Figma semantics).
     emitElementClicked(el, { meta: !!(e.metaKey || e.ctrlKey), shift: !!e.shiftKey });
@@ -538,12 +534,23 @@
   }
 
   function clearHover(){
+    if (hoverEl && hoverEl.removeAttribute) hoverEl.removeAttribute('data-blink-edit-hover');
     hoverEl = null;
     if (hoverOutline) hoverOutline.style.display = 'none';
   }
 
+  // I-beam affordance: editable text gets cursor:text on hover so it reads as a
+  // text field before the click. Inert when the picker is off (CSS rule is gated
+  // on html.blink-picker-active), so a leftover attr can never bleed into the app.
+  function setEditHover(prev, next){
+    try {
+      if (prev && prev.removeAttribute) prev.removeAttribute('data-blink-edit-hover');
+      if (next && next.setAttribute && isInlineEditable(next)) next.setAttribute('data-blink-edit-hover', '1');
+    } catch (e) {}
+  }
+
   // ---- inline text edit ----
-  // Element qualifies for caret-edit on second click if (a) it has direct
+  // Element qualifies for caret-edit on click if (a) it has direct
   // text, (b) no element children (would mangle DOM during contentEditable),
   // (c) tag is not in the deny list. Keeps the edit path safe — composites
   // like <button><Icon/>Save</button> stay on the popup path.
@@ -585,6 +592,10 @@
       el.setAttribute('contenteditable', 'true');
       try { el.spellcheck = false; } catch (e0) {}
       document.documentElement.classList.add('blink-picker-editing');
+      // Hide the hover ring (separate in-iframe <div>) so it doesn't sit under
+      // the editing outline and render as a DOUBLE blue border. The mouseover
+      // handler already skips re-drawing it while inlineEditing is set.
+      clearHover();
       try { el.focus({ preventScroll: true }); } catch (e1) { el.focus(); }
       placeCaretAtPoint(el, evt.clientX, evt.clientY);
       var isSingleLine = !!INLINE_EDIT_SINGLE_LINE[el.tagName];
@@ -657,8 +668,9 @@
     // The [contenteditable="true"] rule on the editing element + descendants
     // overrides the global crosshair so the user sees the right affordance.
     style.textContent = '.blink-picker-active, .blink-picker-active * { cursor: crosshair !important; }' +
+      ' html.blink-picker-active [data-blink-edit-hover] { cursor: text !important; }' +
       ' html.blink-picker-active [contenteditable="true"], html.blink-picker-active [contenteditable="true"] * { cursor: text !important; }' +
-      // Second-click text edit: a distinct thin solid border around the
+      // Inline text edit: a distinct thin solid border around the
       // contenteditable element (Figma parity — different from hover ring).
       ' html.blink-picker-editing [contenteditable="true"] { outline: 1.5px solid rgba(59,130,246,0.95) !important; outline-offset: 1px !important; border-radius: 2px !important; }' +
       // Neutralize the LEGACY widget.js picker's chrome. widget.js loads from
