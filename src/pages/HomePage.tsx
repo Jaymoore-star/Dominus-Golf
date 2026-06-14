@@ -2,6 +2,7 @@ import { Navbar } from '../components/layout/Navbar';
 import { NewHeroSection } from '../components/home/new/NewHeroSection';
 import { WhySection } from '../components/home/new/WhySection';
 import { SystemSection } from '../components/home/new/SystemSection';
+import { PrincipleSection } from '../components/home/new/PrincipleSection';
 import { ConnectionSection } from '../components/home/new/ConnectionSection';
 import { ResultsSection } from '../components/home/new/ResultsSection';
 import { MissionSection } from '../components/home/new/MissionSection';
@@ -17,6 +18,7 @@ export function HomePage() {
         <NewHeroSection />
         <WhySection />
         <SystemSection />
+        <PrincipleSection />
         <ConnectionSection />
         <ResultsSection />
         <MissionSection />

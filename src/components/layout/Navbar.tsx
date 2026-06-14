@@ -77,26 +77,6 @@ const megaMenuData = {
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FScreenshot_20260324_042207_SamsungInternet__2f2a1710.jpg?alt=media&token=4e6db837-c08e-4745-b0c4-9d9e5d607413',
     imageCaption: 'Dominus Golf Accessories',
   },
-  pros: {
-    columns: [
-      {
-        heading: 'Professional Coaching',
-        links: [
-          { label: 'Overview & Methodology', href: '/practice-with-pros' },
-          { label: 'Find Your Pro', href: '/pros' },
-          { label: 'Beginners Guide', href: '/beginners' },
-        ],
-      },
-      {
-        heading: 'Tour Professionals',
-        links: [
-          { label: 'Leroy Bates', href: '/leroy-bates' },
-        ],
-      },
-    ],
-    image: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=600&q=80',
-    imageCaption: 'Expert Coaching. Professional Results.',
-  },
   company: {
     columns: [
       {
@@ -107,13 +87,6 @@ const megaMenuData = {
           { label: 'Contact Us', href: '/about/contact' },
           { label: 'Careers', href: '/about/careers' },
           { label: 'Sustainability', href: '/about/sustainability' },
-        ],
-      },
-      {
-        heading: 'Instruction & Guides',
-        links: [
-          { label: 'Practice with a Pro', href: '/practice-with-pros' },
-          { label: 'Beginners Guide', href: '/beginners' },
         ],
       },
       {
@@ -180,7 +153,6 @@ export function Navbar() {
     { label: 'Training Systems', key: 'training' },
     { label: 'Apparel', key: 'apparel' },
     { label: 'Accessories', key: 'accessories' },
-    { label: 'Practice with a Pro', key: 'pros' },
     { label: 'Company', key: 'company' },
   ];
 
