@@ -16,7 +16,7 @@ export const NewHeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-5xl md:text-8xl font-bold tracking-tighter mb-6 font-serif"
+            className="text-5xl md:text-8xl font-bold tracking-tighter mb-6 font-serif leading-[1.05]"
           >
             STOP PRACTICING.<br />START TRAINING.
           </motion.h1>
@@ -37,7 +37,7 @@ export const NewHeroSection = () => {
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
           >
             <a 
-              href="/shop/training-systems" 
+              href="/shop/training-system" 
               className="w-full sm:w-auto px-10 py-5 bg-white text-black font-bold tracking-widest uppercase hover:bg-gray-200 transition-colors text-sm"
             >
               SHOP THE TOUR PURE SYSTEM
@@ -77,25 +77,26 @@ export const NewHeroSection = () => {
           transition={{ duration: 0.8, delay: 0.8 }}
           className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto"
         >
-          <div className="aspect-[4/3] overflow-hidden bg-zinc-900 border border-white/5 group relative rounded-sm">
+          <div className="aspect-[4/3] overflow-hidden bg-zinc-900 border border-white/5 group relative rounded-sm shadow-2xl">
             <img 
               src={IMAGES.swingSequence} 
               alt="Swing sequence mechanics" 
-              className="w-full h-full object-cover grayscale brightness-75 group-hover:scale-105 group-hover:grayscale-0 transition-all duration-700"
+              className="w-full h-full object-cover brightness-90 group-hover:brightness-100 transition-all duration-700"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
           </div>
-          <div className="aspect-[4/3] overflow-hidden bg-zinc-900 border border-white/5 group relative rounded-sm">
+          <div className="aspect-[4/3] overflow-hidden bg-zinc-900 border border-white/5 group relative rounded-sm shadow-2xl">
             <img 
               src={IMAGES.blueprint} 
               alt="Tour Pure Blueprint book" 
-              className="w-full h-full object-cover grayscale brightness-75 group-hover:scale-105 group-hover:grayscale-0 transition-all duration-700"
+              className="w-full h-full object-cover brightness-90 group-hover:brightness-100 transition-all duration-700"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
           </div>
         </motion.div>
       </div>
 
+      {/* Atmospheric depth elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20">
         <div className="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 bg-white blur-[150px] rounded-full" />
       </div>

@@ -10,7 +10,7 @@ export const PrincipleSection = () => {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="max-w-5xl mx-auto bg-black text-white p-12 md:p-20 relative overflow-hidden flex flex-col md:flex-row gap-12 items-center text-center md:text-left"
+          className="max-w-6xl mx-auto bg-black text-white p-12 md:p-24 relative overflow-hidden flex flex-col md:flex-row gap-16 items-center"
         >
           <div className="relative z-10 flex-1">
             <motion.h2 
@@ -18,7 +18,7 @@ export const PrincipleSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-3xl md:text-5xl font-bold tracking-tight mb-8 font-serif uppercase leading-tight"
+              className="text-4xl md:text-6xl font-bold tracking-tight mb-10 font-serif uppercase leading-[1.1]"
             >
               BUILT ON A SINGLE PRINCIPLE
             </motion.h2>
@@ -27,23 +27,23 @@ export const PrincipleSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-xl md:text-3xl text-gray-400 font-sans leading-relaxed italic"
+              className="text-2xl md:text-4xl text-gray-400 font-sans leading-relaxed italic"
             >
               "Golfers improve faster when every swing provides feedback. This eliminates guesswork and accelerates the development of repeatable mechanics."
             </motion.p>
           </div>
           
-          <div className="w-px h-40 bg-white/20 hidden md:block" />
+          <div className="w-px h-64 bg-white/10 hidden md:block" />
           
-          <div className="flex flex-col items-center md:items-start gap-4">
-            <div className="text-[10px] font-bold tracking-[0.4em] uppercase text-gray-500 mb-2">ACCELERATION</div>
-            <div className="text-4xl md:text-6xl font-bold font-serif">10X</div>
-            <div className="text-[10px] font-bold tracking-[0.4em] uppercase text-gray-500">FEEDBACK LOOP</div>
+          <div className="flex flex-col items-center md:items-start gap-6 relative z-10">
+            <div className="text-xs font-bold tracking-[0.5em] uppercase text-gray-500 mb-2">ACCELERATION</div>
+            <div className="text-6xl md:text-9xl font-bold font-serif leading-none tracking-tighter">10X</div>
+            <div className="text-xs font-bold tracking-[0.5em] uppercase text-gray-500">FEEDBACK LOOP</div>
           </div>
 
-          {/* Decorative accents */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 -mr-16 -mt-16 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 -ml-16 -mb-16 rounded-full blur-3xl" />
+          {/* Depth elements */}
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/5 -mr-64 -mt-64 rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-white/5 -ml-64 -mb-64 rounded-full blur-[120px]" />
         </motion.div>
       </div>
     </section>

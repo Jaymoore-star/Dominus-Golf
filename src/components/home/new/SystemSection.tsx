@@ -23,13 +23,13 @@ export const SystemSection = () => {
   return (
     <section className="py-24 bg-black text-white">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-20">
+        <div className="text-center mb-24">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-4xl md:text-6xl font-bold tracking-tight mb-4 font-serif uppercase"
+            className="text-4xl md:text-8xl font-bold tracking-tight mb-4 font-serif uppercase"
           >
             THE TOUR PURE SYSTEM
           </motion.h2>
@@ -38,13 +38,13 @@ export const SystemSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg md:text-xl text-gray-500 font-sans uppercase tracking-[0.2em]"
+            className="text-lg md:text-xl text-gray-500 font-sans uppercase tracking-[0.3em] font-medium"
           >
             One system. Three tools. One purpose. Build a swing you can trust under pressure.
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 mb-24">
           {SYSTEM_CARDS.map((card, index) => (
             <motion.div 
               key={card.title}
@@ -52,17 +52,17 @@ export const SystemSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
-              className="flex flex-col h-full bg-zinc-900/30 p-8 border border-white/5 group hover:border-white/10 transition-colors rounded-sm"
+              className="flex flex-col h-full bg-zinc-900/30 p-10 border border-white/5 group hover:border-white/10 transition-colors rounded-sm"
             >
-              <div className="aspect-square overflow-hidden bg-zinc-900 border border-white/5 mb-10 rounded-sm group relative">
+              <div className="aspect-square overflow-hidden bg-black/40 border border-white/5 mb-10 rounded-sm group relative flex items-center justify-center p-8">
                 <img 
                   src={card.image} 
                   alt={card.title} 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 brightness-90 group-hover:brightness-100"
+                  className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700"
                 />
               </div>
-              <h3 className="text-xl font-bold mb-6 tracking-tight font-serif uppercase leading-tight min-h-[3rem]">{card.title}</h3>
-              <p className="text-gray-400 font-sans leading-relaxed flex-grow text-sm md:text-base">{card.text}</p>
+              <h3 className="text-xl md:text-2xl font-bold mb-6 tracking-tight font-serif uppercase leading-tight min-h-[3.5rem]">{card.title}</h3>
+              <p className="text-gray-400 font-sans leading-relaxed flex-grow text-sm md:text-lg">{card.text}</p>
             </motion.div>
           ))}
         </div>
@@ -75,8 +75,8 @@ export const SystemSection = () => {
             transition={{ duration: 0.6 }}
           >
             <a 
-              href="/shop/training-systems" 
-              className="inline-block px-12 py-5 bg-white text-black font-bold tracking-widest uppercase hover:bg-gray-200 transition-colors text-sm"
+              href="/shop/training-system" 
+              className="inline-block px-14 py-6 bg-white text-black font-bold tracking-widest uppercase hover:bg-gray-200 transition-colors text-sm shadow-xl"
             >
               BUILD YOUR SYSTEM
             </a>

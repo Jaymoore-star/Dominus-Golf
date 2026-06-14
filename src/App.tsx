@@ -14,13 +14,10 @@ import { TeamPage } from './pages/TeamPage';
 import { ContactPage } from './pages/ContactPage';
 import { CareersPage } from './pages/CareersPage';
 import { SustainabilityPage } from './pages/SustainabilityPage';
-import { LeroyBatesPage } from './pages/LeroyBatesPage';
-import { ProDirectoryPage } from './pages/ProDirectoryPage';
 import { SafetyDisclaimerPage } from './pages/SafetyDisclaimerPage';
 import { ShippingPolicyPage } from './pages/ShippingPolicyPage';
 import { TermsPage } from './pages/TermsPage';
 import { BeginnersPage } from './pages/BeginnersPage';
-import { PracticeWithProsPage } from './pages/PracticeWithProsPage';
 import { TourPureGuidePage } from './pages/TourPureGuidePage';
 import { FeelRightBandGuidePage } from './pages/FeelRightBandGuidePage';
 
@@ -51,13 +48,10 @@ const teamRoute = createRoute({ getParentRoute: () => rootRoute, path: '/about/t
 const contactRoute = createRoute({ getParentRoute: () => rootRoute, path: '/about/contact', component: ContactPage });
 const careersRoute = createRoute({ getParentRoute: () => rootRoute, path: '/about/careers', component: CareersPage });
 const sustainabilityRoute = createRoute({ getParentRoute: () => rootRoute, path: '/about/sustainability', component: SustainabilityPage });
-const leroyBatesRoute = createRoute({ getParentRoute: () => rootRoute, path: '/leroy-bates', component: LeroyBatesPage });
-const prosRoute = createRoute({ getParentRoute: () => rootRoute, path: '/pros', component: ProDirectoryPage });
 const safetyRoute = createRoute({ getParentRoute: () => rootRoute, path: '/safety-disclaimer', component: SafetyDisclaimerPage });
 const shippingRoute = createRoute({ getParentRoute: () => rootRoute, path: '/shipping-policy', component: ShippingPolicyPage });
 const termsRoute = createRoute({ getParentRoute: () => rootRoute, path: '/terms', component: TermsPage });
 const beginnersRoute = createRoute({ getParentRoute: () => rootRoute, path: '/beginners', component: BeginnersPage });
-const practiceWithProsRoute = createRoute({ getParentRoute: () => rootRoute, path: '/practice-with-pros', component: PracticeWithProsPage });
 const tourPureGuideRoute = createRoute({ getParentRoute: () => rootRoute, path: '/tour-pure-guide', component: TourPureGuidePage });
 const feelRightBandGuideRoute = createRoute({ getParentRoute: () => rootRoute, path: '/feel-right-band-guide', component: FeelRightBandGuidePage });
 
@@ -70,13 +64,10 @@ const routeTree = rootRoute.addChildren([
   contactRoute,
   careersRoute,
   sustainabilityRoute,
-  leroyBatesRoute,
-  prosRoute,
   safetyRoute,
   shippingRoute,
   termsRoute,
   beginnersRoute,
-  practiceWithProsRoute,
   tourPureGuideRoute,
   feelRightBandGuideRoute,
 ]);

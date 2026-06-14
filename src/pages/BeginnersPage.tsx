@@ -22,7 +22,7 @@ const steps = [
   {
     number: '04',
     title: 'Take Your Training Further',
-    body: `Once your swing path and tempo feel consistent, take your game to the next level with a "Practice with a Pro" session. Our pros help you refine your technique, optimize your mechanics, and build a tour-level practice routine.`,
+    body: `Once your swing path and tempo feel consistent, start integrating advanced feedback-based drills. Move beyond the basics and start focusing on specific performance outcomes to build a swing that lasts.`,
   },
 ];
 

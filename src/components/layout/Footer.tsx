@@ -19,11 +19,6 @@ const footerLinks = {
     { label: 'The Ultimate Guide (Book)', href: '/product/mastering-the-game-book' },
     { label: 'Shop All Accessories', href: '/shop/accessories' },
   ],
-  'Coaching': [
-    { label: 'Pro Directory', href: '/pros' },
-    { label: 'Leroy Bates', href: '/leroy-bates' },
-    { label: 'Beginners Guide', href: '/beginners' },
-  ],
   Company: [
     { label: 'About Dominus Golf', href: '/about' },
     { label: 'Team Dominus Golf', href: '/about/team' },

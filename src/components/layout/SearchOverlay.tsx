@@ -87,7 +87,6 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                     { label: 'Training Systems', href: '/shop/training-system' },
                     { label: 'Performance Apparel', href: '/shop/apparel' },
                     { label: 'Training Aids', href: '/shop/accessories' },
-                    { label: 'Practice with a Pro', href: '/practice-with-pros' },
                   ].map((cat) => (
                     <Link
                       key={cat.label}

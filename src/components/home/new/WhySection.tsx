@@ -5,7 +5,7 @@ export const WhySection = () => {
   return (
     <section className="py-24 bg-zinc-950 text-white border-y border-white/5 relative overflow-hidden">
       {/* Background technical macro close-up image */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none">
+      <div className="absolute inset-0 opacity-[0.08] pointer-events-none">
         <img 
           src="https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F2021-03-09__196c2c33.jpg?alt=media&token=dbaecb63-0518-44cc-beaa-4817b99a8fb5" 
           alt="Technical close-up" 
@@ -20,7 +20,7 @@ export const WhySection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-4xl md:text-6xl font-bold tracking-tight mb-10 font-serif uppercase"
+            className="text-4xl md:text-7xl font-bold tracking-tight mb-10 font-serif uppercase"
           >
             WHY MOST GOLFERS NEVER IMPROVE
           </motion.h2>
@@ -43,7 +43,7 @@ export const WhySection = () => {
           >
             <a 
               href="/about" 
-              className="inline-block px-12 py-5 bg-white text-black font-bold tracking-widest uppercase hover:bg-gray-200 transition-colors text-sm"
+              className="inline-block px-12 py-6 bg-white text-black font-bold tracking-widest uppercase hover:bg-gray-200 transition-colors text-sm shadow-[0_0_40px_rgba(255,255,255,0.1)]"
             >
               DISCOVER THE DIFFERENCE
             </a>
