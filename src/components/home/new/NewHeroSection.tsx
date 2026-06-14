@@ -1,0 +1,109 @@
+import React from 'react';
+import { Check } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+const IMAGES = {
+  weightedClub: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F2021-03-09__196c2c33.jpg?alt=media&token=dbaecb63-0518-44cc-beaa-4817b99a8fb5',
+  blueprint: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FScreenshot_20260324_042207_SamsungInternet__2f2a1710.jpg?alt=media&token=4e6db837-c08e-4745-b0c4-9d9e5d607413',
+  swingSequence: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FGemini_Generated_Image_ofjfkaofjfkaofjf__1e06169b.png?alt=media&token=8b7d6778-29b1-44d2-a5b5-436472032131'
+};
+
+export const NewHeroSection = () => {
+  return (
+    <section className="relative min-h-screen pt-32 pb-20 overflow-hidden bg-black text-white">
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="max-w-4xl mx-auto text-center mb-16">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-5xl md:text-7xl font-bold tracking-tighter mb-6 font-serif"
+          >
+            STOP PRACTICING.<br />START TRAINING.
+          </motion.h1>
+          
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto font-sans leading-relaxed"
+          >
+            The Tour Pure System gives everyday golfers the same type of immediate feedback elite players use to build a connected, repeatable swing—without guesswork.
+          </motion.p>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
+          >
+            <a 
+              href="/shop/training-systems" 
+              className="w-full sm:w-auto px-8 py-4 bg-white text-black font-bold tracking-widest uppercase hover:bg-gray-200 transition-colors"
+            >
+              SHOP THE TOUR PURE SYSTEM
+            </a>
+            <a 
+              href="/tour-pure-guide" 
+              className="w-full sm:w-auto px-8 py-4 border border-white text-white font-bold tracking-widest uppercase hover:bg-white hover:text-black transition-all"
+            >
+              HOW IT WORKS
+            </a>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="flex flex-wrap items-center justify-center gap-8 text-sm font-semibold tracking-widest uppercase text-gray-400"
+          >
+            {[
+              "Tour-Inspired Training",
+              "Immediate Feedback",
+              "Built for Every Skill Level"
+            ].map((prop) => (
+              <div key={prop} className="flex items-center gap-2">
+                <Check className="w-4 h-4 text-white" />
+                <span>{prop}</span>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto"
+        >
+          <div className="aspect-[4/5] overflow-hidden bg-zinc-900 border border-white/10 group">
+            <img 
+              src={IMAGES.weightedClub} 
+              alt="Tour Pure Weighted Club in use" 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+          </div>
+          <div className="aspect-[4/5] overflow-hidden bg-zinc-900 border border-white/10 group">
+            <img 
+              src={IMAGES.blueprint} 
+              alt="Tour Pure Blueprint book" 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+          </div>
+          <div className="aspect-[4/5] overflow-hidden bg-zinc-900 border border-white/10 group">
+            <img 
+              src={IMAGES.swingSequence} 
+              alt="Swing sequence mechanics" 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20">
+        <div className="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 bg-white blur-[120px] rounded-full" />
+        <div className="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-zinc-700 blur-[120px] rounded-full" />
+      </div>
+    </section>
+  );
+};
