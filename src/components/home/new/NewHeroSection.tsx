@@ -3,8 +3,8 @@ import { Check } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const IMAGES = {
-  swingSequence: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FGemini_Generated_Image_ofjfkaofjfkaofjf__1e06169b.png?alt=media&token=8b7d6778-29b1-44d2-a5b5-436472032131',
-  blueprint: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FScreenshot_20260324_042207_SamsungInternet__2f2a1710.jpg?alt=media&token=4e6db837-c08e-4745-b0c4-9d9e5d607413'
+  redShirt1: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F455082619_8098523016902786_920092106083080418_n__592fb000.jpg?alt=media&token=eafee2aa-8be5-4781-9cad-484a87cc07fd',
+  redShirt2: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F455087282_8098523443569410_6374726642753676189_n__d7f2dffb.jpg?alt=media&token=58f20b32-9a32-417e-ac86-9758fb01f4c8'
 };
 
 export const NewHeroSection = () => {
@@ -79,16 +79,16 @@ export const NewHeroSection = () => {
         >
           <div className="aspect-[4/3] overflow-hidden bg-zinc-900 border border-white/5 group relative rounded-sm shadow-2xl">
             <img 
-              src={IMAGES.swingSequence} 
-              alt="Swing sequence mechanics" 
+              src={IMAGES.redShirt1} 
+              alt="Professional golfer training with Tour Pure System" 
               className="w-full h-full object-cover brightness-90 group-hover:brightness-100 transition-all duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
           </div>
           <div className="aspect-[4/3] overflow-hidden bg-zinc-900 border border-white/5 group relative rounded-sm shadow-2xl">
             <img 
-              src={IMAGES.blueprint} 
-              alt="Tour Pure Blueprint book" 
+              src={IMAGES.redShirt2} 
+              alt="Elite player feedback loop training" 
               className="w-full h-full object-cover brightness-90 group-hover:brightness-100 transition-all duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
