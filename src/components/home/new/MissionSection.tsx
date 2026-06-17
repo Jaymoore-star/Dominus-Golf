@@ -35,7 +35,7 @@ export const MissionSection = () => {
             transition={{ duration: 0.8 }}
             className="order-1 lg:order-2"
           >
-            <h2 className="text-4xl md:text-7xl font-bold tracking-tight mb-10 font-serif uppercase leading-tight">
+            <h2 className="text-4xl md:text-7xl font-bold tracking-tight mb-10 font-serif uppercase leading-tight text-accent">
               MORE THAN A GOLF COMPANY
             </h2>
             <p className="text-gray-400 text-lg md:text-2xl mb-14 font-sans leading-relaxed">

@@ -20,7 +20,7 @@ export const WhySection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-4xl md:text-7xl font-bold tracking-tight mb-10 font-serif uppercase"
+            className="text-4xl md:text-7xl font-bold tracking-tight mb-10 font-serif uppercase text-accent"
           >
             WHY MOST GOLFERS NEVER IMPROVE
           </motion.h2>

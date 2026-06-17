@@ -16,7 +16,7 @@ export const NewHeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-5xl md:text-8xl font-bold tracking-tighter mb-6 font-serif leading-[1.05]"
+            className="text-5xl md:text-8xl font-bold tracking-tighter mb-6 font-serif leading-[1.05] text-accent"
           >
             STOP PRACTICING.<br />START TRAINING.
           </motion.h1>
@@ -54,7 +54,7 @@ export const NewHeroSection = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="flex flex-wrap items-center justify-center gap-6 md:gap-12 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-gray-400"
+            className="flex flex-wrap items-center justify-center gap-6 md:gap-12 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-accent"
           >
             {[
               "Tour-Inspired Training",
