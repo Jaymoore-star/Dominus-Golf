@@ -18,7 +18,7 @@ export const NewHeroSection = () => {
             transition={{ duration: 0.6 }}
             className="text-5xl md:text-8xl font-bold tracking-tighter mb-6 font-serif leading-[1.05] text-accent"
           >
-            STOP PRACTICING.<br />START TRAINING.
+            STOP PRACTICING.<br /><span className="text-white">START TRAINING.</span>
           </motion.h1>
           
           <motion.p 
