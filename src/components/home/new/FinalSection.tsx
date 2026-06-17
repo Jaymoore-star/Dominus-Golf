@@ -11,7 +11,7 @@ export const FinalSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-5xl md:text-9xl font-bold tracking-tight mb-12 font-serif uppercase leading-[0.95] text-accent"
+            className="text-4xl md:text-8xl font-bold tracking-tight mb-12 font-serif uppercase leading-[0.95] text-accent"
           >
             YOUR NEXT ROUND IS ALREADY ON THE CALENDAR.
           </motion.h2>

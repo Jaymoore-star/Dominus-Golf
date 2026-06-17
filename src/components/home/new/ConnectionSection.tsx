@@ -16,7 +16,7 @@ export const ConnectionSection = () => {
             <span className="inline-block px-6 py-2 bg-white/10 text-white text-[10px] font-bold tracking-[0.4em] uppercase mb-10 rounded-full border border-white/5 shadow-2xl">
               COMING SOON
             </span>
-            <h2 className="text-4xl md:text-7xl font-bold tracking-tight mb-8 font-serif uppercase leading-[1.05] text-accent">
+            <h2 className="text-3xl md:text-6xl font-bold tracking-tight mb-8 font-serif uppercase leading-[1.05] text-accent">
               THE EVOLUTION OF CONNECTION TRAINING
             </h2>
             <p className="text-lg md:text-2xl text-white mb-10 font-sans font-medium italic text-gray-300 tracking-tight leading-snug">

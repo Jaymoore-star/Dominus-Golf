@@ -29,7 +29,7 @@ export const SystemSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-4xl md:text-8xl font-bold tracking-tight mb-4 font-serif uppercase text-accent"
+            className="text-3xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4 font-serif uppercase text-accent"
           >
             THE TOUR PURE SYSTEM
           </motion.h2>
@@ -52,7 +52,7 @@ export const SystemSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
-              className="flex flex-col h-full bg-zinc-900/30 p-10 border border-white/5 group hover:border-white/10 transition-colors rounded-sm"
+              className="flex flex-col h-full bg-zinc-900/30 p-10 border border-white/5 group hover:border-white/10 transition-colors rounded-sm overflow-visible"
             >
               <div className="aspect-square overflow-hidden bg-black/40 border border-white/5 mb-10 rounded-sm group relative flex items-center justify-center p-8">
                 <img 
@@ -61,7 +61,7 @@ export const SystemSection = () => {
                   className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700"
                 />
               </div>
-              <h3 className="text-xl md:text-2xl font-bold mb-6 tracking-tight font-serif uppercase leading-tight min-h-[3.5rem] text-accent">{card.title}</h3>
+              <h3 className="text-xl md:text-2xl font-bold mb-6 tracking-tight font-serif uppercase leading-tight text-accent">{card.title}</h3>
               <p className="text-gray-400 font-sans leading-relaxed flex-grow text-sm md:text-lg">{card.text}</p>
             </motion.div>
           ))}
