@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 const IMAGES = {
   redShirt1: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F455082619_8098523016902786_920092106083080418_n__592fb000.jpg?alt=media&token=eafee2aa-8be5-4781-9cad-484a87cc07fd',
-  redShirt2: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F455087282_8098523443569410_6374726642753676189_n__d7f2dffb.jpg?alt=media&token=58f20b32-9a32-417e-ac86-9758fb01f4c8'
+  redShirt2: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F301503221_456856363151119_1248543110073884434_n__b21743d9.jpg?alt=media&token=14f4d325-9e1e-4afe-9f14-004bf18e16e9'
 };
 
 export const NewHeroSection = () => {
