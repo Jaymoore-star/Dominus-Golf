@@ -121,7 +121,7 @@ export function TourPureOverview() {
           </p>
 
           <div className="w-full text-left max-w-4xl mx-auto">
-            <Accordion type="single" collapsible className="w-full">
+            <Accordion type="single" className="w-full">
               <AccordionItem value="swing-methodology" className="border-border/10">
                 <AccordionTrigger className="font-serif text-xl sm:text-2xl font-bold hover:no-underline py-6">
                   The P Position Swing Sequence

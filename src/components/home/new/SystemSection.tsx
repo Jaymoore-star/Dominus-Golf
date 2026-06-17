@@ -61,7 +61,7 @@ export const SystemSection = () => {
                   className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700"
                 />
               </div>
-              <h3 className="text-xl md:text-2xl font-bold mb-6 tracking-tight font-serif uppercase leading-tight text-accent">{card.title}</h3>
+              <h3 className="text-lg md:text-xl font-bold mb-6 tracking-tight font-serif uppercase leading-tight text-accent">{card.title}</h3>
               <p className="text-gray-400 font-sans leading-relaxed flex-grow text-sm md:text-lg">{card.text}</p>
             </motion.div>
           ))}
