@@ -1,11 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 const SYSTEM_CARDS = [
   {
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FPhotoroom-20251125_1425462241__e480e1c6.png?alt=media&token=7c96a611-0b70-415f-a7f7-8bebe5a974a2',
     title: 'THE TOUR PURE WEIGHTED CLUB',
-    text: 'A feedback-based training tool designed to reinforce proper sequencing, improve tempo, and help golfers feel correct swing positions through resistance training.'
+    text: 'A feedback-based training tool designed to reinforce proper sequencing, improve tempo, and help golfers feel correct swing positions through resistance training.',
+    imageClassName: 'scale-[1.4]'
   },
   {
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FScreenshot_20260324_042207_SamsungInternet__2f2a1710.jpg?alt=media&token=4e6db837-c08e-4745-b0c4-9d9e5d607413',
@@ -13,9 +15,10 @@ const SYSTEM_CARDS = [
     text: 'A structured training manual that removes guesswork and provides a clear step-by-step system for developing swing mechanics, sequencing, and consistency.'
   },
   {
-    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FR__3951d4b9.png?alt=media&token=9d723d63-318c-4122-b7cd-b70a10e0520f',
+    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FTourPureonRange1__4474cb89.jpg?alt=media&token=75b78501-08b6-4480-90b2-04501ed5906a',
     title: 'TRAINING THAT TELLS YOU WHAT’S WRONG',
-    text: 'Every rep is designed to give immediate feedback so you can self-correct without guessing. Transitions seamlessly from full-swing mechanics onto the putting green to lock in short-game precision.'
+    text: 'Every rep is designed to give immediate feedback so you can self-correct without guessing. Transitions seamlessly from full-swing mechanics onto the putting green to lock in short-game precision.',
+    imageClassName: 'object-cover scale-100 group-hover:scale-105'
   }
 ];
 
@@ -54,11 +57,14 @@ export const SystemSection = () => {
               transition={{ duration: 0.6, delay: index * 0.2 }}
               className="flex flex-col h-full bg-zinc-900/30 p-10 border border-white/5 group hover:border-white/10 transition-colors rounded-sm overflow-visible"
             >
-              <div className="aspect-square overflow-hidden bg-black/40 border border-white/5 mb-10 rounded-sm group relative flex items-center justify-center p-8">
+              <div className="aspect-square overflow-visible bg-black/40 border border-white/5 mb-10 rounded-sm group relative flex items-center justify-center p-8">
                 <img 
                   src={card.image} 
                   alt={card.title} 
-                  className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700"
+                  className={cn(
+                    "w-full h-full object-contain transition-transform duration-700",
+                    card.imageClassName || "group-hover:scale-110"
+                  )}
                 />
               </div>
               <h3 className="text-lg md:text-xl font-bold mb-6 tracking-tight font-serif uppercase leading-tight text-accent">{card.title}</h3>
