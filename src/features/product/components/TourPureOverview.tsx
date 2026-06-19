@@ -1,4 +1,4 @@
-import { Check, Info, Target, Zap, Waves, Activity } from 'lucide-react';
+import { Check, Info, Target, Zap, Waves, Activity, ArrowRight } from 'lucide-react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '../../../components/ui/accordion';
 
 export function TourPureOverview() {
@@ -86,7 +86,7 @@ export function TourPureOverview() {
             <li>• Chest rotating through impact</li>
           </ul>
           <div className="bg-black/40 border border-accent/30 p-4 rounded-sm">
-            <p className="text-accent font-bold text-[10px] uppercase tracking-0.2em mb-2">Dominus Logo Check:</p>
+            <p className="text-accent font-bold text-[10px] uppercase tracking-[0.2em] mb-2">Dominus Logo Check:</p>
             <p className="text-sm mb-3">At P7, you should be able to clearly see the Dominus Golf logo on the trainer.</p>
             <ul className="text-xs space-y-1 opacity-80">
               <li>• <span className="text-green-400 font-bold">Logo visible:</span> Impact position is correct</li>
@@ -100,7 +100,7 @@ export function TourPureOverview() {
     {
       number: 'P8',
       title: 'Extension',
-      icon: <Activity className="w-5 h-5 text-accent" />,
+      icon: <ArrowRight className="w-5 h-5 text-accent" />,
       content: (
         <ul className="space-y-1">
           <li>• Arms extend down the target line</li>
@@ -214,7 +214,7 @@ export function TourPureOverview() {
       </section>
 
       {/* Training Protocol */}
-      <section id="tips" className="bg-accent/5 border-y border-accent/10 py-20 px-4">
+      <section id="protocol" className="bg-accent/5 border-y border-accent/10 py-20 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center gap-4 mb-10">
             <Target className="text-accent" size={32} />
