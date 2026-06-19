@@ -21,6 +21,11 @@ export const MissionSection = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
             </div>
+            
+            {/* Mission badge */}
+            <div className="absolute -bottom-6 -right-6 bg-white text-black px-8 py-4 font-bold tracking-[0.2em] uppercase text-xs shadow-2xl transform rotate-2">
+              Mission Driven
+            </div>
           </motion.div>
 
           <motion.div
