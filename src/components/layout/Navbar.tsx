@@ -155,6 +155,7 @@ export function Navbar() {
     { label: 'Apparel', key: 'apparel' },
     { label: 'Accessories', key: 'accessories' },
     { label: 'Company', key: 'company' },
+    { label: 'Development Grant', key: null, href: 'https://share-na2.hsforms.com/084f3e9c-31da-4700-a691-592e947cf4b7' },
   ];
 
   return (
@@ -231,6 +232,15 @@ export function Navbar() {
                           }`}
                         />
                       </button>
+                    ) : link.href?.startsWith('http') ? (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-2 font-sans text-[13px] font-medium tracking-wide text-foreground hover:text-accent transition-colors duration-150"
+                      >
+                        {link.label}
+                      </a>
                     ) : (
                       <Link
                         to={link.href ?? '/'}
@@ -415,6 +425,16 @@ export function Navbar() {
                         </div>
                       )}
                     </>
+                  ) : link.href?.startsWith('http') ? (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setMobileOpen(false)}
+                      className="block px-6 py-4 font-sans font-medium text-foreground text-sm tracking-wide hover:text-accent transition-colors"
+                    >
+                      {link.label}
+                    </a>
                   ) : (
                     <Link
                       to={link.href ?? '/'}
