@@ -12,7 +12,7 @@ import { CartDrawer } from '../components/cart/CartDrawer';
 
 export function HomePage() {
   return (
-    <div className="min-h-screen bg-black text-foreground">
+    <div className="min-h-screen bg-white text-foreground">
       <Navbar />
       <main>
         <NewHeroSection />

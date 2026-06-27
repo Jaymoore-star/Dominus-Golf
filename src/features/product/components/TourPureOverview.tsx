@@ -85,14 +85,14 @@ export function TourPureOverview() {
             <li>• Hips open to target</li>
             <li>• Chest rotating through impact</li>
           </ul>
-          <div className="bg-black/40 border border-accent/30 p-4 rounded-sm">
+          <div className="bg-gray-100 border border-accent/30 p-4 rounded-sm">
             <p className="text-accent font-bold text-[10px] uppercase tracking-[0.2em] mb-2">Dominus Logo Check:</p>
             <p className="text-sm mb-3">At P7, you should be able to clearly see the Dominus Golf logo on the trainer.</p>
             <ul className="text-xs space-y-1 opacity-80">
-              <li>• <span className="text-green-400 font-bold">Logo visible:</span> Impact position is correct</li>
-              <li>• <span className="text-red-400 font-bold">Logo not visible:</span> Early release or loss of structure has occurred</li>
+              <li>• <span className="text-green-600 font-bold">Logo visible:</span> Impact position is correct</li>
+              <li>• <span className="text-red-600 font-bold">Logo not visible:</span> Early release or loss of structure has occurred</li>
             </ul>
-            <p className="text-[10px] mt-4 pt-3 border-t border-white/5 uppercase tracking-widest opacity-60">This is the primary feedback mechanism of Tour Pure.</p>
+            <p className="text-[10px] mt-4 pt-3 border-t border-black/5 uppercase tracking-widest opacity-60">This is the primary feedback mechanism of Tour Pure.</p>
           </div>
         </div>
       )
@@ -138,7 +138,7 @@ export function TourPureOverview() {
   return (
     <div className="mt-20 space-y-24">
       {/* Overview Section */}
-      <section id="overview" className="relative overflow-hidden bg-black text-white py-20 px-6 border border-white/10">
+      <section id="overview" className="relative overflow-hidden bg-gray-50 text-black py-20 px-6 border border-black/10">
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col items-center text-center mb-12">
             <p className="font-sans text-[11px] font-semibold tracking-[0.4em] uppercase text-accent mb-4">
@@ -154,21 +154,21 @@ export function TourPureOverview() {
             <div className="space-y-4">
               <div className="flex justify-center"><Info className="text-accent" size={24} /></div>
               <h3 className="font-serif text-xl font-bold italic underline decoration-accent/30 underline-offset-8 decoration-2">What it is</h3>
-              <p className="font-sans text-sm text-white/60 leading-relaxed">
+              <p className="font-sans text-sm text-gray-600 leading-relaxed">
                 Dominus Golf's patented multifunctional weighted golf trainer, the Tour Pure, is an all-in-one swing mechanics tool, putting aid, and fitness trainer.
               </p>
             </div>
             <div className="space-y-4">
               <div className="flex justify-center"><Target className="text-accent" size={24} /></div>
               <h3 className="font-serif text-xl font-bold italic underline decoration-accent/30 underline-offset-8 decoration-2">Who it's for</h3>
-              <p className="font-sans text-sm text-white/60 leading-relaxed">
+              <p className="font-sans text-sm text-gray-600 leading-relaxed">
                 The Tour Pure is an excellent training aid for beginners, while low handicap golfers can use it to focus and sharpen skills already developed.
               </p>
             </div>
             <div className="space-y-4">
               <div className="flex justify-center"><Zap className="text-accent" size={24} /></div>
               <h3 className="font-serif text-xl font-bold italic underline decoration-accent/30 underline-offset-8 decoration-2">The Promise</h3>
-              <p className="font-sans text-sm text-white/60 leading-relaxed">
+              <p className="font-sans text-sm text-gray-600 leading-relaxed">
                 Designed to build a more consistent, repeatable swing in just minutes a day — for golfers serious about developing real mechanics, better tempo, and lasting improvement on the course.
               </p>
             </div>

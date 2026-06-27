@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 export const FinalSection = () => {
   return (
-    <section className="py-32 bg-black text-white relative overflow-hidden border-t border-white/5">
+    <section className="py-32 bg-white text-black relative overflow-hidden border-t border-black/5">
       <div className="container mx-auto px-4 relative z-10 text-center">
         <div className="max-w-6xl mx-auto">
           <motion.h2 
@@ -21,7 +21,7 @@ export const FinalSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl md:text-3xl text-gray-400 font-sans leading-relaxed mb-20 max-w-4xl mx-auto italic"
+            className="text-xl md:text-3xl text-gray-600 font-sans leading-relaxed mb-20 max-w-4xl mx-auto italic"
           >
             "Every practice session either reinforces bad habits or builds the swing you've been trying to create. Which one will today be?"
           </motion.div>
@@ -34,7 +34,7 @@ export const FinalSection = () => {
           >
             <a 
               href="/shop/training-system" 
-              className="inline-block px-16 py-8 bg-white text-black font-bold tracking-[0.25em] uppercase hover:bg-gray-200 transition-all shadow-[0_0_60px_rgba(255,255,255,0.15)] text-sm md:text-lg"
+              className="inline-block px-16 py-8 bg-black text-white font-bold tracking-[0.25em] uppercase hover:bg-gray-800 transition-all shadow-lg text-sm md:text-lg"
             >
               SHOP THE TOUR PURE SYSTEM
             </a>
@@ -44,7 +44,7 @@ export const FinalSection = () => {
 
       {/* Atmospheric depth elements */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full pointer-events-none opacity-[0.08]">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-white blur-[180px] rounded-full" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-black blur-[180px] rounded-full" />
       </div>
     </section>
   );

@@ -21,7 +21,7 @@ const SYSTEM_CARDS = [
 
 export const SystemSection = () => {
   return (
-    <section className="py-24 bg-black text-white">
+    <section className="py-24 bg-white text-black">
       <div className="container mx-auto px-4">
         <div className="text-center mb-24">
           <motion.h2 
@@ -38,7 +38,7 @@ export const SystemSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg md:text-xl text-gray-500 font-sans uppercase tracking-[0.3em] font-medium"
+            className="text-lg md:text-xl text-gray-600 font-sans uppercase tracking-[0.3em] font-medium"
           >
             One system. Three tools. One purpose. Build a swing you can trust under pressure.
           </motion.p>
@@ -52,9 +52,9 @@ export const SystemSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
-              className="flex flex-col h-full bg-zinc-900/30 p-10 border border-white/5 group hover:border-white/10 transition-colors rounded-sm overflow-visible"
+              className="flex flex-col h-full bg-gray-50 p-10 border border-black/5 group hover:border-black/10 transition-colors rounded-sm overflow-visible"
             >
-              <div className="aspect-square overflow-hidden bg-black/40 border border-white/5 mb-10 rounded-sm group relative flex items-center justify-center p-8">
+              <div className="aspect-square overflow-hidden bg-gray-100 border border-black/5 mb-10 rounded-sm group relative flex items-center justify-center p-8">
                 <img 
                   src={card.image} 
                   alt={card.title} 
@@ -62,7 +62,7 @@ export const SystemSection = () => {
                 />
               </div>
               <h3 className="text-lg md:text-xl font-bold mb-6 tracking-tight font-serif uppercase leading-tight text-accent">{card.title}</h3>
-              <p className="text-gray-400 font-sans leading-relaxed flex-grow text-sm md:text-lg">{card.text}</p>
+              <p className="text-gray-600 font-sans leading-relaxed flex-grow text-sm md:text-lg">{card.text}</p>
             </motion.div>
           ))}
         </div>
@@ -76,7 +76,7 @@ export const SystemSection = () => {
           >
             <a 
               href="/shop/training-system" 
-              className="inline-block px-14 py-6 bg-white text-black font-bold tracking-widest uppercase hover:bg-gray-200 transition-colors text-sm shadow-xl"
+              className="inline-block px-14 py-6 bg-black text-white font-bold tracking-widest uppercase hover:bg-gray-800 transition-colors text-sm shadow-xl"
             >
               BUILD YOUR SYSTEM
             </a>

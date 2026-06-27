@@ -50,7 +50,7 @@ export function FeelRightBandOverview() {
   return (
     <div className="mt-20 space-y-24">
       {/* Overview Section */}
-      <section id="overview" className="relative overflow-hidden bg-black text-white py-20 px-6 border border-white/10">
+      <section id="overview" className="relative overflow-hidden bg-gray-50 text-black py-20 px-6 border border-black/10">
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col items-center text-center mb-12">
             <p className="font-sans text-[11px] font-semibold tracking-[0.4em] uppercase text-accent mb-4">
@@ -66,7 +66,7 @@ export function FeelRightBandOverview() {
             <div className="space-y-4">
               <div className="flex justify-center"><Info className="text-accent" size={24} /></div>
               <h3 className="font-serif text-xl font-bold italic underline decoration-accent/30 underline-offset-8 decoration-2">What it is</h3>
-              <p className="font-sans text-base text-white/80 leading-relaxed">
+              <p className="font-sans text-base text-gray-600 leading-relaxed">
                 The Feel Right Band is a connection training aid worn around the trail arm bicep. It replicates the biomechanics of the tour-famous "floatie drill"—teaching the trail arm to stay structured through the backswing and seamlessly reconnect to the body during the downswing. This is the single most important sequencing move for a repeatable golf swing.
               </p>
             </div>
