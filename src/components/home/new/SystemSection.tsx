@@ -13,7 +13,7 @@ const SYSTEM_CARDS = [
     text: 'A structured training manual that removes guesswork and provides a clear step-by-step system for developing swing mechanics, sequencing, and consistency.'
   },
   {
-    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FR__3951d4b9.png?alt=media&token=9d723d63-318c-4122-b7cd-b70a10e0520f',
+    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F05e7c204-d2a6-4a57-bd3e-b27b347a8ccb__e06f2841.png?alt=media&token=ea8d4784-440c-41f3-a69d-7cf4fb5fdb43',
     title: 'TRAINING THAT TELLS YOU WHAT’S WRONG',
     text: 'Every rep is designed to give immediate feedback so you can self-correct without guessing. Transitions seamlessly from full-swing mechanics onto the putting green to lock in short-game precision.'
   }
