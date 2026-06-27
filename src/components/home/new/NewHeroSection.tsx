@@ -34,7 +34,6 @@ export const NewHeroSection = () => {
                 'Immediate feedback on every rep',
                 'Works on full swing, chipping, putting alignment',
                 'Used indoors or outdoors',
-                'Built for all skill levels',
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <span className="mt-2 w-1.5 h-1.5 bg-accent shrink-0" />
