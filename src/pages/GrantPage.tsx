@@ -167,7 +167,7 @@ export function GrantPage() {
             transition={{ duration: 0.55, delay: 0.45 }}
             className="mt-5 sm:mt-6 text-lg sm:text-xl text-white/60 italic font-serif text-center max-w-xl"
           >
-            Excellence Recognized. Development Funded.
+            The Feedback Your Swing Has Been Missing.
           </motion.p>
 
           {/* Stats bar */}
