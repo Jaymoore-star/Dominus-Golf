@@ -25,12 +25,6 @@ export const ConnectionSection = () => {
             <p className="text-gray-600 text-lg md:text-xl mb-14 font-sans leading-relaxed">
               Many golfers have tried towels, headcovers, floaties, and elbow gadgets to create connection. The next evolution of the Tour Pure System features the <span className="text-black font-bold">Feel Right Band</span>—a connection training tool designed to provide immediate feedback when the swing becomes disconnected, helping you maintain perfect arm-to-body synchronization.
             </p>
-            <a 
-              href="/feel-right-band-guide" 
-              className="inline-block px-14 py-6 border border-black/20 text-black font-bold tracking-widest uppercase hover:bg-black hover:text-white transition-all text-sm shadow-2xl"
-            >
-              JOIN THE WAITLIST
-            </a>
           </motion.div>
 
           <motion.div
