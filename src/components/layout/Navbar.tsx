@@ -114,9 +114,9 @@ export function Navbar() {
   const navRef = useRef<HTMLDivElement>(null);
 
   const announcements = [
-    'Free Shipping on Orders Over $150',
-    'Shop New Training Systems — Build Your Best Swing',
-    'Join Team Dominus Golf — Exclusive Member Access',
+    { text: 'The Dominus Golf Development Grant is Now Open — $5,000 Awarded to One Golfer Nationwide. Apply by August 15.', link: 'https://share-na2.hsforms.com/084f3e9c-31da-4700-a691-592e947cf4b7', linkLabel: 'Apply Now' },
+    { text: 'Free Shipping on Orders Over $150', link: null, linkLabel: null },
+    { text: 'Shop New Training Systems — Build Your Best Swing', link: null, linkLabel: null },
   ];
 
   // Rotate announcements
@@ -162,7 +162,7 @@ export function Navbar() {
       <header className="sticky top-0 z-30" ref={navRef}>
         {/* Announcement Bar */}
         <div className="bg-primary text-primary-foreground h-9 flex items-center justify-center relative overflow-hidden px-4">
-          {announcements.map((text, i) => (
+          {announcements.map((item, i) => (
             <div
               key={i}
               className={`absolute inset-0 flex items-center justify-center transition-all duration-700 ease-in-out px-4 ${
@@ -172,7 +172,17 @@ export function Navbar() {
               }`}
             >
               <span className="font-sans text-[11px] font-medium tracking-widest uppercase text-accent text-center">
-                {text}
+                {item.text}{' '}
+                {item.link && (
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-4 hover:text-white transition-colors duration-200 font-bold"
+                  >
+                    {item.linkLabel}
+                  </a>
+                )}
               </span>
             </div>
           ))}
