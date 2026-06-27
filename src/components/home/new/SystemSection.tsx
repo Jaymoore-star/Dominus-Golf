@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 const SYSTEM_CARDS = [
   {
-    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F05e7c204-d2a6-4a57-bd3e-b27b347a8ccb__e06f2841.png?alt=media&token=ba82b01c-b686-4f62-9b6d-54f545762e07',
+    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FIMG_20251125_140842__6f9f5d69.jpg?alt=media&token=f4c13e27-1a5b-45c8-b12d-12de3f36da58',
     title: 'THE TOUR PURE WEIGHTED CLUB',
     text: 'A feedback-based training tool designed to reinforce proper sequencing, improve tempo, and help golfers feel correct swing positions through resistance training.'
   },
