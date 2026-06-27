@@ -17,7 +17,7 @@ export const trainingSystems: Product[] = [
     ],
     badge: 'Best Seller',
     description:
-      'Weighted swing trainer built to improve tempo, sequencing, swing path, and ball-striking consistency. Includes FREE Ultimate Guide to Mastering the Game (90-Day Training Manual) in PDF format.',
+      'Most golfers spend hundreds on new equipment hoping something changes.\n\nNothing changes.\n\nBecause the problem was never the club. It was never the shaft flex, the loft angle, or the grip size. It was the swing path. It was the plane. It was the one thing no equipment purchase has ever fixed — and the one thing every elite golfer has spent thousands of hours learning to master.\n\nTour Pure was built for the golfer who is done guessing.\n\nEvery rep delivers immediate feedback on your swing path and plane — the two fundamentals that separate a consistent, powerful golf swing from everything else. Not after the round. Not after the lesson. Right now. On that rep.\n\nYou feel it when it\'s wrong. You feel it when it\'s right. And over time, right becomes automatic.\n\nThis is not practice. This is training.',
     features: [
       'FREE Ultimate Guide to Mastering the Game (PDF)',
       'FREE 90-Day Training Manual (PDF)',

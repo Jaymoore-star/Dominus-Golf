@@ -65,9 +65,11 @@ export function ProductAccordion({
                   <p className="font-sans text-sm text-muted-foreground">Specifications coming soon.</p>
                 )
               ) : (
-                <p className="font-sans text-sm text-muted-foreground leading-relaxed">
-                  {item.content}
-                </p>
+                <div className="font-sans text-sm text-muted-foreground leading-relaxed space-y-3">
+                  {item.content?.split('\n\n').map((para, i) => (
+                    <p key={i}>{para}</p>
+                  ))}
+                </div>
               )}
             </div>
           )}
