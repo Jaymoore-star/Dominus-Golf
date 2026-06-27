@@ -277,17 +277,32 @@ export function Navbar() {
                         {col.heading}
                       </p>
                       <ul className="space-y-2">
-                        {col.links.map((link) => (
+                        {col.links.map((link) => {
+                          const isExternal = link.href.startsWith('http');
+                          return (
                           <li key={link.label}>
-                            <Link
-                              to={link.href as any}
-                              onClick={() => setActiveMega(null)}
-                              className="font-sans text-sm text-foreground hover:text-accent transition-colors duration-150 gold-underline-hover inline-block"
-                            >
-                              {link.label}
-                            </Link>
+                            {isExternal ? (
+                              <a
+                                href={link.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => setActiveMega(null)}
+                                className="font-sans text-sm text-foreground hover:text-accent transition-colors duration-150 gold-underline-hover inline-block"
+                              >
+                                {link.label}
+                              </a>
+                            ) : (
+                              <Link
+                                to={link.href as any}
+                                onClick={() => setActiveMega(null)}
+                                className="font-sans text-sm text-foreground hover:text-accent transition-colors duration-150 gold-underline-hover inline-block"
+                              >
+                                {link.label}
+                              </Link>
+                            )}
                           </li>
-                        ))}
+                          );
+                        })}
                       </ul>
                     </div>
                   ))}
@@ -361,16 +376,30 @@ export function Navbar() {
                               <p className="font-sans text-[10px] font-semibold tracking-widest uppercase text-muted-foreground mt-3 mb-1">
                                 {col.heading}
                               </p>
-                              {col.links.map((l) => (
-                                <Link
-                                  key={l.label}
-                                  to={l.href as any}
-                                  onClick={() => setMobileOpen(false)}
-                                  className="block py-1.5 font-sans text-sm text-foreground hover:text-accent transition-colors"
-                                >
-                                  {l.label}
-                                </Link>
-                              ))}
+                              {col.links.map((l) => {
+                                const isExternal = l.href.startsWith('http');
+                                return isExternal ? (
+                                  <a
+                                    key={l.label}
+                                    href={l.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={() => setMobileOpen(false)}
+                                    className="block py-1.5 font-sans text-sm text-foreground hover:text-accent transition-colors"
+                                  >
+                                    {l.label}
+                                  </a>
+                                ) : (
+                                  <Link
+                                    key={l.label}
+                                    to={l.href as any}
+                                    onClick={() => setMobileOpen(false)}
+                                    className="block py-1.5 font-sans text-sm text-foreground hover:text-accent transition-colors"
+                                  >
+                                    {l.label}
+                                  </Link>
+                                );
+                              })}
                             </div>
                           ))}
                         </div>
