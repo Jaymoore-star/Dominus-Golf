@@ -21,14 +21,30 @@ export const NewHeroSection = () => {
             THE FEEDBACK YOUR SWING<br /><span className="text-white">HAS BEEN MISSING.</span>
           </motion.h1>
           
-          <motion.p 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg md:text-2xl text-gray-400 mb-10 max-w-2xl mx-auto font-sans leading-relaxed"
+            className="mb-10 max-w-lg mx-auto text-left"
           >
-            The Tour Pure System gives everyday golfers the same type of immediate feedback elite players use to build a connected, repeatable swing—without guesswork.
-          </motion.p>
+            <ul className="space-y-2.5">
+              {[
+                'Weighted training system',
+                'Teaches swing path and swing plane',
+                'Immediate feedback on every rep',
+                'Works on full swing, chipping, putting alignment',
+                'Used indoors or outdoors',
+                'Built for all skill levels',
+              ].map((item, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <span className="mt-2 w-1.5 h-1.5 bg-accent shrink-0" />
+                  <span className="text-base md:text-lg text-gray-400 font-sans leading-relaxed">
+                    {item}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
 
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
