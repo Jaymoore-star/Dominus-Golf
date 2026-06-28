@@ -135,6 +135,7 @@ export const apparel: Product[] = [
     inStock: true,
     rating: 4.9,
     reviewCount: 32,
+    stripeUrl: 'https://buy.stripe.com/eVqaERffifFyfKjbeIffy0c',
   },
   {
     id: 'dominus-womens-tee-black-performance',
