@@ -86,7 +86,7 @@ const megaMenuData = {
           { label: 'Team Dominus Golf', href: '/about/team' },
           { label: 'Contact Us', href: '/about/contact' },
           { label: 'Careers', href: '/about/careers' },
-          { label: 'Development Grant', href: 'https://42sajz.share-na2.hsforms.com/2CE8-nDHaRwCmkVkulHz0tw' },
+          { label: 'Development Grant', href: 'https://grant.dominusgolf.com/apply' },
           { label: 'Sustainability', href: '/about/sustainability' },
         ],
       },
@@ -114,7 +114,7 @@ export function Navbar() {
   const navRef = useRef<HTMLDivElement>(null);
 
   const announcements = [
-    { text: 'The Dominus Golf Development Grant is Now Open — $5,000 Awarded to One Golfer Nationwide. Apply by August 15.', link: 'https://share-na2.hsforms.com/084f3e9c-31da-4700-a691-592e947cf4b7', linkLabel: 'Apply Now' },
+    { text: 'The Dominus Golf Development Grant is Now Open — $5,000 Awarded to One Golfer Nationwide. Apply by August 15.', link: 'https://grant.dominusgolf.com/apply', linkLabel: 'Apply Now' },
     { text: 'Free Shipping on Orders Over $150', link: null, linkLabel: null },
     { text: 'Shop New Training Systems — Build Your Best Swing', link: null, linkLabel: null },
   ];

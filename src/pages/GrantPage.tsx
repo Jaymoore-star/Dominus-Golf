@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Award, Clock, FileText, MapPin, Star, Users } from 'lucide-react';
 
-const HUBSPOT_FORM_URL = 'https://share.hsforms.com/084f3e9c-31da-4700-a691-592e947cf4b7';
+const HUBSPOT_FORM_URL = 'https://grant.dominusgolf.com/apply';
 
 /* ─── Scroll-triggered entrance wrapper ─── */
 function FadeUpSection({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {

@@ -24,7 +24,7 @@ const footerLinks = {
     { label: 'Team Dominus Golf', href: '/about/team' },
     { label: 'Contact Us', href: '/about/contact' },
     { label: 'Careers', href: '/about/careers' },
-    { label: 'Development Grant', href: 'https://42sajz.share-na2.hsforms.com/2CE8-nDHaRwCmkVkulHz0tw' },
+    { label: 'Development Grant', href: 'https://grant.dominusgolf.com/apply' },
     { label: 'Sustainability', href: '/about/sustainability' },
   ],
   Legal: [
