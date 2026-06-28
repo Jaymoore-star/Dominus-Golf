@@ -98,7 +98,7 @@ export const apparel: Product[] = [
     variants: [{ label: 'Size', options: ['S', 'M', 'L', 'XL', 'XXL'] }],
     inStock: true,
     rating: 4.9,
-    reviewCount: 54,
+    reviewCount: 0,
   },
   // Women's Apparel
   {
