@@ -111,7 +111,7 @@ export const apparel: Product[] = [
     hoverImage: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-16__4cc41a28.jpg?alt=media&token=ba681f7f-3fbe-49cf-8d7a-d8b6df139f44',
     colorVariants: {
       Black: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-11__fc5a40f7.jpg?alt=media&token=87722e6d-11e3-4e1b-a6b4-7e84ebce8990',
-      White: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-13__94ffe0c4.jpg?alt=media&token=e511fa27-43af-49c7-a2cb-dbc281792be2',
+      White: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-12__3c0a4238.jpg?alt=media&token=39f21e14-c190-4a14-aa92-670ceeeeff3a',
     },
     gallery: [
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-11__fc5a40f7.jpg?alt=media&token=87722e6d-11e3-4e1b-a6b4-7e84ebce8990',
