@@ -7,6 +7,11 @@ interface ProductReviewsProps {
 }
 
 export function ProductReviews({ product }: ProductReviewsProps) {
+  const hasReviews = product.reviewCount && product.reviewCount > 0;
+  const hasReviewCards = product.reviews && product.reviews.length > 0;
+
+  if (!hasReviews) return null;
+
   return (
     <section id="reviews-section" className="mt-24 pt-16 border-t border-border">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
@@ -48,8 +53,8 @@ export function ProductReviews({ product }: ProductReviewsProps) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {product.reviews && product.reviews.length > 0 ? (
-          product.reviews.map((review) => (
+        {hasReviewCards ? (
+          product.reviews!.map((review) => (
             <div
               key={review.id}
               className="bg-muted/30 border border-border p-8 flex flex-col"
