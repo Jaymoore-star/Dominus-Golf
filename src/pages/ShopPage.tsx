@@ -42,7 +42,6 @@ export function ShopPage() {
     // Exclude secondary color variants that are already covered by the primary card
     const APPAREL_SECONDARY_IDS = new Set([
       'dominus-tee-performance-white',
-      'dominus-womens-tee-white-icon',
     ]);
 
     let list = products.filter(

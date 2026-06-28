@@ -59,6 +59,12 @@ export function ProductPage() {
     ? product.gallery
     : [product?.image, product?.hoverImage ?? product?.image].filter(Boolean) as string[];
 
+  const related = products
+    .filter((p) => product && p.category === product.category && p.id !== product.id)
+    .slice(0, 4);
+
+  const [isBuyingNow, setIsBuyingNow] = useState(false);
+
   if (!product) {
     return (
       <div className="min-h-screen bg-background">
@@ -82,12 +88,6 @@ export function ProductPage() {
       </div>
     );
   }
-
-  const related = products
-    .filter((p) => p.category === product.category && p.id !== product.id)
-    .slice(0, 4);
-
-  const [isBuyingNow, setIsBuyingNow] = useState(false);
 
   const handleBuyNow = async () => {
     setIsBuyingNow(true);
