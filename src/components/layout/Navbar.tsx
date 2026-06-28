@@ -155,7 +155,7 @@ export function Navbar() {
     { label: 'Apparel', key: 'apparel' },
     { label: 'Accessories', key: 'accessories' },
     { label: 'Company', key: 'company' },
-    { label: 'Development Grant', key: null, href: 'https://grant.dominusgolf.com/grant' },
+    { label: 'Development Grant', key: null, href: 'https://42sajz.share-na2.hsforms.com/2CE8-nDHaRwCmkVkulHz0tw' },
   ];
 
   return (
