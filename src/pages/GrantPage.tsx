@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, Award, Clock, FileText, MapPin, Star, Users } from 'lucide-react';
+import { ArrowRight, Award, Clock, FileText, Loader2, MapPin, Star, Users } from 'lucide-react';
 
-const HUBSPOT_FORM_URL = 'https://grant.dominusgolf.com/apply';
+const BACKEND_URL = 'https://45pi183s.backend.blink.new';
 
 /* ─── Scroll-triggered entrance wrapper ─── */
 function FadeUpSection({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
@@ -20,18 +20,16 @@ function FadeUpSection({ children, className = '', delay = 0 }: { children: Reac
 }
 
 /* ─── Gold CTA Button ─── */
-function GrantCTA({ className = '' }: { className?: string }) {
+function GrantCTA({ className = '', onClick }: { className?: string; onClick?: () => void }) {
   return (
-    <a
-      href={HUBSPOT_FORM_URL}
-      target="_blank"
-      rel="noopener noreferrer"
+    <button
+      onClick={onClick}
       className={`inline-flex items-center gap-2.5 px-8 py-3.5 text-sm font-semibold tracking-wider uppercase
         bg-[#C4952A] text-black hover:bg-[#D4A840] active:scale-[0.98]
         transition-all duration-200 ${className}`}
     >
       Apply Now <ArrowRight className="w-4 h-4" />
-    </a>
+    </button>
   );
 }
 
@@ -75,8 +73,8 @@ const STEPS = [
   },
   {
     num: '02',
-    title: 'Proceed to Payment',
-    body: 'A non-refundable $15.00 application fee secures your entry.',
+    title: 'Pay $15 via Square',
+    body: 'A secure, non-refundable $15.00 application fee processed by Square.',
   },
   {
     num: '03',
@@ -107,7 +105,31 @@ const ELIGIBILITY = [
   {
     icon: Users,
     title: 'Ages 18+ (Junior Provision)',
-    body: 'Applicants must be 18+. Junior golfers encouraged \u2014 a parent or legal guardian must complete and sign the application.',
+    body: 'Applicants must be 18+. Junior golfers encouraged — a parent or legal guardian must complete and sign the application.',
+  },
+];
+
+/* ===================================================================
+   FORM FIELDS
+   =================================================================== */
+const FORM_FIELDS = [
+  {
+    id: 'developmentPlan',
+    label: 'Development Plan',
+    placeholder: 'Describe your golf development plan. What specific areas are you working on? What goals have you set for the next 12 months?',
+    maxLength: 2000,
+  },
+  {
+    id: 'trainingRegimen',
+    label: 'Training Regimen',
+    placeholder: 'Detail your current training regimen. How often do you practice? What does a typical training session look like? Who do you work with?',
+    maxLength: 2000,
+  },
+  {
+    id: 'competitiveVision',
+    label: 'Competitive Vision',
+    placeholder: 'Share your competitive vision. What tournaments or milestones are you targeting? How will this grant accelerate your journey?',
+    maxLength: 2000,
   },
 ];
 
@@ -116,6 +138,7 @@ const ELIGIBILITY = [
    =================================================================== */
 export function GrantPage() {
   const heroRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ['start start', 'end start'],
@@ -123,8 +146,72 @@ export function GrantPage() {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0.25]);
   const heroScale = useTransform(scrollYProgress, [0, 0.6], [1, 0.97]);
 
-  /* Dynamic year in the badge — will auto-update */
   const [currentYear] = useState(() => new Date().getFullYear());
+
+  // Form state
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [developmentPlan, setDevelopmentPlan] = useState('');
+  const [trainingRegimen, setTrainingRegimen] = useState('');
+  const [competitiveVision, setCompetitiveVision] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const scrollToForm = () => {
+    formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    // Validate
+    if (!name.trim() || !email.trim()) {
+      setError('Please provide your name and email.');
+      return;
+    }
+    if (!developmentPlan.trim() || !trainingRegimen.trim() || !competitiveVision.trim()) {
+      setError('Please answer all three essay questions.');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    setSubmitting(true);
+
+    try {
+      const origin = window.location.origin;
+      const res = await fetch(`${BACKEND_URL}/api/grant/checkout`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          applicantName: name.trim(),
+          applicantEmail: email.trim(),
+          developmentPlan: developmentPlan.trim(),
+          trainingRegimen: trainingRegimen.trim(),
+          competitiveVision: competitiveVision.trim(),
+          successUrl: `${origin}/grant/success`,
+          cancelUrl: `${origin}/grant`,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || data.error) {
+        setError(data.error || 'Failed to create payment link. Please try again.');
+        setSubmitting(false);
+        return;
+      }
+
+      // Redirect to Square payment page
+      window.location.href = data.url;
+    } catch (err) {
+      setError('Network error. Please check your connection and try again.');
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white font-inter overflow-x-hidden">
@@ -203,7 +290,7 @@ export function GrantPage() {
             transition={{ duration: 0.45, delay: 0.8 }}
             className="mt-9 sm:mt-10"
           >
-            <GrantCTA />
+            <GrantCTA onClick={scrollToForm} />
           </motion.div>
 
           {/* Free gift banner */}
@@ -238,7 +325,6 @@ export function GrantPage() {
       <section className="py-20 sm:py-28 lg:py-32 px-5 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-5 gap-12 lg:gap-16">
-            {/* Left — copy */}
             <FadeUpSection className="lg:col-span-3">
               <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.12] tracking-tight">
                 A $5,000 Investment in One Golfer&apos;s Future
@@ -254,7 +340,6 @@ export function GrantPage() {
               </p>
             </FadeUpSection>
 
-            {/* Right — details card */}
             <FadeUpSection className="lg:col-span-2" delay={0.15}>
               <div className="border border-white/10 bg-white/[0.02] p-6 sm:p-7">
                 <h3 className="font-serif text-lg font-semibold text-white mb-5 tracking-tight">
@@ -347,6 +432,142 @@ export function GrantPage() {
         </div>
       </section>
 
+      <Divider />
+
+      {/* ═══════════════════════════════════════════════════
+          APPLICATION FORM
+          ═══════════════════════════════════════════════════ */}
+      <section ref={formRef} className="py-20 sm:py-28 lg:py-32 px-5 sm:px-6 lg:px-8" id="apply">
+        <div className="max-w-3xl mx-auto">
+          <FadeUpSection className="text-center mb-12">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
+              Apply Now
+            </h2>
+            <p className="mt-4 text-base sm:text-lg text-white/50 leading-relaxed max-w-lg mx-auto font-inter">
+              Three essay questions. Five minutes. One $5,000 grant.
+            </p>
+            <p className="mt-2 text-sm text-[#C4952A] font-inter font-medium">
+              $15.00 non-refundable application fee · Processed securely by Square
+            </p>
+          </FadeUpSection>
+
+          <FadeUpSection delay={0.1}>
+            <form onSubmit={handleSubmit} className="space-y-8">
+              {/* Name + Email */}
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="name" className="block text-xs uppercase tracking-widest text-white/50 font-inter font-semibold mb-2">
+                    Full Name *
+                  </label>
+                  <input
+                    id="name"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Your full name"
+                    required
+                    disabled={submitting}
+                    className="w-full bg-transparent border border-white/10 px-4 py-3 text-sm text-white font-inter
+                      placeholder:text-white/25 focus:outline-none focus:border-[#C4952A]/60 transition-colors
+                      disabled:opacity-50"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="email" className="block text-xs uppercase tracking-widest text-white/50 font-inter font-semibold mb-2">
+                    Email Address *
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="you@example.com"
+                    required
+                    disabled={submitting}
+                    className="w-full bg-transparent border border-white/10 px-4 py-3 text-sm text-white font-inter
+                      placeholder:text-white/25 focus:outline-none focus:border-[#C4952A]/60 transition-colors
+                      disabled:opacity-50"
+                  />
+                </div>
+              </div>
+
+              {/* Essay questions */}
+              {FORM_FIELDS.map((field) => (
+                <div key={field.id}>
+                  <label
+                    htmlFor={field.id}
+                    className="block text-xs uppercase tracking-widest text-white/50 font-inter font-semibold mb-2"
+                  >
+                    {field.label} *
+                  </label>
+                  <textarea
+                    id={field.id}
+                    value={(field.id === 'developmentPlan' ? developmentPlan : field.id === 'trainingRegimen' ? trainingRegimen : competitiveVision)}
+                    onChange={(e) => {
+                      if (field.id === 'developmentPlan') setDevelopmentPlan(e.target.value);
+                      else if (field.id === 'trainingRegimen') setTrainingRegimen(e.target.value);
+                      else setCompetitiveVision(e.target.value);
+                    }}
+                    placeholder={field.placeholder}
+                    maxLength={field.maxLength}
+                    rows={6}
+                    required
+                    disabled={submitting}
+                    className="w-full bg-transparent border border-white/10 px-4 py-3 text-sm text-white font-inter
+                      placeholder:text-white/25 focus:outline-none focus:border-[#C4952A]/60 transition-colors
+                      resize-y min-h-[140px] disabled:opacity-50"
+                  />
+                  <p className="text-right text-[10px] text-white/25 mt-1 font-inter">
+                    {field.id === 'developmentPlan'
+                      ? developmentPlan.length
+                      : field.id === 'trainingRegimen'
+                        ? trainingRegimen.length
+                        : competitiveVision.length}
+                    /{field.maxLength}
+                  </p>
+                </div>
+              ))}
+
+              {/* Error */}
+              {error && (
+                <div className="border border-red-500/30 bg-red-500/[0.06] px-4 py-3">
+                  <p className="text-sm text-red-400 font-inter">{error}</p>
+                </div>
+              )}
+
+              {/* Submit */}
+              <div className="flex flex-col items-center gap-3 pt-4">
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="inline-flex items-center gap-2.5 px-10 py-4 text-sm font-semibold tracking-wider uppercase
+                    bg-[#C4952A] text-black hover:bg-[#D4A840] active:scale-[0.98]
+                    transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  {submitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Creating Payment Link...
+                    </>
+                  ) : (
+                    <>
+                      Pay $15 with Square <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
+                </button>
+                <div className="flex items-center gap-2 text-[10px] text-white/25 font-inter">
+                  <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                  Secure payment via Square
+                </div>
+              </div>
+            </form>
+          </FadeUpSection>
+        </div>
+      </section>
+
       {/* ═══════════════════════════════════════════════════
           GOLD QUOTE SECTION
           ═══════════════════════════════════════════════════ */}
@@ -366,7 +587,7 @@ export function GrantPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════
-          FINAL CTA SECTION
+          FOOTER LEGAL
           ═══════════════════════════════════════════════════ */}
       <section className="py-20 sm:py-28 lg:py-32 px-5 sm:px-6 lg:px-8 bg-[#0a0a0a]">
         <div className="max-w-2xl mx-auto text-center">
@@ -379,7 +600,7 @@ export function GrantPage() {
               selected. One award will be made.
             </p>
             <div className="mt-9">
-              <GrantCTA />
+              <GrantCTA onClick={scrollToForm} />
             </div>
           </FadeUpSection>
 
