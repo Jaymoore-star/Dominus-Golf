@@ -7,6 +7,7 @@ import { ApparelProductCard } from '../components/ui/ApparelProductCard';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { CartDrawer } from '../components/cart/CartDrawer';
+import { Slider } from '../components/ui/slider';
 
 type SortKey = 'featured' | 'price-asc' | 'price-desc' | 'newest';
 
@@ -120,15 +121,16 @@ export function ShopPage() {
         <p className="font-sans text-sm font-semibold text-foreground mb-3">
           Up to ${maxPrice.toLocaleString()}
         </p>
-        <input
-          type="range"
-          min={10}
-          max={200}
-          step={5}
-          value={maxPrice}
-          onChange={(e) => setMaxPrice(Number(e.target.value))}
-          className="w-full accent-foreground"
-        />
+        <div className="py-2" style={{ touchAction: 'none' }}>
+          <Slider
+            min={10}
+            max={200}
+            step={5}
+            value={maxPrice}
+            onValueChange={(val) => setMaxPrice(val as number)}
+            className="w-full"
+          />
+        </div>
         <div className="flex gap-2 mt-3 flex-wrap">
           {priceRanges.map((p) => (
             <button
