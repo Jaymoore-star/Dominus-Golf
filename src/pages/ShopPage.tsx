@@ -32,6 +32,7 @@ export function ShopPage() {
   const [sort, setSort] = useState<SortKey>('featured');
   const [inStockOnly, setInStockOnly] = useState(false);
   const [maxPrice, setMaxPrice] = useState(200);
+  const [displayPrice, setDisplayPrice] = useState(200);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
 
@@ -119,7 +120,7 @@ export function ShopPage() {
           Max Price
         </h4>
         <p className="font-sans text-sm font-semibold text-foreground mb-3">
-          Up to ${maxPrice.toLocaleString()}
+          Up to ${displayPrice.toLocaleString()}
         </p>
         <div className="py-3">
           <Slider
@@ -128,7 +129,12 @@ export function ShopPage() {
             max={200}
             step={5}
             defaultValue={maxPrice}
-            onValueCommitted={(val) => setMaxPrice(val as number)}
+            onValueChange={(val) => setDisplayPrice(val as number)}
+            onValueCommitted={(val) => {
+              const v = val as number;
+              setMaxPrice(v);
+              setDisplayPrice(v);
+            }}
             className="w-full"
           />
         </div>
@@ -136,7 +142,7 @@ export function ShopPage() {
           {priceRanges.map((p) => (
             <button
               key={p}
-              onClick={() => setMaxPrice(p)}
+              onClick={() => { setMaxPrice(p); setDisplayPrice(p); }}
               className={`font-sans text-[10px] tracking-wide px-2.5 py-1 border transition-colors ${
                 maxPrice === p
                   ? 'bg-primary text-primary-foreground border-primary'
@@ -286,7 +292,7 @@ export function ShopPage() {
                   Try adjusting your filters.
                 </p>
                 <button
-                  onClick={() => { setMaxPrice(200); setInStockOnly(false); }}
+                  onClick={() => { setMaxPrice(200); setDisplayPrice(200); setInStockOnly(false); }}
                   className="font-sans text-xs font-semibold tracking-widest uppercase border border-border px-6 py-3 hover:bg-primary hover:text-primary-foreground transition-colors"
                 >
                   Clear Filters
