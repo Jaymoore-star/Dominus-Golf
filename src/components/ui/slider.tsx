@@ -14,13 +14,12 @@ function Slider({
   const thumbCount = React.useMemo(() => {
     if (Array.isArray(value)) return value.length
     if (Array.isArray(defaultValue)) return defaultValue.length
-    // Single value mode (number) = 1 thumb
     return 1
   }, [value, defaultValue])
 
   return (
     <SliderPrimitive.Root
-      className={cn("data-horizontal:w-full data-vertical:h-full", className)}
+      className={cn("w-full", className)}
       data-slot="slider"
       defaultValue={defaultValue}
       value={value}
@@ -28,10 +27,10 @@ function Slider({
       max={max}
       {...props}
     >
-      <SliderPrimitive.Control className="relative flex w-full touch-none items-center select-none data-disabled:opacity-50">
+      <SliderPrimitive.Control className="relative flex w-full items-center select-none py-2 touch-none">
         <SliderPrimitive.Track
           data-slot="slider-track"
-          className="relative grow rounded-full select-none h-2 w-full cursor-pointer"
+          className="relative grow h-1.5 w-full rounded-full"
           style={{ backgroundColor: '#D9D9D9' }}
         >
           <SliderPrimitive.Indicator
@@ -44,7 +43,16 @@ function Slider({
           <SliderPrimitive.Thumb
             data-slot="slider-thumb"
             key={index}
-            className="relative z-10 block size-5 shrink-0 rounded-full bg-black shadow-md select-none cursor-grab active:cursor-grabbing hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden active:ring-4 disabled:pointer-events-none disabled:opacity-50"
+            style={{
+              width: '20px',
+              height: '20px',
+              backgroundColor: '#000000',
+              borderRadius: '50%',
+              cursor: 'grab',
+              zIndex: 10,
+              flexShrink: 0,
+              boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+            }}
           />
         ))}
       </SliderPrimitive.Control>
