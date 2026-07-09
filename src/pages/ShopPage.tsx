@@ -120,19 +120,17 @@ export function ShopPage() {
           Max Price
         </h4>
         <p className="font-sans text-sm font-semibold text-foreground mb-3">
-          Up to ${displayPrice.toLocaleString()}
+          Up to <span ref={priceLabelRef}>${maxPrice.toLocaleString()}</span>
         </p>
         <div className="py-3">
           <Slider
-            key={`price-slider-${maxPrice}`}
             min={10}
             max={200}
             step={5}
-            defaultValue={displayPrice}
-            onValueChange={(val) => setDisplayPrice(val)}
-            onValueCommitted={(val) => {
-              setMaxPrice(val);
-            }}
+            value={maxPrice}
+            onValueChange={(val) => setMaxPrice(val)}
+            onValueCommitted={(val) => setMaxPrice(val)}
+            labelRef={priceLabelRef}
             className="w-full"
           />
         </div>
@@ -140,7 +138,7 @@ export function ShopPage() {
           {priceRanges.map((p) => (
             <button
               key={p}
-              onClick={() => { setMaxPrice(p); setDisplayPrice(p); }}
+              onClick={() => setMaxPrice(p)}
               className={`font-sans text-[10px] tracking-wide px-2.5 py-1 border transition-colors ${
                 maxPrice === p
                   ? 'bg-primary text-primary-foreground border-primary'
@@ -290,7 +288,7 @@ export function ShopPage() {
                   Try adjusting your filters.
                 </p>
                 <button
-                  onClick={() => { setMaxPrice(200); setDisplayPrice(200); setInStockOnly(false); }}
+                  onClick={() => { setMaxPrice(200); setInStockOnly(false); }}
                   className="font-sans text-xs font-semibold tracking-widest uppercase border border-border px-6 py-3 hover:bg-primary hover:text-primary-foreground transition-colors"
                 >
                   Clear Filters
