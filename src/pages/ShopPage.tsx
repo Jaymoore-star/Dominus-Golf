@@ -121,13 +121,14 @@ export function ShopPage() {
         <p className="font-sans text-sm font-semibold text-foreground mb-3">
           Up to ${maxPrice.toLocaleString()}
         </p>
-        <div className="py-2" style={{ touchAction: 'none' }}>
+        <div className="py-3">
           <Slider
+            key={`price-${maxPrice}`}
             min={10}
             max={200}
             step={5}
-            value={maxPrice}
-            onValueChange={(val) => setMaxPrice(val as number)}
+            defaultValue={maxPrice}
+            onValueCommitted={(val) => setMaxPrice(val as number)}
             className="w-full"
           />
         </div>
