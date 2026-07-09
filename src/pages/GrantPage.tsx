@@ -156,6 +156,7 @@ export function GrantPage() {
   const [competitiveVision, setCompetitiveVision] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
 
   const scrollToForm = () => {
     formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -181,6 +182,9 @@ export function GrantPage() {
 
     setSubmitting(true);
 
+    // Open blank window synchronously during click (avoids popup blocker)
+    const paymentWindow = window.open('', '_blank');
+
     try {
       const origin = window.location.origin;
       const res = await fetch(`${BACKEND_URL}/api/grant/checkout`, {
@@ -200,15 +204,22 @@ export function GrantPage() {
       const data = await res.json();
 
       if (!res.ok || data.error) {
+        paymentWindow?.close();
         setError(data.error || 'Failed to create payment link. Please try again.');
         setSubmitting(false);
         return;
       }
 
-      // Open Square payment in new tab (preview iframe blocks window.location)
-      window.open(data.url, '_blank');
+      // Redirect the already-opened window to Square
+      if (paymentWindow) {
+        paymentWindow.location.href = data.url;
+      } else {
+        // Fallback if popup was blocked entirely
+        window.location.href = data.url;
+      }
       setSubmitting(false);
     } catch (err) {
+      paymentWindow?.close();
       setError('Network error. Please check your connection and try again.');
       setSubmitting(false);
     }
