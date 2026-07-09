@@ -31,7 +31,7 @@ function Slider({
       <SliderPrimitive.Control className="relative flex w-full touch-none items-center select-none data-disabled:opacity-50">
         <SliderPrimitive.Track
           data-slot="slider-track"
-          className="relative grow overflow-hidden rounded-full select-none h-2 w-full cursor-pointer"
+          className="relative grow rounded-full select-none h-2 w-full cursor-pointer"
           style={{ backgroundColor: '#D9D9D9' }}
         >
           <SliderPrimitive.Indicator
@@ -44,7 +44,7 @@ function Slider({
           <SliderPrimitive.Thumb
             data-slot="slider-thumb"
             key={index}
-            className="relative block size-4 shrink-0 rounded-full bg-black shadow-md select-none cursor-grab active:cursor-grabbing hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden active:ring-4 disabled:pointer-events-none disabled:opacity-50"
+            className="relative z-10 block size-5 shrink-0 rounded-full bg-black shadow-md select-none cursor-grab active:cursor-grabbing hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden active:ring-4 disabled:pointer-events-none disabled:opacity-50"
           />
         ))}
       </SliderPrimitive.Control>
