@@ -27,11 +27,11 @@ function Slider({
       max={max}
       {...props}
     >
-      <SliderPrimitive.Control className="relative flex w-full items-center select-none py-2 touch-none">
+      <SliderPrimitive.Control className="slider-control relative flex w-full items-center select-none py-2">
         <SliderPrimitive.Track
           data-slot="slider-track"
-          className="relative grow h-1.5 w-full rounded-full"
-          style={{ backgroundColor: '#D9D9D9' }}
+          className="slider-track relative grow w-full rounded-full"
+          style={{ height: '4px', backgroundColor: '#D9D9D9' }}
         >
           <SliderPrimitive.Indicator
             data-slot="slider-range"
@@ -43,16 +43,7 @@ function Slider({
           <SliderPrimitive.Thumb
             data-slot="slider-thumb"
             key={index}
-            style={{
-              width: '20px',
-              height: '20px',
-              backgroundColor: '#000000',
-              borderRadius: '50%',
-              cursor: 'grab',
-              zIndex: 10,
-              flexShrink: 0,
-              boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
-            }}
+            className="slider-thumb"
           />
         ))}
       </SliderPrimitive.Control>

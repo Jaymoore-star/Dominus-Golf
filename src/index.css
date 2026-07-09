@@ -108,6 +108,28 @@
   }
 }
 
+/* ─── Slider Styles ─── */
+
+.slider-thumb {
+  width: 14px;
+  height: 14px;
+  background-color: #000000;
+  border-radius: 50%;
+  border: none;
+  outline: none;
+  cursor: grab;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  touch-action: none;
+}
+
+.slider-thumb:active {
+  cursor: grabbing;
+}
+
+.slider-thumb:focus-visible {
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.15);
+}
+
 /* ─── Dominus Golf Custom Utilities ─── */
 
 .font-serif {
