@@ -32,19 +32,19 @@ function Slider({
         <SliderPrimitive.Track
           data-slot="slider-track"
           className="relative grow overflow-hidden rounded-full select-none h-2 w-full cursor-pointer"
-          style={{ backgroundColor: 'hsl(var(--border))' }}
+          style={{ backgroundColor: '#D9D9D9' }}
         >
           <SliderPrimitive.Indicator
             data-slot="slider-range"
-            className="h-full w-full"
-            style={{ backgroundColor: 'hsl(var(--accent))' }}
+            className="h-full w-full rounded-full"
+            style={{ backgroundColor: '#1A1A1A' }}
           />
         </SliderPrimitive.Track>
         {Array.from({ length: thumbCount }, (_, index) => (
           <SliderPrimitive.Thumb
             data-slot="slider-thumb"
             key={index}
-            className="relative block w-0 h-0 shrink-0 border-0 bg-transparent select-none cursor-pointer after:absolute after:-inset-3"
+            className="relative block size-4 shrink-0 rounded-full bg-black shadow-md select-none cursor-grab active:cursor-grabbing hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden active:ring-4 disabled:pointer-events-none disabled:opacity-50"
           />
         ))}
       </SliderPrimitive.Control>
