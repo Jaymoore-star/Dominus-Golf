@@ -1,53 +1,56 @@
-import * as React from "react"
-import { Slider as SliderPrimitive } from "@base-ui/react/slider"
-
 import { cn } from "@/lib/utils"
 
+interface SliderProps {
+  min?: number
+  max?: number
+  step?: number
+  defaultValue?: number
+  value?: number
+  onValueChange?: (value: number) => void
+  onValueCommitted?: (value: number) => void
+  className?: string
+}
+
 function Slider({
-  className,
-  defaultValue,
-  value,
   min = 0,
   max = 100,
-  ...props
-}: SliderPrimitive.Root.Props) {
-  const thumbCount = React.useMemo(() => {
-    if (Array.isArray(value)) return value.length
-    if (Array.isArray(defaultValue)) return defaultValue.length
-    return 1
-  }, [value, defaultValue])
+  step = 1,
+  defaultValue,
+  value,
+  onValueChange,
+  onValueCommitted,
+  className,
+}: SliderProps) {
+  const currentValue = value ?? defaultValue ?? min
+
+  const percentage = ((currentValue - min) / (max - min)) * 100
 
   return (
-    <SliderPrimitive.Root
-      className={cn("w-full", className)}
-      data-slot="slider"
-      defaultValue={defaultValue}
-      value={value}
-      min={min}
-      max={max}
-      {...props}
-    >
-      <SliderPrimitive.Control className="slider-control relative flex w-full items-center select-none py-2">
-        <SliderPrimitive.Track
-          data-slot="slider-track"
-          className="slider-track relative grow w-full rounded-full"
-          style={{ height: '4px', backgroundColor: '#D9D9D9' }}
-        >
-          <SliderPrimitive.Indicator
-            data-slot="slider-range"
-            className="h-full w-full rounded-full"
-            style={{ backgroundColor: '#1A1A1A' }}
-          />
-        </SliderPrimitive.Track>
-        {Array.from({ length: thumbCount }, (_, index) => (
-          <SliderPrimitive.Thumb
-            data-slot="slider-thumb"
-            key={index}
-            className="slider-thumb"
-          />
-        ))}
-      </SliderPrimitive.Control>
-    </SliderPrimitive.Root>
+    <div className={cn("relative w-full flex items-center", className)}>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={currentValue}
+        onChange={(e) => {
+          const v = Number(e.target.value)
+          onValueChange?.(v)
+        }}
+        onMouseUp={(e) => {
+          const v = Number((e.target as HTMLInputElement).value)
+          onValueCommitted?.(v)
+        }}
+        onTouchEnd={(e) => {
+          const v = Number((e.target as HTMLInputElement).value)
+          onValueCommitted?.(v)
+        }}
+        className="slider-native"
+        style={{
+          background: `linear-gradient(to right, #1A1A1A ${percentage}%, #D9D9D9 ${percentage}%)`,
+        }}
+      />
+    </div>
   )
 }
 

@@ -124,16 +124,13 @@ export function ShopPage() {
         </p>
         <div className="py-3">
           <Slider
-            key={`price-${maxPrice}`}
             min={10}
             max={200}
             step={5}
-            defaultValue={maxPrice}
-            onValueChange={(val) => setDisplayPrice(val as number)}
+            value={displayPrice}
+            onValueChange={(val) => setDisplayPrice(val)}
             onValueCommitted={(val) => {
-              const v = val as number;
-              setMaxPrice(v);
-              setDisplayPrice(v);
+              setMaxPrice(val);
             }}
             className="w-full"
           />
