@@ -124,10 +124,11 @@ export function ShopPage() {
         </p>
         <div className="py-3">
           <Slider
+            key={`price-slider-${maxPrice}`}
             min={10}
             max={200}
             step={5}
-            value={displayPrice}
+            defaultValue={displayPrice}
             onValueChange={(val) => setDisplayPrice(val)}
             onValueCommitted={(val) => {
               setMaxPrice(val);
