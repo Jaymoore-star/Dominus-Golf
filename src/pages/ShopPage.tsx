@@ -120,7 +120,7 @@ export function ShopPage() {
           Max Price
         </h4>
         <p className="font-sans text-sm font-semibold text-foreground mb-3">
-          Up to <span ref={priceLabelRef}>${maxPrice.toLocaleString()}</span>
+          Up to ${maxPrice.toLocaleString()}
         </p>
         <div className="py-3">
           <Slider
@@ -130,7 +130,6 @@ export function ShopPage() {
             value={maxPrice}
             onValueChange={(val) => setMaxPrice(val)}
             onValueCommitted={(val) => setMaxPrice(val)}
-            labelRef={priceLabelRef}
             className="w-full"
           />
         </div>
