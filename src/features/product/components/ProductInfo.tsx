@@ -188,14 +188,7 @@ export function ProductInfo({
               Premium Quality
             </span>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center text-accent">
-              <Plus size={14} />
-            </div>
-            <span className="font-sans text-[10px] font-semibold tracking-wider uppercase text-muted-foreground">
-              Tour Proven
-            </span>
-          </div>
+          
         </div>
       </div>
 
