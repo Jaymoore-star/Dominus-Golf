@@ -205,8 +205,9 @@ export function GrantPage() {
         return;
       }
 
-      // Redirect to Square payment page
-      window.location.href = data.url;
+      // Open Square payment in new tab (preview iframe blocks window.location)
+      window.open(data.url, '_blank');
+      setSubmitting(false);
     } catch (err) {
       setError('Network error. Please check your connection and try again.');
       setSubmitting(false);
