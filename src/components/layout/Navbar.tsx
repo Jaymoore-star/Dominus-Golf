@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
 import {
   Search,
   User,
@@ -7,8 +7,10 @@ import {
   Menu,
   X,
   ChevronDown,
+  LogOut,
 } from 'lucide-react';
 import { useCart } from '../../store/cartStore';
+import { useAuth } from '../../hooks/useAuth';
 import { SearchOverlay } from './SearchOverlay';
 
 type MegaMenuKey = 'training' | 'guide' | 'apparel' | 'accessories' | 'pros' | 'company' | null;
@@ -106,12 +108,16 @@ const megaMenuData = {
 
 export function Navbar() {
   const { itemCount, toggleCart } = useCart();
+  const { user, isAuthenticated, signOut } = useAuth();
+  const navigate = useNavigate();
   const [activeMega, setActiveMega] = useState<MegaMenuKey>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileAccordion, setMobileAccordion] = useState<string | null>(null);
   const [announcementIndex, setAnnouncementIndex] = useState(0);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
+  const accountRef = useRef<HTMLDivElement>(null);
 
   const announcements = [
     { text: 'The Dominus Golf Development Grant is Now Open — $5,000 Awarded to One Golfer Nationwide. Apply by August 15.', link: 'https://grant.dominusgolf.com/apply', linkLabel: 'Apply Now' },
@@ -132,6 +138,9 @@ export function Navbar() {
     function handleClickOutside(e: MouseEvent) {
       if (navRef.current && !navRef.current.contains(e.target as Node)) {
         setActiveMega(null);
+      }
+      if (accountRef.current && !accountRef.current.contains(e.target as Node)) {
+        setAccountOpen(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -262,12 +271,48 @@ export function Navbar() {
                 >
                   <Search size={20} />
                 </button>
-                <button
-                  className="p-2 text-foreground hover:text-accent transition-colors hidden lg:flex"
-                  aria-label="Account"
-                >
-                  <User size={20} />
-                </button>
+
+                {/* Account - Desktop */}
+                <div className="relative hidden lg:block" ref={accountRef}>
+                  <button
+                    onClick={() => {
+                      if (isAuthenticated) {
+                        setAccountOpen(!accountOpen);
+                      } else {
+                        navigate({ to: '/login' });
+                      }
+                    }}
+                    className="p-2 text-foreground hover:text-accent transition-colors"
+                    aria-label="Account"
+                  >
+                    <User size={20} />
+                  </button>
+
+                  {/* Account Dropdown */}
+                  {accountOpen && isAuthenticated && (
+                    <div className="absolute right-0 top-full mt-2 w-56 bg-background border border-border shadow-lg z-50">
+                      <div className="px-4 py-3 border-b border-border">
+                        <p className="font-sans text-sm font-medium text-foreground truncate">
+                          {user?.displayName || 'Member'}
+                        </p>
+                        <p className="font-sans text-xs text-muted-foreground truncate">
+                          {user?.email}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => {
+                          setAccountOpen(false);
+                          signOut();
+                        }}
+                        className="w-full flex items-center gap-2 px-4 py-3 font-sans text-sm text-foreground hover:bg-muted transition-colors"
+                      >
+                        <LogOut size={16} />
+                        Sign Out
+                      </button>
+                    </div>
+                  )}
+                </div>
+
                 <button
                   onClick={toggleCart}
                   className="relative p-2 text-foreground hover:text-accent transition-colors"
@@ -460,9 +505,21 @@ export function Navbar() {
                 <Search size={20} />
                 <span className="font-sans text-[10px] tracking-widest uppercase">Search</span>
               </button>
-              <button className="flex flex-col items-center gap-1 text-foreground">
+              <button
+                onClick={() => {
+                  setMobileOpen(false);
+                  if (isAuthenticated) {
+                    // Could show account page; for now just close
+                  } else {
+                    navigate({ to: '/login' });
+                  }
+                }}
+                className="flex flex-col items-center gap-1 text-foreground"
+              >
                 <User size={20} />
-                <span className="font-sans text-[10px] tracking-widest uppercase">Account</span>
+                <span className="font-sans text-[10px] tracking-widest uppercase">
+                  {isAuthenticated ? 'Account' : 'Sign In'}
+                </span>
               </button>
               <button
                 onClick={() => {
