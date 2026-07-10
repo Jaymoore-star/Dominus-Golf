@@ -65,7 +65,7 @@ export const trainingSystems: Product[] = [
         verified: true,
       },
     ],
-    stripeUrl: 'https://square.link/u/MwoinSDb',
+    paymentUrl: 'https://square.link/u/MwoinSDb',
   },
   {
     id: 'tour-pure-women',

@@ -9,7 +9,7 @@ async function createCheckoutSession(
   items: { name: string; price: number; quantity: number; image?: string }[]
 ): Promise<string> {
   const origin = typeof window !== 'undefined' ? window.location.origin : 'https://www.dominusgolf.com';
-  const res = await fetch(`${BACKEND_URL}/api/checkout`, {
+  const res = await fetch(`${BACKEND_URL}/api/square/checkout`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({

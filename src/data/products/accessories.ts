@@ -7,7 +7,6 @@ export const accessories: Product[] = [
     category: 'accessories',
     subcategory: 'Training Aid',
     price: 12.99,
-    stripeUrl: 'https://buy.stripe.com/9B63cpc36bpidCbdmQffy05',
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b',
     gallery: [
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b',
@@ -62,7 +61,6 @@ export const accessories: Product[] = [
         verified: true,
       },
     ],
-    stripeUrl: 'https://buy.stripe.com/5kQ6oBffi3WQbu396Affy0a',
   },
   {
     id: 'mastering-the-game-book',
@@ -88,7 +86,6 @@ export const accessories: Product[] = [
       'Length: 90-Day Curriculum',
     ],
     inStock: true,
-    stripeUrl: 'https://buy.stripe.com/6oU28l7MQ2SMfKj4Qkffy09',
   },
   {
     id: 'training-manual-pdf',

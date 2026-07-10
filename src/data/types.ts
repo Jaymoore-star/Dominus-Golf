@@ -41,7 +41,7 @@ export type Product = {
   reviews?: Review[];
   includedImages?: { label: string; image: string }[];
   colorVariants?: Record<string, string>;
-  stripeUrl?: string;
+  paymentUrl?: string;
 };
 
 export type CategoryCard = {
