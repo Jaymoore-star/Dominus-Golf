@@ -53,7 +53,7 @@ export function ContactPage() {
               <p className="font-sans text-[10px] font-semibold tracking-widest uppercase text-muted-foreground mb-1">
                 {item.label}
               </p>
-              <p className="font-serif font-semibold text-foreground text-lg">{item.value}</p>
+              <p className="font-serif font-semibold text-foreground text-base break-all">{item.value}</p>
               <p className="font-sans text-xs text-muted-foreground mt-1">{item.sub}</p>
             </div>
           ))}
