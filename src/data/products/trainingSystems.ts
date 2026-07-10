@@ -65,7 +65,7 @@ export const trainingSystems: Product[] = [
         verified: true,
       },
     ],
-    stripeUrl: 'https://buy.stripe.com/9B65kx9UY2SMdCb3Mgffy06',
+    stripeUrl: 'https://square.link/u/MwoinSDb',
   },
   {
     id: 'tour-pure-women',

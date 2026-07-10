@@ -91,6 +91,11 @@ export function ProductPage() {
   }
 
   const handleBuyNow = async () => {
+    // If product has a direct payment link (e.g. Square), use it
+    if (product.stripeUrl) {
+      window.open(product.stripeUrl, '_blank', 'noopener,noreferrer');
+      return;
+    }
     setIsBuyingNow(true);
     try {
       const url = await createCheckoutSession([{
