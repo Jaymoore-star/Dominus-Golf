@@ -46,7 +46,7 @@ export function ContactPage() {
               sub: 'Mountain Standard Time (MST)',
             },
           ].map((item) => (
-            <div key={item.label} className="border border-border p-6">
+            <div key={item.label} className="border border-border p-6 overflow-hidden">
               <div className="w-10 h-10 flex items-center justify-center bg-accent/10 text-accent mb-4">
                 {item.icon}
               </div>
@@ -56,7 +56,7 @@ export function ContactPage() {
               {item.label === 'Email' ? (
                 <a
                   href={`mailto:${item.value}`}
-                  className="font-serif font-semibold text-foreground text-sm hover:text-accent transition-colors whitespace-nowrap"
+                  className="font-serif font-semibold text-foreground text-sm hover:text-accent transition-colors block truncate"
                 >
                   {item.value}
                 </a>
