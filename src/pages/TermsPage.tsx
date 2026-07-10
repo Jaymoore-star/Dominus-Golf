@@ -87,8 +87,8 @@ export function TermsPage() {
           </p>
           <p className="font-sans text-sm text-muted-foreground leading-relaxed">
             Contact us at{' '}
-            <a href="mailto:support@dominusgolf.com" className="text-accent hover:underline">
-              support@dominusgolf.com
+            <a href="mailto:Customersupport@dominusgolf.com" className="text-accent hover:underline">
+              Customersupport@dominusgolf.com
             </a>
           </p>
         </div>

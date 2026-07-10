@@ -92,8 +92,8 @@ export function SafetyDisclaimerPage() {
           </p>
           <p className="font-sans text-sm text-muted-foreground leading-relaxed">
             Contact our team at{' '}
-            <a href="mailto:support@dominusgolf.com" className="text-accent hover:underline">
-              support@dominusgolf.com
+            <a href="mailto:Customersupport@dominusgolf.com" className="text-accent hover:underline">
+              Customersupport@dominusgolf.com
             </a>{' '}
             before beginning your training program.
           </p>

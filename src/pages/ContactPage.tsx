@@ -30,7 +30,7 @@ export function ContactPage() {
             {
               icon: <Mail size={20} />,
               label: 'Email',
-              value: '[Insert Business Email]',
+              value: 'Customersupport@dominusgolf.com',
               sub: 'We respond within 1 business day',
             },
             {

@@ -30,11 +30,11 @@ const sections = [
   },
   {
     title: 'Damaged or Lost Shipments',
-    body: `If your order arrives damaged, photograph the damage before opening the package and contact us within 48 hours of delivery at support@dominusgolf.com. Dominus Golf will work with the carrier to resolve the claim and replace your order at no additional cost. For lost shipments, contact us after the carrier's estimated delivery date has passed and we will initiate a trace.`,
+    body: `If your order arrives damaged, photograph the damage before opening the package and contact us within 48 hours of delivery at Customersupport@dominusgolf.com. Dominus Golf will work with the carrier to resolve the claim and replace your order at no additional cost. For lost shipments, contact us after the carrier's estimated delivery date has passed and we will initiate a trace.`,
   },
   {
     title: 'Returns & Exchanges',
-    body: `Unopened products in original condition may be returned within 30 days of delivery for a full refund. To initiate a return, email support@dominusgolf.com with your order number and reason for return. Customers are responsible for return shipping costs unless the item was defective or incorrectly shipped. Refunds are processed within 5–7 business days of receiving the returned item.`,
+    body: `Unopened products in original condition may be returned within 30 days of delivery for a full refund. To initiate a return, email Customersupport@dominusgolf.com with your order number and reason for return. Customers are responsible for return shipping costs unless the item was defective or incorrectly shipped. Refunds are processed within 5–7 business days of receiving the returned item.`,
   },
 ];
 
@@ -106,8 +106,8 @@ export function ShippingPolicyPage() {
           </p>
           <p className="font-sans text-sm text-muted-foreground leading-relaxed">
             Contact us at{' '}
-            <a href="mailto:support@dominusgolf.com" className="text-accent hover:underline">
-              support@dominusgolf.com
+            <a href="mailto:Customersupport@dominusgolf.com" className="text-accent hover:underline">
+              Customersupport@dominusgolf.com
             </a>{' '}
             — we respond within 1 business day.
           </p>
