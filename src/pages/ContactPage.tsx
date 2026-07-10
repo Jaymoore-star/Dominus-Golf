@@ -56,7 +56,7 @@ export function ContactPage() {
               {item.label === 'Email' ? (
                 <a
                   href={`mailto:${item.value}`}
-                  className="font-serif font-semibold text-foreground text-sm hover:text-accent transition-colors block truncate"
+                  className="font-serif font-semibold text-foreground text-xs sm:text-sm hover:text-accent transition-colors block break-all leading-relaxed"
                 >
                   {item.value}
                 </a>
