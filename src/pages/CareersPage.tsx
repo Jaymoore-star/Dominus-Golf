@@ -63,7 +63,7 @@ export function CareersPage() {
         <div className="bg-muted p-8">
           <h2 className="font-serif text-xl font-bold text-foreground mb-3">How to Apply</h2>
           <p className="font-sans text-sm text-muted-foreground leading-relaxed mb-5">
-            We value story and character as much as a resume. Send your background and a brief "golf story" to us — tell us who you are, why golf matters to you, and what you'd bring to the Dominus stable.
+            We value story and character as much as a resume. Send your background and a brief "golf story" to us - tell us who you are, why golf matters to you, and what you'd bring to the Dominus stable.
           </p>
           <p className="font-sans text-sm font-semibold text-foreground">
             Apply to: <span className="text-accent">[Insert Business Email]</span>

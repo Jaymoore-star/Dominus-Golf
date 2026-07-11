@@ -15,7 +15,7 @@ export function ProductGallery({
 }: ProductGalleryProps) {
   return (
     <div className="space-y-4">
-      {/* Main image — constrained, centered, premium presentation */}
+      {/* Main image - constrained, centered, premium presentation */}
       <div className="w-full flex justify-center items-center bg-white py-8 px-4 border border-border">
         <div className="w-full max-w-[85vw] md:max-w-[520px] lg:max-w-[560px]">
           <img

@@ -38,7 +38,7 @@ function Slider({
     updateGradient(currentValue)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Sync external changes (preset buttons) — skip during drag
+  // Sync external changes (preset buttons) - skip during drag
   useEffect(() => {
     if (inputRef.current && !isDragging.current) {
       inputRef.current.value = String(currentValue)

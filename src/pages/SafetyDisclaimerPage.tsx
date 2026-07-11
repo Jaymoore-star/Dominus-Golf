@@ -33,7 +33,7 @@ const sections = [
   },
   {
     title: 'Cool Down',
-    body: `After every training session, complete a cool-down period of at least 5 minutes with light stretching. Target the same muscle groups used during practice — shoulders, forearms, back, and hips. Proper recovery is as important as the training itself.`,
+    body: `After every training session, complete a cool-down period of at least 5 minutes with light stretching. Target the same muscle groups used during practice - shoulders, forearms, back, and hips. Proper recovery is as important as the training itself.`,
   },
 ];
 

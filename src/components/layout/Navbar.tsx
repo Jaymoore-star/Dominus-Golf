@@ -33,25 +33,25 @@ const megaMenuData = {
       },
     ],
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FPhotoroom-20251125_1425462241__e480e1c6.png?alt=media&token=7c96a611-0b70-415f-a7f7-8bebe5a974a2',
-    imageCaption: 'Tour Pure — Build Your Best Swing',
+    imageCaption: 'Tour Pure - Build Your Best Swing',
   },
   apparel: {
     columns: [
       {
         heading: "Men's Tees",
         links: [
-          { label: "Icon Tee — White (Men's)", href: '/product/dominus-tee-icon-white' },
-          { label: "Wordmark Tee — White (Men's)", href: '/product/dominus-tee-wordmark-white' },
-          { label: "Performance Tee — Black (Men's)", href: '/product/dominus-tee-performance-black' },
-          { label: "Performance Tee — White (Men's)", href: '/product/dominus-tee-performance-white' },
+          { label: "Icon Tee - White (Men's)", href: '/product/dominus-tee-icon-white' },
+          { label: "Wordmark Tee - White (Men's)", href: '/product/dominus-tee-wordmark-white' },
+          { label: "Performance Tee - Black (Men's)", href: '/product/dominus-tee-performance-black' },
+          { label: "Performance Tee - White (Men's)", href: '/product/dominus-tee-performance-white' },
         ],
       },
       {
         heading: "Women's Tees",
         links: [
-          { label: "Icon Tee — Black (Women's)", href: '/product/dominus-womens-tee-black-icon' },
-          { label: "Icon Tee — White (Women's)", href: '/product/dominus-womens-tee-white-icon' },
-          { label: "Performance Tee — Black (Women's)", href: '/product/dominus-womens-tee-black-performance' },
+          { label: "Icon Tee - Black (Women's)", href: '/product/dominus-womens-tee-black-icon' },
+          { label: "Icon Tee - White (Women's)", href: '/product/dominus-womens-tee-white-icon' },
+          { label: "Performance Tee - Black (Women's)", href: '/product/dominus-womens-tee-black-performance' },
           { label: 'Shop All Apparel', href: '/shop/apparel' },
         ],
       },
@@ -120,9 +120,9 @@ export function Navbar() {
   const accountRef = useRef<HTMLDivElement>(null);
 
   const announcements = [
-    { text: 'The Dominus Golf Development Grant is Now Open — $5,000 Awarded to One Golfer Nationwide. Apply by August 15.', link: 'https://grant.dominusgolf.com/apply', linkLabel: 'Apply Now' },
+    { text: 'The Dominus Golf Development Grant is Now Open - $5,000 Awarded to One Golfer Nationwide. Apply by August 15.', link: 'https://grant.dominusgolf.com/apply', linkLabel: 'Apply Now' },
     { text: 'Free Shipping on Orders Over $150', link: null, linkLabel: null },
-    { text: 'Shop New Training Systems — Build Your Best Swing', link: null, linkLabel: null },
+    { text: 'Shop New Training Systems - Build Your Best Swing', link: null, linkLabel: null },
   ];
 
   // Rotate announcements

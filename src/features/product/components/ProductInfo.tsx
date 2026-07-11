@@ -45,7 +45,7 @@ export function ProductInfo({
         {product.name}
       </h1>
 
-      {/* Rating — only shown if present */}
+      {/* Rating - only shown if present */}
       {product.rating !== undefined && product.reviewCount !== undefined && (
         <div className="flex items-center gap-3 mb-5">
           <div className="flex items-center gap-0.5">
@@ -88,7 +88,7 @@ export function ProductInfo({
         )}
       </div>
 
-      {/* Variants — new shape: { label, options[] } */}
+      {/* Variants - new shape: { label, options[] } */}
       {product.variants && product.variants.length > 0 && (
         <div className="mb-6">
           {product.variants.map((variant) => (

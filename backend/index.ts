@@ -48,10 +48,8 @@ app.post("/api/square/checkout", async (c) => {
 
   const idempotencyKey = `checkout_${Date.now()}_${crypto.randomUUID().substring(0, 8)}`
 
-  const isSandbox = accessToken.startsWith("EAAA") || accessToken.startsWith("sandbox-")
-  const squareBaseUrl = isSandbox
-    ? "https://connect.squareupsandbox.com"
-    : "https://connect.squareup.com"
+  // Always use production Square — sandbox detection was incorrectly matching production tokens
+  const squareBaseUrl = "https://connect.squareup.com"
 
   const squareBody = {
     idempotency_key: idempotencyKey,
@@ -171,10 +169,8 @@ app.post("/api/grant/checkout", async (c) => {
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(), 15000)
 
-  const isSandbox = accessToken.startsWith("EAAA") || accessToken.startsWith("sandbox-")
-  const squareBaseUrl = isSandbox
-    ? "https://connect.squareupsandbox.com"
-    : "https://connect.squareup.com"
+  // Always use production Square
+  const squareBaseUrl = "https://connect.squareup.com"
 
   const squareBody = {
     idempotency_key: idempotencyKey,

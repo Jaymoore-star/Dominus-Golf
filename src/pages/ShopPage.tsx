@@ -240,7 +240,7 @@ export function ShopPage() {
         </div>
 
         <div className="flex gap-10">
-          {/* Sidebar — desktop */}
+          {/* Sidebar - desktop */}
           <aside className="hidden lg:block w-56 shrink-0">
             <FilterContent />
           </aside>

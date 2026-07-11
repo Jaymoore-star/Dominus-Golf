@@ -221,10 +221,10 @@ export function LeroyBatesPage() {
                   Instructional Philosophy
                 </p>
                 <blockquote className="font-serif text-xl text-white/80 leading-relaxed italic">
-                  "Consistency isn't a talent — it's a habit. I help golfers build the right habits
+                  "Consistency isn't a talent - it's a habit. I help golfers build the right habits
                   on the range, one session at a time, with a technical plan they can follow for long-term improvement."
                 </blockquote>
-                <p className="font-sans text-sm text-white/40 mt-6">— Leroy Bates</p>
+                <p className="font-sans text-sm text-white/40 mt-6">- Leroy Bates</p>
               </div>
             </div>
           </div>

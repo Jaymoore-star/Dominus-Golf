@@ -49,7 +49,7 @@ const benefits = [
   },
   {
     title: '90-Day Blueprint',
-    body: 'Every session ends with a personalized 90-day technical roadmap. You leave with a structured plan you can execute on your own — no full-time Pro required.',
+    body: 'Every session ends with a personalized 90-day technical roadmap. You leave with a structured plan you can execute on your own - no full-time Pro required.',
   },
 ];
 
@@ -202,7 +202,7 @@ export function PracticeWithProsPage() {
                 </ul>
                 <p className="mt-10 pt-10 border-t border-white/5 font-sans text-sm italic text-white/30 leading-relaxed">
                   While mechanics matter, standing on a lesson tee "block practicing" the same movement can often lead 
-                  to a "driving range swing"—one that looks great in practice but falls apart the moment you step onto the first tee.
+                  to a "driving range swing"-one that looks great in practice but falls apart the moment you step onto the first tee.
                 </p>
               </div>
 

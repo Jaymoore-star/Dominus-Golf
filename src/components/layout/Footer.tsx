@@ -106,7 +106,7 @@ export function Footer() {
                 DOMINUS GOLF
               </div>
               <p className="font-sans text-xs text-white/40 max-w-xs leading-relaxed">
-                Dominus Golf — premium equipment engineered for serious players. The #1 choice on Tour.
+                Dominus Golf - premium equipment engineered for serious players. The #1 choice on Tour.
               </p>
             </div>
 

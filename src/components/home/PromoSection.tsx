@@ -7,7 +7,7 @@ export function PromoSection() {
   return (
     <section className="py-0 bg-background" ref={ref}>
       <div className="grid grid-cols-1 lg:grid-cols-2 scroll-animate">
-        {/* Left Panel — Fitting */}
+        {/* Left Panel - Fitting */}
         <div
           className="relative flex flex-col justify-end px-8 sm:px-12 lg:px-16 py-20 min-h-[480px] overflow-hidden"
           style={{
@@ -43,7 +43,7 @@ export function PromoSection() {
           </div>
         </div>
 
-        {/* Right Panel — Team Dominus Golf */}
+        {/* Right Panel - Team Dominus Golf */}
         <div className="flex flex-col justify-end px-8 sm:px-12 lg:px-16 py-20 min-h-[480px] bg-secondary">
           <div className="max-w-sm">
             <p className="font-sans text-[10px] font-semibold tracking-[0.35em] uppercase text-accent mb-4">

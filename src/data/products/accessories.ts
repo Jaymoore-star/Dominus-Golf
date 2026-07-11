@@ -47,7 +47,7 @@ export const accessories: Product[] = [
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FChatGPTImageMar24202607_39_41PM__213ac69a.png?alt=media&token=13055075-bd93-454a-9faf-30bdd6a757b8',
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FGolfTowel2__dfa91d93.png?alt=media&token=f24c8a91-7d2c-4962-854f-5c6ce02557d2',
     ],
-    description: 'Premium Dominus Golf towel—clean, durable, built for the bag.',
+    description: 'Premium Dominus Golf towel-clean, durable, built for the bag.',
     features: ['Durable fabric', 'Bag-ready size', 'Clean branding', 'Premium feel'],
     inStock: true,
     reviews: [

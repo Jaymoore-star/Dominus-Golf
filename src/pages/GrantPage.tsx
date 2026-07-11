@@ -105,7 +105,7 @@ const ELIGIBILITY = [
   {
     icon: Users,
     title: 'Ages 18+ (Junior Provision)',
-    body: 'Applicants must be 18+. Junior golfers encouraged — a parent or legal guardian must complete and sign the application.',
+    body: 'Applicants must be 18+. Junior golfers encouraged - a parent or legal guardian must complete and sign the application.',
   },
 ];
 
@@ -243,7 +243,7 @@ export function GrantPage() {
             className="inline-block border border-[#C4952A]/40 px-4 py-1.5 mb-6 sm:mb-8"
           >
             <span className="text-[11px] sm:text-xs tracking-[0.2em] uppercase text-[#C4952A] font-inter font-medium">
-              {currentYear} Application Cycle — Now Open
+              {currentYear} Application Cycle - Now Open
             </span>
           </motion.div>
 
@@ -343,7 +343,7 @@ export function GrantPage() {
               </h2>
               <p className="mt-6 text-base sm:text-lg text-white/55 leading-relaxed max-w-xl font-inter">
                 The Dominus Golf Development Grant was created to identify a golfer with the drive,
-                commitment, and vision to take their game to the next level — and give them the
+                commitment, and vision to take their game to the next level - and give them the
                 resources to do it.
               </p>
               <p className="mt-4 text-base sm:text-lg text-white/55 leading-relaxed max-w-xl font-inter">
@@ -592,7 +592,7 @@ export function GrantPage() {
               </p>
             </blockquote>
             <p className="mt-6 text-sm text-black/60 tracking-wide uppercase font-inter font-medium">
-              — Jay Moore, Founder &amp; CEO, Dominus Golf
+              - Jay Moore, Founder &amp; CEO, Dominus Golf
             </p>
           </FadeUpSection>
         </div>

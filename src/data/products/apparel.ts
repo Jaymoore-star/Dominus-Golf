@@ -18,7 +18,7 @@ export const apparel: Product[] = [
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FGemini_Generated_Image_j0e7ykj0e7ykj0e7__7f763146.png?alt=media&token=0f58dc3d-d40b-4a86-9e50-1ab43d2506ec',
     ],
     badge: 'New',
-    description: 'Clean Dominus Golf icon tee. Minimalist design, premium feel—built for the course and beyond.',
+    description: 'Clean Dominus Golf icon tee. Minimalist design, premium feel-built for the course and beyond.',
     features: [
       'Dominus Golf icon print',
       'Vintage look and extreme softness',
@@ -50,7 +50,7 @@ export const apparel: Product[] = [
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Fninjapod_11843683_f_4980_00_f__c9a61eee.jpg?alt=media&token=711e7d00-0de7-4691-9561-083071fddf2a',
     ],
     badge: 'New',
-    description: 'Bold Dominus Golf wordmark tee. Arched lettering with the iconic D logo—represent the brand on and off the course.',
+    description: 'Bold Dominus Golf wordmark tee. Arched lettering with the iconic D logo-represent the brand on and off the course.',
     features: [
       'Full wordmark + icon print',
       'Vintage look and extreme softness',
@@ -82,7 +82,7 @@ export const apparel: Product[] = [
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-18__5cee2081.jpg?alt=media&token=89842c6e-8985-4106-a87a-c4f1429da757',
     ],
     badge: 'New',
-    description: 'Dominus Golf performance tee. Back logo with sleeve branding on moisture-wicking triblend fabric—train and play in style.',
+    description: 'Dominus Golf performance tee. Back logo with sleeve branding on moisture-wicking triblend fabric-train and play in style.',
     features: [
       'Back logo with sleeve branding',
       'Vintage look and extreme softness',
@@ -118,7 +118,7 @@ export const apparel: Product[] = [
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-16__4cc41a28.jpg?alt=media&token=ba681f7f-3fbe-49cf-8d7a-d8b6df139f44',
     ],
     badge: 'New',
-    description: "Dominus Golf icon tee for women in black. Bold logo, premium feel—built for the course and beyond.",
+    description: "Dominus Golf icon tee for women in black. Bold logo, premium feel-built for the course and beyond.",
     features: [
       'Dominus Golf icon print',
       'Vintage look and extreme softness',
@@ -138,7 +138,7 @@ export const apparel: Product[] = [
   },
   {
     id: 'dominus-womens-tee-white-icon',
-    name: "Icon Tee — White (Women's)",
+    name: "Icon Tee - White (Women's)",
     category: 'apparel',
     subcategory: "Women's Apparel",
     price: 19.99,
@@ -153,7 +153,7 @@ export const apparel: Product[] = [
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-13__94ffe0c4.jpg?alt=media&token=e511fa27-43af-49c7-a2cb-dbc281792be2',
     ],
     badge: 'New',
-    description: "Dominus Golf icon tee for women in white. Clean, minimalist design—built for the course and beyond.",
+    description: "Dominus Golf icon tee for women in white. Clean, minimalist design-built for the course and beyond.",
     features: [
       'Dominus Golf icon print',
       'Vintage look and extreme softness',
@@ -186,7 +186,7 @@ export const apparel: Product[] = [
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Fa2d1da0a-6213-4a84-8dca-5122fd81823a__3ed0e102.png?alt=media&token=477bc876-34dd-41b2-b344-778269d56bd4',
     ],
     badge: 'New',
-    description: "Dominus Golf performance tee for women in black. Moisture-wicking triblend with the iconic D logo—train and play in style.",
+    description: "Dominus Golf performance tee for women in black. Moisture-wicking triblend with the iconic D logo-train and play in style.",
     features: [
       'White Dominus icon on black',
       'Vintage look and extreme softness',

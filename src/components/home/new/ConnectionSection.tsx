@@ -20,10 +20,10 @@ export const ConnectionSection = () => {
               THE EVOLUTION OF CONNECTION TRAINING
             </h2>
             <p className="text-lg md:text-2xl text-black mb-10 font-sans font-medium italic text-gray-600 tracking-tight leading-snug">
-              "The drill made famous on tour—engineered into a system you can use every day."
+              "The drill made famous on tour-engineered into a system you can use every day."
             </p>
             <p className="text-gray-600 text-lg md:text-xl mb-14 font-sans leading-relaxed">
-              Many golfers have tried towels, headcovers, floaties, and elbow gadgets to create connection. The next evolution of the Tour Pure System features the <span className="text-black font-bold">Feel Right Band</span>—a connection training tool designed to provide immediate feedback when the swing becomes disconnected, helping you maintain perfect arm-to-body synchronization.
+              Many golfers have tried towels, headcovers, floaties, and elbow gadgets to create connection. The next evolution of the Tour Pure System features the <span className="text-black font-bold">Feel Right Band</span>-a connection training tool designed to provide immediate feedback when the swing becomes disconnected, helping you maintain perfect arm-to-body synchronization.
             </p>
           </motion.div>
 

@@ -7,7 +7,7 @@ export function InHandSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
-          {/* Text — left */}
+          {/* Text - left */}
           <div className="order-1">
             <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-5">
               In Your Hands
@@ -21,7 +21,7 @@ export function InHandSection() {
             <ul className="space-y-3 mb-10">
               {[
                 'Weighted grip trains proper tempo and sequencing',
-                'Full shaft length — 18 in, 3.8 lbs — built for feedback',
+                'Full shaft length - 18 in, 3.8 lbs - built for feedback',
                 'One tool. Consistent results. Anywhere.',
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3">
@@ -42,7 +42,7 @@ export function InHandSection() {
             </div>
           </div>
 
-          {/* Image — right */}
+          {/* Image - right */}
           <div className="order-2 flex flex-col items-center lg:items-end">
             <div className="w-full max-w-[84vw] sm:max-w-[420px] lg:max-w-[480px]">
               <div className="relative overflow-hidden shadow-[0_8px_40px_rgba(0,0,0,0.6)]" style={{ aspectRatio: '4/5' }}>

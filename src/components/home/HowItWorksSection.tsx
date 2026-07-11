@@ -24,7 +24,7 @@ const steps = [
     step: 'Step 3',
     overlayTitle: 'Master Your Putting',
     title: 'Master Your Putting',
-    body: 'Use Tour Pure on the green to train stroke path, distance control, and alignment — building a more consistent putting game.',
+    body: 'Use Tour Pure on the green to train stroke path, distance control, and alignment - building a more consistent putting game.',
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F455082619_8098523016902786_920092106083080418_n__592fb000.jpg?alt=media&token=5bd2467b-27fc-4f71-8f3d-e9a4c8354f49',
     alt: 'Golfer using Tour Pure on the putting green as an alignment tool to read the break',
     objectPosition: 'center 40%',

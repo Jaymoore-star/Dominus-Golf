@@ -11,14 +11,14 @@ export function MidCTASection() {
           Start Building a More Consistent Swing Today
         </h2>
         <p className="font-sans text-base text-white/50 leading-relaxed mb-10 max-w-xl mx-auto">
-          Tour Pure helps golfers train movement patterns, tempo, and swing path — at home, at the range, or on the green.
+          Tour Pure helps golfers train movement patterns, tempo, and swing path - at home, at the range, or on the green.
         </p>
         <Link
           to="/product/$id"
           params={{ id: 'tour-pure-men' }}
           className="inline-block font-sans font-semibold text-sm tracking-widest uppercase px-10 py-4 bg-accent text-white hover:bg-accent/90 transition-colors duration-200"
         >
-          Get Tour Pure — $59.99
+          Get Tour Pure - $59.99
         </Link>
       </div>
     </section>

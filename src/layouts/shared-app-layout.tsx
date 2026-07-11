@@ -1,5 +1,5 @@
 /**
- * Single app chrome (sidebar + main) — use once at the app root.
+ * Single app chrome (sidebar + main) - use once at the app root.
  * Do not wrap individual pages in Shell or duplicate sidebars/top bars.
  */
 import React, { createContext, useContext } from 'react'
@@ -12,7 +12,7 @@ export type SharedLayoutContextValue = {
 
 const SharedLayoutContext = createContext<SharedLayoutContextValue | null>(null)
 
-/** Use inside routes/pages that need app name or layout metadata — never for duplicating Shell. */
+/** Use inside routes/pages that need app name or layout metadata - never for duplicating Shell. */
 export function useSharedLayout(): SharedLayoutContextValue {
   const ctx = useContext(SharedLayoutContext)
   if (!ctx) {

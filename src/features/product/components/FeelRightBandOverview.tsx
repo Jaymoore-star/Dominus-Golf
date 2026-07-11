@@ -7,19 +7,19 @@ export function FeelRightBandOverview() {
       number: '01',
       title: 'Set up the band',
       icon: <Activity className="w-5 h-5 text-accent" />,
-      content: 'Slide the Feel Right Band up your trail arm and position it around the bicep—just like Nelly places her training floatie. Check that the Dominus Golf logo faces the target at address. The band should sit comfortably against your upper arm.'
+      content: 'Slide the Feel Right Band up your trail arm and position it around the bicep-just like Nelly places her training floatie. Check that the Dominus Golf logo faces the target at address. The band should sit comfortably against your upper arm.'
     },
     {
       number: '02',
       title: 'Take your address position',
       icon: <Target className="w-5 h-5 text-accent" />,
-      content: 'Set up normally with your club. Feel the band resting lightly against your ribcage. Logo faces the target. This is your connected starting position—your trail arm, torso, and club form a single, unified structure.'
+      content: 'Set up normally with your club. Feel the band resting lightly against your ribcage. Logo faces the target. This is your connected starting position-your trail arm, torso, and club form a single, unified structure.'
     },
     {
       number: '03',
       title: 'Make your takeaway',
       icon: <Zap className="w-5 h-5 text-accent" />,
-      content: 'Begin the backswing with a one-piece takeaway—hands, arms, chest, and shoulders moving together. As the shoulders turn, the band will naturally separate from the body, maintaining proper arm width without letting the elbow fly wide.'
+      content: 'Begin the backswing with a one-piece takeaway-hands, arms, chest, and shoulders moving together. As the shoulders turn, the band will naturally separate from the body, maintaining proper arm width without letting the elbow fly wide.'
     },
     {
       number: '04',
@@ -31,7 +31,7 @@ export function FeelRightBandOverview() {
       number: '05',
       title: 'Start the downswing with your body',
       icon: <Activity className="w-5 h-5 text-accent" />,
-      content: 'Begin the downswing from the ground up—hips first, then torso. As your body rotates toward the target, it will naturally pull the trail arm back in. Do not force the band back with your arm; let your core rotation do the work.'
+      content: 'Begin the downswing from the ground up-hips first, then torso. As your body rotates toward the target, it will naturally pull the trail arm back in. Do not force the band back with your arm; let your core rotation do the work.'
     },
     {
       number: '06',
@@ -67,7 +67,7 @@ export function FeelRightBandOverview() {
               <div className="flex justify-center"><Info className="text-accent" size={24} /></div>
               <h3 className="font-serif text-xl font-bold italic underline decoration-accent/30 underline-offset-8 decoration-2">What it is</h3>
               <p className="font-sans text-base text-gray-600 leading-relaxed">
-                The Feel Right Band is a connection training aid worn around the trail arm bicep. It replicates the biomechanics of the tour-famous "floatie drill"—teaching the trail arm to stay structured through the backswing and seamlessly reconnect to the body during the downswing. This is the single most important sequencing move for a repeatable golf swing.
+                The Feel Right Band is a connection training aid worn around the trail arm bicep. It replicates the biomechanics of the tour-famous "floatie drill"-teaching the trail arm to stay structured through the backswing and seamlessly reconnect to the body during the downswing. This is the single most important sequencing move for a repeatable golf swing.
               </p>
             </div>
           </div>

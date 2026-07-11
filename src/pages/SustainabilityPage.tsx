@@ -36,7 +36,7 @@ export function SustainabilityPage() {
             },
             {
               title: 'Buy It Once',
-              body: 'Our philosophy is simple—buy a quality tool once, use it forever, and leave the course better than you found it. Every Dominus product is built with that promise.',
+              body: 'Our philosophy is simple-buy a quality tool once, use it forever, and leave the course better than you found it. Every Dominus product is built with that promise.',
             },
           ].map((item) => (
             <div key={item.title} className="flex gap-6 items-start">
@@ -53,7 +53,7 @@ export function SustainabilityPage() {
           <p className="font-serif text-lg font-semibold text-foreground mb-1">
             "Buy a quality tool once. Use it forever."
           </p>
-          <p className="font-sans text-sm text-muted-foreground">— The Dominus Philosophy</p>
+          <p className="font-sans text-sm text-muted-foreground">- The Dominus Philosophy</p>
         </div>
       </div>
 

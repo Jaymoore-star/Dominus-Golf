@@ -6,7 +6,7 @@ const faqs = [
     id: 1,
     question: 'What is Tour Pure?',
     answer:
-      'Tour Pure helps golfers train movement patterns, tempo, and swing path — at home, at the range, or on the green.',
+      'Tour Pure helps golfers train movement patterns, tempo, and swing path - at home, at the range, or on the green.',
   },
   {
     id: 2,

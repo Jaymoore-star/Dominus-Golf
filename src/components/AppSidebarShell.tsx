@@ -1,5 +1,5 @@
 /**
- * Collapsible SaaS sidebar — expands to 15rem, collapses to 3rem (icon-only).
+ * Collapsible SaaS sidebar - expands to 15rem, collapses to 3rem (icon-only).
  * State is persisted to localStorage. Tooltips appear automatically when collapsed.
  *
  * NOTE: We bypass @blinkdotnew/ui <Sidebar> because it wraps all children in a

@@ -169,7 +169,7 @@ export function TourPureOverview() {
               <div className="flex justify-center"><Zap className="text-accent" size={24} /></div>
               <h3 className="font-serif text-xl font-bold italic underline decoration-accent/30 underline-offset-8 decoration-2">The Promise</h3>
               <p className="font-sans text-sm text-gray-600 leading-relaxed">
-                Designed to build a more consistent, repeatable swing in just minutes a day — for golfers serious about developing real mechanics, better tempo, and lasting improvement on the course.
+                Designed to build a more consistent, repeatable swing in just minutes a day - for golfers serious about developing real mechanics, better tempo, and lasting improvement on the course.
               </p>
             </div>
           </div>

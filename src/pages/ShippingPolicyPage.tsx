@@ -22,7 +22,7 @@ const sections = [
   },
   {
     title: 'International Shipping',
-    body: `At this time, Dominus Golf ships exclusively within the United States. International shipping options are not currently available. We are working to expand our shipping reach — check back for updates.`,
+    body: `At this time, Dominus Golf ships exclusively within the United States. International shipping options are not currently available. We are working to expand our shipping reach - check back for updates.`,
   },
   {
     title: 'Order Tracking',
@@ -109,7 +109,7 @@ export function ShippingPolicyPage() {
             <a href="mailto:Customersupport@dominusgolf.com" className="text-accent hover:underline">
               Customersupport@dominusgolf.com
             </a>{' '}
-            — we respond within 1 business day.
+            - we respond within 1 business day.
           </p>
         </div>
       </div>

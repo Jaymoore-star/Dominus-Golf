@@ -38,7 +38,7 @@ export function ApparelProductCard({ product }: ApparelProductCardProps) {
       <div className="relative aspect-square overflow-hidden bg-white border border-border">
         <img
           src={displayImage}
-          alt={`${product.name}${selectedColor ? ` — ${selectedColor}` : ''}`}
+          alt={`${product.name}${selectedColor ? ` - ${selectedColor}` : ''}`}
           className="w-full h-full object-contain p-3 transition-all duration-300 group-hover:scale-105"
         />
 

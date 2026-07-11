@@ -21,7 +21,7 @@ const sections = [
   },
   {
     title: '5. Intellectual Property',
-    body: `All content on this website — including but not limited to text, images, graphics, logos, and product designs — is the exclusive property of Dominus Golf LLC and is protected by applicable intellectual property laws. You may not reproduce, distribute, or use any content without express written permission.`,
+    body: `All content on this website - including but not limited to text, images, graphics, logos, and product designs - is the exclusive property of Dominus Golf LLC and is protected by applicable intellectual property laws. You may not reproduce, distribute, or use any content without express written permission.`,
   },
   {
     title: '6. Assumption of Risk',

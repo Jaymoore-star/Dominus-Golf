@@ -52,7 +52,7 @@ export function HeroSection() {
             A More Consistent Swing Starts Here
           </h1>
           <p className="font-sans text-xl text-white/90 leading-relaxed mb-4 font-medium tracking-wide">
-            Everything a serious golfer needs to train, develop, and improve — in one place.
+            Everything a serious golfer needs to train, develop, and improve - in one place.
           </p>
           <p className="font-sans text-base text-white/75 leading-relaxed mb-12 max-w-[560px]">
             Tour Pure builds the repetition. Our Pros refine the technique. And we're just getting started.

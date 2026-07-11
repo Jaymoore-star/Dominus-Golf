@@ -17,7 +17,7 @@ export const trainingSystems: Product[] = [
     ],
     badge: 'Best Seller',
     description:
-      'Most golfers spend hundreds on new equipment hoping something changes.\n\nNothing changes.\n\nBecause the problem was never the club. It was never the shaft flex, the loft angle, or the grip size. It was the swing path. It was the plane. It was the one thing no equipment purchase has ever fixed — and the one thing every elite golfer has spent thousands of hours learning to master.\n\nTour Pure was built for the golfer who is done guessing.\n\nEvery rep delivers immediate feedback on your swing path and plane — the two fundamentals that separate a consistent, powerful golf swing from everything else. Not after the round. Not after the lesson. Right now. On that rep.\n\nYou feel it when it\'s wrong. You feel it when it\'s right. And over time, right becomes automatic.\n\nThis is not practice. This is training.',
+      'Most golfers spend hundreds on new equipment hoping something changes.\n\nNothing changes.\n\nBecause the problem was never the club. It was never the shaft flex, the loft angle, or the grip size. It was the swing path. It was the plane. It was the one thing no equipment purchase has ever fixed - and the one thing every elite golfer has spent thousands of hours learning to master.\n\nTour Pure was built for the golfer who is done guessing.\n\nEvery rep delivers immediate feedback on your swing path and plane - the two fundamentals that separate a consistent, powerful golf swing from everything else. Not after the round. Not after the lesson. Right now. On that rep.\n\nYou feel it when it\'s wrong. You feel it when it\'s right. And over time, right becomes automatic.\n\nThis is not practice. This is training.',
     features: [
       'FREE Ultimate Guide to Mastering the Game (PDF)',
       'FREE 90-Day Training Manual (PDF)',
@@ -130,7 +130,7 @@ export const trainingSystems: Product[] = [
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FR__3951d4b9.png?alt=media&token=9d723d63-318c-4122-b7cd-b70a10e0520f',
     badge: 'Out of Stock',
     description:
-      'Junior swing trainer designed to build balance, sequencing, and proper mechanics early—without overwhelming weight. Includes FREE 90-Day Training Manual (PDF).',
+      'Junior swing trainer designed to build balance, sequencing, and proper mechanics early-without overwhelming weight. Includes FREE 90-Day Training Manual (PDF).',
     features: [
       'FREE 90-Day Training Manual (PDF)',
       'Junior-friendly weight',

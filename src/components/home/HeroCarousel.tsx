@@ -8,7 +8,7 @@ const slides = [
     bg: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F301503221_456856363151119_1248543110073884434_n__b21743d9.jpg?alt=media&token=14f4d325-9e1e-4afe-9f14-004bf18e16e9',
     label: 'Training Systems',
     title: 'Build Your\nBest Swing',
-    subtitle: 'Tour Pure — Weighted Training System for Men & Women',
+    subtitle: 'Tour Pure - Weighted Training System for Men & Women',
     cta: 'Shop Now',
     href: '/shop/training-system',
   },
@@ -75,7 +75,7 @@ export function HeroCarousel() {
 
   return (
     <section className="relative w-full h-screen overflow-hidden bg-primary">
-      {/* Background images — cross-fade */}
+      {/* Background images - cross-fade */}
       {slides.map((s, i) => (
         <div
           key={s.id}

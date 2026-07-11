@@ -12,12 +12,12 @@ const steps = [
   {
     number: '02',
     title: 'Train Swing Path First',
-    body: `Your swing path determines everything — ball flight, spin, and direction. The Tour Pure weighted trainer forces your body to feel the correct path through impact. Train 10–15 minutes daily at 50–60% swing speed. Feel the club tracking on plane.`,
+    body: `Your swing path determines everything - ball flight, spin, and direction. The Tour Pure weighted trainer forces your body to feel the correct path through impact. Train 10–15 minutes daily at 50–60% swing speed. Feel the club tracking on plane.`,
   },
   {
     number: '03',
     title: 'Build Tempo, Not Power',
-    body: `Power is a by-product of tempo. Tempo is the rhythm of your swing — the pace from takeaway to follow-through. Golfers who prioritize tempo over power consistently outperform those who try to muscle the ball. Use Tour Pure to develop a smooth, rhythmic motion.`,
+    body: `Power is a by-product of tempo. Tempo is the rhythm of your swing - the pace from takeaway to follow-through. Golfers who prioritize tempo over power consistently outperform those who try to muscle the ball. Use Tour Pure to develop a smooth, rhythmic motion.`,
   },
   {
     number: '04',
@@ -29,7 +29,7 @@ const steps = [
 const myths = [
   {
     myth: '"I need to swing harder to hit farther."',
-    truth: 'Speed comes from proper sequencing and centrifugal force — not brute strength. Train the path first.',
+    truth: 'Speed comes from proper sequencing and centrifugal force - not brute strength. Train the path first.',
   },
   {
     myth: '"Standard range lessons will fix my game."',
@@ -37,7 +37,7 @@ const myths = [
   },
   {
     myth: '"Training aids are just gimmicks."',
-    truth: 'The right training aid trains movement patterns. Tour Pure does exactly that — weighted repetitions that transfer.',
+    truth: 'The right training aid trains movement patterns. Tour Pure does exactly that - weighted repetitions that transfer.',
   },
   {
     myth: '"I need expensive equipment to improve."',
@@ -101,7 +101,7 @@ export function BeginnersPage() {
               Common Mistakes
             </p>
             <h2 className="font-serif text-3xl font-bold text-white">
-              Golf Myths — Debunked
+              Golf Myths - Debunked
             </h2>
           </div>
 

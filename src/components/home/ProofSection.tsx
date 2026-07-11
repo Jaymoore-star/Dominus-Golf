@@ -33,7 +33,7 @@ export function ProofSection() {
             <ul className="space-y-3 mb-8">
               {[
                 'Weighted grip trains proper tempo and sequencing',
-                'Full shaft length — 16 in, 3.8 lbs — built for feedback',
+                'Full shaft length - 16 in, 3.8 lbs - built for feedback',
                 'One tool. Consistent results. Anywhere.',
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3">

@@ -41,7 +41,7 @@ export function MethodologySection() {
                 ))}
               </ul>
               <p className="mt-10 pt-10 border-t border-white/5 font-sans text-sm italic text-white/30 leading-relaxed">
-                While mechanics matter, standing on a lesson tee "block practicing" the same movement can often lead to a "driving range swing"—one that looks great in practice but falls apart the moment you step onto the first tee.
+                While mechanics matter, standing on a lesson tee "block practicing" the same movement can often lead to a "driving range swing"-one that looks great in practice but falls apart the moment you step onto the first tee.
               </p>
             </div>
 

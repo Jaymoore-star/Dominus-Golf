@@ -9,7 +9,7 @@ export function WomensSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
-          {/* Image — left on desktop */}
+          {/* Image - left on desktop */}
           <div className="order-2 lg:order-1 flex justify-center lg:justify-start">
             <div className="w-full max-w-[84vw] sm:max-w-[400px] lg:max-w-[480px] relative">
               {/* Overlay badge */}
@@ -21,7 +21,7 @@ export function WomensSection() {
               <div className="bg-white rounded-xl p-8 border border-white/10 shadow-2xl">
                 <img
                   src={WOMENS_IMAGE}
-                  alt="Tour Pure Women — weighted swing trainer"
+                  alt="Tour Pure Women - weighted swing trainer"
                   className="w-full h-auto object-contain"
                   style={{
                     maxHeight: '520px',
@@ -33,7 +33,7 @@ export function WomensSection() {
             </div>
           </div>
 
-          {/* Text — right on desktop */}
+          {/* Text - right on desktop */}
           <div className="order-1 lg:order-2">
             <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-5">
               Tour Pure Women

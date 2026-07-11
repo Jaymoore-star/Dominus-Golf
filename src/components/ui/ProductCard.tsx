@@ -64,7 +64,7 @@ export function ProductCard({ product, aspectRatio = 'square' }: ProductCardProp
           {product.name}
         </h3>
 
-        {/* Rating — only shown if present */}
+        {/* Rating - only shown if present */}
         {product.rating !== undefined && product.reviewCount !== undefined && (
           <div className="flex items-center gap-1.5 mb-2">
             <div className="flex items-center gap-0.5">
