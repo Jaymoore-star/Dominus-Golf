@@ -99,6 +99,7 @@ export const accessories: Product[] = [
     compareAtPrice: 14.99,
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FScreenshot_20260324_042207_SamsungInternet__2f2a1710.jpg?alt=media&token=4e6db837-c08e-4745-b0c4-9d9e5d607413',
     badge: 'FREE WITH TRAINER',
+    paymentUrl: 'https://square.link/u/dgAr3D7l',
     description:
       'The complete 90-day training curriculum in digital PDF format. FREE with the purchase of any Tour Pure swing trainer. Instant access to tour-level drills, progress tracking, and technical mechanical breakdowns.',
     features: [
