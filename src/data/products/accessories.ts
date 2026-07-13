@@ -13,6 +13,7 @@ export const accessories: Product[] = [
     ],
     description:
       'Helps train proper arm structure and connection to build a more repeatable and efficient swing. Inspired by the famous "floatie drill" used on tour by world #1 Nelly Korda, this band gives you the exact same structural feedback in a sleek, premium design.',
+    paymentUrl: 'https://square.link/u/Kx7GBaMA',
     features: [
       'Improves arm structure',
       'Promotes connection',
@@ -48,6 +49,7 @@ export const accessories: Product[] = [
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FGolfTowel2__dfa91d93.png?alt=media&token=f24c8a91-7d2c-4962-854f-5c6ce02557d2',
     ],
     description: 'Premium Dominus Golf towel-clean, durable, built for the bag.',
+    paymentUrl: 'https://square.link/u/mxCT3IDV',
     features: ['Durable fabric', 'Bag-ready size', 'Clean branding', 'Premium feel'],
     inStock: true,
     reviews: [
@@ -73,6 +75,7 @@ export const accessories: Product[] = [
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FScreenshot_20260324_042207_SamsungInternet__2f2a1710.jpg?alt=media&token=4e6db837-c08e-4745-b0c4-9d9e5d607413',
     ],
     badge: 'New',
+    paymentUrl: 'https://square.link/u/CY8NyjAv',
     description:
       'Stop guessing and start grinding with purpose. The Ultimate Guide to Mastering the Game is a structured, day-by-day training curriculum designed to bridge the gap between "having a tool" and "having a game." Built specifically to complement the Tour Pure system. FREE (PDF Version) with the purchase of any Tour Pure trainer.',
     features: [

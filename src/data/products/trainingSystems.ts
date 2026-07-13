@@ -80,6 +80,7 @@ export const trainingSystems: Product[] = [
       'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FIMG-20251211-WA0000__f2e47d9b.jpg?alt=media&token=5ca49e9e-2470-4965-8658-5e9c4cdeab69',
     ],
     badge: 'Sold Out',
+    paymentUrl: 'https://square.link/u/MwoinSDb',
     description:
       'Precision weighted swing trainer designed to develop smooth tempo, proper sequencing, and a consistent swing motion. Includes FREE Ultimate Guide to Mastering the Game (90-Day Training Manual) in PDF format.',
     features: [
@@ -129,6 +130,7 @@ export const trainingSystems: Product[] = [
     price: 39.99,
     image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FR__3951d4b9.png?alt=media&token=9d723d63-318c-4122-b7cd-b70a10e0520f',
     badge: 'Out of Stock',
+    paymentUrl: 'https://square.link/u/CRNoOrPM',
     description:
       'Junior swing trainer designed to build balance, sequencing, and proper mechanics early-without overwhelming weight. Includes FREE 90-Day Training Manual (PDF).',
     features: [
