@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowLeft, ArrowRight, ArrowRight as ArrowRightIcon, Award, Check, Clock, FileText, Loader2, MapPin, Star, Trophy, Users } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowRight as ArrowRightIcon, Award, Check, ChevronDown, Clock, FileText, Loader2, MapPin, Star, Trophy, Users } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
@@ -8,7 +8,11 @@ import { CartDrawer } from '../components/cart/CartDrawer';
 
 const HUBSPOT_PORTAL_ID = '246543983';
 const HUBSPOT_FORM_ID = '084f3e9c-31da-4700-a691-592e947cf4b7';
-const BACKEND_URL = 'https://45pi183s.backend.blink.new';
+const SQUARE_PAYMENT_LINK = 'https://square.link/u/A4xq00fW';
+
+const US_STATES = [
+  'AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY',
+];
 
 /* ─── Scroll-triggered entrance wrapper ─── */
 function FadeUpSection({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
@@ -51,8 +55,8 @@ function StepProgress({ current, total }: { current: number; total: number }) {
         <div key={i} className="flex items-center gap-2 flex-1 last:flex-[0_0_auto]">
           <div
             className={`w-8 h-8 flex items-center justify-center text-xs font-sans font-semibold border transition-colors
-              ${i < current ? 'bg-accent border-accent text-accent-foreground' : 
-                i === current ? 'border-accent text-accent bg-background' : 
+              ${i < current ? 'bg-accent border-accent text-accent-foreground' :
+                i === current ? 'border-accent text-accent bg-background' :
                 'border-border text-muted-foreground bg-background'}`}
           >
             {i < current ? <Check className="w-3.5 h-3.5" /> : i + 1}
@@ -144,7 +148,6 @@ export function GrantPage() {
   const [roadmap, setRoadmap] = useState('');
   const [discipline, setDiscipline] = useState('');
   const [vision, setVision] = useState('');
-  const [connection, setConnection] = useState('');
 
   // Step 3: Junior Provision
   const [guardianName, setGuardianName] = useState('');
@@ -161,7 +164,7 @@ export function GrantPage() {
     if (!firstName.trim()) { setError('First name is required.'); return false; }
     if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setError('A valid email is required.'); return false; }
     if (!ageGroup) { setError('Please select your age group.'); return false; }
-    if (!stateRegion.trim()) { setError('State/Region is required.'); return false; }
+    if (!stateRegion) { setError('Please select your state.'); return false; }
     if (!city.trim()) { setError('City is required.'); return false; }
     if (!currentHandicap.trim()) { setError('Current handicap is required.'); return false; }
     setError(null);
@@ -172,7 +175,6 @@ export function GrantPage() {
     if (!roadmap.trim()) { setError('Grant Essay Roadmap is required.'); return false; }
     if (!discipline.trim()) { setError('Grant Essay Discipline is required.'); return false; }
     if (!vision.trim()) { setError('Grant Essay Vision is required.'); return false; }
-    if (!connection.trim()) { setError('Grant Essay Connection is required.'); return false; }
     setError(null);
     return true;
   };
@@ -189,34 +191,9 @@ export function GrantPage() {
     setError(null);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-
-    // Step 1 validation
-    if (!firstName.trim() || !email.trim() || !ageGroup || !stateRegion.trim() || !city.trim() || !currentHandicap.trim()) {
-      setError('Please complete all required fields in Section 1.');
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError('Please enter a valid email address.');
-      return;
-    }
-
-    // Step 2 validation
-    if (!roadmap.trim() || !discipline.trim() || !vision.trim() || !connection.trim()) {
-      setError('Please complete all essay questions.');
-      return;
-    }
-
-    setSubmitting(true);
-
-    // Open Square payment window
-    const paymentWindow = window.open('', '_blank');
-
+  const submitToHubSpot = async () => {
     try {
-      // 1. Submit to HubSpot
-      const hubspotRes = await fetch(
+      await fetch(
         `https://forms-na2.hsforms.com/submissions/v3/public/submit/formsnext/multipart/${HUBSPOT_PORTAL_ID}/${HUBSPOT_FORM_ID}`,
         {
           method: 'POST',
@@ -227,74 +204,45 @@ export function GrantPage() {
               { name: 'lastname', value: lastName.trim() },
               { name: 'email', value: email.trim() },
               { name: 'age_group', value: ageGroup },
-              { name: 'state', value: stateRegion.trim() },
+              { name: 'state', value: stateRegion },
               { name: 'city', value: city.trim() },
               { name: 'current_handicap', value: currentHandicap.trim() },
               { name: 'target_handicap_milestones', value: targetHandicap.trim() },
               { name: 'grant_essay_roadmap', value: roadmap.trim() },
               { name: 'grant_essay_discipline', value: discipline.trim() },
               { name: 'grant_essay_vision', value: vision.trim() },
-              { name: 'essay_connection', value: connection.trim() },
               { name: 'guardian_name', value: guardianName.trim() },
               { name: 'guardian_email', value: guardianEmail.trim() },
             ],
-            context: {
-              pageUri: window.location.href,
-              pageName: 'Dominus Golf Development Grant — Application',
-            },
+            context: { pageUri: window.location.href, pageName: 'Dominus Golf Development Grant — Application' },
           }),
         }
       );
+      // Fire-and-forget — HubSpot errors shouldn't block payment
+    } catch { /* silently fail */ }
+  };
 
-      if (!hubspotRes.ok) {
-        const hubErr = await hubspotRes.json();
-        console.error('HubSpot error:', hubErr);
-        const hsErrors = hubErr?.errors || [];
-        const errMsg = hsErrors[0]?.message || 'Failed to submit application.';
-        paymentWindow?.close();
-        setError(errMsg);
-        setSubmitting(false);
-        return;
-      }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
 
-      // 2. HubSpot submitted successfully — now create Square payment link
-      const origin = window.location.origin;
-      const squareRes = await fetch(`${BACKEND_URL}/api/grant/checkout`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          applicantName: `${firstName.trim()} ${lastName.trim()}`,
-          applicantEmail: email.trim(),
-          developmentPlan: roadmap.trim(),
-          trainingRegimen: discipline.trim(),
-          competitiveVision: vision.trim(),
-          successUrl: `${origin}/grant/success`,
-          cancelUrl: `${origin}/grant`,
-        }),
-      });
-
-      const squareData = await squareRes.json();
-
-      if (!squareRes.ok || squareData.error) {
-        paymentWindow?.close();
-        // HubSpot submission succeeded but Square failed — still show error
-        setError(squareData.error || 'Payment link creation failed. Your application was submitted but payment could not be processed. Please contact us.');
-        setSubmitting(false);
-        return;
-      }
-
-      // 3. Redirect to Square payment
-      if (paymentWindow) {
-        paymentWindow.location.href = squareData.url;
-      } else {
-        window.location.href = squareData.url;
-      }
-      setSubmitting(false);
-    } catch (err) {
-      paymentWindow?.close();
-      setError('Network error. Please check your connection and try again.');
-      setSubmitting(false);
+    if (!firstName.trim() || !email.trim() || !ageGroup || !stateRegion || !city.trim() || !currentHandicap.trim()) {
+      setError('Please complete all required fields in Section 1.');
+      return;
     }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+    if (!roadmap.trim() || !discipline.trim() || !vision.trim()) {
+      setError('Please complete all essay questions.');
+      return;
+    }
+
+    setSubmitting(true);
+    submitToHubSpot(); // fire-and-forget
+    window.open(SQUARE_PAYMENT_LINK, '_blank', 'noopener,noreferrer');
+    setSubmitting(false);
   };
 
   const inputBaseClass = "w-full bg-background border border-border px-4 py-3 text-sm text-foreground font-sans placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-1 focus:ring-accent/20 transition-colors disabled:opacity-50";
@@ -530,15 +478,26 @@ export function GrantPage() {
 
                   <div>
                     <label htmlFor="ageGroup" className="block text-xs uppercase tracking-widest text-muted-foreground font-sans font-semibold mb-2">Age Group *</label>
-                    <select id="ageGroup" value={ageGroup} onChange={(e) => setAgeGroup(e.target.value)} required disabled={submitting} className={inputBaseClass}>
-                      <option value="" disabled>Select your age group</option>
-                      {AGE_GROUPS.map((g) => <option key={g} value={g}>{g}</option>)}
-                    </select>
+                    <div className="relative">
+                      <select id="ageGroup" value={ageGroup} onChange={(e) => setAgeGroup(e.target.value)} required disabled={submitting}
+                        className={`${inputBaseClass} appearance-none pr-10 cursor-pointer`}>
+                        <option value="" disabled>Select your age group</option>
+                        {AGE_GROUPS.map((g) => <option key={g} value={g}>{g}</option>)}
+                      </select>
+                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                    </div>
                   </div>
 
                   <div>
-                    <label htmlFor="stateRegion" className="block text-xs uppercase tracking-widest text-muted-foreground font-sans font-semibold mb-2">State/Region *</label>
-                    <input id="stateRegion" type="text" value={stateRegion} onChange={(e) => setStateRegion(e.target.value)} placeholder="e.g., California" required disabled={submitting} className={inputBaseClass} />
+                    <label htmlFor="stateRegion" className="block text-xs uppercase tracking-widest text-muted-foreground font-sans font-semibold mb-2">State *</label>
+                    <div className="relative">
+                      <select id="stateRegion" value={stateRegion} onChange={(e) => setStateRegion(e.target.value)} required disabled={submitting}
+                        className={`${inputBaseClass} appearance-none pr-10 cursor-pointer`}>
+                        <option value="" disabled>Select your state</option>
+                        {US_STATES.map((s) => <option key={s} value={s}>{s}</option>)}
+                      </select>
+                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                    </div>
                   </div>
 
                   <div>
@@ -571,9 +530,8 @@ export function GrantPage() {
 
                   <div>
                     <label htmlFor="roadmap" className="block text-xs uppercase tracking-widest text-muted-foreground font-sans font-semibold mb-2">Grant Essay Roadmap *</label>
-                    <p className="text-[11px] text-muted-foreground/70 mb-2 font-sans italic leading-relaxed">
-                      To help us understand your plan, please address the following:<br />
-                      What does your practice and tournament schedule look like over the next 12 months? What are the specific milestones or target handicaps you want to reach? What concrete metrics (like stats, trackman data, or short-game goals) will you use to track your improvement?
+                    <p className="text-sm text-muted-foreground mb-3 font-sans leading-relaxed">
+                      Describe your practice and tournament schedule over the next 12 months, your target milestones, and the metrics you'll use to track improvement.
                     </p>
                     <textarea id="roadmap" value={roadmap} onChange={(e) => setRoadmap(e.target.value)} placeholder="Your response..." rows={6} required disabled={submitting} className={`${inputBaseClass} resize-y min-h-[140px]`} />
                     <p className="text-right text-[10px] text-muted-foreground/50 mt-1 font-sans">{roadmap.length}/400 words max</p>
@@ -581,9 +539,8 @@ export function GrantPage() {
 
                   <div>
                     <label htmlFor="discipline" className="block text-xs uppercase tracking-widest text-muted-foreground font-sans font-semibold mb-2">Grant Essay Discipline *</label>
-                    <p className="text-[11px] text-muted-foreground/70 mb-2 font-sans italic leading-relaxed">
-                      To help us understand your work ethic, please address the following:<br />
-                      How do you structure a typical practice session? What training tools or drills do you use? How do you hold yourself accountable and stay consistent when you aren't playing your best? Share an example of a setback or developmental plateau you faced, and exactly how you practiced your way through it.
+                    <p className="text-sm text-muted-foreground mb-3 font-sans leading-relaxed">
+                      How do you structure a typical practice session? What drills and tools do you use? Share an example of a setback and how you practiced through it.
                     </p>
                     <textarea id="discipline" value={discipline} onChange={(e) => setDiscipline(e.target.value)} placeholder="Your response..." rows={6} required disabled={submitting} className={`${inputBaseClass} resize-y min-h-[140px]`} />
                     <p className="text-right text-[10px] text-muted-foreground/50 mt-1 font-sans">{discipline.length}/400 words max</p>
@@ -591,22 +548,11 @@ export function GrantPage() {
 
                   <div>
                     <label htmlFor="vision" className="block text-xs uppercase tracking-widest text-muted-foreground font-sans font-semibold mb-2">Grant Essay Vision *</label>
-                    <p className="text-[11px] text-muted-foreground/70 mb-2 font-sans italic leading-relaxed">
-                      To help us understand your long-term goals, please address the following:<br />
-                      Where do you want your game to be in 3 to 5 years (e.g., high school team, college recruitment, Pro/Amateur tournaments)? How will securing this grant change your current trajectory?
+                    <p className="text-sm text-muted-foreground mb-3 font-sans leading-relaxed">
+                      Where do you want your game in 3-5 years (high school, college, pro/amateur)? How will this grant change your trajectory?
                     </p>
                     <textarea id="vision" value={vision} onChange={(e) => setVision(e.target.value)} placeholder="Your response..." rows={5} required disabled={submitting} className={`${inputBaseClass} resize-y min-h-[120px]`} />
                     <p className="text-right text-[10px] text-muted-foreground/50 mt-1 font-sans">{vision.length}/300 words max</p>
-                  </div>
-
-                  <div>
-                    <label htmlFor="connection" className="block text-xs uppercase tracking-widest text-muted-foreground font-sans font-semibold mb-2">Grant Essay Connection *</label>
-                    <p className="text-[11px] text-muted-foreground/70 mb-2 font-sans italic leading-relaxed">
-                      To help us understand the core of your game, please address the following:<br />
-                      Describe a specific, pivotal moment or round on a golf course or driving range that defines why you continue to pursue your development goals. Your response must include the exact facility name, its city/state location, and the specific situational variables (e.g., club selection, weather, or a precise score/metric) from that moment.
-                    </p>
-                    <textarea id="connection" value={connection} onChange={(e) => setConnection(e.target.value)} placeholder="Your response..." rows={5} required disabled={submitting} className={`${inputBaseClass} resize-y min-h-[120px]`} />
-                    <p className="text-right text-[10px] text-muted-foreground/50 mt-1 font-sans">{connection.length}/400 words max</p>
                   </div>
 
                   {error && <div className="border border-destructive/30 bg-destructive/5 px-4 py-3"><p className="text-sm text-destructive font-sans">{error}</p></div>}
