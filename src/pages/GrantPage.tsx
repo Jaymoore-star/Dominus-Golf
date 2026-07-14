@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowLeft, ArrowRight, ArrowRight as ArrowRightIcon, Award, Check, ChevronDown, Clock, FileText, Loader2, MapPin, Star, Trophy, Users } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
@@ -47,7 +47,61 @@ function Divider() {
   return <div className="w-full h-px bg-border" />;
 }
 
-/* ─── Progress bar for form steps ─── */
+/* ─── Custom styled dropdown ─── */
+function StyledSelect({ id, label, value, onChange, options, placeholder, disabled }: {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  options: string[];
+  placeholder: string;
+  disabled?: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative">
+      <label htmlFor={id} className="block text-xs uppercase tracking-widest text-muted-foreground font-sans font-semibold mb-2">{label}</label>
+      <button
+        id={id}
+        type="button"
+        onClick={() => !disabled && setOpen(!open)}
+        disabled={disabled}
+        className={`w-full flex items-center justify-between text-left bg-background border px-4 py-3 text-sm font-sans transition-colors
+          ${open ? 'border-accent ring-1 ring-accent/20' : 'border-border hover:border-muted-foreground/40'}
+          ${!value ? 'text-muted-foreground/50' : 'text-foreground'}
+          disabled:opacity-50 disabled:cursor-not-allowed`}
+      >
+        <span>{value || placeholder}</span>
+        <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && (
+        <div className="absolute z-20 mt-1 w-full bg-background border border-border shadow-lg max-h-56 overflow-y-auto">
+          {options.map((opt) => (
+            <button
+              key={opt}
+              type="button"
+              onClick={() => { onChange(opt); setOpen(false); }}
+              className={`w-full text-left px-4 py-2.5 text-sm font-sans transition-colors
+                ${opt === value ? 'bg-accent/10 text-accent font-semibold' : 'text-foreground hover:bg-secondary'}`}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 function StepProgress({ current, total }: { current: number; total: number }) {
   return (
     <div className="flex items-center gap-2 mb-10">
@@ -109,7 +163,7 @@ const STEPS = [
    =================================================================== */
 const ELIGIBILITY = [
   { icon: MapPin, title: 'U.S. Residents & Territories', body: 'Open to all golfers residing in the United States and its territories. No geographic restrictions within the U.S.' },
-  { icon: Star, title: 'All Skill Levels Welcome', body: 'No handicap requirement. Competitive amateurs, weekend players, college golfers, mini-tour players, and juniors — all eligible.' },
+  { icon: Star, title: 'All Skill Levels Welcome', body: 'No handicap requirement. Competitive amateurs, weekend players, college golfers, mini-tour players, and juniors - all eligible.' },
   { icon: Users, title: 'Junior Golfers Welcome', body: 'Junior golfers are encouraged to apply. A parent or legal guardian must complete and submit the application on their behalf.' },
 ];
 
@@ -130,7 +184,7 @@ export function GrantPage() {
 
   const [currentYear] = useState(() => new Date().getFullYear());
 
-  // Form state — multi-step
+  // Form state - multi-step
   const [step, setStep] = useState(0);
   const totalSteps = 3;
 
@@ -214,11 +268,11 @@ export function GrantPage() {
               { name: 'guardian_name', value: guardianName.trim() },
               { name: 'guardian_email', value: guardianEmail.trim() },
             ],
-            context: { pageUri: window.location.href, pageName: 'Dominus Golf Development Grant — Application' },
+            context: { pageUri: window.location.href, pageName: 'Dominus Golf Development Grant - Application' },
           }),
         }
       );
-      // Fire-and-forget — HubSpot errors shouldn't block payment
+      // Fire-and-forget - HubSpot errors shouldn't block payment
     } catch { /* silently fail */ }
   };
 
@@ -274,7 +328,7 @@ export function GrantPage() {
             className="inline-block border border-accent/40 px-4 py-1.5 mb-6 sm:mb-8"
           >
             <span className="text-[11px] sm:text-xs tracking-[0.2em] uppercase text-accent font-sans font-medium">
-              {currentYear} Application Cycle — Now Open
+              {currentYear} Application Cycle - Now Open
             </span>
           </motion.div>
 
@@ -358,7 +412,7 @@ export function GrantPage() {
               </h2>
               <p className="mt-6 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl font-sans">
                 The Dominus Golf Development Grant was created to identify a golfer with the drive,
-                commitment, and vision to take their game to the next level — and give them the
+                commitment, and vision to take their game to the next level - and give them the
                 resources to do it.
               </p>
               <p className="mt-4 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl font-sans">
@@ -458,7 +512,7 @@ export function GrantPage() {
               {/* ══════════════════════ STEP 1: PLAYER PROFILE ══════════════════════ */}
               {step === 0 && (
                 <div className="space-y-5">
-                  <h3 className="font-sans text-lg font-bold text-foreground">Section 1 — Player Profile</h3>
+                  <h3 className="font-sans text-lg font-bold text-foreground">Section 1 - Player Profile</h3>
 
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
@@ -476,29 +530,25 @@ export function GrantPage() {
                     <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" required disabled={submitting} className={inputBaseClass} />
                   </div>
 
-                  <div>
-                    <label htmlFor="ageGroup" className="block text-xs uppercase tracking-widest text-muted-foreground font-sans font-semibold mb-2">Age Group *</label>
-                    <div className="relative">
-                      <select id="ageGroup" value={ageGroup} onChange={(e) => setAgeGroup(e.target.value)} required disabled={submitting}
-                        className={`${inputBaseClass} appearance-none pr-10 cursor-pointer`}>
-                        <option value="" disabled>Select your age group</option>
-                        {AGE_GROUPS.map((g) => <option key={g} value={g}>{g}</option>)}
-                      </select>
-                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
-                    </div>
-                  </div>
+                  <StyledSelect
+                    id="ageGroup"
+                    label="Age Group *"
+                    value={ageGroup}
+                    onChange={setAgeGroup}
+                    options={AGE_GROUPS}
+                    placeholder="Select your age group"
+                    disabled={submitting}
+                  />
 
-                  <div>
-                    <label htmlFor="stateRegion" className="block text-xs uppercase tracking-widest text-muted-foreground font-sans font-semibold mb-2">State *</label>
-                    <div className="relative">
-                      <select id="stateRegion" value={stateRegion} onChange={(e) => setStateRegion(e.target.value)} required disabled={submitting}
-                        className={`${inputBaseClass} appearance-none pr-10 cursor-pointer`}>
-                        <option value="" disabled>Select your state</option>
-                        {US_STATES.map((s) => <option key={s} value={s}>{s}</option>)}
-                      </select>
-                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
-                    </div>
-                  </div>
+                  <StyledSelect
+                    id="stateRegion"
+                    label="State *"
+                    value={stateRegion}
+                    onChange={setStateRegion}
+                    options={US_STATES}
+                    placeholder="Select your state"
+                    disabled={submitting}
+                  />
 
                   <div>
                     <label htmlFor="city" className="block text-xs uppercase tracking-widest text-muted-foreground font-sans font-semibold mb-2">City *</label>
@@ -526,7 +576,7 @@ export function GrantPage() {
               {/* ══════════════════════ STEP 2: ESSAYS ══════════════════════ */}
               {step === 1 && (
                 <div className="space-y-6">
-                  <h3 className="font-sans text-lg font-bold text-foreground">Section 2 — Essays</h3>
+                  <h3 className="font-sans text-lg font-bold text-foreground">Section 2 - Essays</h3>
 
                   <div>
                     <label htmlFor="roadmap" className="block text-xs uppercase tracking-widest text-muted-foreground font-sans font-semibold mb-2">Grant Essay Roadmap *</label>
@@ -567,11 +617,11 @@ export function GrantPage() {
               {/* ══════════════════════ STEP 3: JUNIOR PROVISION + SUBMIT ══════════════════════ */}
               {step === 2 && (
                 <div className="space-y-6">
-                  <h3 className="font-sans text-lg font-bold text-foreground">Section 3 — Junior Provision</h3>
+                  <h3 className="font-sans text-lg font-bold text-foreground">Section 3 - Junior Provision</h3>
 
                   <div className="border border-border bg-secondary p-5">
                     <p className="text-sm text-muted-foreground font-sans leading-relaxed">
-                      Junior Golfer Provision — If applying on behalf of a golfer under 18, complete the two fields below. If you are 18 or older leave these blank.
+                      Junior Golfer Provision - If applying on behalf of a golfer under 18, complete the two fields below. If you are 18 or older leave these blank.
                     </p>
                   </div>
 
@@ -619,7 +669,7 @@ export function GrantPage() {
               </p>
             </blockquote>
             <p className="mt-6 text-sm text-accent-foreground/70 tracking-wide uppercase font-sans font-medium">
-              — Jay Moore, Founder &amp; CEO, Dominus Golf
+              - Jay Moore, Founder &amp; CEO, Dominus Golf
             </p>
           </FadeUpSection>
         </div>
