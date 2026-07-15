@@ -351,9 +351,9 @@ export function GrantPage() {
           >
             <div className="inline-flex items-stretch divide-x divide-border border border-border bg-secondary">
               {STATS.map((stat) => (
-                <div key={stat.label} className="flex flex-col items-center justify-center px-5 sm:px-7 py-3 sm:py-3.5 min-w-[100px]">
-                  <span className="text-lg sm:text-xl font-bold font-serif text-foreground tracking-tight leading-none">{stat.value}</span>
-                  <span className="mt-1 text-[10px] sm:text-[11px] uppercase tracking-wider text-muted-foreground font-sans font-medium leading-none">{stat.label}</span>
+                <div key={stat.label} className="flex flex-col items-center justify-center gap-1.5 px-5 sm:px-7 py-3.5 min-w-[110px]">
+                  <span className="text-lg sm:text-xl font-bold font-serif text-foreground tracking-tight">{stat.value}</span>
+                  <span className="text-[10px] sm:text-[11px] uppercase tracking-wider text-muted-foreground font-sans font-medium text-center">{stat.label}</span>
                 </div>
               ))}
             </div>
