@@ -258,7 +258,6 @@ app.post("/api/grant/confirm", async (c) => {
   try {
     await blink.notifications.email({
       to: email,
-      from: "noreply@dominusgolf.com",
       replyTo: "Customersupport@dominusgolf.com",
       subject: "Application Received – Dominus Golf Development Grant",
       html: `
