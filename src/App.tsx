@@ -21,6 +21,7 @@ import { BeginnersPage } from './pages/BeginnersPage';
 import { TourPureGuidePage } from './pages/TourPureGuidePage';
 import { FeelRightBandGuidePage } from './pages/FeelRightBandGuidePage';
 import { GrantPage } from './pages/GrantPage';
+import { GrantSuccessPage } from './pages/GrantSuccessPage';
 import { LoginPage } from './pages/LoginPage';
 import { SignupPage } from './pages/SignupPage';
 
@@ -58,6 +59,7 @@ const beginnersRoute = createRoute({ getParentRoute: () => rootRoute, path: '/be
 const tourPureGuideRoute = createRoute({ getParentRoute: () => rootRoute, path: '/tour-pure-guide', component: TourPureGuidePage });
 const feelRightBandGuideRoute = createRoute({ getParentRoute: () => rootRoute, path: '/feel-right-band-guide', component: FeelRightBandGuidePage });
 const grantRoute = createRoute({ getParentRoute: () => rootRoute, path: '/grant', component: GrantPage });
+const grantSuccessRoute = createRoute({ getParentRoute: () => rootRoute, path: '/grant/success', component: GrantSuccessPage });
 const loginRoute = createRoute({ getParentRoute: () => rootRoute, path: '/login', component: LoginPage });
 const signupRoute = createRoute({ getParentRoute: () => rootRoute, path: '/signup', component: SignupPage });
 
@@ -77,6 +79,7 @@ const routeTree = rootRoute.addChildren([
   tourPureGuideRoute,
   feelRightBandGuideRoute,
   grantRoute,
+  grantSuccessRoute,
   loginRoute,
   signupRoute,
 ]);
