@@ -143,6 +143,7 @@ const DETAILS = [
   { icon: Star, label: 'Age', value: 'All Ages Welcome' },
   { icon: Trophy, label: 'Junior Golfers', value: 'Via Parent/Guardian' },
   { icon: FileText, label: 'Application', value: 'Text-Only · 5 Minutes' },
+  { icon: FileText, label: 'Application Fee', value: '$15.00 Non-Refundable' },
   { icon: Clock, label: 'Deadline', value: 'August 15, 2026' },
   { icon: Award, label: 'Winner Notified', value: 'August 22, 2026' },
 ];
@@ -484,11 +485,8 @@ export function GrantPage() {
         <div className="max-w-2xl mx-auto">
           <FadeUpSection className="text-center mb-12">
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">Apply Now</h2>
-            <p className="mt-4 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-lg mx-auto font-sans">
-              Text-only application. No video uploads. No red tape. Takes less than 5 minutes.
-            </p>
-            <p className="mt-2 text-sm text-accent font-sans font-medium">
-              $15.00 non-refundable application fee · Processed securely by Square
+            <p className="mt-3 text-sm text-accent font-sans font-medium">
+              $15.00 non-refundable application fee
             </p>
           </FadeUpSection>
 
