@@ -8,6 +8,7 @@ import { CartDrawer } from '../components/cart/CartDrawer';
 const HUBSPOT_PORTAL_ID = '246543983';
 const HUBSPOT_FORM_ID = '084f3e9c-31da-4700-a691-592e947cf4b7';
 const SQUARE_PAYMENT_LINK = 'https://square.link/u/A4xq00fW';
+const BACKEND_URL = 'https://45pi183s.backend.blink.new';
 
 const US_STATES = [
   'AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY',
@@ -295,6 +296,14 @@ export function GrantPage() {
 
     setSubmitting(true);
     submitToHubSpot(); // fire-and-forget
+
+    // Trigger eBook delivery email (fire-and-forget)
+    fetch(`${BACKEND_URL}/api/grant/confirm`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: firstName.trim(), email: email.trim() }),
+    }).catch(() => {});
+
     window.open(SQUARE_PAYMENT_LINK, '_blank', 'noopener,noreferrer');
     setSubmitting(false);
   };

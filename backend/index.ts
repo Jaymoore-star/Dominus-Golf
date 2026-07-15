@@ -1,5 +1,8 @@
 import { Hono } from "hono"
 import { cors } from "hono/cors"
+import { createClient } from "@blinkdotnew/sdk"
+
+const EBOOK_URL = "https://drive.google.com/uc?export=download&id=1Ir1DaLgMH-8eVzlQA6xrb7kKO8H_N95p"
 
 const app = new Hono()
 
@@ -232,6 +235,67 @@ app.post("/api/grant/checkout", async (c) => {
     clearTimeout(timeout)
     const message = err instanceof Error ? err.message : "Unknown error"
     console.error("Square checkout error:", message)
+    return c.json({ error: message }, 500)
+  }
+})
+
+// POST /api/grant/confirm — Send eBook delivery email after grant submission
+app.post("/api/grant/confirm", async (c) => {
+  const env = c.env as Record<string, string>
+  const blink = createClient({
+    projectId: env.BLINK_PROJECT_ID,
+    secretKey: env.BLINK_SECRET_KEY,
+  })
+
+  let body: { name?: string; email?: string }
+  try { body = await c.req.json() } catch { return c.json({ error: "Invalid request body" }, 400) }
+
+  const { name = "Applicant", email = "" } = body
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return c.json({ error: "Valid email required" }, 400)
+  }
+
+  try {
+    await blink.notifications.email({
+      to: email,
+      subject: "Your Dominus Golf Development Grant eBook",
+      html: `
+        <div style="max-width:560px;margin:0 auto;font-family:Arial,Helvetica,sans-serif;background:#ffffff;border:1px solid #e5e5e5">
+          <div style="background:#1a1a1a;padding:32px 28px;text-align:center">
+            <h1 style="margin:0;font-family:Georgia,serif;font-size:24px;color:#C4963B;letter-spacing:1px">DOMINUS GOLF</h1>
+          </div>
+          <div style="padding:36px 28px">
+            <p style="margin:0 0 16px;font-size:16px;color:#333333">Hi ${name},</p>
+            <p style="margin:0 0 16px;font-size:15px;color:#444444;line-height:1.7">
+              Thank you for submitting your application for the Dominus Golf Development Grant.
+              As promised, here is your free digital copy of
+              <strong>The Ultimate Guide to Master the Game</strong>.
+            </p>
+            <div style="text-align:center;margin:28px 0">
+              <a href="${EBOOK_URL}"
+                 style="display:inline-block;background:#C4963B;color:#ffffff;padding:14px 42px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none">
+                Download Your eBook →
+              </a>
+            </div>
+            <p style="margin:0;font-size:13px;color:#888888;line-height:1.6">
+              We'll review your application and the winner will be notified on <strong>August 22, 2026</strong>.
+              If you have any questions, reply to this email.
+            </p>
+          </div>
+          <div style="background:#f8f8f8;padding:20px 28px;text-align:center">
+            <p style="margin:0;font-size:11px;color:#aaaaaa">
+              © 2026 Dominus Golf LLC. All rights reserved.
+            </p>
+          </div>
+        </div>
+      `,
+      text: `Hi ${name},\n\nThank you for submitting your application for the Dominus Golf Development Grant. As promised, here is your free digital copy of The Ultimate Guide to Master the Game.\n\nDownload: ${EBOOK_URL}\n\nWe'll review your application and the winner will be notified on August 22, 2026.\n\n© 2026 Dominus Golf LLC.`,
+    })
+
+    return c.json({ success: true })
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Email send failed"
+    console.error("Grant email error:", message)
     return c.json({ error: message }, 500)
   }
 })
