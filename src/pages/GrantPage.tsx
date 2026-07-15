@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowLeft, ArrowRight, ArrowRight as ArrowRightIcon, Award, Check, ChevronDown, Clock, FileText, Loader2, MapPin, Star, Trophy, Users } from 'lucide-react';
-import { Link } from '@tanstack/react-router';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { CartDrawer } from '../components/cart/CartDrawer';
@@ -313,13 +312,6 @@ export function GrantPage() {
           style={{ opacity: heroOpacity, scale: heroScale }}
           className="flex-1 flex flex-col items-center justify-center px-5 sm:px-6 lg:px-8 pb-20"
         >
-          {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 font-sans text-[11px] tracking-widest uppercase text-muted-foreground mb-8">
-            <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
-            <span className="text-border">/</span>
-            <span className="text-foreground">Development Grant</span>
-          </nav>
-
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 8 }}
@@ -357,11 +349,11 @@ export function GrantPage() {
             transition={{ duration: 0.5, delay: 0.6 }}
             className="mt-9 sm:mt-11 flex flex-wrap items-center justify-center"
           >
-            <div className="flex flex-wrap items-center justify-center border border-border bg-secondary">
-              {STATS.map((stat, i) => (
-                <div key={stat.label} className={`flex items-center px-4 sm:px-6 py-3 sm:py-4 ${i < STATS.length - 1 ? 'border-r border-border' : ''}`}>
-                  <span className="text-lg sm:text-xl font-bold font-serif text-foreground tracking-tight">{stat.value}</span>
-                  <span className="ml-2.5 text-[11px] sm:text-xs uppercase tracking-wider text-muted-foreground font-sans font-medium">{stat.label}</span>
+            <div className="inline-flex items-stretch divide-x divide-border border border-border bg-secondary">
+              {STATS.map((stat) => (
+                <div key={stat.label} className="flex flex-col items-center justify-center px-5 sm:px-7 py-3 sm:py-3.5 min-w-[100px]">
+                  <span className="text-lg sm:text-xl font-bold font-serif text-foreground tracking-tight leading-none">{stat.value}</span>
+                  <span className="mt-1 text-[10px] sm:text-[11px] uppercase tracking-wider text-muted-foreground font-sans font-medium leading-none">{stat.label}</span>
                 </div>
               ))}
             </div>
@@ -391,11 +383,6 @@ export function GrantPage() {
             </div>
           </motion.div>
         </motion.div>
-
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
-          <span className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Scroll</span>
-          <div className="w-px h-10 bg-gradient-to-b from-foreground/30 to-transparent" />
-        </div>
       </div>
 
       <Divider />
