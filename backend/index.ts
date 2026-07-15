@@ -121,16 +121,11 @@ app.post("/api/square/checkout", async (c) => {
 })
 
 // POST /api/grant/checkout — Square (grant application $15 fee)
-// Body: { applicantName, applicantEmail, developmentPlan, trainingRegimen, competitiveVision, successUrl, cancelUrl }
+// Body: { applicantName, applicantEmail, developmentPlan, trainingRegimen, competitiveVision, successUrl, cancelUrl, sandbox? }
+// sandbox=true uses sandbox credentials (no real charge)
 // Returns: { url } — Square-hosted payment link
 app.post("/api/grant/checkout", async (c) => {
   const env = c.env as Record<string, string>
-  const accessToken = env.SQUARE_ACCESS_TOKEN
-  const locationId = env.SQUARE_LOCATION_ID
-
-  if (!accessToken || !locationId) {
-    return c.json({ error: "Square not configured" }, 500)
-  }
 
   let body: {
     applicantName?: string
@@ -140,12 +135,23 @@ app.post("/api/grant/checkout", async (c) => {
     competitiveVision?: string
     successUrl?: string
     cancelUrl?: string
+    sandbox?: boolean
   }
 
   try {
     body = await c.req.json()
   } catch {
     return c.json({ error: "Invalid request body" }, 400)
+  }
+
+  const useSandbox = body.sandbox === true
+
+  const accessToken = useSandbox ? env.SQUARE_SANDBOX_ACCESS_TOKEN : env.SQUARE_ACCESS_TOKEN
+  const locationId = useSandbox ? env.SQUARE_SANDBOX_LOCATION_ID : env.SQUARE_LOCATION_ID
+
+  if (!accessToken || !locationId) {
+    const mode = useSandbox ? "sandbox" : "production"
+    return c.json({ error: `Square ${mode} not configured. Missing token or location ID.` }, 500)
   }
 
   const {
@@ -172,13 +178,18 @@ app.post("/api/grant/checkout", async (c) => {
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(), 15000)
 
-  // Always use production Square
-  const squareBaseUrl = "https://connect.squareup.com"
+  const squareBaseUrl = useSandbox
+    ? "https://connect.squareupsandbox.com"
+    : "https://connect.squareup.com"
+
+  const paymentName = useSandbox
+    ? "[TEST] Dominus Golf Development Grant — $15 Application Fee"
+    : "Dominus Golf Development Grant — $15 Application Fee"
 
   const squareBody = {
     idempotency_key: idempotencyKey,
     quick_pay: {
-      name: "Dominus Golf Development Grant — $15 Application Fee",
+      name: paymentName,
       price_money: {
         amount: 1500,
         currency: "USD",

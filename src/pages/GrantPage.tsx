@@ -7,7 +7,7 @@ import { CartDrawer } from '../components/cart/CartDrawer';
 
 const HUBSPOT_PORTAL_ID = '246543983';
 const HUBSPOT_FORM_ID = '084f3e9c-31da-4700-a691-592e947cf4b7';
-const SQUARE_PAYMENT_LINK = 'https://square.link/u/A4xq00fW';
+const USE_SANDBOX = true; // Flip to false to charge real money
 const BACKEND_URL = 'https://45pi183s.backend.blink.new';
 
 const US_STATES = [
@@ -304,7 +304,30 @@ export function GrantPage() {
       body: JSON.stringify({ name: firstName.trim(), email: email.trim() }),
     }).catch(() => {});
 
-    window.open(SQUARE_PAYMENT_LINK, '_blank', 'noopener,noreferrer');
+    // Create Square checkout via backend (supports sandbox mode)
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/grant/checkout`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          applicantName: `${firstName} ${lastName}`.trim(),
+          applicantEmail: email,
+          developmentPlan: roadmap,
+          trainingRegimen: discipline,
+          competitiveVision: vision,
+          sandbox: USE_SANDBOX,
+        }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.open(data.url, '_blank', 'noopener,noreferrer');
+      } else {
+        setError(data.error || 'Could not create checkout link.');
+      }
+    } catch {
+      setError('Could not connect to payment. Please try again.');
+    }
+
     setSubmitting(false);
   };
 
