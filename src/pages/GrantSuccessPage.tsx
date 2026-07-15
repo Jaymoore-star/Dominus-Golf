@@ -32,9 +32,9 @@ export function GrantSuccessPage() {
               </li>
             </ul>
           </div>
-          <div className="mt-12">
+          <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://www.dominusgolf.com"
+              href="/"
               className="inline-block border border-accent text-accent px-6 py-3 text-sm font-sans font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
             >
               Back to Dominus Golf
