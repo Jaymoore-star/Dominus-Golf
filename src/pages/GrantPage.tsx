@@ -441,9 +441,9 @@ export function GrantPage() {
             {STEPS.map((step, i) => (
               <FadeUpSection key={step.num} delay={i * 0.1} className="bg-background">
                 <div className="p-6 sm:p-7 lg:p-8 h-full flex flex-col">
-                  <span className="text-accent text-xs tracking-[0.25em] uppercase font-sans font-semibold mb-4">Step {step.num}</span>
-                  <h3 className="font-serif text-xl font-semibold text-foreground mb-3 tracking-tight leading-tight">{step.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed mt-auto font-sans">{step.body}</p>
+                  <span className="text-accent text-xs tracking-[0.25em] uppercase font-sans font-semibold">Step {step.num}</span>
+                  <h3 className="font-serif text-xl font-semibold text-foreground tracking-tight leading-tight mt-4 mb-3">{step.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed font-sans">{step.body}</p>
                 </div>
               </FadeUpSection>
             ))}
