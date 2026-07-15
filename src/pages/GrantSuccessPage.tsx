@@ -34,10 +34,10 @@ export function GrantSuccessPage() {
           </div>
           <div className="mt-12">
             <a
-              href="/grant"
+              href="https://www.dominusgolf.com"
               className="inline-block border border-accent text-accent px-6 py-3 text-sm font-sans font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
             >
-              View Grant Details
+              Back to Dominus Golf
             </a>
           </div>
         </div>

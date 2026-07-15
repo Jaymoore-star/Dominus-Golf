@@ -310,8 +310,10 @@ app.post("/api/grant/confirm", async (c) => {
 
     return c.json({ success: true })
   } catch (err: unknown) {
+    const raw = JSON.stringify(err, Object.getOwnPropertyNames(err))
+    console.error("Grant email error (raw):", raw)
+    console.error("Grant email error (message):", err instanceof Error ? err.message : String(err))
     const message = err instanceof Error ? err.message : "Email send failed"
-    console.error("Grant email error:", message)
     return c.json({ error: message }, 500)
   }
 })
