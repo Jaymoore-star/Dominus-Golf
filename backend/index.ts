@@ -258,38 +258,72 @@ app.post("/api/grant/confirm", async (c) => {
   try {
     await blink.notifications.email({
       to: email,
-      subject: "Your Dominus Golf Development Grant eBook",
+      from: "Dominus Golf Grants",
+      replyTo: "Customersupport@dominusgolf.com",
+      subject: "Application Received – Dominus Golf Development Grant",
       html: `
         <div style="max-width:560px;margin:0 auto;font-family:Arial,Helvetica,sans-serif;background:#ffffff;border:1px solid #e5e5e5">
-          <div style="background:#1a1a1a;padding:32px 28px;text-align:center">
-            <h1 style="margin:0;font-family:Georgia,serif;font-size:24px;color:#C4963B;letter-spacing:1px">DOMINUS GOLF</h1>
+          <div style="background:#1a1a1a;padding:36px 28px;text-align:center">
+            <h1 style="margin:0;font-family:Georgia,serif;font-size:22px;color:#C4963B;letter-spacing:2px;text-transform:uppercase">Dominus Golf</h1>
+            <p style="margin:8px 0 0;font-size:12px;color:#aaaaaa;letter-spacing:1px;text-transform:uppercase">Development Grant</p>
           </div>
           <div style="padding:36px 28px">
-            <p style="margin:0 0 16px;font-size:16px;color:#333333">Hi ${name},</p>
-            <p style="margin:0 0 16px;font-size:15px;color:#444444;line-height:1.7">
-              Thank you for submitting your application for the Dominus Golf Development Grant.
-              As promised, here is your free digital copy of
-              <strong>The Ultimate Guide to Master the Game</strong>.
+            <p style="margin:0 0 16px;font-size:16px;color:#333333;font-weight:600">Hi ${name},</p>
+            <p style="margin:0 0 12px;font-size:15px;color:#444444;line-height:1.7">
+              Thank you for applying to the <strong>Dominus Golf Development Grant</strong>.
+              We've received your submission and it is now in review.
             </p>
-            <div style="text-align:center;margin:28px 0">
+            <p style="margin:0 0 12px;font-size:15px;color:#444444;line-height:1.7">
+              As promised, here is your free digital copy of
+              <strong><em>The Ultimate Guide to Master the Game</em></strong> &mdash;
+              packed with drills, mindset strategies, and tournament-prep frameworks to sharpen your competitive edge.
+            </p>
+            <div style="text-align:center;margin:28px 0 32px">
               <a href="${EBOOK_URL}"
-                 style="display:inline-block;background:#C4963B;color:#ffffff;padding:14px 42px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none">
-                Download Your eBook →
+                 style="display:inline-block;background:#C4963B;color:#ffffff;padding:14px 48px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;border-radius:2px">
+                Download Your eBook
               </a>
             </div>
-            <p style="margin:0;font-size:13px;color:#888888;line-height:1.6">
-              We'll review your application and the winner will be notified on <strong>August 22, 2026</strong>.
-              If you have any questions, reply to this email.
+            <div style="border-top:1px solid #eeeeee;padding-top:20px;margin-top:8px">
+              <p style="margin:0 0 8px;font-size:14px;color:#333333;font-weight:600">What happens next?</p>
+              <ul style="margin:0;padding-left:18px;font-size:13px;color:#666666;line-height:1.8">
+                <li>Applications are reviewed on a rolling basis.</li>
+                <li>The winner will be notified on <strong>August 22, 2026</strong>.</li>
+                <li>All applicants will receive an update regardless of the outcome.</li>
+              </ul>
+            </div>
+            <p style="margin:20px 0 0;font-size:13px;color:#999999;line-height:1.6">
+              Questions? Reach us at
+              <a href="mailto:Customersupport@dominusgolf.com" style="color:#C4963B;text-decoration:none">Customersupport@dominusgolf.com</a>
             </p>
           </div>
           <div style="background:#f8f8f8;padding:20px 28px;text-align:center">
-            <p style="margin:0;font-size:11px;color:#aaaaaa">
-              © 2026 Dominus Golf LLC. All rights reserved.
+            <p style="margin:0 0 4px;font-size:11px;color:#bbbbbb">
+              Dominus Golf LLC &middot; All rights reserved.
+            </p>
+            <p style="margin:0;font-size:10px;color:#cccccc">
+              You received this email because you applied for the Dominus Golf Development Grant.
             </p>
           </div>
         </div>
       `,
-      text: `Hi ${name},\n\nThank you for submitting your application for the Dominus Golf Development Grant. As promised, here is your free digital copy of The Ultimate Guide to Master the Game.\n\nDownload: ${EBOOK_URL}\n\nWe'll review your application and the winner will be notified on August 22, 2026.\n\n© 2026 Dominus Golf LLC.`,
+      text: [
+        `Hi ${name},`,
+        ``,
+        `Thank you for applying to the Dominus Golf Development Grant. We've received your submission and it is now in review.`,
+        ``,
+        `As promised, here is your free digital copy of The Ultimate Guide to Master the Game:`,
+        `${EBOOK_URL}`,
+        ``,
+        `What happens next:`,
+        `- Applications are reviewed on a rolling basis.`,
+        `- The winner will be notified on August 22, 2026.`,
+        `- All applicants will receive an update regardless of the outcome.`,
+        ``,
+        `Questions? Email us at Customersupport@dominusgolf.com`,
+        ``,
+        `— Dominus Golf`,
+      ].join("\n"),
     })
 
     return c.json({ success: true })
