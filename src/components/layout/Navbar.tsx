@@ -32,7 +32,7 @@ const megaMenuData = {
         links: [{ label: 'View All Products', href: '/shop/training-system' }],
       },
     ],
-    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FPhotoroom-20251125_1425462241__e480e1c6.png?alt=media&token=7c96a611-0b70-415f-a7f7-8bebe5a974a2',
+    image: '/images/Photoroom-20251125_1425462241__e480e1c6.png',
     imageCaption: 'Tour Pure - Build Your Best Swing',
   },
   apparel: {
@@ -56,7 +56,7 @@ const megaMenuData = {
         ],
       },
     ],
-    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-11__fc5a40f7.jpg?alt=media&token=87722e6d-11e3-4e1b-a6b4-7e84ebce8990',
+    image: '/images/unnamed-11__fc5a40f7.jpg',
     imageCaption: 'Dominus Golf Apparel',
   },
   accessories: {
@@ -76,7 +76,7 @@ const megaMenuData = {
         ],
       },
     ],
-    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FScreenshot_20260324_042207_SamsungInternet__2f2a1710.jpg?alt=media&token=4e6db837-c08e-4745-b0c4-9d9e5d607413',
+    image: '/images/Screenshot_20260324_042207_SamsungInternet__2f2a1710.jpg',
     imageCaption: 'Dominus Golf Accessories',
   },
   company: {
@@ -101,7 +101,7 @@ const megaMenuData = {
         ],
       },
     ],
-    image: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FPhotoroom-20251125_1425462241__e480e1c6.png?alt=media&token=7c96a611-0b70-415f-a7f7-8bebe5a974a2',
+    image: '/images/Photoroom-20251125_1425462241__e480e1c6.png',
     imageCaption: 'Veteran-Owned. Coach-Led.',
   },
 };

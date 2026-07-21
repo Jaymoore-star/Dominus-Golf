@@ -11,7 +11,7 @@ export const pros: Pro[] = [
     bio: 'Expert in Consistency and Technical Proficiency.',
     fullBio:
       'Leroy Bates is a Golf Junkyz Foundation professional and First Tee instructor whose entire Pro career is built around one goal: consistency. He gives everyday golfers a structured, repeatable path to lower scores through elite technical range sessions.',
-    photo: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F1000010452__3764dc88.jpg?alt=media&token=22783388-9f93-4757-9fa9-a5e992497359',
+    photo: '/images/1000010452__3764dc88.jpg',
     credentials: [
       'Golf Junkyz Foundation certified professional',
       'First Tee instructor and youth development Pro',

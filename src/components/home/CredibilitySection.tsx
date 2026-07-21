@@ -1,7 +1,7 @@
 // Section 2 - Visual Proof: dark overlay with centered brand statement
 
 const PROOF_IMAGE =
-  'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F455006441_8098523000236121_7855058451068780943_n__309e2346.jpg?alt=media&token=7db6fb7b-c73a-4676-a591-fa386fa1ca51';
+  '/images/455006441_8098523000236121_7855058451068780943_n__309e2346.jpg';
 
 const bullets = [
   'Built on proven movement patterns used by competitive golfers',

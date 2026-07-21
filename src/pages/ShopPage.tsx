@@ -20,9 +20,9 @@ const categoryLabels: Record<string, string> = {
 };
 
 const categoryHeroes: Record<string, string> = {
-  'training-system': 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FPhotoroom-20251125_1425462241__e480e1c6.png?alt=media&token=7c96a611-0b70-415f-a7f7-8bebe5a974a2',
-  'apparel': 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2Funnamed-11__fc5a40f7.jpg?alt=media&token=87722e6d-11e3-4e1b-a6b4-7e84ebce8990',
-  'accessories': 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FScreenshot_20260324_042207_SamsungInternet__2f2a1710.jpg?alt=media&token=4e6db837-c08e-4745-b0c4-9d9e5d607413',
+  'training-system': '/images/Photoroom-20251125_1425462241__e480e1c6.png',
+  'apparel': '/images/unnamed-11__fc5a40f7.jpg',
+  'accessories': '/images/Screenshot_20260324_042207_SamsungInternet__2f2a1710.jpg',
   'mens-gear': 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=1400&q=80',
   'womens-gear': 'https://images.unsplash.com/photo-1622398925373-3f91b1e275f5?w=1400&q=80',
 };

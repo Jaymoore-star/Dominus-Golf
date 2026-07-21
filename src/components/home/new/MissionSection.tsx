@@ -15,7 +15,7 @@ export const MissionSection = () => {
           >
             <div className="aspect-[4/3] overflow-hidden bg-gray-100 border border-black/10 rounded-sm shadow-2xl relative">
               <img 
-                src="https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F455040396_8098531156901972_191203825751922657_n__0cf04f01.jpg?alt=media&token=db93f688-5d6d-4929-821a-5305e4bdcbb8" 
+                src="/images/455040396_8098531156901972_191203825751922657_n__0cf04f01.jpg" 
                 alt="Dominus Golf Community" 
                 className="w-full h-full object-cover brightness-100"
               />

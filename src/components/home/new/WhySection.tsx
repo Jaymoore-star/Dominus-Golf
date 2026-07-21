@@ -7,7 +7,7 @@ export const WhySection = () => {
       {/* Background technical macro close-up image */}
       <div className="absolute inset-0 opacity-[0.08] pointer-events-none">
         <img 
-          src="https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F2021-03-09__196c2c33.jpg?alt=media&token=dbaecb63-0518-44cc-beaa-4817b99a8fb5" 
+          src="/images/2021-03-09__196c2c33.jpg" 
           alt="Technical close-up" 
           className="w-full h-full object-cover"
         />

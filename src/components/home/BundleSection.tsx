@@ -2,13 +2,13 @@ import { Link } from '@tanstack/react-router';
 
 // Included item images (the Tour Pure trainer is the main card image — not repeated here)
 const IMG_FEEL_RIGHT_BAND =
-  'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b';
+  '/images/FeelRiteGolfBand__cc34ac6f.png';
 
 const IMG_BOOK =
-  'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FScreenshot_20260324_042207_SamsungInternet__2f2a1710.jpg?alt=media&token=4e6db837-c08e-4745-b0c4-9d9e5d607413';
+  '/images/Screenshot_20260324_042207_SamsungInternet__2f2a1710.jpg';
 
 const IMG_TOWEL =
-  'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FChatGPTImageMar24202607_40_17PM__db70f8cf.png?alt=media&token=6b657a6c-36d1-4a74-b3d2-d28b5a2de9c9';
+  '/images/ChatGPTImageMar24202607_40_17PM__db70f8cf.png';
 
 interface BundleItem {
   label: string;

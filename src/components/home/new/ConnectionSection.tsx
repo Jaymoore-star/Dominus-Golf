@@ -36,7 +36,7 @@ export const ConnectionSection = () => {
           >
             <div className="aspect-[4/5] bg-gray-100 overflow-hidden border border-black/10 rounded-sm relative flex items-center justify-center p-12">
               <img 
-                src="https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FFeelRiteGolfBand__cc34ac6f.png?alt=media&token=9a5b1874-aaa1-4e7c-ac39-2f865b12225b" 
+                src="/images/FeelRiteGolfBand__cc34ac6f.png" 
                 alt="Feel Right Band" 
                 className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110 drop-shadow-[0_0_50px_rgba(255,255,255,0.1)]"
               />

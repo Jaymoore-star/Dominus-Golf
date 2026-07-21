@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 const slides = [
   {
     id: 0,
-    bg: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F301503221_456856363151119_1248543110073884434_n__b21743d9.jpg?alt=media&token=14f4d325-9e1e-4afe-9f14-004bf18e16e9',
+    bg: '/images/301503221_456856363151119_1248543110073884434_n__b21743d9.jpg',
     label: 'Training Systems',
     title: 'Build Your\nBest Swing',
     subtitle: 'Tour Pure - Weighted Training System for Men & Women',
@@ -14,7 +14,7 @@ const slides = [
   },
   {
     id: 1,
-    bg: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F455040396_8098531156901972_191203825751922657_n__0cf04f01.jpg?alt=media&token=db93f688-5d6d-4929-821a-5305e4bdcbb8',
+    bg: '/images/455040396_8098531156901972_191203825751922657_n__0cf04f01.jpg',
     label: 'Train Smarter',
     title: 'Perfect Your\nSetup',
     subtitle: 'Precision training tools built for every golfer',
@@ -23,7 +23,7 @@ const slides = [
   },
   {
     id: 2,
-    bg: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F455082619_8098523016902786_920092106083080418_n__592fb000.jpg?alt=media&token=eafee2aa-8be5-4781-9cad-484a87cc07fd',
+    bg: '/images/455082619_8098523016902786_920092106083080418_n__592fb000.jpg',
     label: 'Putting',
     title: 'Sink Every\nPutt',
     subtitle: 'Train your putting stroke with proven Dominus systems',
@@ -32,7 +32,7 @@ const slides = [
   },
   {
     id: 3,
-    bg: 'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2F455087282_8098523443569410_6374726642753676189_n__d7f2dffb.jpg?alt=media&token=58f20b32-9a32-417e-ac86-9758fb01f4c8',
+    bg: '/images/455087282_8098523443569410_6374726642753676189_n__d7f2dffb.jpg',
     label: 'Consistency',
     title: 'Repeat It\nEvery Time',
     subtitle: 'Build the muscle memory that separates good from great',

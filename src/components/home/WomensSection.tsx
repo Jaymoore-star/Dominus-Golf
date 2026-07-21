@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router';
 
 const WOMENS_IMAGE =
-  'https://firebasestorage.googleapis.com/v0/b/blink-451505.firebasestorage.app/o/user-uploads%2FL4O98NAxu1a1w3gO9QySN9Ussgi2%2FTourPureTrainerW2__165b6582.png?alt=media&token=9e37467f-20f0-4ad2-bde8-1af3d34acfd2';
+  '/images/TourPureTrainerW2__165b6582.png';
 
 export function WomensSection() {
   return (
