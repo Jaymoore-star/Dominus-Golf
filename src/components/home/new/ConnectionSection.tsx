@@ -36,7 +36,7 @@ export const ConnectionSection = () => {
           >
             <div className="aspect-[4/5] bg-gray-100 overflow-hidden border border-black/10 rounded-sm relative flex items-center justify-center p-12">
               <img 
-                src="/images/FeelRiteGolfBand__cc34ac6f.png" 
+                src="/images/FeelRiteGolfBand__cc34ac6f.webp" 
                 alt="Feel Right Band" 
                 className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110 drop-shadow-[0_0_50px_rgba(255,255,255,0.1)]"
               />

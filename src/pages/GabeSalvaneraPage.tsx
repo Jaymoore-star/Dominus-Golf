@@ -122,7 +122,7 @@ export function GabeSalvaneraPage() {
               <div className="relative flex items-end justify-center lg:justify-end min-h-[380px] lg:min-h-[580px]">
                 <div className="w-full max-w-[420px] lg:max-w-full h-[380px] lg:h-[580px] bg-[#1a1a1a] border border-white/8 flex items-center justify-center relative overflow-hidden">
                   <img
-                    src="/images/GabeSand__d54af4a2.jpg"
+                    src="/images/GabeSand__d54af4a2.webp"
                     alt="Gabe Salvanera"
                     className="w-full h-full object-cover object-center"
                   />

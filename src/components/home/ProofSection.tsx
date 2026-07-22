@@ -1,5 +1,5 @@
 const IN_HAND_IMAGE =
-  '/images/Gemini_Generated_Image_ofjfkaofjfkaofjf__1e06169b.png';
+  '/images/Gemini_Generated_Image_ofjfkaofjfkaofjf__1e06169b.webp';
 
 export function ProofSection() {
   return (

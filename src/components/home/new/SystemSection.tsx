@@ -3,17 +3,17 @@ import { motion } from 'framer-motion';
 
 const SYSTEM_CARDS = [
   {
-    image: '/images/IMG_20251125_140842__6f9f5d69.jpg',
+    image: '/images/IMG_20251125_140842__6f9f5d69.webp',
     title: 'THE TOUR PURE WEIGHTED CLUB',
     text: 'A feedback-based training tool designed to reinforce proper sequencing, improve tempo, and help golfers feel correct swing positions through resistance training.'
   },
   {
-    image: '/images/Screenshot_20260324_042207_SamsungInternet__2f2a1710.jpg',
+    image: '/images/Screenshot_20260324_042207_SamsungInternet__2f2a1710.webp',
     title: 'THE TOUR PURE BLUEPRINT',
     text: 'A structured training manual that removes guesswork and provides a clear step-by-step system for developing swing mechanics, sequencing, and consistency.'
   },
   {
-    image: '/images/05e7c204-d2a6-4a57-bd3e-b27b347a8ccb__e06f2841.png',
+    image: '/images/05e7c204-d2a6-4a57-bd3e-b27b347a8ccb__e06f2841.webp',
     title: 'TRAINING THAT TELLS YOU WHAT’S WRONG',
     text: 'Every rep is designed to give immediate feedback so you can self-correct without guessing. Transitions seamlessly from full-swing mechanics onto the putting green to lock in short-game precision.'
   }

@@ -1,5 +1,5 @@
 const TROPHY_IMAGE =
-  '/images/Trophy__adcf7f3f.jpg';
+  '/images/Trophy__adcf7f3f.webp';
 
 export function InHandSection() {
   return (

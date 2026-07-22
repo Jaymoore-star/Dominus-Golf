@@ -11,7 +11,7 @@ const pros = [
     href: '/pros',
     city: 'Los Angeles',
     state: 'CA',
-    photo: '/images/1000010452__3764dc88.jpg',
+    photo: '/images/1000010452__3764dc88.webp',
   },
 ];
 

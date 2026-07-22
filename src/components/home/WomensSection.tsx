@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router';
 
 const WOMENS_IMAGE =
-  '/images/TourPureTrainerW2__165b6582.png';
+  '/images/TourPureTrainerW2__165b6582.webp';
 
 export function WomensSection() {
   return (

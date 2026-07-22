@@ -27,7 +27,7 @@ const bundlesData = {
       category: 'training-system',
       description: 'The industry-leading weighted swing trainer.',
       features: ['Tour Pure Men', '90-Day Training Manual (PDF)'],
-      image: '/images/Photoroom-20251125_1425462241__e480e1c6.png',
+      image: '/images/Photoroom-20251125_1425462241__e480e1c6.webp',
       inStock: true,
     },
     {
@@ -38,7 +38,7 @@ const bundlesData = {
       badge: 'POPULAR CHOICE',
       description: 'The essential connection for a repeatable swing.',
       features: ['Tour Pure Men', 'Feel Right Band', '90-Day Training Manual (PDF)'],
-      image: '/images/FeelRiteGolfBand__cc34ac6f.png',
+      image: '/images/FeelRiteGolfBand__cc34ac6f.webp',
       inStock: true,
     },
     {
@@ -48,7 +48,7 @@ const bundlesData = {
       category: 'training-system',
       description: 'The complete professional training kit.',
       features: ['Tour Pure Men', 'Feel Right Band', 'Dominus Golf Towel', '90-Day Training Manual (PDF)'],
-      image: '/images/GolfTowel2__dfa91d93.png',
+      image: '/images/GolfTowel2__dfa91d93.webp',
       inStock: true,
     },
   ],
@@ -60,7 +60,7 @@ const bundlesData = {
       category: 'training-system',
       description: 'The industry-leading weighted swing trainer.',
       features: ['Tour Pure Women', '90-Day Training Manual (PDF)'],
-      image: '/images/TourPureTrainerW2__165b6582.png',
+      image: '/images/TourPureTrainerW2__165b6582.webp',
       inStock: true,
     },
     {
@@ -71,7 +71,7 @@ const bundlesData = {
       badge: 'POPULAR CHOICE',
       description: 'The essential connection for a repeatable swing.',
       features: ['Tour Pure Women', 'Feel Right Band', '90-Day Training Manual (PDF)'],
-      image: '/images/FeelRiteGolfBand__cc34ac6f.png',
+      image: '/images/FeelRiteGolfBand__cc34ac6f.webp',
       inStock: true,
     },
     {
@@ -81,7 +81,7 @@ const bundlesData = {
       category: 'training-system',
       description: 'The complete professional training kit.',
       features: ['Tour Pure Women', 'Feel Right Band', 'Dominus Golf Towel', '90-Day Training Manual (PDF)'],
-      image: '/images/GolfTowel2__dfa91d93.png',
+      image: '/images/GolfTowel2__dfa91d93.webp',
       inStock: true,
     },
   ],

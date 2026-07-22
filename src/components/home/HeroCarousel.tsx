@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 const slides = [
   {
     id: 0,
-    bg: '/images/301503221_456856363151119_1248543110073884434_n__b21743d9.jpg',
+    bg: '/images/301503221_456856363151119_1248543110073884434_n__b21743d9.webp',
     label: 'Training Systems',
     title: 'Build Your\nBest Swing',
     subtitle: 'Tour Pure - Weighted Training System for Men & Women',
@@ -14,7 +14,7 @@ const slides = [
   },
   {
     id: 1,
-    bg: '/images/455040396_8098531156901972_191203825751922657_n__0cf04f01.jpg',
+    bg: '/images/455040396_8098531156901972_191203825751922657_n__0cf04f01.webp',
     label: 'Train Smarter',
     title: 'Perfect Your\nSetup',
     subtitle: 'Precision training tools built for every golfer',
@@ -23,7 +23,7 @@ const slides = [
   },
   {
     id: 2,
-    bg: '/images/455082619_8098523016902786_920092106083080418_n__592fb000.jpg',
+    bg: '/images/455082619_8098523016902786_920092106083080418_n__592fb000.webp',
     label: 'Putting',
     title: 'Sink Every\nPutt',
     subtitle: 'Train your putting stroke with proven Dominus systems',
@@ -32,7 +32,7 @@ const slides = [
   },
   {
     id: 3,
-    bg: '/images/455087282_8098523443569410_6374726642753676189_n__d7f2dffb.jpg',
+    bg: '/images/455087282_8098523443569410_6374726642753676189_n__d7f2dffb.webp',
     label: 'Consistency',
     title: 'Repeat It\nEvery Time',
     subtitle: 'Build the muscle memory that separates good from great',

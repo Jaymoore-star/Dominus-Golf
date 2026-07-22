@@ -7,7 +7,7 @@ export const WhySection = () => {
       {/* Background technical macro close-up image */}
       <div className="absolute inset-0 opacity-[0.08] pointer-events-none">
         <img 
-          src="/images/2021-03-09__196c2c33.jpg" 
+          src="/images/2021-03-09__196c2c33.webp" 
           alt="Technical close-up" 
           className="w-full h-full object-cover"
         />

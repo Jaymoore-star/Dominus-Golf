@@ -20,9 +20,9 @@ const categoryLabels: Record<string, string> = {
 };
 
 const categoryHeroes: Record<string, string> = {
-  'training-system': '/images/Photoroom-20251125_1425462241__e480e1c6.png',
-  'apparel': '/images/unnamed-11__fc5a40f7.jpg',
-  'accessories': '/images/Screenshot_20260324_042207_SamsungInternet__2f2a1710.jpg',
+  'training-system': '/images/Photoroom-20251125_1425462241__e480e1c6.webp',
+  'apparel': '/images/unnamed-11__fc5a40f7.webp',
+  'accessories': '/images/Screenshot_20260324_042207_SamsungInternet__2f2a1710.webp',
   'mens-gear': 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=1400&q=80',
   'womens-gear': 'https://images.unsplash.com/photo-1622398925373-3f91b1e275f5?w=1400&q=80',
 };

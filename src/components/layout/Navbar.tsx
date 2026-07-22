@@ -32,7 +32,7 @@ const megaMenuData = {
         links: [{ label: 'View All Products', href: '/shop/training-system' }],
       },
     ],
-    image: '/images/Photoroom-20251125_1425462241__e480e1c6.png',
+    image: '/images/Photoroom-20251125_1425462241__e480e1c6.webp',
     imageCaption: 'Tour Pure - Build Your Best Swing',
   },
   apparel: {
@@ -56,7 +56,7 @@ const megaMenuData = {
         ],
       },
     ],
-    image: '/images/unnamed-11__fc5a40f7.jpg',
+    image: '/images/unnamed-11__fc5a40f7.webp',
     imageCaption: 'Dominus Golf Apparel',
   },
   accessories: {
@@ -76,7 +76,7 @@ const megaMenuData = {
         ],
       },
     ],
-    image: '/images/Screenshot_20260324_042207_SamsungInternet__2f2a1710.jpg',
+    image: '/images/Screenshot_20260324_042207_SamsungInternet__2f2a1710.webp',
     imageCaption: 'Dominus Golf Accessories',
   },
   company: {
@@ -101,7 +101,7 @@ const megaMenuData = {
         ],
       },
     ],
-    image: '/images/Photoroom-20251125_1425462241__e480e1c6.png',
+    image: '/images/Photoroom-20251125_1425462241__e480e1c6.webp',
     imageCaption: 'Veteran-Owned. Coach-Led.',
   },
 };

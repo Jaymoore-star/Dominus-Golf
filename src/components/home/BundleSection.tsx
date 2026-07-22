@@ -2,13 +2,13 @@ import { Link } from '@tanstack/react-router';
 
 // Included item images (the Tour Pure trainer is the main card image — not repeated here)
 const IMG_FEEL_RIGHT_BAND =
-  '/images/FeelRiteGolfBand__cc34ac6f.png';
+  '/images/FeelRiteGolfBand__cc34ac6f.webp';
 
 const IMG_BOOK =
-  '/images/Screenshot_20260324_042207_SamsungInternet__2f2a1710.jpg';
+  '/images/Screenshot_20260324_042207_SamsungInternet__2f2a1710.webp';
 
 const IMG_TOWEL =
-  '/images/ChatGPTImageMar24202607_40_17PM__db70f8cf.png';
+  '/images/ChatGPTImageMar24202607_40_17PM__db70f8cf.webp';
 
 interface BundleItem {
   label: string;
