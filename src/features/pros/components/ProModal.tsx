@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { X, MapPin, ExternalLink, User } from 'lucide-react';
-import { Link } from '@tanstack/react-router';
 import { Pro } from '../types';
 
 interface ProModalProps {
@@ -150,13 +149,13 @@ export function ProModal({ pro, onClose }: ProModalProps) {
               Contact {pro.name.split(' ')[0]}
             </a>
           )}
-          <Link
-            to={`/${pro.id}`}
+          <a
+            href={`/${pro.id}`}
             className="flex-1 inline-flex items-center justify-center gap-2 font-sans font-semibold text-xs tracking-widest uppercase px-6 py-3.5 border border-white/20 text-white hover:border-accent hover:text-accent transition-colors duration-200"
           >
             Full Profile
             <User size={12} />
-          </Link>
+          </a>
           <button
             onClick={onClose}
             className="flex-1 sm:flex-none font-sans font-semibold text-xs tracking-widest uppercase px-6 py-3.5 border border-white/20 text-white/60 hover:border-white hover:text-white transition-colors duration-200"

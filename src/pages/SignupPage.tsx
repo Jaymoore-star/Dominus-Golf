@@ -35,8 +35,10 @@ export function SignupPage() {
       await blink.auth.signUp({
         email,
         password,
-        displayName: displayName || undefined,
-        metadata: { signupSource: 'dominusgolf.com' },
+        metadata: {
+          signupSource: 'dominusgolf.com',
+          ...(displayName ? { displayName } : {}),
+        },
       })
       setSuccess(true)
     } catch (err: any) {

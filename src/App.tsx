@@ -25,6 +25,9 @@ import { GrantSuccessPage } from './pages/GrantSuccessPage';
 import { LoginPage } from './pages/LoginPage';
 import { SignupPage } from './pages/SignupPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import { ProDirectoryPage } from './pages/ProDirectoryPage';
+import { LeroyBatesPage } from './pages/LeroyBatesPage';
+import { GabeSalvaneraPage } from './pages/GabeSalvaneraPage';
 
 const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -63,6 +66,9 @@ const grantRoute = createRoute({ getParentRoute: () => rootRoute, path: '/grant'
 const grantSuccessRoute = createRoute({ getParentRoute: () => rootRoute, path: '/grant/success', component: GrantSuccessPage });
 const loginRoute = createRoute({ getParentRoute: () => rootRoute, path: '/login', component: LoginPage });
 const signupRoute = createRoute({ getParentRoute: () => rootRoute, path: '/signup', component: SignupPage });
+const prosRoute = createRoute({ getParentRoute: () => rootRoute, path: '/pros', component: ProDirectoryPage });
+const leroyBatesRoute = createRoute({ getParentRoute: () => rootRoute, path: '/leroy-bates', component: LeroyBatesPage });
+const gabeSalvaneraRoute = createRoute({ getParentRoute: () => rootRoute, path: '/gabe-salvanera', component: GabeSalvaneraPage });
 
 const routeTree = rootRoute.addChildren([
   indexRoute,
@@ -83,6 +89,9 @@ const routeTree = rootRoute.addChildren([
   grantSuccessRoute,
   loginRoute,
   signupRoute,
+  prosRoute,
+  leroyBatesRoute,
+  gabeSalvaneraRoute,
 ]);
 
 const router = createRouter({
