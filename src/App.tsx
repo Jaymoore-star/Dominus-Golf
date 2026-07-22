@@ -6,6 +6,7 @@ import {
   Outlet,
 } from '@tanstack/react-router';
 import { CartProvider } from './store/cartStore';
+import { WishlistProvider } from './store/wishlistStore';
 import { HomePage } from './pages/HomePage';
 import { ShopPage } from './pages/ShopPage';
 import { ProductPage } from './pages/ProductPage';
@@ -28,6 +29,7 @@ import { NotFoundPage } from './pages/NotFoundPage';
 import { ProDirectoryPage } from './pages/ProDirectoryPage';
 import { LeroyBatesPage } from './pages/LeroyBatesPage';
 import { GabeSalvaneraPage } from './pages/GabeSalvaneraPage';
+import { WishlistPage } from './pages/WishlistPage';
 
 const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -69,6 +71,7 @@ const signupRoute = createRoute({ getParentRoute: () => rootRoute, path: '/signu
 const prosRoute = createRoute({ getParentRoute: () => rootRoute, path: '/pros', component: ProDirectoryPage });
 const leroyBatesRoute = createRoute({ getParentRoute: () => rootRoute, path: '/leroy-bates', component: LeroyBatesPage });
 const gabeSalvaneraRoute = createRoute({ getParentRoute: () => rootRoute, path: '/gabe-salvanera', component: GabeSalvaneraPage });
+const wishlistRoute = createRoute({ getParentRoute: () => rootRoute, path: '/wishlist', component: WishlistPage });
 
 const routeTree = rootRoute.addChildren([
   indexRoute,
@@ -92,6 +95,7 @@ const routeTree = rootRoute.addChildren([
   prosRoute,
   leroyBatesRoute,
   gabeSalvaneraRoute,
+  wishlistRoute,
 ]);
 
 const router = createRouter({
@@ -107,8 +111,10 @@ declare module '@tanstack/react-router' {
 
 export default function App() {
   return (
-    <CartProvider>
-      <RouterProvider router={router} />
-    </CartProvider>
+    <WishlistProvider>
+      <CartProvider>
+        <RouterProvider router={router} />
+      </CartProvider>
+    </WishlistProvider>
   );
 }

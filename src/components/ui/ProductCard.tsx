@@ -1,7 +1,8 @@
 import { Link } from '@tanstack/react-router';
-import { ShoppingBag, Star } from 'lucide-react';
+import { ShoppingBag, Star, Heart } from 'lucide-react';
 import type { Product } from '../../data/products';
 import { useCart } from '../../store/cartStore';
+import { useWishlist } from '../../store/wishlistStore';
 
 interface ProductCardProps {
   product: Product;
@@ -10,12 +11,20 @@ interface ProductCardProps {
 
 export function ProductCard({ product, aspectRatio = 'square' }: ProductCardProps) {
   const { addItem, openCart } = useCart();
+  const { isWishlisted, toggle } = useWishlist();
+  const wishlisted = isWishlisted(product.id);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     addItem(product);
     openCart();
+  };
+
+  const handleToggleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggle(product.id);
   };
 
   const aspectClass =
@@ -29,6 +38,19 @@ export function ProductCard({ product, aspectRatio = 'square' }: ProductCardProp
           alt={product.name}
           className="product-image w-full h-full object-contain p-3 transition-transform duration-300"
         />
+
+        {/* Wishlist toggle */}
+        <button
+          onClick={handleToggleWishlist}
+          className="absolute top-3 right-3 z-10 p-1.5 rounded-full bg-white/80 backdrop-blur-sm text-foreground hover:bg-white transition-colors"
+          aria-label={wishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+          aria-pressed={wishlisted}
+        >
+          <Heart
+            size={16}
+            className={wishlisted ? 'fill-accent text-accent' : 'text-foreground'}
+          />
+        </button>
 
         {/* Badge */}
         {product.badge && (

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link } from '@tanstack/react-router';
-import { ShoppingBag, Star } from 'lucide-react';
+import { ShoppingBag, Star, Heart } from 'lucide-react';
 import type { Product } from '../../data/products';
 import { useCart } from '../../store/cartStore';
+import { useWishlist } from '../../store/wishlistStore';
 
 interface ApparelProductCardProps {
   product: Product;
@@ -12,6 +13,8 @@ const COLOR_ORDER = ['Black', 'White'] as const;
 
 export function ApparelProductCard({ product }: ApparelProductCardProps) {
   const { addItem, openCart } = useCart();
+  const { isWishlisted, toggle } = useWishlist();
+  const wishlisted = isWishlisted(product.id);
 
   const colors = product.colorVariants
     ? COLOR_ORDER.filter((c) => c in product.colorVariants!)
@@ -32,6 +35,12 @@ export function ApparelProductCard({ product }: ApparelProductCardProps) {
     openCart();
   };
 
+  const handleToggleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggle(product.id);
+  };
+
   return (
     <Link to="/product/$id" params={{ id: product.id }} className="block group product-card">
       {/* Image */}
@@ -41,6 +50,19 @@ export function ApparelProductCard({ product }: ApparelProductCardProps) {
           alt={`${product.name}${selectedColor ? ` - ${selectedColor}` : ''}`}
           className="w-full h-full object-contain p-3 transition-all duration-300 group-hover:scale-105"
         />
+
+        {/* Wishlist toggle */}
+        <button
+          onClick={handleToggleWishlist}
+          className="absolute top-3 right-3 z-10 p-1.5 rounded-full bg-white/80 backdrop-blur-sm text-foreground hover:bg-white transition-colors"
+          aria-label={wishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+          aria-pressed={wishlisted}
+        >
+          <Heart
+            size={16}
+            className={wishlisted ? 'fill-accent text-accent' : 'text-foreground'}
+          />
+        </button>
 
         {/* Badge */}
         {product.badge && (

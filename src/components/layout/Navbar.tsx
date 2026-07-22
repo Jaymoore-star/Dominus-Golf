@@ -4,12 +4,14 @@ import {
   Search,
   User,
   ShoppingBag,
+  Heart,
   Menu,
   X,
   ChevronDown,
   LogOut,
 } from 'lucide-react';
 import { useCart } from '../../store/cartStore';
+import { useWishlist } from '../../store/wishlistStore';
 import { useAuth } from '../../hooks/useAuth';
 import { SearchOverlay } from './SearchOverlay';
 
@@ -108,6 +110,7 @@ const megaMenuData = {
 
 export function Navbar() {
   const { itemCount, toggleCart } = useCart();
+  const { count: wishlistCount } = useWishlist();
   const { user, isAuthenticated, signOut } = useAuth();
   const navigate = useNavigate();
   const [activeMega, setActiveMega] = useState<MegaMenuKey>(null);
@@ -312,6 +315,17 @@ export function Navbar() {
                     </div>
                   )}
                 </div>
+
+                <Link
+                  to="/wishlist"
+                  className="relative p-2 text-foreground hover:text-accent transition-colors"
+                  aria-label="Wishlist"
+                >
+                  <Heart size={20} />
+                  {wishlistCount > 0 && (
+                    <span className="cart-badge">{wishlistCount > 9 ? '9+' : wishlistCount}</span>
+                  )}
+                </Link>
 
                 <button
                   onClick={toggleCart}
@@ -521,6 +535,17 @@ export function Navbar() {
                   {isAuthenticated ? 'Account' : 'Sign In'}
                 </span>
               </button>
+              <Link
+                to="/wishlist"
+                onClick={() => setMobileOpen(false)}
+                className="relative flex flex-col items-center gap-1 text-foreground"
+              >
+                <Heart size={20} />
+                {wishlistCount > 0 && (
+                  <span className="cart-badge">{wishlistCount > 9 ? '9+' : wishlistCount}</span>
+                )}
+                <span className="font-sans text-[10px] tracking-widest uppercase">Saved</span>
+              </Link>
               <button
                 onClick={() => {
                   setMobileOpen(false);
