@@ -158,13 +158,13 @@ export function ShopPage() {
         <label className="flex items-center gap-3 cursor-pointer">
           <div
             onClick={() => setInStockOnly(!inStockOnly)}
-            className={`w-8 h-4 relative transition-colors cursor-pointer ${
+            className={`w-8 h-4 relative rounded-full transition-colors cursor-pointer ${
               inStockOnly ? 'bg-primary' : 'bg-border'
             }`}
           >
             <div
-              className={`absolute top-0.5 w-3 h-3 bg-foreground transition-transform ${
-                inStockOnly ? 'translate-x-4' : 'translate-x-0.5'
+              className={`absolute top-0.5 w-3 h-3 rounded-full bg-background shadow-sm transition-transform ${
+                inStockOnly ? 'translate-x-[18px]' : 'translate-x-0.5'
               }`}
             />
           </div>
