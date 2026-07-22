@@ -1,10 +1,49 @@
 import React, {
   createContext,
   useContext,
+  useEffect,
   useReducer,
   type ReactNode,
 } from 'react';
 import type { Product } from '../data/products';
+import { products } from '../data/products';
+
+const STORAGE_KEY = 'dominus-cart';
+
+// Persist only ids + quantities; product details are rehydrated from the live
+// catalog on load so prices/names never go stale.
+function loadPersistedItems(): CartItem[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw) as { id: string; quantity: number }[];
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .map((entry) => {
+        const product = products.find((p) => p.id === entry.id);
+        if (!product) return null;
+        const quantity = Math.max(1, Math.floor(Number(entry.quantity) || 1));
+        return { product, quantity };
+      })
+      .filter((item): item is CartItem => item !== null);
+  } catch {
+    return [];
+  }
+}
+
+function persistItems(items: CartItem[]) {
+  if (typeof window === 'undefined') return;
+  try {
+    const payload = items.map((item) => ({
+      id: item.product.id,
+      quantity: item.quantity,
+    }));
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  } catch {
+    // ignore quota / private-mode errors
+  }
+}
 
 export type CartItem = {
   product: Product;
@@ -105,7 +144,16 @@ type CartContextValue = {
 const CartContext = createContext<CartContextValue | null>(null);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(cartReducer, initialState);
+  const [state, dispatch] = useReducer(
+    cartReducer,
+    initialState,
+    (init) => ({ ...init, items: loadPersistedItems() }),
+  );
+
+  // Save cart contents whenever they change.
+  useEffect(() => {
+    persistItems(state.items);
+  }, [state.items]);
 
   const addItem = (product: Product) =>
     dispatch({ type: 'ADD_ITEM', product });

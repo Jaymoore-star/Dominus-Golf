@@ -24,6 +24,7 @@ import { GrantPage } from './pages/GrantPage';
 import { GrantSuccessPage } from './pages/GrantSuccessPage';
 import { LoginPage } from './pages/LoginPage';
 import { SignupPage } from './pages/SignupPage';
+import { NotFoundPage } from './pages/NotFoundPage';
 
 const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -84,7 +85,10 @@ const routeTree = rootRoute.addChildren([
   signupRoute,
 ]);
 
-const router = createRouter({ routeTree });
+const router = createRouter({
+  routeTree,
+  defaultNotFoundComponent: NotFoundPage,
+});
 
 declare module '@tanstack/react-router' {
   interface Register {
