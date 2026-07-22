@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from '@tanstack/react-router';
 import { ShoppingBag, Star, Heart } from 'lucide-react';
+import toast from 'react-hot-toast';
 import type { Product } from '../../data/products';
 import { useCart } from '../../store/cartStore';
 import { useWishlist } from '../../store/wishlistStore';
@@ -39,6 +40,9 @@ export function ApparelProductCard({ product }: ApparelProductCardProps) {
     e.preventDefault();
     e.stopPropagation();
     toggle(product.id);
+    toast(wishlisted ? 'Removed from wishlist' : 'Saved to wishlist', {
+      icon: '♥',
+    });
   };
 
   return (

@@ -60,9 +60,15 @@ export function ProductPage() {
     ? product.gallery
     : [product?.image, product?.hoverImage ?? product?.image].filter(Boolean) as string[];
 
-  const related = products
-    .filter((p) => product && p.category === product.category && p.id !== product.id)
-    .slice(0, 4);
+  // Prefer same-category products; if fewer than 4, top up with others so
+  // the "You May Also Like" row always feels complete.
+  const sameCategory = products.filter(
+    (p) => product && p.category === product.category && p.id !== product.id,
+  );
+  const otherProducts = products.filter(
+    (p) => product && p.id !== product.id && p.category !== product.category,
+  );
+  const related = [...sameCategory, ...otherProducts].slice(0, 4);
 
   const [isBuyingNow, setIsBuyingNow] = useState(false);
 
