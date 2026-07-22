@@ -242,7 +242,7 @@ export function ShopPage() {
         <div className="flex gap-10">
           {/* Sidebar - desktop */}
           <aside className="hidden lg:block w-56 shrink-0">
-            <FilterContent />
+            {FilterContent()}
           </aside>
 
           {/* Product Grid */}
@@ -327,7 +327,7 @@ export function ShopPage() {
                 <X size={20} />
               </button>
             </div>
-            <FilterContent />
+            {FilterContent()}
             <button
               onClick={() => setMobileFiltersOpen(false)}
               className="mt-8 w-full py-3 bg-primary text-primary-foreground font-sans font-semibold text-xs tracking-widest uppercase"
