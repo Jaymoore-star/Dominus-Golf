@@ -1,6 +1,8 @@
 import React from 'react';
-import { Star, Minus, Plus, Loader2 } from 'lucide-react';
+import { Star, Minus, Plus, Loader2, Heart } from 'lucide-react';
+import toast from 'react-hot-toast';
 import type { Product } from '../../../data/products';
+import { useWishlist } from '../../../store/wishlistStore';
 
 interface ProductInfoProps {
   product: Product;
@@ -27,6 +29,16 @@ export function ProductInfo({
   addedEffect,
   scrollToReviews,
 }: ProductInfoProps) {
+  const { isWishlisted, toggle } = useWishlist();
+  const wishlisted = isWishlisted(product.id);
+
+  const handleToggleWishlist = () => {
+    toggle(product.id);
+    toast(wishlisted ? 'Removed from wishlist' : 'Saved to wishlist', {
+      icon: '♥',
+    });
+  };
+
   return (
     <div className="lg:pt-2">
       {product.badge && (
@@ -177,6 +189,22 @@ export function ProductInfo({
             )}
           </button>
         )}
+
+        <button
+          onClick={handleToggleWishlist}
+          aria-pressed={wishlisted}
+          className={`w-full py-4 font-sans font-semibold text-sm tracking-widest uppercase transition-colors duration-200 flex items-center justify-center gap-2 border ${
+            wishlisted
+              ? 'border-accent text-accent'
+              : 'border-border text-foreground hover:border-foreground'
+          }`}
+        >
+          <Heart
+            size={14}
+            className={wishlisted ? 'fill-accent text-accent' : ''}
+          />
+          {wishlisted ? 'Saved to Wishlist' : 'Save to Wishlist'}
+        </button>
 
         {/* Shopify-style Trust Info */}
         <div className="grid grid-cols-2 gap-4 py-6 border-y border-border">
