@@ -93,8 +93,10 @@ Payments already run on **Square**, not Blink.
 
 ### Migration progress
 - ✅ UI dead code removed; ✅ images self-hosted in `public/images/`; ✅ **auth migrated to Supabase**.
-- Square credentials collected → stored in gitignored `.dev.vars` (`SQUARE_ACCESS_TOKEN`, `SQUARE_LOCATION_ID`).
+- Square: current **production** token + location (`CKAXSBZT47N6P`, "Dominus Golf", USD) in gitignored `.dev.vars`. All three checkout endpoints verified working locally via `wrangler dev` (see `wrangler.toml`). NOTE: the token/location that were live on the **Blink** backend are DEAD (checkout there returns "could not be authorized") — production checkout stays broken until this backend is self-hosted.
+- Buy Now no longer uses per-product `square.link` links; all products checkout dynamically via `/api/square/checkout` (the `paymentUrl` field in `src/data/*` is now unused).
 - Supabase keys stored in gitignored `.env` (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`); `.env.example` tracked.
 - ✅ **Email migrated to Resend (code)** — `@blinkdotnew/sdk` fully removed from the repo. Needs: Resend API key in `.dev.vars`, domain verified in Resend, and backend self-hosted before it sends live.
 - ⏳ Still on Blink: **backend hosting** (Cloudflare) — the backend code no longer imports Blink, but it's still deployed on Blink's host. Google OAuth: code wired, provider still needs enabling in the Supabase dashboard (access pending).
-- ⚠️ Post-launch TODO: rotate the Square access token (it was shared in plaintext during setup).
+- ⚠️ Post-launch TODO: rotate the Square access token (both the old and current tokens were shared in plaintext during setup) and the Resend key.
+- To run the backend locally: `npx wrangler dev --port 8787 --local --ip 127.0.0.1` (reads `.dev.vars`). Use `127.0.0.1`, not `localhost`.

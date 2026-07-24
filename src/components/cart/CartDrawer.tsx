@@ -3,7 +3,7 @@ import { X, ShoppingBag, Plus, Minus, Trash2, Loader2 } from 'lucide-react';
 import { useCart } from '../../store/cartStore';
 import { Link } from '@tanstack/react-router';
 
-const BACKEND_URL = 'https://45pi183s.backend.blink.new';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://45pi183s.backend.blink.new';
 
 async function createCheckoutSession(
   items: { name: string; price: number; quantity: number; image?: string }[]

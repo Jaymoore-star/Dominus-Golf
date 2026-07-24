@@ -56,7 +56,7 @@ app.post("/api/square/checkout", async (c) => {
   const squareBody = {
     idempotency_key: idempotencyKey,
     quick_pay: {
-      name: `Dominus Golf Order — ${items.length} item${items.length > 1 ? "s" : ""}`,
+      name: `Dominus Golf Order - ${items.length} item${items.length > 1 ? "s" : ""}`,
       price_money: {
         amount: totalCents,
         currency: "USD",
@@ -182,8 +182,8 @@ app.post("/api/grant/checkout", async (c) => {
     : "https://connect.squareup.com"
 
   const paymentName = useSandbox
-    ? "[TEST] Dominus Golf Development Grant — $15 Application Fee"
-    : "Dominus Golf Development Grant — $15 Application Fee"
+    ? "[TEST] Dominus Golf Development Grant - $15 Application Fee"
+    : "Dominus Golf Development Grant - $15 Application Fee"
 
   const squareBody = {
     idempotency_key: idempotencyKey,
@@ -253,7 +253,7 @@ app.post("/api/grant/checkout", async (c) => {
 app.post("/api/grant/confirm", async (c) => {
   const env = c.env as Record<string, string>
   const resendApiKey = env.RESEND_API_KEY
-  const fromAddress = env.RESEND_FROM || "Dominus Golf <Customersupport@dominusgolf.com>"
+  const fromAddress = env.RESEND_FROM || "Dominus Golf <Customersupport@send.dominusgolf.com>"
 
   if (!resendApiKey) {
     return c.json({ error: "Email not configured (missing RESEND_API_KEY)" }, 500)

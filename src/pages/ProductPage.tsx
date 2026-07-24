@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useParams, Link } from '@tanstack/react-router';
 import { ChevronRight, Loader2 } from 'lucide-react';
 
-const BACKEND_URL = 'https://45pi183s.backend.blink.new';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://45pi183s.backend.blink.new';
 
 async function createCheckoutSession(
   items: { name: string; price: number; quantity: number; image?: string }[]
@@ -97,11 +97,8 @@ export function ProductPage() {
   }
 
   const handleBuyNow = async () => {
-    // If product has a direct payment link (e.g. Square), use it
-    if (product.paymentUrl) {
-      window.open(product.paymentUrl, '_blank', 'noopener,noreferrer');
-      return;
-    }
+    // Always generate a Square payment link dynamically from the backend
+    // (access token + location ID) so no per-product links are needed.
     setIsBuyingNow(true);
     try {
       const url = await createCheckoutSession([{
