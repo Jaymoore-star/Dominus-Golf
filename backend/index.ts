@@ -1,6 +1,5 @@
 import { Hono } from "hono"
 import { cors } from "hono/cors"
-import { createClient } from "@blinkdotnew/sdk"
 
 const EBOOK_URL = "https://drive.google.com/uc?export=download&id=1Ir1DaLgMH-8eVzlQA6xrb7kKO8H_N95p"
 
@@ -253,10 +252,12 @@ app.post("/api/grant/checkout", async (c) => {
 // POST /api/grant/confirm — Send eBook delivery email after grant submission
 app.post("/api/grant/confirm", async (c) => {
   const env = c.env as Record<string, string>
-  const blink = createClient({
-    projectId: env.BLINK_PROJECT_ID,
-    secretKey: env.BLINK_SECRET_KEY,
-  })
+  const resendApiKey = env.RESEND_API_KEY
+  const fromAddress = env.RESEND_FROM || "Dominus Golf <Customersupport@dominusgolf.com>"
+
+  if (!resendApiKey) {
+    return c.json({ error: "Email not configured (missing RESEND_API_KEY)" }, 500)
+  }
 
   let body: { name?: string; email?: string }
   try { body = await c.req.json() } catch { return c.json({ error: "Invalid request body" }, 400) }
@@ -267,9 +268,16 @@ app.post("/api/grant/confirm", async (c) => {
   }
 
   try {
-    await blink.notifications.email({
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${resendApiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+      from: fromAddress,
       to: email,
-      replyTo: "Customersupport@dominusgolf.com",
+      reply_to: "Customersupport@dominusgolf.com",
       subject: "Your Dominus Golf Grant Application",
       html: [
         '<div style="max-width:520px;margin:0 auto;font-family:Georgia,serif;color:#1a1a1a;line-height:1.7">',
@@ -306,9 +314,20 @@ app.post("/api/grant/confirm", async (c) => {
         ``,
         `Dominus Golf`,
       ].join("\n"),
+      }),
     })
 
-    return c.json({ success: true })
+    const data = (await response.json().catch(() => ({}))) as {
+      id?: string
+      message?: string
+      name?: string
+    }
+    if (!response.ok) {
+      console.error("Resend error:", JSON.stringify(data))
+      return c.json({ error: data.message || data.name || "Email send failed" }, 500)
+    }
+
+    return c.json({ success: true, id: data.id })
   } catch (err: unknown) {
     const raw = JSON.stringify(err, Object.getOwnPropertyNames(err))
     console.error("Grant email error (raw):", raw)

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { Loader2, Eye, EyeOff, CheckCircle2 } from 'lucide-react'
-import { blink } from '@/blink/client'
+import { supabase } from '@/lib/supabase'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 
@@ -32,20 +32,24 @@ export function SignupPage() {
 
     setLoading(true)
     try {
-      await blink.auth.signUp({
+      const { error: signUpError } = await supabase.auth.signUp({
         email,
         password,
-        metadata: {
-          signupSource: 'dominusgolf.com',
-          ...(displayName ? { displayName } : {}),
+        options: {
+          emailRedirectTo: `${window.location.origin}/login`,
+          data: {
+            signupSource: 'dominusgolf.com',
+            ...(displayName ? { displayName } : {}),
+          },
         },
       })
+      if (signUpError) throw signUpError
       setSuccess(true)
     } catch (err: any) {
-      const code = err?.code || err?.message || ''
-      if (code.includes('EMAIL_ALREADY_EXISTS') || code.includes('email_already_exists')) {
+      const msg = (err?.message || '').toLowerCase()
+      if (msg.includes('already registered') || msg.includes('already exists')) {
         setError('An account with this email already exists.')
-      } else if (code.includes('WEAK_PASSWORD') || code.includes('weak_password')) {
+      } else if (msg.includes('password') && (msg.includes('weak') || msg.includes('should be'))) {
         setError('Password is too weak. Use at least 8 characters with numbers and letters.')
       } else {
         setError(err?.message || 'Something went wrong. Please try again.')
@@ -57,7 +61,11 @@ export function SignupPage() {
 
   const handleGoogleSignup = async () => {
     try {
-      await blink.auth.signInWithGoogle()
+      const { error: oauthError } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: `${window.location.origin}/` },
+      })
+      if (oauthError) throw oauthError
     } catch (err: any) {
       setError(err?.message || 'Google sign-up failed.')
     }

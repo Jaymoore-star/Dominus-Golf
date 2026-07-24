@@ -65,9 +65,9 @@ src/
 
 ## Secrets
 
-- Backend env vars (Square + email): `SQUARE_ACCESS_TOKEN`, `SQUARE_LOCATION_ID`,
-  `SQUARE_SANDBOX_ACCESS_TOKEN`, `SQUARE_SANDBOX_LOCATION_ID`, `BLINK_PROJECT_ID`,
-  `BLINK_SECRET_KEY`.
+- Backend env vars (`.dev.vars`): `SQUARE_ACCESS_TOKEN`, `SQUARE_LOCATION_ID`,
+  `SQUARE_SANDBOX_ACCESS_TOKEN`, `SQUARE_SANDBOX_LOCATION_ID`, `RESEND_API_KEY`, `RESEND_FROM`.
+- Frontend env vars (`.env`): `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` (anon key only — never the service_role key).
 - **Never commit these.** `.env`, `.env.*`, and `.dev.vars` are gitignored. Do not add
   real secret values to any tracked file (including this one).
 
@@ -81,9 +81,9 @@ Phase 2 (functional dependencies still on Blink) — replace each before removin
 
 | Area | Where | Blink piece | Replace with |
 |------|-------|-------------|--------------|
-| Auth | `src/blink/client.ts`, `src/hooks/useAuth.ts`, `LoginPage`, `SignupPage` | `@blinkdotnew/sdk` auth | Supabase / Firebase / Clerk / Auth0 |
+| ✅ Auth | ~~`src/blink/client.ts`~~, `src/hooks/useAuth.ts`, `LoginPage`, `SignupPage` | `@blinkdotnew/sdk` auth | **DONE** — migrated to **Supabase** (`src/lib/supabase.ts`); email/password live, Google wired but pending Supabase provider enablement |
 | Backend host | `GrantPage.tsx`, `ProductPage.tsx` (`BACKEND_URL = …backend.blink.new`) | Blink-hosted `backend/index.ts` | Self-host (Cloudflare Workers / Vercel / Render) |
-| Email | `backend/index.ts` `blink.notifications.email` | Blink notifications | Resend / SendGrid / Postmark |
+| ✅ Email | `backend/index.ts` `/api/grant/confirm` | ~~`blink.notifications.email`~~ | **DONE (code)** — now POSTs to **Resend** API (`RESEND_API_KEY`/`RESEND_FROM`). Goes live once backend is self-hosted + domain verified in Resend |
 | ✅ UI lib | ~~`src/Shell.tsx`, `AppSidebarShell.tsx`, `layouts/shared-app-layout.tsx`~~ | `@blinkdotnew/ui` | **DONE** — dead code deleted; no `@blinkdotnew/ui` refs remain |
 | ✅ Images | `src/data/*.ts`, some pages | `blink-451505.firebasestorage.app` URLs | **DONE** — 32 images downloaded to `public/images/`, all URLs rewritten to `/images/...` |
 | Default URLs | `backend/index.ts` grant success/cancel | `…blinkpowered.com` | Real domain (`dominusgolf.com`) |
@@ -92,7 +92,9 @@ Suggested order: ~~UI dead-code~~ → ~~images~~ → email → self-host backend
 Payments already run on **Square**, not Blink.
 
 ### Migration progress
-- ✅ UI dead code removed; ✅ images self-hosted in `public/images/`.
+- ✅ UI dead code removed; ✅ images self-hosted in `public/images/`; ✅ **auth migrated to Supabase**.
 - Square credentials collected → stored in gitignored `.dev.vars` (`SQUARE_ACCESS_TOKEN`, `SQUARE_LOCATION_ID`).
-- ⏳ Waiting on 3 accounts (Supabase / Resend / Cloudflare) to do: auth, email, backend hosting.
+- Supabase keys stored in gitignored `.env` (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`); `.env.example` tracked.
+- ✅ **Email migrated to Resend (code)** — `@blinkdotnew/sdk` fully removed from the repo. Needs: Resend API key in `.dev.vars`, domain verified in Resend, and backend self-hosted before it sends live.
+- ⏳ Still on Blink: **backend hosting** (Cloudflare) — the backend code no longer imports Blink, but it's still deployed on Blink's host. Google OAuth: code wired, provider still needs enabling in the Supabase dashboard (access pending).
 - ⚠️ Post-launch TODO: rotate the Square access token (it was shared in plaintext during setup).

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { Loader2, Eye, EyeOff } from 'lucide-react'
-import { blink } from '@/blink/client'
+import { supabase } from '@/lib/supabase'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 
@@ -19,15 +19,19 @@ export function LoginPage() {
     setLoading(true)
 
     try {
-      await blink.auth.signInWithEmail(email, password)
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+      if (signInError) throw signInError
       navigate({ to: '/' })
     } catch (err: any) {
-      const code = err?.code || err?.message || ''
-      if (code.includes('INVALID_CREDENTIALS') || code.includes('invalid_credentials')) {
+      const msg = (err?.message || '').toLowerCase()
+      if (msg.includes('invalid login credentials')) {
         setError('Invalid email or password. Please try again.')
-      } else if (code.includes('EMAIL_NOT_VERIFIED') || code.includes('email_not_verified')) {
-        setError('Please verify your email before signing in.')
-        try { await blink.auth.sendEmailVerification() } catch {}
+      } else if (msg.includes('email not confirmed') || msg.includes('not confirmed')) {
+        setError('Please verify your email before signing in. We just resent the link.')
+        try { await supabase.auth.resend({ type: 'signup', email }) } catch {}
       } else {
         setError(err?.message || 'Something went wrong. Please try again.')
       }
@@ -38,7 +42,11 @@ export function LoginPage() {
 
   const handleGoogleLogin = async () => {
     try {
-      await blink.auth.signInWithGoogle()
+      const { error: oauthError } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: `${window.location.origin}/` },
+      })
+      if (oauthError) throw oauthError
     } catch (err: any) {
       setError(err?.message || 'Google sign-in failed.')
     }
@@ -122,7 +130,10 @@ export function LoginPage() {
                         return
                       }
                       try {
-                        await blink.auth.sendPasswordResetEmail(email)
+                        const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+                          redirectTo: `${window.location.origin}/login`,
+                        })
+                        if (resetError) throw resetError
                         setError('')
                         alert('Password reset email sent! Check your inbox.')
                       } catch (err: any) {

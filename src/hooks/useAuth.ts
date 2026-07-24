@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { blink } from '@/blink/client'
+import type { User } from '@supabase/supabase-js'
+import { supabase } from '@/lib/supabase'
 
 interface AuthUser {
   id: string
@@ -7,19 +8,40 @@ interface AuthUser {
   displayName?: string
 }
 
+function toAuthUser(user: User | null | undefined): AuthUser | null {
+  if (!user) return null
+  return {
+    id: user.id,
+    email: user.email ?? '',
+    displayName:
+      (user.user_metadata?.displayName as string | undefined) ??
+      (user.user_metadata?.display_name as string | undefined) ??
+      (user.user_metadata?.full_name as string | undefined),
+  }
+}
+
 export function useAuth() {
   const [user, setUser] = useState<AuthUser | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    const unsubscribe = blink.auth.onAuthStateChanged((state) => {
-      setUser(state.user as AuthUser | null)
-      if (!state.isLoading) setIsLoading(false)
+    // Seed with the current session, then subscribe to changes.
+    supabase.auth.getSession().then(({ data }) => {
+      setUser(toAuthUser(data.session?.user))
+      setIsLoading(false)
     })
-    return unsubscribe
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(toAuthUser(session?.user))
+      setIsLoading(false)
+    })
+
+    return () => subscription.unsubscribe()
   }, [])
 
-  const signOut = () => blink.auth.signOut()
+  const signOut = () => supabase.auth.signOut()
 
   return { user, isLoading, isAuthenticated: !!user, signOut }
 }
