@@ -9,6 +9,9 @@ import {
   X,
   ChevronDown,
   LogOut,
+  Package,
+  MapPin,
+  SlidersHorizontal,
 } from 'lucide-react';
 import { useCart } from '../../store/cartStore';
 import { useWishlist } from '../../store/wishlistStore';
@@ -17,6 +20,15 @@ import { useScrollLock } from '../../hooks/useScrollLock';
 import { SearchOverlay } from './SearchOverlay';
 
 type MegaMenuKey = 'training' | 'guide' | 'apparel' | 'accessories' | 'pros' | 'company' | null;
+
+/** Signed-in account menu. Mirrors the sidebar on the /account pages. */
+const accountMenu = [
+  { label: 'Profile', to: '/account', icon: <User size={16} /> },
+  { label: 'Orders', to: '/account/orders', icon: <Package size={16} /> },
+  { label: 'Wishlist', to: '/wishlist', icon: <Heart size={16} /> },
+  { label: 'Addresses', to: '/account/addresses', icon: <MapPin size={16} /> },
+  { label: 'Preferences', to: '/account/preferences', icon: <SlidersHorizontal size={16} /> },
+];
 
 const megaMenuData = {
   training: {
@@ -294,12 +306,27 @@ export function Navbar() {
                           {user?.email}
                         </p>
                       </div>
+                      <ul className="py-1">
+                        {accountMenu.map((item) => (
+                          <li key={item.to}>
+                            <Link
+                              to={item.to}
+                              onClick={() => setAccountOpen(false)}
+                              className="flex items-center gap-2.5 px-4 py-2.5 font-sans text-sm text-foreground hover:bg-muted transition-colors"
+                            >
+                              {item.icon}
+                              {item.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+
                       <button
                         onClick={() => {
                           setAccountOpen(false);
                           signOut();
                         }}
-                        className="w-full flex items-center gap-2 px-4 py-3 font-sans text-sm text-foreground hover:bg-muted transition-colors"
+                        className="w-full flex items-center gap-2.5 px-4 py-3 font-sans text-sm text-foreground hover:bg-muted transition-colors border-t border-border"
                       >
                         <LogOut size={16} />
                         Sign Out

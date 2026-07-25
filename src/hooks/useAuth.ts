@@ -8,6 +8,8 @@ interface AuthUser {
   id: string
   email: string
   displayName?: string
+  /** Raw user_metadata — where saved address and preferences live. */
+  metadata: Record<string, unknown>
 }
 
 function toAuthUser(user: User | null | undefined): AuthUser | null {
@@ -19,6 +21,7 @@ function toAuthUser(user: User | null | undefined): AuthUser | null {
       (user.user_metadata?.displayName as string | undefined) ??
       (user.user_metadata?.display_name as string | undefined) ??
       (user.user_metadata?.full_name as string | undefined),
+    metadata: user.user_metadata ?? {},
   }
 }
 

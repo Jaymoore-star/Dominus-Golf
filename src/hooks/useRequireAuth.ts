@@ -38,6 +38,20 @@ export function useRequireAuth() {
   return { ensureAuth, isAuthenticated, isLoading };
 }
 
+/**
+ * Remember where to return after signing in. `ensureAuth` does this for gated
+ * actions; page-level guards that redirect to /login outright need it directly.
+ */
+export function stashPostLoginRedirect(
+  path: string = window.location.pathname + window.location.search,
+) {
+  try {
+    sessionStorage.setItem(REDIRECT_KEY, path);
+  } catch {
+    // ignore storage errors (private mode)
+  }
+}
+
 /** Read (without clearing) the stashed post-login destination, defaulting to '/'. */
 export function peekPostLoginRedirect(): string {
   try {

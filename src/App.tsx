@@ -25,6 +25,10 @@ import { TourPureGuidePage } from './pages/TourPureGuidePage';
 import { FeelRightBandGuidePage } from './pages/FeelRightBandGuidePage';
 import { GrantPage } from './pages/GrantPage';
 import { GrantSuccessPage } from './pages/GrantSuccessPage';
+import { AccountProfilePage } from './pages/account/AccountProfilePage';
+import { AccountOrdersPage } from './pages/account/AccountOrdersPage';
+import { AccountAddressesPage } from './pages/account/AccountAddressesPage';
+import { AccountPreferencesPage } from './pages/account/AccountPreferencesPage';
 import { LoginPage } from './pages/LoginPage';
 import { SignupPage } from './pages/SignupPage';
 import { NotFoundPage } from './pages/NotFoundPage';
@@ -79,6 +83,10 @@ const prosRoute = createRoute({ getParentRoute: () => rootRoute, path: '/pros', 
 const leroyBatesRoute = createRoute({ getParentRoute: () => rootRoute, path: '/leroy-bates', component: LeroyBatesPage });
 const gabeSalvaneraRoute = createRoute({ getParentRoute: () => rootRoute, path: '/gabe-salvanera', component: GabeSalvaneraPage });
 const wishlistRoute = createRoute({ getParentRoute: () => rootRoute, path: '/wishlist', component: WishlistPage });
+const accountRoute = createRoute({ getParentRoute: () => rootRoute, path: '/account', component: AccountProfilePage });
+const accountOrdersRoute = createRoute({ getParentRoute: () => rootRoute, path: '/account/orders', component: AccountOrdersPage });
+const accountAddressesRoute = createRoute({ getParentRoute: () => rootRoute, path: '/account/addresses', component: AccountAddressesPage });
+const accountPreferencesRoute = createRoute({ getParentRoute: () => rootRoute, path: '/account/preferences', component: AccountPreferencesPage });
 
 const routeTree = rootRoute.addChildren([
   indexRoute,
@@ -103,6 +111,10 @@ const routeTree = rootRoute.addChildren([
   leroyBatesRoute,
   gabeSalvaneraRoute,
   wishlistRoute,
+  accountRoute,
+  accountOrdersRoute,
+  accountAddressesRoute,
+  accountPreferencesRoute,
 ]);
 
 const router = createRouter({
