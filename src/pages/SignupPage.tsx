@@ -6,15 +6,11 @@ import { peekPostLoginRedirect } from '@/hooks/useRequireAuth'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { FieldError, fieldClass } from '@/components/auth/FieldError'
+import { passwordChecksFor, validatePassword } from '@/lib/passwordRules'
 
 type FieldErrors = { email?: string; password?: string; confirmPassword?: string }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-// ASCII punctuation, matching Supabase's symbol set for the
-// "Lowercase, uppercase letters, digits and symbols" policy. Deliberately
-// excludes spaces and non-ASCII, which Supabase does not count as symbols.
-const SYMBOL_RE = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]/
 
 export function SignupPage() {
   const navigate = useNavigate()
@@ -29,17 +25,10 @@ export function SignupPage() {
   const [success, setSuccess] = useState(false)
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
 
-  // All five are hard requirements: they track live as you type and gate
-  // submission in validate() below. Keep this list in sync with the Supabase
-  // password policy (min length 8 + "Lowercase, uppercase letters, digits and
-  // symbols"), or users hit server rejections for rules the form never showed.
-  const passwordChecks = [
-    { label: 'At least 8 characters', hint: '8 or more characters', met: password.length >= 8 },
-    { label: 'Contains a number', hint: 'a number', met: /\d/.test(password) },
-    { label: 'Contains an uppercase letter', hint: 'an uppercase letter', met: /[A-Z]/.test(password) },
-    { label: 'Contains a lowercase letter', hint: 'a lowercase letter', met: /[a-z]/.test(password) },
-    { label: 'Contains a symbol', hint: 'a symbol (!@#$…)', met: SYMBOL_RE.test(password) },
-  ]
+  // Every rule is enforced: they track live as you type and gate submission in
+  // validate() below. Shared with the account password-change form so the two
+  // cannot drift apart.
+  const passwordChecks = passwordChecksFor(password)
 
   const passwordsMatch = confirmPassword.length > 0 && confirmPassword === password
 
@@ -47,14 +36,8 @@ export function SignupPage() {
     const next: FieldErrors = {}
     if (!email.trim()) next.email = 'Enter your email address.'
     else if (!EMAIL_RE.test(email.trim())) next.email = "That doesn't look like a valid email address."
-    if (!password) {
-      next.password = 'Choose a password.'
-    } else {
-      const unmet = passwordChecks.filter((check) => !check.met)
-      if (unmet.length > 0) {
-        next.password = `Your password still needs: ${unmet.map((check) => check.hint).join(', ')}.`
-      }
-    }
+    const passwordProblem = validatePassword(password)
+    if (passwordProblem) next.password = passwordProblem
     if (!confirmPassword) next.confirmPassword = 'Re-enter your password to confirm.'
     else if (confirmPassword !== password) next.confirmPassword = 'Passwords do not match.'
     return next

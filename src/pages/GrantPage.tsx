@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowLeft, ArrowRight, ArrowRight as ArrowRightIcon, Award, Check, ChevronDown, Clock, FileText, Loader2, Lock, MapPin, Star, Trophy, Users } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowRight as ArrowRightIcon, Award, Check, Clock, FileText, Loader2, Lock, MapPin, Star, Trophy, Users } from 'lucide-react';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { CartDrawer } from '../components/cart/CartDrawer';
@@ -8,13 +8,11 @@ import { BACKEND_URL, GRANT_USE_SANDBOX } from '../lib/backend';
 import { useRequireAuth } from '../hooks/useRequireAuth';
 import { type GrantDraft, readGrantDraft, saveGrantDraft } from '../lib/grantDraft';
 import { clearPendingAction, peekPendingAction } from '../lib/pendingAction';
+import { US_STATES } from '../lib/usStates';
+import { StyledSelect } from '../components/ui/StyledSelect';
 
 const HUBSPOT_PORTAL_ID = '246543983';
 const HUBSPOT_FORM_ID = '084f3e9c-31da-4700-a691-592e947cf4b7';
-
-const US_STATES = [
-  'AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY',
-];
 
 /* ─── Scroll-triggered entrance wrapper ─── */
 function FadeUpSection({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
@@ -49,61 +47,6 @@ function Divider() {
   return <div className="w-full h-px bg-border" />;
 }
 
-/* ─── Custom styled dropdown ─── */
-function StyledSelect({ id, label, value, onChange, options, placeholder, disabled }: {
-  id: string;
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-  options: string[];
-  placeholder: string;
-  disabled?: boolean;
-}) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, []);
-
-  return (
-    <div ref={ref} className="relative">
-      <label htmlFor={id} className="block text-xs uppercase tracking-widest text-muted-foreground font-sans font-semibold mb-2">{label}</label>
-      <button
-        id={id}
-        type="button"
-        onClick={() => !disabled && setOpen(!open)}
-        disabled={disabled}
-        className={`w-full flex items-center justify-between text-left bg-background border px-4 py-3 text-sm font-sans transition-colors
-          ${open ? 'border-accent ring-1 ring-accent/20' : 'border-border hover:border-muted-foreground/40'}
-          ${!value ? 'text-muted-foreground/50' : 'text-foreground'}
-          disabled:opacity-50 disabled:cursor-not-allowed`}
-      >
-        <span>{value || placeholder}</span>
-        <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
-      </button>
-      {open && (
-        <div className="absolute z-20 mt-1 w-full bg-background border border-border shadow-lg max-h-56 overflow-y-auto">
-          {options.map((opt) => (
-            <button
-              key={opt}
-              type="button"
-              onClick={() => { onChange(opt); setOpen(false); }}
-              className={`w-full text-left px-4 py-2.5 text-sm font-sans transition-colors
-                ${opt === value ? 'bg-accent/10 text-accent font-semibold' : 'text-foreground hover:bg-secondary'}`}
-            >
-              {opt}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
 function StepProgress({ current, total }: { current: number; total: number }) {
   return (
     <div className="flex items-center gap-2 mb-10">
