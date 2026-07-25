@@ -1,39 +1,76 @@
 import { useState } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
-import { Loader2, Eye, EyeOff, CheckCircle2 } from 'lucide-react'
+import { Loader2, Eye, EyeOff, CheckCircle2, AlertCircle } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { peekPostLoginRedirect } from '@/hooks/useRequireAuth'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
+import { FieldError, fieldClass } from '@/components/auth/FieldError'
+
+type FieldErrors = { email?: string; password?: string; confirmPassword?: string }
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+// ASCII punctuation, matching Supabase's symbol set for the
+// "Lowercase, uppercase letters, digits and symbols" policy. Deliberately
+// excludes spaces and non-ASCII, which Supabase does not count as symbols.
+const SYMBOL_RE = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]/
 
 export function SignupPage() {
   const navigate = useNavigate()
   const [displayName, setDisplayName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
 
+  // All five are hard requirements: they track live as you type and gate
+  // submission in validate() below. Keep this list in sync with the Supabase
+  // password policy (min length 8 + "Lowercase, uppercase letters, digits and
+  // symbols"), or users hit server rejections for rules the form never showed.
   const passwordChecks = [
-    { label: 'At least 8 characters', met: password.length >= 8 },
-    { label: 'Contains a number', met: /\d/.test(password) },
-    { label: 'Contains uppercase letter', met: /[A-Z]/.test(password) },
+    { label: 'At least 8 characters', hint: '8 or more characters', met: password.length >= 8 },
+    { label: 'Contains a number', hint: 'a number', met: /\d/.test(password) },
+    { label: 'Contains an uppercase letter', hint: 'an uppercase letter', met: /[A-Z]/.test(password) },
+    { label: 'Contains a lowercase letter', hint: 'a lowercase letter', met: /[a-z]/.test(password) },
+    { label: 'Contains a symbol', hint: 'a symbol (!@#$…)', met: SYMBOL_RE.test(password) },
   ]
+
+  const passwordsMatch = confirmPassword.length > 0 && confirmPassword === password
+
+  const validate = () => {
+    const next: FieldErrors = {}
+    if (!email.trim()) next.email = 'Enter your email address.'
+    else if (!EMAIL_RE.test(email.trim())) next.email = "That doesn't look like a valid email address."
+    if (!password) {
+      next.password = 'Choose a password.'
+    } else {
+      const unmet = passwordChecks.filter((check) => !check.met)
+      if (unmet.length > 0) {
+        next.password = `Your password still needs: ${unmet.map((check) => check.hint).join(', ')}.`
+      }
+    }
+    if (!confirmPassword) next.confirmPassword = 'Re-enter your password to confirm.'
+    else if (confirmPassword !== password) next.confirmPassword = 'Passwords do not match.'
+    return next
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
 
-    if (password.length < 8) {
-      setError('Password must be at least 8 characters.')
-      return
-    }
+    const invalid = validate()
+    setFieldErrors(invalid)
+    if (Object.keys(invalid).length > 0) return
 
     setLoading(true)
     try {
-      const { error: signUpError } = await supabase.auth.signUp({
+      const { data, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -45,13 +82,33 @@ export function SignupPage() {
         },
       })
       if (signUpError) throw signUpError
+
+      // Supabase deliberately returns a *success* response when the email is
+      // already registered, so it never leaks which addresses exist. The tell is
+      // an empty `identities` array. No new confirmation email goes out in that
+      // case, so showing "Check Your Email" here would be a lie.
+      if (data.user && data.user.identities?.length === 0) {
+        setError('An account with this email already exists.')
+        return
+      }
+
+      // With email confirmation disabled, signUp returns a live session and no
+      // email is ever sent — send them straight in rather than to a dead end.
+      if (data.session) {
+        navigate({ to: '/' })
+        return
+      }
+
       setSuccess(true)
     } catch (err: any) {
       const msg = (err?.message || '').toLowerCase()
       if (msg.includes('already registered') || msg.includes('already exists')) {
         setError('An account with this email already exists.')
-      } else if (msg.includes('password') && (msg.includes('weak') || msg.includes('should be'))) {
-        setError('Password is too weak. Use at least 8 characters with numbers and letters.')
+      } else if (msg.includes('password')) {
+        // Supabase's policy rejections vary in wording ("should be at least…",
+        // "should contain at least one character of each…"), and the raw text is
+        // not presentable. Point at the live checklist instead.
+        setFieldErrors({ password: 'That password does not meet the requirements above.' })
       } else {
         setError(err?.message || 'Something went wrong. Please try again.')
       }
@@ -143,13 +200,14 @@ export function SignupPage() {
 
             {/* Error */}
             {error && (
-              <div className="mb-6 p-3 bg-destructive/10 border border-destructive/20 text-destructive font-sans text-sm">
-                {error}
+              <div role="alert" className="mb-6 flex items-start gap-2 p-3 bg-destructive/10 border border-destructive/20 text-destructive font-sans text-sm">
+                <AlertCircle size={15} className="mt-0.5 shrink-0" />
+                <span>{error}</span>
               </div>
             )}
 
-            {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Form — noValidate: we render our own messages instead of the browser's bubbles */}
+            <form onSubmit={handleSubmit} noValidate className="space-y-5">
               <div>
                 <label htmlFor="name" className="block font-sans text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-2">
                   Full Name
@@ -160,7 +218,7 @@ export function SignupPage() {
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
                   placeholder="John Doe"
-                  className="w-full border border-border bg-background px-4 py-3 font-sans text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-accent transition-colors"
+                  className={fieldClass(false)}
                 />
               </div>
 
@@ -172,11 +230,17 @@ export function SignupPage() {
                   id="email"
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value)
+                    if (fieldErrors.email) setFieldErrors((prev) => ({ ...prev, email: undefined }))
+                  }}
                   required
+                  aria-invalid={!!fieldErrors.email}
+                  aria-describedby={fieldErrors.email ? 'email-error' : undefined}
                   placeholder="you@example.com"
-                  className="w-full border border-border bg-background px-4 py-3 font-sans text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-accent transition-colors"
+                  className={fieldClass(!!fieldErrors.email)}
                 />
+                {fieldErrors.email && <FieldError id="email-error">{fieldErrors.email}</FieldError>}
               </div>
 
               <div>
@@ -188,20 +252,26 @@ export function SignupPage() {
                     id="password"
                     type={showPassword ? 'text' : 'password'}
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => {
+                      setPassword(e.target.value)
+                      if (fieldErrors.password) setFieldErrors((prev) => ({ ...prev, password: undefined }))
+                    }}
                     required
-                    minLength={8}
+                    aria-invalid={!!fieldErrors.password}
+                    aria-describedby={fieldErrors.password ? 'password-error' : undefined}
                     placeholder="Create a strong password"
-                    className="w-full border border-border bg-background px-4 py-3 pr-12 font-sans text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-accent transition-colors"
+                    className={fieldClass(!!fieldErrors.password, 'pr-12')}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
+                {fieldErrors.password && <FieldError id="password-error">{fieldErrors.password}</FieldError>}
 
                 {/* Password strength indicators */}
                 {password.length > 0 && (
@@ -214,6 +284,50 @@ export function SignupPage() {
                         </span>
                       </div>
                     ))}
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="confirmPassword" className="block font-sans text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-2">
+                  Confirm Password
+                </label>
+                <div className="relative">
+                  <input
+                    id="confirmPassword"
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    value={confirmPassword}
+                    onChange={(e) => {
+                      setConfirmPassword(e.target.value)
+                      if (fieldErrors.confirmPassword) {
+                        setFieldErrors((prev) => ({ ...prev, confirmPassword: undefined }))
+                      }
+                    }}
+                    required
+                    aria-invalid={!!fieldErrors.confirmPassword}
+                    aria-describedby={fieldErrors.confirmPassword ? 'confirm-password-error' : undefined}
+                    placeholder="Re-enter your password"
+                    className={fieldClass(!!fieldErrors.confirmPassword, 'pr-12')}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+                {fieldErrors.confirmPassword && (
+                  <FieldError id="confirm-password-error">{fieldErrors.confirmPassword}</FieldError>
+                )}
+                {/* Live match feedback — mirrors the strength dots above, updating on every keystroke */}
+                {!fieldErrors.confirmPassword && confirmPassword.length > 0 && (
+                  <div className="mt-3 flex items-center gap-2">
+                    <div className={`w-1.5 h-1.5 rounded-full ${passwordsMatch ? 'bg-accent' : 'bg-muted-foreground/30'}`} />
+                    <span className={`font-sans text-xs ${passwordsMatch ? 'text-accent' : 'text-muted-foreground/60'}`}>
+                      Passwords match
+                    </span>
                   </div>
                 )}
               </div>

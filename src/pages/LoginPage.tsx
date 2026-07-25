@@ -1,10 +1,15 @@
 import { useState } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
-import { Loader2, Eye, EyeOff } from 'lucide-react'
+import { Loader2, Eye, EyeOff, AlertCircle, CheckCircle2 } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { peekPostLoginRedirect, takePostLoginRedirect } from '@/hooks/useRequireAuth'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
+import { FieldError, fieldClass } from '@/components/auth/FieldError'
+
+type FieldErrors = { email?: string; password?: string }
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export function LoginPage() {
   const navigate = useNavigate()
@@ -12,11 +17,27 @@ export function LoginPage() {
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
+  const [notice, setNotice] = useState('')
   const [loading, setLoading] = useState(false)
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
+
+  const validate = () => {
+    const next: FieldErrors = {}
+    if (!email.trim()) next.email = 'Enter your email address.'
+    else if (!EMAIL_RE.test(email.trim())) next.email = "That doesn't look like a valid email address."
+    if (!password) next.password = 'Enter your password.'
+    return next
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    setNotice('')
+
+    const invalid = validate()
+    setFieldErrors(invalid)
+    if (Object.keys(invalid).length > 0) return
+
     setLoading(true)
 
     try {
@@ -97,13 +118,22 @@ export function LoginPage() {
 
             {/* Error */}
             {error && (
-              <div className="mb-6 p-3 bg-destructive/10 border border-destructive/20 text-destructive font-sans text-sm">
-                {error}
+              <div role="alert" className="mb-6 flex items-start gap-2 p-3 bg-destructive/10 border border-destructive/20 text-destructive font-sans text-sm">
+                <AlertCircle size={15} className="mt-0.5 shrink-0" />
+                <span>{error}</span>
               </div>
             )}
 
-            {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Notice */}
+            {notice && (
+              <div role="status" className="mb-6 flex items-start gap-2 p-3 bg-accent/10 border border-accent/20 text-accent font-sans text-sm">
+                <CheckCircle2 size={15} className="mt-0.5 shrink-0" />
+                <span>{notice}</span>
+              </div>
+            )}
+
+            {/* Form — noValidate: we render our own messages instead of the browser's bubbles */}
+            <form onSubmit={handleSubmit} noValidate className="space-y-5">
               <div>
                 <label htmlFor="email" className="block font-sans text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-2">
                   Email Address
@@ -112,11 +142,17 @@ export function LoginPage() {
                   id="email"
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value)
+                    if (fieldErrors.email) setFieldErrors((prev) => ({ ...prev, email: undefined }))
+                  }}
                   required
+                  aria-invalid={!!fieldErrors.email}
+                  aria-describedby={fieldErrors.email ? 'email-error' : undefined}
                   placeholder="you@example.com"
-                  className="w-full border border-border bg-background px-4 py-3 font-sans text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-accent transition-colors"
+                  className={fieldClass(!!fieldErrors.email)}
                 />
+                {fieldErrors.email && <FieldError id="email-error">{fieldErrors.email}</FieldError>}
               </div>
 
               <div>
@@ -128,19 +164,23 @@ export function LoginPage() {
                     type="button"
                     className="font-sans text-xs text-accent hover:text-accent/80 transition-colors"
                     onClick={async () => {
-                      if (!email) {
-                        setError('Enter your email above, then click "Forgot password"')
+                      setError('')
+                      setNotice('')
+                      if (!email.trim()) {
+                        setFieldErrors((prev) => ({
+                          ...prev,
+                          email: 'Enter your email address first, then choose "Forgot password?".',
+                        }))
                         return
                       }
                       try {
-                        const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+                        const { error: resetError } = await supabase.auth.resetPasswordForEmail(email.trim(), {
                           redirectTo: `${window.location.origin}/login`,
                         })
                         if (resetError) throw resetError
-                        setError('')
-                        alert('Password reset email sent! Check your inbox.')
+                        setNotice('Password reset link sent. Check your inbox for the next step.')
                       } catch (err: any) {
-                        setError(err?.message || 'Could not send reset email.')
+                        setError(err?.message || 'Could not send the reset email. Please try again.')
                       }
                     }}
                   >
@@ -152,11 +192,15 @@ export function LoginPage() {
                     id="password"
                     type={showPassword ? 'text' : 'password'}
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => {
+                      setPassword(e.target.value)
+                      if (fieldErrors.password) setFieldErrors((prev) => ({ ...prev, password: undefined }))
+                    }}
                     required
-                    minLength={8}
+                    aria-invalid={!!fieldErrors.password}
+                    aria-describedby={fieldErrors.password ? 'password-error' : undefined}
                     placeholder="Enter your password"
-                    className="w-full border border-border bg-background px-4 py-3 pr-12 font-sans text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-accent transition-colors"
+                    className={fieldClass(!!fieldErrors.password, 'pr-12')}
                   />
                   <button
                     type="button"
@@ -166,6 +210,7 @@ export function LoginPage() {
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
+                {fieldErrors.password && <FieldError id="password-error">{fieldErrors.password}</FieldError>}
               </div>
 
               <button
