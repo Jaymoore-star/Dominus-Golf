@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import type { User } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabase'
+import { clearGrantDraft } from '@/lib/grantDraft'
+import { clearPendingAction } from '@/lib/pendingAction'
 
 interface AuthUser {
   id: string
@@ -41,7 +43,14 @@ export function useAuth() {
     return () => subscription.unsubscribe()
   }, [])
 
-  const signOut = () => supabase.auth.signOut()
+  const signOut = () => {
+    // These outlive the tab now, so don't leave one person's half-written
+    // application — or their pending checkout — for the next user of a shared
+    // machine.
+    clearGrantDraft()
+    clearPendingAction()
+    return supabase.auth.signOut()
+  }
 
   return { user, isLoading, isAuthenticated: !!user, signOut }
 }

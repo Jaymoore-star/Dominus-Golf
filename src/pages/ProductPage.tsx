@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useParams, Link } from '@tanstack/react-router';
 import { ChevronRight, Loader2 } from 'lucide-react';
@@ -25,6 +25,7 @@ async function createCheckoutSession(
 import { products } from '../data/products';
 import { useCart } from '../store/cartStore';
 import { useRequireAuth } from '../hooks/useRequireAuth';
+import { clearPendingAction, peekPendingAction } from '../lib/pendingAction';
 import { ProductCard } from '../components/ui/ProductCard';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
@@ -42,9 +43,20 @@ export function ProductPage() {
   const { addItem, openCart } = useCart();
   const { ensureAuth } = useRequireAuth();
 
-  const [quantity, setQuantity] = useState(1);
+  // If the login gate interrupted a Buy Now on this product, bring the user's
+  // quantity and variant back rather than silently resetting their choices.
+  const [resumedBuyNow] = useState(() => {
+    const pending = peekPendingAction();
+    return pending?.type === 'buyNow' && pending.productId === id ? pending : null;
+  });
+
+  useEffect(() => {
+    if (resumedBuyNow) clearPendingAction();
+  }, [resumedBuyNow]);
+
+  const [quantity, setQuantity] = useState(resumedBuyNow?.quantity ?? 1);
   const [selectedVariant, setSelectedVariant] = useState(
-    product?.variants?.[0]?.options?.[0] ?? '',
+    resumedBuyNow?.variant ?? product?.variants?.[0]?.options?.[0] ?? '',
   );
   const [openAccordion, setOpenAccordion] = useState<string | null>('description');
   const [addedEffect, setAddedEffect] = useState(false);
@@ -99,7 +111,7 @@ export function ProductPage() {
   }
 
   const handleBuyNow = async () => {
-    if (!ensureAuth()) return;
+    if (!ensureAuth({ type: 'buyNow', productId: id, quantity, variant: selectedVariant })) return;
     // Always generate a Square payment link dynamically from the backend
     // (access token + location ID) so no per-product links are needed.
     setIsBuyingNow(true);

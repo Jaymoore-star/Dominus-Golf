@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { X, ShoppingBag, Plus, Minus, Trash2, Loader2 } from 'lucide-react';
 import { useCart } from '../../store/cartStore';
 import { useRequireAuth } from '../../hooks/useRequireAuth';
+import { useScrollLock } from '../../hooks/useScrollLock';
+import { clearPendingAction, peekPendingAction } from '../../lib/pendingAction';
 import { Link } from '@tanstack/react-router';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://45pi183s.backend.blink.new';
@@ -25,14 +27,27 @@ async function createCheckoutSession(
 }
 
 export function CartDrawer() {
-  const { state, closeCart, removeItem, updateQuantity, total, itemCount } = useCart();
+  const { state, closeCart, openCart, removeItem, updateQuantity, total, itemCount } = useCart();
   const { ensureAuth } = useRequireAuth();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
+  useScrollLock(state.isOpen);
+
+  // Coming back from the login gate, reopen the cart so checkout is one click
+  // away rather than buried behind the cart icon again. Only claim the action
+  // if it is ours — this component mounts on pages that stash other actions.
+  useEffect(() => {
+    if (peekPendingAction()?.type === 'openCart') {
+      clearPendingAction();
+      openCart();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleCheckout = async () => {
     if (state.items.length === 0) return;
-    if (!ensureAuth()) { closeCart(); return; }
+    if (!ensureAuth({ type: 'openCart' })) { closeCart(); return; }
     setIsCheckingOut(true);
     setCheckoutError(null);
 

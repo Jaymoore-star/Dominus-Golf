@@ -4,6 +4,7 @@ import { Loader2, CheckCircle2, AlertCircle, Download } from 'lucide-react';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { BACKEND_URL, GRANT_USE_SANDBOX } from '../lib/backend';
+import { clearGrantDraft } from '../lib/grantDraft';
 
 type Status = 'verifying' | 'success' | 'unpaid' | 'error';
 
@@ -27,6 +28,7 @@ export function GrantSuccessPage() {
     const dedupeKey = `grant-emailed-${orderId || paymentId || 'unknown'}`;
     if (orderId || paymentId) {
       if (sessionStorage.getItem(dedupeKey)) {
+        clearGrantDraft();
         setStatus('success');
         return;
       }
@@ -48,6 +50,8 @@ export function GrantSuccessPage() {
 
         if (res.ok && data.success) {
           sessionStorage.setItem(dedupeKey, '1');
+          // Application is paid for — the draft has served its purpose.
+          clearGrantDraft();
           setStatus('success');
         } else if (res.status === 402 || data.paid === false) {
           setStatus('unpaid');

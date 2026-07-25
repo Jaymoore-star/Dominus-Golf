@@ -1,11 +1,13 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowLeft, ArrowRight, ArrowRight as ArrowRightIcon, Award, Check, ChevronDown, Clock, FileText, Loader2, MapPin, Star, Trophy, Users } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowRight as ArrowRightIcon, Award, Check, ChevronDown, Clock, FileText, Loader2, Lock, MapPin, Star, Trophy, Users } from 'lucide-react';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { CartDrawer } from '../components/cart/CartDrawer';
 import { BACKEND_URL, GRANT_USE_SANDBOX } from '../lib/backend';
 import { useRequireAuth } from '../hooks/useRequireAuth';
+import { type GrantDraft, readGrantDraft, saveGrantDraft } from '../lib/grantDraft';
+import { clearPendingAction, peekPendingAction } from '../lib/pendingAction';
 
 const HUBSPOT_PORTAL_ID = '246543983';
 const HUBSPOT_FORM_ID = '084f3e9c-31da-4700-a691-592e947cf4b7';
@@ -185,33 +187,44 @@ export function GrantPage() {
 
   const [currentYear] = useState(() => new Date().getFullYear());
 
+  // Read any saved draft exactly once, before the fields initialise below.
+  const [draft] = useState(readGrantDraft);
+
+  // Returning from the login gate — either from "Apply" or from submitting.
+  const [resumedFromLogin] = useState(() => peekPendingAction()?.type === 'grantForm');
+  useEffect(() => {
+    if (resumedFromLogin) clearPendingAction();
+  }, [resumedFromLogin]);
+
+  const resumedFromDraft = resumedFromLogin || (draft.step ?? 0) > 0;
+
   // Form state - multi-step
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(draft.step ?? 0);
   const totalSteps = 3;
 
   // Step 1: Player Profile
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [ageGroup, setAgeGroup] = useState('');
-  const [stateRegion, setStateRegion] = useState('');
-  const [city, setCity] = useState('');
-  const [currentHandicap, setCurrentHandicap] = useState('');
-  const [targetHandicap, setTargetHandicap] = useState('');
+  const [firstName, setFirstName] = useState(draft.firstName ?? '');
+  const [lastName, setLastName] = useState(draft.lastName ?? '');
+  const [email, setEmail] = useState(draft.email ?? '');
+  const [ageGroup, setAgeGroup] = useState(draft.ageGroup ?? '');
+  const [stateRegion, setStateRegion] = useState(draft.stateRegion ?? '');
+  const [city, setCity] = useState(draft.city ?? '');
+  const [currentHandicap, setCurrentHandicap] = useState(draft.currentHandicap ?? '');
+  const [targetHandicap, setTargetHandicap] = useState(draft.targetHandicap ?? '');
 
   // Step 2: Essays
-  const [roadmap, setRoadmap] = useState('');
-  const [discipline, setDiscipline] = useState('');
-  const [vision, setVision] = useState('');
+  const [roadmap, setRoadmap] = useState(draft.roadmap ?? '');
+  const [discipline, setDiscipline] = useState(draft.discipline ?? '');
+  const [vision, setVision] = useState(draft.vision ?? '');
 
   // Step 3: Junior Provision
-  const [guardianName, setGuardianName] = useState('');
-  const [guardianEmail, setGuardianEmail] = useState('');
+  const [guardianName, setGuardianName] = useState(draft.guardianName ?? '');
+  const [guardianEmail, setGuardianEmail] = useState(draft.guardianEmail ?? '');
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { ensureAuth } = useRequireAuth();
+  const { ensureAuth, isAuthenticated, isLoading: authLoading } = useRequireAuth();
 
   const scrollToForm = () => {
     formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -219,9 +232,34 @@ export function GrantPage() {
 
   // Require login before starting/paying for an application.
   const handleApplyClick = () => {
-    if (!ensureAuth()) return;
+    if (!ensureAuth({ type: 'grantForm' })) return;
     scrollToForm();
   };
+
+  // Keep the draft in sync so a login round-trip mid-application loses nothing.
+  useEffect(() => {
+    const payload: GrantDraft = {
+      step,
+      firstName,
+      lastName,
+      email,
+      ageGroup,
+      stateRegion,
+      city,
+      currentHandicap,
+      targetHandicap,
+      roadmap,
+      discipline,
+      vision,
+      guardianName,
+      guardianEmail,
+    };
+    saveGrantDraft(payload);
+  }, [
+    step, firstName, lastName, email, ageGroup, stateRegion, city,
+    currentHandicap, targetHandicap, roadmap, discipline, vision,
+    guardianName, guardianEmail,
+  ]);
 
   // When moving between form steps, scroll back to the top of the form
   // (skip the initial mount so the page doesn't auto-scroll on load).
@@ -229,7 +267,44 @@ export function GrantPage() {
   useEffect(() => {
     if (!didMountRef.current) {
       didMountRef.current = true;
-      return;
+      if (!resumedFromDraft) return;
+
+      // Resuming after login: land on the form, not the top of the page.
+      //
+      // A single scroll here loses a race it cannot win. React runs child
+      // effects before parent ones, so this fires *before* the router's
+      // scrollRestoration resets to the top; the hero's imagery and motion then
+      // settle later still and move the target again. So re-assert the position
+      // over the first second instead of guessing one correct moment.
+      //
+      // Instant, not smooth: a smooth scroll started during first paint gets
+      // cancelled outright by the browser's own scroll restoration.
+      let cancelled = false;
+      const stopFighting = () => {
+        cancelled = true;
+      };
+
+      // The moment the applicant scrolls themselves, back off — re-asserting
+      // over the top of a deliberate scroll would feel broken.
+      window.addEventListener('wheel', stopFighting, { passive: true, once: true });
+      window.addEventListener('touchstart', stopFighting, { passive: true, once: true });
+      window.addEventListener('keydown', stopFighting, { once: true });
+
+      const jumpToForm = () => {
+        if (cancelled) return;
+        formRef.current?.scrollIntoView({ behavior: 'auto', block: 'start' });
+      };
+
+      const timers = [0, 60, 150, 300, 600, 1000].map((delay) =>
+        setTimeout(jumpToForm, delay),
+      );
+
+      return () => {
+        timers.forEach(clearTimeout);
+        window.removeEventListener('wheel', stopFighting);
+        window.removeEventListener('touchstart', stopFighting);
+        window.removeEventListener('keydown', stopFighting);
+      };
     }
     scrollToForm();
   }, [step]);
@@ -300,7 +375,7 @@ export function GrantPage() {
     e.preventDefault();
     setError(null);
 
-    if (!ensureAuth()) return;
+    if (!ensureAuth({ type: 'grantForm' })) return;
 
     if (!firstName.trim() || !email.trim() || !ageGroup || !stateRegion || !city.trim() || !currentHandicap.trim()) {
       setError('Please complete all required fields in Section 1.');
@@ -542,6 +617,38 @@ export function GrantPage() {
             </p>
           </FadeUpSection>
 
+          {/* The form is gated on sign-in. Letting people write three essays and
+              only asking at submit meant either losing their work or leaning on
+              a draft to rescue it — asking first removes the problem entirely. */}
+          {authLoading ? (
+            <FadeUpSection delay={0.1}>
+              <div className="flex justify-center py-16" aria-label="Checking your account">
+                <Loader2 className="w-6 h-6 text-accent animate-spin" />
+              </div>
+            </FadeUpSection>
+          ) : !isAuthenticated ? (
+            <FadeUpSection delay={0.1}>
+              <div className="border border-border p-8 sm:p-12 text-center">
+                <div className="mx-auto mb-5 w-12 h-12 flex items-center justify-center rounded-full bg-accent/10 text-accent">
+                  <Lock size={20} />
+                </div>
+                <h3 className="font-serif text-2xl font-bold tracking-tight text-foreground">
+                  Sign in to apply
+                </h3>
+                <p className="mt-3 font-sans text-sm text-muted-foreground leading-relaxed max-w-sm mx-auto">
+                  Your application is tied to your Dominus Golf account, so your
+                  answers are saved as you go and you can pick up where you left off.
+                </p>
+                <button
+                  type="button"
+                  onClick={handleApplyClick}
+                  className="mt-8 w-full sm:w-auto sm:px-14 bg-primary text-primary-foreground py-3.5 font-sans text-xs font-semibold tracking-widest uppercase hover:bg-primary/90 transition-colors duration-200"
+                >
+                  Sign in to continue
+                </button>
+              </div>
+            </FadeUpSection>
+          ) : (
           <FadeUpSection delay={0.1}>
             <StepProgress current={step} total={totalSteps} />
 
@@ -691,6 +798,7 @@ export function GrantPage() {
               )}
             </form>
           </FadeUpSection>
+          )}
         </div>
       </section>
 
