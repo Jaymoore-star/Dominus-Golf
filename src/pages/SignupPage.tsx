@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { Loader2, Eye, EyeOff, CheckCircle2 } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
+import { peekPostLoginRedirect } from '@/hooks/useRequireAuth'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 
@@ -63,7 +64,7 @@ export function SignupPage() {
     try {
       const { error: oauthError } = await supabase.auth.signInWithOAuth({
         provider: 'google',
-        options: { redirectTo: `${window.location.origin}/` },
+        options: { redirectTo: `${window.location.origin}${peekPostLoginRedirect()}` },
       })
       if (oauthError) throw oauthError
     } catch (err: any) {

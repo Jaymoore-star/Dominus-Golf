@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { X, ShoppingBag, Plus, Minus, Trash2, Loader2 } from 'lucide-react';
 import { useCart } from '../../store/cartStore';
+import { useRequireAuth } from '../../hooks/useRequireAuth';
 import { Link } from '@tanstack/react-router';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://45pi183s.backend.blink.new';
@@ -25,11 +26,13 @@ async function createCheckoutSession(
 
 export function CartDrawer() {
   const { state, closeCart, removeItem, updateQuantity, total, itemCount } = useCart();
+  const { ensureAuth } = useRequireAuth();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
   const handleCheckout = async () => {
     if (state.items.length === 0) return;
+    if (!ensureAuth()) { closeCart(); return; }
     setIsCheckingOut(true);
     setCheckoutError(null);
 

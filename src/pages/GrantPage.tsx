@@ -4,11 +4,11 @@ import { ArrowLeft, ArrowRight, ArrowRight as ArrowRightIcon, Award, Check, Chev
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { CartDrawer } from '../components/cart/CartDrawer';
+import { BACKEND_URL, GRANT_USE_SANDBOX } from '../lib/backend';
+import { useRequireAuth } from '../hooks/useRequireAuth';
 
 const HUBSPOT_PORTAL_ID = '246543983';
 const HUBSPOT_FORM_ID = '084f3e9c-31da-4700-a691-592e947cf4b7';
-const USE_SANDBOX = true; // Flip to false to charge real money
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://45pi183s.backend.blink.new';
 
 const US_STATES = [
   'AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY',
@@ -211,9 +211,28 @@ export function GrantPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const { ensureAuth } = useRequireAuth();
+
   const scrollToForm = () => {
     formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
+
+  // Require login before starting/paying for an application.
+  const handleApplyClick = () => {
+    if (!ensureAuth()) return;
+    scrollToForm();
+  };
+
+  // When moving between form steps, scroll back to the top of the form
+  // (skip the initial mount so the page doesn't auto-scroll on load).
+  const didMountRef = useRef(false);
+  useEffect(() => {
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+      return;
+    }
+    scrollToForm();
+  }, [step]);
 
   const validateStep1 = (): boolean => {
     if (!firstName.trim()) { setError('First name is required.'); return false; }
@@ -281,6 +300,8 @@ export function GrantPage() {
     e.preventDefault();
     setError(null);
 
+    if (!ensureAuth()) return;
+
     if (!firstName.trim() || !email.trim() || !ageGroup || !stateRegion || !city.trim() || !currentHandicap.trim()) {
       setError('Please complete all required fields in Section 1.');
       return;
@@ -295,27 +316,26 @@ export function GrantPage() {
     }
 
     setSubmitting(true);
-    submitToHubSpot(); // fire-and-forget
+    submitToHubSpot(); // fire-and-forget (lead capture)
 
-    // Trigger eBook delivery email (fire-and-forget)
-    fetch(`${BACKEND_URL}/api/grant/confirm`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: firstName.trim(), email: email.trim() }),
-    }).catch(() => {});
-
-    // Create Square checkout via backend (supports sandbox mode)
+    // Create Square checkout via backend. The eBook email is NOT sent here —
+    // it is sent only after Square confirms payment, from the /grant/success page.
     try {
+      const origin = window.location.origin;
+      const applicantName = `${firstName} ${lastName}`.trim();
+      const successUrl = `${origin}/grant/success?e=${encodeURIComponent(email.trim())}&n=${encodeURIComponent(applicantName)}`;
       const res = await fetch(`${BACKEND_URL}/api/grant/checkout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          applicantName: `${firstName} ${lastName}`.trim(),
+          applicantName,
           applicantEmail: email,
           developmentPlan: roadmap,
           trainingRegimen: discipline,
           competitiveVision: vision,
-          sandbox: USE_SANDBOX,
+          sandbox: GRANT_USE_SANDBOX,
+          successUrl,
+          cancelUrl: `${origin}/grant`,
         }),
       });
       const data = await res.json();
@@ -398,7 +418,7 @@ export function GrantPage() {
             transition={{ duration: 0.45, delay: 0.8 }}
             className="mt-9 sm:mt-10"
           >
-            <GrantCTA onClick={scrollToForm} />
+            <GrantCTA onClick={handleApplyClick} />
           </motion.div>
 
           <motion.div
@@ -702,7 +722,7 @@ export function GrantPage() {
             <p className="mt-5 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-lg mx-auto font-sans">
               Text-only application. Takes 5 minutes. Closes August 15, 2026. One golfer will be selected. One award will be made.
             </p>
-            <div className="mt-9"><GrantCTA onClick={scrollToForm} /></div>
+            <div className="mt-9"><GrantCTA onClick={handleApplyClick} /></div>
           </FadeUpSection>
           <FadeUpSection delay={0.2} className="mt-14">
             <p className="text-[11px] sm:text-xs text-muted-foreground/60 leading-relaxed max-w-2xl mx-auto font-sans">

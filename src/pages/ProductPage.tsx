@@ -24,6 +24,7 @@ async function createCheckoutSession(
 }
 import { products } from '../data/products';
 import { useCart } from '../store/cartStore';
+import { useRequireAuth } from '../hooks/useRequireAuth';
 import { ProductCard } from '../components/ui/ProductCard';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
@@ -39,6 +40,7 @@ export function ProductPage() {
   const { id } = useParams({ from: '/product/$id' });
   const product = products.find((p) => p.id === id);
   const { addItem, openCart } = useCart();
+  const { ensureAuth } = useRequireAuth();
 
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState(
@@ -97,6 +99,7 @@ export function ProductPage() {
   }
 
   const handleBuyNow = async () => {
+    if (!ensureAuth()) return;
     // Always generate a Square payment link dynamically from the backend
     // (access token + location ID) so no per-product links are needed.
     setIsBuyingNow(true);

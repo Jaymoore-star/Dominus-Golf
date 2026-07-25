@@ -7,6 +7,8 @@ import {
 } from '@tanstack/react-router';
 import { CartProvider } from './store/cartStore';
 import { WishlistProvider } from './store/wishlistStore';
+import { AuthPromptProvider } from './store/authPromptStore';
+import { LoginPromptModal } from './components/auth/LoginPromptModal';
 import { HomePage } from './pages/HomePage';
 import { ShopPage } from './pages/ShopPage';
 import { ProductPage } from './pages/ProductPage';
@@ -32,7 +34,12 @@ import { GabeSalvaneraPage } from './pages/GabeSalvaneraPage';
 import { WishlistPage } from './pages/WishlistPage';
 
 const rootRoute = createRootRoute({
-  component: () => <Outlet />,
+  component: () => (
+    <>
+      <Outlet />
+      <LoginPromptModal />
+    </>
+  ),
 });
 
 const indexRoute = createRoute({
@@ -113,7 +120,9 @@ export default function App() {
   return (
     <WishlistProvider>
       <CartProvider>
-        <RouterProvider router={router} />
+        <AuthPromptProvider>
+          <RouterProvider router={router} />
+        </AuthPromptProvider>
       </CartProvider>
     </WishlistProvider>
   );
