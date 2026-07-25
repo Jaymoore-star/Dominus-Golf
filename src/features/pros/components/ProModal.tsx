@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { X, MapPin, ExternalLink, User } from 'lucide-react';
 import { Pro } from '../types';
+import { useScrollLock } from '../../../hooks/useScrollLock';
 
 interface ProModalProps {
   pro: Pro;
@@ -11,15 +12,14 @@ export function ProModal({ pro, onClose }: ProModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const [activeSessionFilter, setActiveSessionFilter] = useState('Full Swing');
 
+  // Mounted only while open, so lock for the component's whole lifetime.
+  useScrollLock(true);
+
   // Close on Escape
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     document.addEventListener('keydown', onKey);
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = '';
-    };
+    return () => document.removeEventListener('keydown', onKey);
   }, [onClose]);
 
   return (

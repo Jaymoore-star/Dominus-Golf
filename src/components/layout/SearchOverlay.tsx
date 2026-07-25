@@ -3,6 +3,7 @@ import { Search, X, ArrowRight, ShoppingBag } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 import { products } from '../../data/products';
 import { cn } from '../../lib/utils';
+import { useScrollLock } from '../../hooks/useScrollLock';
 
 interface SearchOverlayProps {
   isOpen: boolean;
@@ -24,17 +25,14 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
+  useScrollLock(isOpen);
+
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 100);
-      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = '';
       setQuery('');
     }
-    return () => {
-      document.body.style.overflow = '';
-    };
   }, [isOpen]);
 
   const results = query.trim() 

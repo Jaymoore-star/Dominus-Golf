@@ -108,6 +108,10 @@ const routeTree = rootRoute.addChildren([
 const router = createRouter({
   routeTree,
   defaultNotFoundComponent: NotFoundPage,
+  // Without this, navigation keeps the previous page's scroll offset — following
+  // a link near the footer drops you at the bottom of the next page. Scrolls to
+  // top on new navigations, and restores position on back/forward.
+  scrollRestoration: true,
 });
 
 declare module '@tanstack/react-router' {

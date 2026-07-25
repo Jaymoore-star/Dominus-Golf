@@ -13,6 +13,7 @@ import {
 import { useCart } from '../../store/cartStore';
 import { useWishlist } from '../../store/wishlistStore';
 import { useAuth } from '../../hooks/useAuth';
+import { useScrollLock } from '../../hooks/useScrollLock';
 import { SearchOverlay } from './SearchOverlay';
 
 type MegaMenuKey = 'training' | 'guide' | 'apparel' | 'accessories' | 'pros' | 'company' | null;
@@ -151,16 +152,7 @@ export function Navbar() {
   }, []);
 
   // Lock body scroll when mobile menu open
-  useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [mobileOpen]);
+  useScrollLock(mobileOpen);
 
   const navLinks: { label: string; key: MegaMenuKey; href?: string }[] = [
     { label: 'Training Systems', key: 'training' },

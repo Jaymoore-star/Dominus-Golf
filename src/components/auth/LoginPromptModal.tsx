@@ -2,10 +2,13 @@ import { useEffect } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { X, Lock } from 'lucide-react';
 import { useAuthPrompt } from '../../store/authPromptStore';
+import { useScrollLock } from '../../hooks/useScrollLock';
 
 export function LoginPromptModal() {
   const { isOpen, close } = useAuthPrompt();
   const navigate = useNavigate();
+
+  useScrollLock(isOpen);
 
   // Close on Escape while open.
   useEffect(() => {

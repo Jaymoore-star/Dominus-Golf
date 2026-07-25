@@ -95,6 +95,13 @@
     @apply border-border;
   }
 
+  /* Offset in-page scrolling (anchor links, scrollIntoView) by the sticky
+     header's height — 36px announcement bar + 64px nav + 1px border — so
+     targets don't land hidden underneath it. See components/layout/Navbar.tsx. */
+  html {
+    scroll-padding-top: 7rem;
+  }
+
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-sans);
