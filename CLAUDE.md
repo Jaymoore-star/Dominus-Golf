@@ -91,7 +91,7 @@ Phase 2 (functional dependencies still on Blink) — replace each before removin
 | Area | Where | Blink piece | Replace with |
 |------|-------|-------------|--------------|
 | ✅ Auth | ~~`src/blink/client.ts`~~, `src/hooks/useAuth.ts`, `LoginPage`, `SignupPage` | `@blinkdotnew/sdk` auth | **DONE** — migrated to **Supabase** (`src/lib/supabase.ts`); email/password live, Google wired but pending Supabase provider enablement |
-| Backend host | `GrantPage.tsx`, `ProductPage.tsx` (`BACKEND_URL = …backend.blink.new`) | Blink-hosted `backend/index.ts` | Self-host (Cloudflare Workers / Vercel / Render) |
+| ✅ Backend host | `src/lib/backend.ts`, `ProductPage.tsx`, `CartDrawer.tsx` | Blink-hosted `backend/index.ts` | **DONE** — Cloudflare Worker at `https://dominus-golf-backend.jaymoore.workers.dev` |
 | ✅ Email | `backend/index.ts` `/api/grant/confirm` | ~~`blink.notifications.email`~~ | **DONE (code)** — now POSTs to **Resend** API (`RESEND_API_KEY`/`RESEND_FROM`). Goes live once backend is self-hosted + domain verified in Resend |
 | ✅ UI lib | ~~`src/Shell.tsx`, `AppSidebarShell.tsx`, `layouts/shared-app-layout.tsx`~~ | `@blinkdotnew/ui` | **DONE** — dead code deleted; no `@blinkdotnew/ui` refs remain |
 | ✅ Images | `src/data/*.ts`, some pages | `blink-451505.firebasestorage.app` URLs | **DONE** — 32 images downloaded to `public/images/`, all URLs rewritten to `/images/...` |
@@ -106,6 +106,8 @@ Payments already run on **Square**, not Blink.
 - Buy Now no longer uses per-product `square.link` links; all products checkout dynamically via `/api/square/checkout` (the `paymentUrl` field in `src/data/*` is now unused).
 - Supabase keys stored in gitignored `.env` (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`); `.env.example` tracked.
 - ✅ **Email migrated to Resend (code)** — `@blinkdotnew/sdk` fully removed from the repo. Needs: Resend API key in `.dev.vars`, domain verified in Resend, and backend self-hosted before it sends live.
-- ⏳ Still on Blink: **backend hosting** (Cloudflare) — the backend code no longer imports Blink, but it's still deployed on Blink's host. Google OAuth: code wired, provider still needs enabling in the Supabase dashboard (access pending).
+- ✅ **Backend deployed to Cloudflare Workers** (2026-07-28), account `d52c80b6632554c75458cf115c6d74b0`, pinned as `account_id` in `wrangler.toml` — the login sees two accounts, so deploys fail non-interactively without it. All 9 secrets uploaded via `wrangler secret put`; production Square checkout verified live.
+- ✅ Google OAuth **enabled** in Supabase (verified via `GET /auth/v1/settings`). Redirect URLs configured: `https://www.dominusgolf.com/**` and `http://localhost:3000/**` — the `/**` matters, since Google OAuth redirects to an unpredictable path.
+- ⏳ Still on Blink: **frontend hosting only**. `www.dominusgolf.com` is a CNAME to `cname.blink.new` serving an old build. Cloudflare Pages must be connected by **Jay** — `Jaymoore-star/tit` is a personal GitHub account and only the owner can install the Cloudflare Pages GitHub App. Then one CNAME change at IONOS (DNS is at IONOS; do NOT move nameservers — MX and the Resend DKIM key live there).
 - ⚠️ Post-launch TODO: rotate the Square access token (both the old and current tokens were shared in plaintext during setup) and the Resend key.
 - To run the backend locally: `npx wrangler dev --port 8787 --local --ip 127.0.0.1` (reads `.dev.vars`). Use `127.0.0.1`, not `localhost`.
