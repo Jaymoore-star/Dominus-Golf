@@ -29,14 +29,23 @@ npm run build      # production build (vite build)
 npm run preview    # preview the production build
 
 # Linting / checks
-npm run lint       # types + js + css + css-var + css-class checks (uses bun)
+npm run lint       # types + js + css, in that order
 npm run lint:types # tsc --noEmit
-npm run lint:js    # eslint
+npm run lint:js    # eslint (flat config in eslint.config.js)
 npm run lint:css   # stylelint --fix
+
+# Assets
+npm run og:images  # regenerate social share images after adding/changing a product
 ```
 
-Note: `npm run lint` invokes `bun`. If `bun` isn't installed, run the individual
-`lint:*` scripts with `npm run` instead.
+Lint state: `lint:types` and `lint:js` are clean. `lint:js` reports ~46 pre-existing
+warnings (unused vars, `any`, react-refresh) — warnings do not fail the run.
+
+Careful with `lint:css`: it runs with `--fix`, so it rewrites source. Several
+stylelint rules are disabled in `stylelint.config.js` specifically because their
+autofix caused regressions — most seriously, deleting `-webkit-appearance: none`
+from the range slider, which breaks it in Safari. Read the comments there before
+re-enabling anything.
 
 ## Structure
 
