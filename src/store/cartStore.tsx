@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import type { Product } from '../data/products';
 import { products } from '../data/products';
+import { trackAddToCart } from '../lib/analytics';
 
 const STORAGE_KEY = 'dominus-cart';
 
@@ -130,7 +131,12 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 
 type CartContextValue = {
   state: CartState;
-  addItem: (product: Product) => void;
+  /**
+   * Adds one unit. Callers adding several units in a loop should pass
+   * `{ track: false }` and fire a single trackAddToCart with the real quantity,
+   * so analytics records one add-to-cart rather than one per unit.
+   */
+  addItem: (product: Product, opts?: { track?: boolean }) => void;
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   toggleCart: () => void;
@@ -155,8 +161,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
     persistItems(state.items);
   }, [state.items]);
 
-  const addItem = (product: Product) =>
+  const addItem = (product: Product, opts?: { track?: boolean }) => {
     dispatch({ type: 'ADD_ITEM', product });
+    if (opts?.track !== false) trackAddToCart(product);
+  };
   const removeItem = (productId: string) =>
     dispatch({ type: 'REMOVE_ITEM', productId });
   const updateQuantity = (productId: string, quantity: number) =>

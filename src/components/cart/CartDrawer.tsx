@@ -4,6 +4,7 @@ import { useCart } from '../../store/cartStore';
 import { useRequireAuth } from '../../hooks/useRequireAuth';
 import { useScrollLock } from '../../hooks/useScrollLock';
 import { clearPendingAction, peekPendingAction } from '../../lib/pendingAction';
+import { trackBeginCheckout } from '../../lib/analytics';
 import { Link } from '@tanstack/react-router';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://45pi183s.backend.blink.new';
@@ -50,6 +51,7 @@ export function CartDrawer() {
     if (!ensureAuth({ type: 'openCart' })) { closeCart(); return; }
     setIsCheckingOut(true);
     setCheckoutError(null);
+    trackBeginCheckout(state.items);
 
     try {
       const lineItems = state.items.map((item) => ({

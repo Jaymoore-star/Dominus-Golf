@@ -26,6 +26,7 @@ import { products } from '../data/products';
 import { useCart } from '../store/cartStore';
 import { useRequireAuth } from '../hooks/useRequireAuth';
 import { clearPendingAction, peekPendingAction } from '../lib/pendingAction';
+import { trackViewItem, trackAddToCart, trackBeginCheckout } from '../lib/analytics';
 import { ProductCard } from '../components/ui/ProductCard';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
@@ -53,6 +54,12 @@ export function ProductPage() {
   useEffect(() => {
     if (resumedBuyNow) clearPendingAction();
   }, [resumedBuyNow]);
+
+  // Declared before the not-found early return below so the hook order stays
+  // stable; the guard handles an unknown product id.
+  useEffect(() => {
+    if (product) trackViewItem(product);
+  }, [product]);
 
   const [quantity, setQuantity] = useState(resumedBuyNow?.quantity ?? 1);
   const [selectedVariant, setSelectedVariant] = useState(
@@ -115,6 +122,7 @@ export function ProductPage() {
     // Always generate a Square payment link dynamically from the backend
     // (access token + location ID) so no per-product links are needed.
     setIsBuyingNow(true);
+    trackBeginCheckout([{ product, quantity }]);
     try {
       const url = await createCheckoutSession([{
         name: product.name,
@@ -132,8 +140,9 @@ export function ProductPage() {
 
   const handleAddToCart = () => {
     for (let i = 0; i < quantity; i++) {
-      addItem(product);
+      addItem(product, { track: false });
     }
+    trackAddToCart(product, quantity);
     openCart();
     setAddedEffect(true);
     setTimeout(() => setAddedEffect(false), 1500);

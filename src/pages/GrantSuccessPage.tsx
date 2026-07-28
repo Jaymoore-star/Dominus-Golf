@@ -5,6 +5,7 @@ import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { BACKEND_URL, GRANT_USE_SANDBOX } from '../lib/backend';
 import { clearGrantDraft } from '../lib/grantDraft';
+import { trackGrantPurchase } from '../lib/analytics';
 
 type Status = 'verifying' | 'success' | 'unpaid' | 'error';
 
@@ -50,6 +51,9 @@ export function GrantSuccessPage() {
 
         if (res.ok && data.success) {
           sessionStorage.setItem(dedupeKey, '1');
+          // Fires only on a Square-verified payment, and the dedupe key above
+          // stops a page refresh from double-counting the conversion.
+          trackGrantPurchase(orderId || paymentId);
           // Application is paid for — the draft has served its purpose.
           clearGrantDraft();
           setStatus('success');

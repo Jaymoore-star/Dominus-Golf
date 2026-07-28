@@ -5,6 +5,7 @@ import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { CartDrawer } from '../components/cart/CartDrawer';
 import { BACKEND_URL, GRANT_USE_SANDBOX } from '../lib/backend';
+import { trackGrantCheckout } from '../lib/analytics';
 import { useRequireAuth } from '../hooks/useRequireAuth';
 import { type GrantDraft, readGrantDraft, saveGrantDraft } from '../lib/grantDraft';
 import { clearPendingAction, peekPendingAction } from '../lib/pendingAction';
@@ -335,6 +336,7 @@ export function GrantPage() {
 
     setSubmitting(true);
     submitToHubSpot(); // fire-and-forget (lead capture)
+    trackGrantCheckout();
 
     // Create Square checkout via backend. The eBook email is NOT sent here —
     // it is sent only after Square confirms payment, from the /grant/success page.
