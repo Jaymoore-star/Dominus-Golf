@@ -119,6 +119,11 @@ export const PAGE_SEO = {
     description: 'Your Dominus Golf email address has been confirmed.',
     noindex: true,
   },
+  '/auth/reset-password': {
+    title: 'Set a New Password',
+    description: 'Choose a new password for your Dominus Golf account.',
+    noindex: true,
+  },
   '/signup': {
     title: 'Create an Account',
     description: 'Create a Dominus Golf account to track orders and save products.',

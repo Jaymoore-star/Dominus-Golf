@@ -26,13 +26,24 @@ export type AccountPreferences = {
   grantAnnouncements: boolean;
 };
 
+/**
+ * The only country we ship to today. The address form shows it read-only and
+ * the save path forces it, so a customer cannot save an address we cannot
+ * fulfil — the state dropdown is US-only anyway, so any other country would
+ * have produced an inconsistent address.
+ *
+ * When international shipping opens up, this constant and the read-only field
+ * in AccountAddressesPage are what change.
+ */
+export const SHIPPING_COUNTRY = 'United States';
+
 export const EMPTY_ADDRESS: SavedAddress = {
   line1: '',
   line2: '',
   city: '',
   state: '',
   postalCode: '',
-  country: 'United States',
+  country: SHIPPING_COUNTRY,
   phone: '',
 };
 
@@ -47,7 +58,10 @@ type Metadata = Record<string, unknown>;
 /** Read the saved address out of user metadata, tolerating missing/partial data. */
 export function readAddress(metadata: Metadata | undefined): SavedAddress {
   const raw = (metadata?.address ?? {}) as Partial<SavedAddress>;
-  return { ...EMPTY_ADDRESS, ...raw };
+  // Country is overridden rather than merged: anything saved before the field
+  // was locked down could otherwise resurface in a form that no longer lets the
+  // customer correct it.
+  return { ...EMPTY_ADDRESS, ...raw, country: SHIPPING_COUNTRY };
 }
 
 /** Read preferences out of user metadata, defaulting anything absent to off. */

@@ -183,7 +183,9 @@ export function LoginPage() {
                       }
                       try {
                         const { error: resetError } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-                          redirectTo: `${window.location.origin}/login`,
+                          // /login has no set-password form, so pointing the
+                          // email there dead-ended the whole reset flow.
+                          redirectTo: `${window.location.origin}/auth/reset-password`,
                         })
                         if (resetError) throw resetError
                         setNotice('Password reset link sent. Check your inbox for the next step.')

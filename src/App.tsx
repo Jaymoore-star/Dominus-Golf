@@ -40,6 +40,7 @@ import { LeroyBatesPage } from './pages/LeroyBatesPage';
 import { GabeSalvaneraPage } from './pages/GabeSalvaneraPage';
 import { WishlistPage } from './pages/WishlistPage';
 import { AuthConfirmedPage } from './pages/AuthConfirmedPage';
+import { AuthResetPasswordPage } from './pages/AuthResetPasswordPage';
 import { products } from './data/products';
 import {
   seo,
@@ -193,6 +194,7 @@ const grantSuccessRoute = createRoute({ getParentRoute: () => rootRoute, path: '
 const loginRoute = createRoute({ getParentRoute: () => rootRoute, path: '/login', head: pageHead('/login'), component: LoginPage });
 const signupRoute = createRoute({ getParentRoute: () => rootRoute, path: '/signup', head: pageHead('/signup'), component: SignupPage });
 const authConfirmedRoute = createRoute({ getParentRoute: () => rootRoute, path: '/auth/confirmed', head: pageHead('/auth/confirmed'), component: AuthConfirmedPage });
+const authResetPasswordRoute = createRoute({ getParentRoute: () => rootRoute, path: '/auth/reset-password', head: pageHead('/auth/reset-password'), component: AuthResetPasswordPage });
 const prosRoute = createRoute({ getParentRoute: () => rootRoute, path: '/pros', head: pageHead('/pros'), component: ProDirectoryPage });
 const leroyBatesRoute = createRoute({ getParentRoute: () => rootRoute, path: '/leroy-bates', head: pageHead('/leroy-bates'), component: LeroyBatesPage });
 const gabeSalvaneraRoute = createRoute({ getParentRoute: () => rootRoute, path: '/gabe-salvanera', head: pageHead('/gabe-salvanera'), component: GabeSalvaneraPage });
@@ -242,6 +244,7 @@ const routeTree = rootRoute.addChildren([
   loginRoute,
   signupRoute,
   authConfirmedRoute,
+  authResetPasswordRoute,
   prosRoute,
   leroyBatesRoute,
   gabeSalvaneraRoute,

@@ -23,6 +23,8 @@ export function AuthConfirmedPage() {
   const [status, setStatus] = useState<Status>('checking')
 
   useEffect(() => {
+    if (status === 'confirmed') return
+
     // Supabase reports failures in the hash on the implicit flow and in the
     // query string on the PKCE flow, so both have to be checked.
     const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''))
@@ -36,9 +38,22 @@ export function AuthConfirmedPage() {
     }
 
     // No error means Supabase accepted the token; the address is confirmed
-    // whether or not a session came back with it.
-    if (!isLoading) setStatus('confirmed')
-  }, [isLoading])
+    // either way. The only open question is whether a session came with it,
+    // which decides between "you're signed in" and "now sign in".
+    if (isAuthenticated) {
+      setStatus('confirmed')
+      return
+    }
+
+    if (isLoading) return
+
+    // isLoading goes false when getSession() resolves, which can beat the
+    // client finishing with the token in the URL. Settling immediately here
+    // would tell an already-signed-in user to go and sign in, then correct
+    // itself a moment later.
+    const timer = setTimeout(() => setStatus('confirmed'), 1500)
+    return () => clearTimeout(timer)
+  }, [isLoading, isAuthenticated, status])
 
   return (
     <div className="min-h-screen bg-background flex flex-col">

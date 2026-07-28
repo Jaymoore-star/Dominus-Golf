@@ -16,7 +16,7 @@ const REDIRECT_KEY = 'postLoginRedirect';
 const REDIRECT_TTL_MS = 10 * 60 * 1000;
 
 /** Auth screens are never a sensible place to return to after signing in. */
-const NON_RETURNABLE = ['/login', '/signup', '/auth/confirmed'];
+const NON_RETURNABLE = ['/login', '/signup', '/auth/'];
 
 type StashedRedirect = { path: string; at: number };
 

@@ -2,7 +2,12 @@ import { useEffect, useState } from 'react';
 import { CheckCircle2, Loader2 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../hooks/useAuth';
-import { EMPTY_ADDRESS, readAddress, type SavedAddress } from '../../lib/accountProfile';
+import {
+  EMPTY_ADDRESS,
+  SHIPPING_COUNTRY,
+  readAddress,
+  type SavedAddress,
+} from '../../lib/accountProfile';
 import { FieldError, fieldClass } from '../../components/auth/FieldError';
 import { US_STATES } from '../../lib/usStates';
 import { StyledSelect } from '../../components/ui/StyledSelect';
@@ -44,7 +49,11 @@ export function AccountAddressesPage() {
 
     setSaving(true);
     try {
-      const { error: updateError } = await supabase.auth.updateUser({ data: { address } });
+      // Force the country rather than trusting state: the field is read-only in
+      // the UI, so persisting anything else would mean the form and the stored
+      // record disagree.
+      const payload: SavedAddress = { ...address, country: SHIPPING_COUNTRY };
+      const { error: updateError } = await supabase.auth.updateUser({ data: { address: payload } });
       if (updateError) throw updateError;
       setNotice('Address saved.');
     } catch (err: any) {
@@ -102,7 +111,28 @@ export function AccountAddressesPage() {
 
           <div className="grid sm:grid-cols-2 gap-5">
             {field('postalCode', 'ZIP / Postal Code', { placeholder: '85251' })}
-            {field('country', 'Country')}
+
+            {/* Read-only: we only ship within the US, and the state dropdown is
+                US-only, so an editable country could produce an address we
+                cannot fulfil. Styled to match the locked email field on the
+                Profile page. */}
+            <div>
+              <label htmlFor="country" className={labelClass}>
+                Country
+              </label>
+              <input
+                id="country"
+                type="text"
+                value={SHIPPING_COUNTRY}
+                readOnly
+                disabled
+                aria-describedby="country-note"
+                className={`${fieldClass(false)} opacity-60 cursor-not-allowed`}
+              />
+              <p id="country-note" className="mt-2 font-sans text-xs text-muted-foreground">
+                We currently ship within the United States only.
+              </p>
+            </div>
           </div>
 
           {field('phone', 'Phone (optional)', { placeholder: '(555) 123-4567', type: 'tel' })}
