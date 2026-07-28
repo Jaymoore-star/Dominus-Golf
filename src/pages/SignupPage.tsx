@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { Loader2, Eye, EyeOff, CheckCircle2, AlertCircle } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
@@ -32,6 +32,14 @@ export function SignupPage() {
 
   const passwordsMatch = confirmPassword.length > 0 && confirmPassword === password
 
+  // The success screen replaces the form in place rather than navigating, so
+  // the router's scroll restoration never runs and the page keeps whatever
+  // offset the user had scrolled to while filling in the form — leaving them
+  // looking at the footer instead of the confirmation.
+  useEffect(() => {
+    if (success) window.scrollTo(0, 0)
+  }, [success])
+
   const validate = () => {
     const next: FieldErrors = {}
     if (!email.trim()) next.email = 'Enter your email address.'
@@ -57,7 +65,10 @@ export function SignupPage() {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/login`,
+          // Lands on a page that actually confirms what happened. Sending them
+          // to /login showed a signed-out-looking form to someone the confirm
+          // link had just signed in.
+          emailRedirectTo: `${window.location.origin}/auth/confirmed`,
           data: {
             signupSource: 'dominusgolf.com',
             ...(displayName ? { displayName } : {}),

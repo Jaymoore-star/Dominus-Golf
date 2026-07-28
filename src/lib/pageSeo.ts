@@ -114,6 +114,11 @@ export const PAGE_SEO = {
     description: 'Sign in to your Dominus Golf account.',
     noindex: true,
   },
+  '/auth/confirmed': {
+    title: 'Email Confirmed',
+    description: 'Your Dominus Golf email address has been confirmed.',
+    noindex: true,
+  },
   '/signup': {
     title: 'Create an Account',
     description: 'Create a Dominus Golf account to track orders and save products.',

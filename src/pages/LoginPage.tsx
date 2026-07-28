@@ -57,7 +57,13 @@ export function LoginPage() {
         setError('Please verify your email before signing in. We just resent the link.')
         // Best-effort resend: the user already has the "verify your email"
         // message, and a resend failure should not replace it with a worse one.
-        try { await supabase.auth.resend({ type: 'signup', email }) } catch { /* ignored */ }
+        try {
+          await supabase.auth.resend({
+            type: 'signup',
+            email,
+            options: { emailRedirectTo: `${window.location.origin}/auth/confirmed` },
+          })
+        } catch { /* ignored */ }
       } else {
         setError(err?.message || 'Something went wrong. Please try again.')
       }

@@ -1,0 +1,59 @@
+<!--
+  Supabase → Authentication → Email Templates → "Confirm signup"
+  Paste the markup below (everything from <div> to </div>) into the Message body.
+
+  Suggested subject line:  Confirm your Dominus Golf account
+
+  Supabase renders Go template variables. The only one used here is
+  {{ .ConfirmationURL }} — the verify link, which lands on /auth/confirmed
+  because SignupPage passes emailRedirectTo.
+
+  Styling matches buildGrantEmailHtml() in backend/index.ts so both emails look
+  like the same brand: cream #f4f1ea, gold #C4963B, Georgia headings, and a
+  table-based layout because Outlook ignores most modern CSS.
+
+  This file is the source of truth — the dashboard is a copy. Edit here first.
+-->
+<div style="background:#f4f1ea;margin:0;padding:32px 0;font-family:Georgia,'Times New Roman',serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f1ea;">
+    <tr><td align="center">
+      <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;background:#ffffff;border:1px solid #e6e0d4;">
+        <tr><td style="height:4px;background:#C4963B;font-size:0;line-height:0;">&nbsp;</td></tr>
+
+        <tr><td align="center" style="padding:34px 40px 6px;">
+          <div style="font-family:Georgia,serif;font-size:22px;letter-spacing:4px;color:#1a1a1a;font-weight:bold;text-transform:uppercase;">Dominus Golf</div>
+          <div style="font-family:Arial,sans-serif;font-size:11px;letter-spacing:2px;color:#C4963B;text-transform:uppercase;margin-top:6px;">Confirm Your Account</div>
+        </td></tr>
+
+        <tr><td style="padding:22px 40px 4px;font-family:Georgia,serif;color:#1a1a1a;font-size:16px;line-height:1.7;">
+          <p style="margin:0 0 16px;">Welcome to Dominus Golf.</p>
+          <p style="margin:0 0 16px;">You're one step away. Confirm your email address to activate your account, track your orders, and save your favorite gear.</p>
+        </td></tr>
+
+        <tr><td align="center" style="padding:14px 40px 26px;">
+          <table role="presentation" cellpadding="0" cellspacing="0"><tr>
+            <td style="background:#C4963B;">
+              <a href="{{ .ConfirmationURL }}" style="display:inline-block;padding:14px 34px;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#ffffff;text-decoration:none;">Confirm Email Address</a>
+            </td>
+          </tr></table>
+        </td></tr>
+
+        <tr><td style="padding:0 40px;"><div style="border-top:1px solid #e6e0d4;"></div></td></tr>
+
+        <tr><td style="padding:20px 40px 4px;font-family:Arial,sans-serif;font-size:12px;line-height:1.7;color:#8a8375;">
+          If the button doesn't work, copy and paste this link into your browser:
+          <div style="margin-top:8px;word-break:break-all;color:#C4963B;">{{ .ConfirmationURL }}</div>
+        </td></tr>
+
+        <tr><td style="padding:16px 40px 24px;font-family:Arial,sans-serif;font-size:12px;line-height:1.7;color:#8a8375;">
+          This link can only be used once. If you didn't create a Dominus Golf account, you can safely ignore this email — nothing will happen.
+        </td></tr>
+
+        <tr><td style="padding:20px 40px 32px;background:#faf8f4;font-family:Arial,sans-serif;font-size:12px;line-height:1.6;color:#8a8375;">
+          Questions? Reply to this email or reach us at <a href="mailto:Customersupport@dominusgolf.com" style="color:#C4963B;text-decoration:none;">Customersupport@dominusgolf.com</a>.
+          <div style="margin-top:12px;color:#b3ab9a;">&copy; Dominus Golf - Excellence Recognized. Development Funded.</div>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</div>
