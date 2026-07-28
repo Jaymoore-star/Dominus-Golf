@@ -30,7 +30,7 @@ export function AccountOrdersPage() {
 
         <p className="mt-3 font-sans text-sm text-muted-foreground leading-relaxed max-w-md mx-auto">
           We're still linking completed purchases to your account, so orders won't
-          appear here just yet. Your emailed receipt is your record in the meantime —
+          appear here just yet. Your emailed receipt is your record in the meantime -
           and if you need anything at all, our team can look it up for you.
         </p>
 

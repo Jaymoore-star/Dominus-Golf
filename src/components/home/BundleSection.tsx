@@ -35,7 +35,7 @@ const bundles: Bundle[] = [
     price: '$67.98',
     compareAt: '$72.98',
     description:
-      'Tour Pure + Feel Right Band — built to clean up mechanics and create consistency from day one.',
+      'Tour Pure + Feel Right Band - built to clean up mechanics and create consistency from day one.',
     items: [
       { label: 'Feel Right Band', image: IMG_FEEL_RIGHT_BAND },
     ],
@@ -48,7 +48,7 @@ const bundles: Bundle[] = [
     price: '$87.97',
     compareAt: '$92.97',
     description:
-      'Tour Pure + Feel Right Band + 90-Day Training Manual — full swing development in one system.',
+      'Tour Pure + Feel Right Band + 90-Day Training Manual - full swing development in one system.',
     items: [
       { label: 'Feel Right Band', image: IMG_FEEL_RIGHT_BAND },
       { label: '90-Day Manual', image: IMG_BOOK },

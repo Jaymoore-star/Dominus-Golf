@@ -5,14 +5,14 @@ import { CartDrawer } from '../components/cart/CartDrawer';
 const sections = [
   {
     title: 'Processing Time',
-    body: `All orders are processed within 1–3 business days of payment confirmation. Orders placed on weekends or federal holidays will be processed on the next available business day. You will receive a confirmation email with your tracking number once your order ships.`,
+    body: `All orders are processed within 1-3 business days of payment confirmation. Orders placed on weekends or federal holidays will be processed on the next available business day. You will receive a confirmation email with your tracking number once your order ships.`,
   },
   {
     title: 'Shipping Rates & Delivery Estimates',
-    body: `We offer free standard shipping on all domestic orders over $150. Standard shipping (3–7 business days) is available on all orders. Expedited shipping options are available at checkout. Delivery estimates are provided by the carrier and are not guaranteed by Dominus Golf.`,
+    body: `We offer free standard shipping on all domestic orders over $150. Standard shipping (3-7 business days) is available on all orders. Expedited shipping options are available at checkout. Delivery estimates are provided by the carrier and are not guaranteed by Dominus Golf.`,
     list: [
-      'Standard Shipping (3–7 business days): Calculated at checkout',
-      'Expedited Shipping (2–3 business days): Calculated at checkout',
+      'Standard Shipping (3-7 business days): Calculated at checkout',
+      'Expedited Shipping (2-3 business days): Calculated at checkout',
       'Free Standard Shipping on orders over $150',
     ],
   },
@@ -34,7 +34,7 @@ const sections = [
   },
   {
     title: 'Returns & Exchanges',
-    body: `Unopened products in original condition may be returned within 30 days of delivery for a full refund. To initiate a return, email Customersupport@dominusgolf.com with your order number and reason for return. Customers are responsible for return shipping costs unless the item was defective or incorrectly shipped. Refunds are processed within 5–7 business days of receiving the returned item.`,
+    body: `Unopened products in original condition may be returned within 30 days of delivery for a full refund. To initiate a return, email Customersupport@dominusgolf.com with your order number and reason for return. Customers are responsible for return shipping costs unless the item was defective or incorrectly shipped. Refunds are processed within 5-7 business days of receiving the returned item.`,
   },
 ];
 
@@ -63,7 +63,7 @@ export function ShippingPolicyPage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
-              { label: 'Processing', value: '1–3 Business Days' },
+              { label: 'Processing', value: '1-3 Business Days' },
               { label: 'Free Shipping', value: 'Orders Over $150' },
               { label: 'Returns Window', value: '30 Days' },
             ].map((item) => (

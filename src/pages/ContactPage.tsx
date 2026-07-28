@@ -42,7 +42,7 @@ export function ContactPage() {
             {
               icon: <Clock size={20} />,
               label: 'Support Hours',
-              value: 'Mon – Fri, 9 AM – 5 PM',
+              value: 'Mon - Fri, 9 AM - 5 PM',
               sub: 'Mountain Standard Time (MST)',
             },
           ].map((item) => (

@@ -12,7 +12,7 @@ const steps = [
   {
     number: '02',
     title: 'Train Swing Path First',
-    body: `Your swing path determines everything - ball flight, spin, and direction. The Tour Pure weighted trainer forces your body to feel the correct path through impact. Train 10–15 minutes daily at 50–60% swing speed. Feel the club tracking on plane.`,
+    body: `Your swing path determines everything - ball flight, spin, and direction. The Tour Pure weighted trainer forces your body to feel the correct path through impact. Train 10-15 minutes daily at 50-60% swing speed. Feel the club tracking on plane.`,
   },
   {
     number: '03',
@@ -123,7 +123,7 @@ export function BeginnersPage() {
           <div className="flex items-start gap-4 bg-accent/5 border border-accent/20 p-6">
             <span className="text-accent text-lg shrink-0 mt-0.5">⚠</span>
             <p className="font-sans text-sm text-white/70 leading-relaxed">
-              <span className="font-semibold text-accent">Safety First:</span> Always use Tour Pure at 50–75% of maximum swing speed. Warm up before every session. Read the full{' '}
+              <span className="font-semibold text-accent">Safety First:</span> Always use Tour Pure at 50-75% of maximum swing speed. Warm up before every session. Read the full{' '}
               <Link to="/safety-disclaimer" className="text-accent hover:underline">
                 Safety Disclaimer
               </Link>{' '}

@@ -257,13 +257,13 @@ export function BundlesPage() {
                   <tr key={idx} className="hover:bg-secondary/20 transition-colors">
                     <td className="py-5 px-4 border-b border-border text-sm font-medium">{feature.name}</td>
                     <td className="py-5 px-4 border-b border-border text-center">
-                      {feature.alone ? <Check size={20} className="text-accent mx-auto" /> : <span className="text-muted-foreground/30">—</span>}
+                      {feature.alone ? <Check size={20} className="text-accent mx-auto" /> : <span className="text-muted-foreground/30">-</span>}
                     </td>
                     <td className="py-5 px-4 border-b border-border text-center bg-accent/5">
-                      {feature.starter ? <Check size={20} className="text-accent mx-auto" /> : <span className="text-muted-foreground/30">—</span>}
+                      {feature.starter ? <Check size={20} className="text-accent mx-auto" /> : <span className="text-muted-foreground/30">-</span>}
                     </td>
                     <td className="py-5 px-4 border-b border-border text-center">
-                      {feature.pro ? <Check size={20} className="text-accent mx-auto" /> : <span className="text-muted-foreground/30">—</span>}
+                      {feature.pro ? <Check size={20} className="text-accent mx-auto" /> : <span className="text-muted-foreground/30">-</span>}
                     </td>
                   </tr>
                 ))}

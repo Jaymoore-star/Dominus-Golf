@@ -9,11 +9,11 @@ const sections = [
   },
   {
     title: 'Swing Speed Warning',
-    body: `Do NOT swing Tour Pure at full speed. Use 50–75% of your maximum swing speed at all times during practice. The additional weight of the trainer places significant stress on your muscles, tendons, and joints. Swinging at full speed with a weighted trainer dramatically increases the risk of strain, sprain, or more serious injury.`,
+    body: `Do NOT swing Tour Pure at full speed. Use 50-75% of your maximum swing speed at all times during practice. The additional weight of the trainer places significant stress on your muscles, tendons, and joints. Swinging at full speed with a weighted trainer dramatically increases the risk of strain, sprain, or more serious injury.`,
   },
   {
     title: 'Warm-Up Required',
-    body: `Always warm up for a minimum of 5–10 minutes before using Tour Pure. Begin with light stretching targeting the shoulders, back, hips, and forearms. Never use the trainer cold or immediately after waking. Begin every session with slow, controlled half-swings before progressing to fuller motions.`,
+    body: `Always warm up for a minimum of 5-10 minutes before using Tour Pure. Begin with light stretching targeting the shoulders, back, hips, and forearms. Never use the trainer cold or immediately after waking. Begin every session with slow, controlled half-swings before progressing to fuller motions.`,
   },
   {
     title: 'Clear Your Surroundings',
@@ -21,7 +21,7 @@ const sections = [
   },
   {
     title: 'Session Duration',
-    body: `Limit weighted swing training sessions to 10–15 minutes of active swinging per session. Overuse or prolonged sessions without rest significantly increases injury risk. Allow a minimum of 24 hours of recovery between intense training sessions.`,
+    body: `Limit weighted swing training sessions to 10-15 minutes of active swinging per session. Overuse or prolonged sessions without rest significantly increases injury risk. Allow a minimum of 24 hours of recovery between intense training sessions.`,
   },
   {
     title: 'Who Should Not Use This Product',
@@ -62,7 +62,7 @@ export function SafetyDisclaimerPage() {
         <div className="max-w-3xl mx-auto flex items-start gap-4">
           <span className="text-accent text-xl shrink-0 mt-0.5">⚠</span>
           <p className="font-sans text-sm text-accent leading-relaxed font-semibold">
-            Do NOT swing Tour Pure at full speed. Use 50–75% of maximum swing speed. Failure to follow safety guidelines may result in serious injury.
+            Do NOT swing Tour Pure at full speed. Use 50-75% of maximum swing speed. Failure to follow safety guidelines may result in serious injury.
           </p>
         </div>
       </div>

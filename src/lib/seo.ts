@@ -89,7 +89,7 @@ export function seo(input: SeoInput): { meta: MetaEntry[]; links: LinkEntry[] } 
     ? title.endsWith(SITE.name)
       ? title
       : `${title} | ${SITE.name}`
-    : `${SITE.name} — Golf Training Systems, Apparel & Accessories`;
+    : `${SITE.name} - Golf Training Systems, Apparel & Accessories`;
 
   const url = absoluteUrl(path);
   const imageUrl = absoluteUrl(image || SITE.ogImage);

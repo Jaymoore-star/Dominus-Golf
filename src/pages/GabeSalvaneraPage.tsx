@@ -164,7 +164,7 @@ export function GabeSalvaneraPage() {
                   "Range practice builds mechanics. Focused range sessions build golfers. I help you
                   optimize your swing, manage your practice time, and turn your repetitions into results."
                 </blockquote>
-                <p className="font-sans text-sm text-white/40 mt-6">— Gabe Salvanera</p>
+                <p className="font-sans text-sm text-white/40 mt-6">- Gabe Salvanera</p>
               </div>
             </div>
           </div>

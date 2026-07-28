@@ -25,7 +25,7 @@ export const PAGE_SEO = {
   '/about': {
     title: 'About Dominus Golf',
     description:
-      'How the Tour Pure system redefines practice — and why Dominus Golf builds training equipment rather than another set of clubs.',
+      'How the Tour Pure system redefines practice - and why Dominus Golf builds training equipment rather than another set of clubs.',
   },
   '/about/team': {
     title: 'Our Team',
@@ -49,7 +49,7 @@ export const PAGE_SEO = {
   '/beginners': {
     title: 'Golf Training for Beginners',
     description:
-      'New to golf? Where to start with swing path, plane, and tempo — and which Dominus Golf training system fits a beginner.',
+      'New to golf? Where to start with swing path, plane, and tempo - and which Dominus Golf training system fits a beginner.',
   },
   '/tour-pure-guide': {
     title: 'Tour Pure Training Guide',
@@ -82,11 +82,11 @@ export const PAGE_SEO = {
   },
   '/leroy-bates': {
     title: 'Leroy Bates',
-    description: 'Golf professional Leroy Bates — profile and training background.',
+    description: 'Golf professional Leroy Bates - profile and training background.',
   },
   '/gabe-salvanera': {
     title: 'Gabe Salvanera',
-    description: 'Golf professional Gabe Salvanera — profile and training background.',
+    description: 'Golf professional Gabe Salvanera - profile and training background.',
   },
 
   '/shipping-policy': {
@@ -160,7 +160,7 @@ export const SHOP_CATEGORIES = {
   all: {
     label: 'Shop All',
     description:
-      'Browse every Dominus Golf product — training systems, apparel, and accessories.',
+      'Browse every Dominus Golf product - training systems, apparel, and accessories.',
   },
   'training-system': {
     label: 'Golf Training Systems',
@@ -169,7 +169,7 @@ export const SHOP_CATEGORIES = {
   },
   apparel: {
     label: 'Golf Apparel',
-    description: 'Dominus Golf apparel — on and off the course.',
+    description: 'Dominus Golf apparel - on and off the course.',
   },
   accessories: {
     label: 'Golf Accessories',

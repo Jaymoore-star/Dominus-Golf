@@ -125,7 +125,7 @@ export function AuthConfirmedPage() {
               </h1>
               <p className="font-sans text-sm text-muted-foreground mb-8 leading-relaxed">
                 Confirmation links can only be used once, and they expire after a while.
-                Try signing in — if your email still needs confirming, we'll send you a fresh link.
+                Try signing in - if your email still needs confirming, we'll send you a fresh link.
               </p>
               <Link
                 to="/login"
