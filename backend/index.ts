@@ -159,8 +159,8 @@ app.post("/api/grant/checkout", async (c) => {
     developmentPlan = "",
     trainingRegimen = "",
     competitiveVision = "",
-    successUrl = "https://titleist-shopify-store-45pi183s.blinkpowered.com/grant/success",
-    cancelUrl = "https://titleist-shopify-store-45pi183s.blinkpowered.com/grant",
+    successUrl = "https://www.dominusgolf.com/grant/success",
+    cancelUrl = "https://www.dominusgolf.com/grant",
   } = body
 
   // Store applicant info in note so we can retrieve it from the Square order
@@ -249,7 +249,6 @@ app.post("/api/grant/checkout", async (c) => {
   }
 })
 
-// POST /api/grant/confirm — Send eBook delivery email after grant submission
 // ── Grant eBook email (themed to match the site) ──────────────────────────
 function buildGrantEmailHtml(rawName: string): string {
   const name = rawName.replace(/[<>]/g, "").trim() || "Applicant"
@@ -342,22 +341,6 @@ async function sendGrantEmail(
   }
   return { ok: true, id: data.id }
 }
-
-// POST /api/grant/confirm — send the eBook email directly (TEST ONLY, no payment check)
-app.post("/api/grant/confirm", async (c) => {
-  const env = c.env as Record<string, string>
-  let body: { name?: string; email?: string }
-  try { body = await c.req.json() } catch { return c.json({ error: "Invalid request body" }, 400) }
-
-  const { name = "Applicant", email = "" } = body
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return c.json({ error: "Valid email required" }, 400)
-  }
-
-  const result = await sendGrantEmail(env, name, email)
-  if (!result.ok) return c.json({ error: result.error }, 500)
-  return c.json({ success: true, id: result.id })
-})
 
 // POST /api/grant/complete — verify the Square payment, THEN send the eBook email.
 // Body: { orderId?, paymentId?, sandbox?, email?, name? }
