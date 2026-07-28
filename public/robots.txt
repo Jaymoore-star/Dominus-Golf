@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# Private and post-transaction pages — no search value, and we do not want
+# them competing with the real pages in results.
+Disallow: /account
+Disallow: /account/
+Disallow: /wishlist
+Disallow: /login
+Disallow: /signup
+Disallow: /grant/success
+
+Sitemap: https://www.dominusgolf.com/sitemap.xml
