@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from '@tanstack/react-router';
 import { ChevronRight, Loader2 } from 'lucide-react';
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://45pi183s.backend.blink.new';
+import { BACKEND_URL } from '../lib/backend';
 
 async function createCheckoutSession(
   items: { name: string; price: number; quantity: number; image?: string }[]

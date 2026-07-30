@@ -6,8 +6,7 @@ import { useScrollLock } from '../../hooks/useScrollLock';
 import { clearPendingAction, peekPendingAction } from '../../lib/pendingAction';
 import { trackBeginCheckout } from '../../lib/analytics';
 import { Link } from '@tanstack/react-router';
-
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://45pi183s.backend.blink.new';
+import { BACKEND_URL } from '../../lib/backend';
 
 async function createCheckoutSession(
   items: { name: string; price: number; quantity: number; image?: string }[]
