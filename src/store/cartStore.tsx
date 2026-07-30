@@ -3,13 +3,41 @@ import React, {
   useContext,
   useEffect,
   useReducer,
+  useRef,
   type ReactNode,
 } from 'react';
 import type { Product } from '../data/products';
 import { products } from '../data/products';
 import { trackAddToCart } from '../lib/analytics';
+import { useAuth } from '../hooks/useAuth';
+import {
+  mergeCartLines,
+  readCartLines,
+  scheduleCartSync,
+  type StoredCartLine,
+} from '../lib/accountBaskets';
+import {
+  CART_STORAGE_KEY as STORAGE_KEY,
+  onCartReset,
+  readCartOwner,
+  writeCartOwner,
+} from '../lib/basketStorage';
 
-const STORAGE_KEY = 'dominus-cart';
+/** Rehydrate stored lines into cart items, dropping ids no longer in the catalog. */
+function linesToItems(lines: StoredCartLine[]): CartItem[] {
+  return lines
+    .map((line) => {
+      const product = products.find((p) => p.id === line.id);
+      if (!product) return null;
+      return { product, quantity: Math.max(1, Math.floor(line.quantity)) };
+    })
+    .filter((item): item is CartItem => item !== null);
+}
+
+/** The shape stored on the account: ids and quantities only. */
+function itemsToLines(items: CartItem[]): StoredCartLine[] {
+  return items.map((item) => ({ id: item.product.id, quantity: item.quantity }));
+}
 
 // Persist only ids + quantities; product details are rehydrated from the live
 // catalog on load so prices/names never go stale.
@@ -63,7 +91,9 @@ type CartAction =
   | { type: 'TOGGLE_CART' }
   | { type: 'OPEN_CART' }
   | { type: 'CLOSE_CART' }
-  | { type: 'CLEAR_CART' };
+  | { type: 'CLEAR_CART' }
+  /** Wholesale replacement, for hydrating the account cart on sign-in. */
+  | { type: 'SET_ITEMS'; items: CartItem[] };
 
 const initialState: CartState = {
   items: [],
@@ -124,6 +154,8 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       return { ...state, isOpen: false };
     case 'CLEAR_CART':
       return { ...state, items: [] };
+    case 'SET_ITEMS':
+      return { ...state, items: action.items };
     default:
       return state;
   }
@@ -156,9 +188,64 @@ export function CartProvider({ children }: { children: ReactNode }) {
     (init) => ({ ...init, items: loadPersistedItems() }),
   );
 
+  const { user } = useAuth();
+
+  /** See wishlistStore: keyed by user id so saving cannot re-trigger the merge. */
+  const hydratedFor = useRef<string | null>(null);
+  const syncArmed = useRef(false);
+  const itemsRef = useRef(state.items);
+
   // Save cart contents whenever they change.
   useEffect(() => {
+    itemsRef.current = state.items;
     persistItems(state.items);
+  }, [state.items]);
+
+  // Signing in: fold the guest cart into the account's, then write the result
+  // back. Merging rather than replacing matters here — the common path is adding
+  // to the cart and only then signing in to check out.
+  useEffect(() => {
+    if (!user) {
+      hydratedFor.current = null;
+      syncArmed.current = false;
+      return;
+    }
+    if (hydratedFor.current === user.id) return;
+
+    hydratedFor.current = user.id;
+    syncArmed.current = true;
+
+    // A cart already marked as this account's is a reload, not a guest cart, so
+    // quantities must not be summed again.
+    const localIsSameAccount = readCartOwner() === user.id;
+    writeCartOwner(user.id);
+
+    dispatch({
+      type: 'SET_ITEMS',
+      items: linesToItems(
+        mergeCartLines(
+          readCartLines(user.metadata),
+          itemsToLines(itemsRef.current),
+          localIsSameAccount,
+        ),
+      ),
+    });
+  }, [user]);
+
+  useEffect(
+    () =>
+      onCartReset(() => {
+        syncArmed.current = false;
+        dispatch({ type: 'CLEAR_CART' });
+      }),
+    [],
+  );
+
+  // Mirror customer edits up to the account. Skipped until hydration has armed
+  // it, so this never fires for a guest or during sign-out.
+  useEffect(() => {
+    if (!syncArmed.current) return;
+    scheduleCartSync(itemsToLines(state.items));
   }, [state.items]);
 
   const addItem = (product: Product, opts?: { track?: boolean }) => {

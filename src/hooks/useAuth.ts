@@ -3,6 +3,8 @@ import type { User } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabase'
 import { clearGrantDraft } from '@/lib/grantDraft'
 import { clearPendingAction } from '@/lib/pendingAction'
+import { clearPersistedCart, clearPersistedWishlist } from '@/lib/basketStorage'
+import { flushAccountBaskets } from '@/lib/accountBaskets'
 
 interface AuthUser {
   id: string
@@ -46,12 +48,21 @@ export function useAuth() {
     return () => subscription.unsubscribe()
   }, [])
 
-  const signOut = () => {
+  const signOut = async () => {
     // These outlive the tab now, so don't leave one person's half-written
-    // application — or their pending checkout — for the next user of a shared
-    // machine.
+    // application — or their pending checkout, or the products they saved —
+    // for the next user of a shared machine.
     clearGrantDraft()
     clearPendingAction()
+
+    // Land any debounced wishlist/cart write while the session is still valid,
+    // otherwise an edit made in the last moment before signing out would never
+    // reach the account. Only then clear the local copies: the account keeps
+    // both lists, and signing back in restores them.
+    await flushAccountBaskets()
+    clearPersistedWishlist()
+    clearPersistedCart()
+
     return supabase.auth.signOut()
   }
 
