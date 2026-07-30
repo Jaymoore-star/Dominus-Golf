@@ -1,0 +1,25 @@
+# Backend API Worker — the Hono app in backend/index.ts.
+#
+# This is deliberately NOT called wrangler.toml. Cloudflare Workers Builds picks
+# up wrangler.toml automatically on every push to main, and that slot belongs to
+# the frontend. When the backend lived in wrangler.toml, the Git build faithfully
+# built backend/index.ts and deployed it as a second, secret-less copy of the API
+# instead of the website. Keeping the backend under an explicit filename means a
+# push can never redeploy or clobber it.
+#
+# Deploy with:  npm run deploy:backend
+# Run locally:  npm run dev:backend      (reads .dev.vars, serves 127.0.0.1:8787)
+
+name = "dominus-golf-backend"
+main = "backend/index.ts"
+compatibility_date = "2024-11-01"
+
+# The login has access to more than one account, so pin the target explicitly —
+# otherwise deploys prompt, and in CI they fail. This is the business account.
+account_id = "d52c80b6632554c75458cf115c6d74b0"
+
+# Local dev reads secrets from .dev.vars automatically.
+# For production, set these with:
+#   npx wrangler secret put SQUARE_ACCESS_TOKEN -c wrangler.backend.toml
+# The -c matters — without it wrangler reads wrangler.toml and targets the
+# frontend Worker, which would put backend secrets on the public site Worker.

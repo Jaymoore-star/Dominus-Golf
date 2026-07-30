@@ -1,10 +1,47 @@
-name = "dominus-golf-backend"
-main = "backend/index.ts"
-compatibility_date = "2024-11-01"
+# Frontend Worker — serves the built site from dist/ as static assets.
+#
+# This file is what Cloudflare Workers Builds reads on every push to main, so it
+# must describe the WEBSITE. The backend API lives in wrangler.backend.toml; see
+# the note there for why they are separate.
+#
+# There is no `main`, so this is an assets-only Worker: Cloudflare serves the
+# files directly with no JavaScript in the request path.
 
-# The login has access to more than one account, so pin the target explicitly —
-# otherwise deploys prompt, and in CI they fail. This is the business account.
+name = "tit"
+compatibility_date = "2024-11-01"
 account_id = "d52c80b6632554c75458cf115c6d74b0"
 
-# Local dev reads secrets from .dev.vars automatically.
-# For production, set these with:  wrangler secret put SQUARE_ACCESS_TOKEN  (etc.)
+# Workers Builds runs `wrangler deploy`, and wrangler runs this first. Keeping the
+# build command in the repo rather than the dashboard means the build is
+# reproducible and reviewable, and nobody needs dashboard access to change it.
+[build]
+command = "npm run build"
+
+[assets]
+directory = "./dist"
+
+# Serve /product/tour-pure-men directly from product/tour-pure-men/index.html,
+# and redirect the trailing-slash form to it.
+#
+# The default ("auto-trailing-slash") does the opposite: it 307s /product/x to
+# /product/x/. Every canonical, og:url and sitemap entry this site emits is
+# written WITHOUT a trailing slash, so the default meant each of those URLs
+# redirected before serving — telling crawlers the canonical URL is not the one
+# actually serving the page. Verified with `wrangler dev`: default gave
+# "307 Location: /product/tour-pure-men/", this setting gives a direct 200.
+html_handling = "drop-trailing-slash"
+
+# The site is a single-page app, so a URL with no matching file must still return
+# the app shell rather than a 404 — otherwise every deep link breaks on refresh.
+#
+# This replaces public/_redirects, which was deleted. That file held
+# `/* /index.html 200`, and Cloudflare's docs are explicit that "redirects are
+# always followed, regardless of whether or not an asset matches the incoming
+# request" — so a catch-all rewrite would have shadowed the per-route HTML that
+# the prerender step in vite.config.ts writes, silently undoing all of it.
+#
+# Asset matching still wins over this fallback, and the default html_handling
+# ("auto-trailing-slash") resolves /product/tour-pure-men to that route's
+# prerendered product/tour-pure-men/index.html. The fallback only applies to URLs
+# with no prerendered file at all.
+not_found_handling = "single-page-application"
