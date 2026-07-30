@@ -8,11 +8,18 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!--
+  <!-- seo:start
       Sitewide fallback tags for crawlers that do not execute JavaScript —
       notably social link unfurlers (Facebook, WhatsApp, iMessage, LinkedIn).
       Once the app mounts, the router manages the head and removes everything
       marked data-static-seo so the live DOM has no duplicates. See src/App.tsx.
+
+      At build time the prerender plugin in vite.config.ts REPLACES everything
+      between the seo:start and seo:end markers with the real per-route tags,
+      once per route, writing dist/<route>/index.html. What is written here is
+      only the fallback for unmatched URLs. Do not remove the markers — without
+      them the plugin has nothing to substitute and every page ships this
+      generic copy instead.
     -->
   <title data-static-seo>Dominus Golf - Golf Training Systems, Apparel &amp; Accessories</title>
   <meta data-static-seo name="description"
@@ -31,6 +38,7 @@
   <meta data-static-seo name="twitter:description"
     content="Golf training systems, apparel, and accessories from Dominus Golf." />
   <meta data-static-seo name="twitter:image" content="https://www.dominusgolf.com/og-default.jpg" />
+  <!-- seo:end -->
 </head>
 
 <body>

@@ -3,7 +3,8 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import fs from 'fs';
 import { products } from './src/data/products';
-import { PAGE_SEO, SHOP_CATEGORIES } from './src/lib/pageSeo';
+import { PAGE_SEO, SHOP_CATEGORIES, prerenderRoutes } from './src/lib/pageSeo';
+import { renderHeadHtml } from './src/lib/headHtml';
 import { SITE } from './src/lib/seo';
 
 /**
@@ -66,8 +67,81 @@ function sitemapPlugin(): Plugin {
   };
 }
 
+/** Region of index.html the prerenderer owns — see the markers in that file. */
+const SEO_BLOCK = /<!--\s*seo:start[\s\S]*?<!--\s*seo:end\s*-->/;
+
+/**
+ * Writes one static HTML file per route, with that route's real title, meta,
+ * Open Graph and JSON-LD baked into the <head>.
+ *
+ * Why this exists: the app is client-rendered, so its per-route SEO only appears
+ * after JavaScript runs. Google executes JS, but social link unfurlers do not —
+ * Facebook, WhatsApp, LinkedIn and iMessage read the raw HTML and stop. Before
+ * this, every shared link showed the same generic sitewide card no matter which
+ * product it pointed at.
+ *
+ * This is deliberately NOT server-side rendering. Only the <head> is generated;
+ * the <body> stays the empty #root div and the app boots normally. That keeps it
+ * to a build step with no runtime behaviour change, and avoids auditing every
+ * component for SSR safety (Three.js, framer-motion and the localStorage-backed
+ * cart would all need work). Unfurlers only ever read the head, so they get
+ * everything they need; users get the identical app they had before.
+ *
+ * Runs in closeBundle, after Vite has written dist/index.html, so each route
+ * inherits the real hashed asset tags by copying that file rather than
+ * reconstructing it.
+ */
+function prerenderPlugin(): Plugin {
+  return {
+    name: 'dominus-prerender',
+    // Must run after Vite's own HTML emit.
+    enforce: 'post',
+
+    closeBundle() {
+      const outDir = path.resolve(__dirname, 'dist');
+      const shell = path.join(outDir, 'index.html');
+      if (!fs.existsSync(shell)) return;
+
+      const template = fs.readFileSync(shell, 'utf8');
+
+      if (!SEO_BLOCK.test(template)) {
+        // Failing loudly matters: silently skipping would ship a site whose
+        // every page carries the homepage's card, which is exactly the bug
+        // this plugin exists to fix and is invisible without a crawler test.
+        this.error(
+          'prerender: could not find the <!-- seo:start --> … <!-- seo:end --> markers in ' +
+            'dist/index.html. Were they removed from index.html?',
+        );
+      }
+
+      let count = 0;
+
+      for (const { path: routePath, head } of prerenderRoutes()) {
+        const html = template.replace(
+          SEO_BLOCK,
+          `<!-- prerendered for ${routePath} — see prerenderPlugin in vite.config.ts -->\n${renderHeadHtml(head)}`,
+        );
+
+        // '/' is the shell itself and doubles as the SPA fallback for any URL
+        // with no prerendered file; everything else becomes <route>/index.html
+        // so it resolves both with and without a trailing slash.
+        const target =
+          routePath === '/'
+            ? shell
+            : path.join(outDir, routePath.replace(/^\//, ''), 'index.html');
+
+        fs.mkdirSync(path.dirname(target), { recursive: true });
+        fs.writeFileSync(target, html, 'utf8');
+        count++;
+      }
+
+      console.log(`  \x1b[32m✓\x1b[0m prerendered ${count} routes`);
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [react(), sitemapPlugin()],
+  plugins: [react(), sitemapPlugin(), prerenderPlugin()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

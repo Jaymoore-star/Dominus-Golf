@@ -6,60 +6,116 @@ import {
   Outlet,
   HeadContent,
   useRouterState,
+  lazyRouteComponent,
 } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { CartProvider } from './store/cartStore';
 import { WishlistProvider } from './store/wishlistStore';
 import { AuthPromptProvider } from './store/authPromptStore';
 import { LoginPromptModal } from './components/auth/LoginPromptModal';
+
+/**
+ * Page components are code-split: each becomes its own chunk, fetched when its
+ * route is first visited.
+ *
+ * Before this, all 28 pages were statically imported into one 988 KB bundle
+ * (279 KB Brotli) that took ~3.1s to download — and because <body> is an empty
+ * #root div, nothing rendered until it finished. A visitor reading one product
+ * page was paying for the grant form, every legal page and the whole account
+ * section.
+ *
+ * HomePage and NotFoundPage stay eagerly imported on purpose. Home is the most
+ * common landing page, and making it lazy would add a second sequential request
+ * before first paint — exactly the delay this is meant to remove. NotFoundPage
+ * is the router's fallback and must be available synchronously.
+ */
 import { HomePage } from './pages/HomePage';
-import { ShopPage } from './pages/ShopPage';
-import { ProductPage } from './pages/ProductPage';
-import { AboutPage } from './pages/AboutPage';
-import { TeamPage } from './pages/TeamPage';
-import { ContactPage } from './pages/ContactPage';
-import { CareersPage } from './pages/CareersPage';
-import { SustainabilityPage } from './pages/SustainabilityPage';
-import { SafetyDisclaimerPage } from './pages/SafetyDisclaimerPage';
-import { ShippingPolicyPage } from './pages/ShippingPolicyPage';
-import { TermsPage } from './pages/TermsPage';
-import { BeginnersPage } from './pages/BeginnersPage';
-import { TourPureGuidePage } from './pages/TourPureGuidePage';
-import { FeelRightBandGuidePage } from './pages/FeelRightBandGuidePage';
-import { GrantPage } from './pages/GrantPage';
-import { GrantSuccessPage } from './pages/GrantSuccessPage';
-import { AccountProfilePage } from './pages/account/AccountProfilePage';
-import { AccountOrdersPage } from './pages/account/AccountOrdersPage';
-import { AccountAddressesPage } from './pages/account/AccountAddressesPage';
-import { AccountPreferencesPage } from './pages/account/AccountPreferencesPage';
-import { LoginPage } from './pages/LoginPage';
-import { SignupPage } from './pages/SignupPage';
 import { NotFoundPage } from './pages/NotFoundPage';
-import { ProDirectoryPage } from './pages/ProDirectoryPage';
-import { LeroyBatesPage } from './pages/LeroyBatesPage';
-import { GabeSalvaneraPage } from './pages/GabeSalvaneraPage';
-import { WishlistPage } from './pages/WishlistPage';
-import { AuthConfirmedPage } from './pages/AuthConfirmedPage';
-import { AuthResetPasswordPage } from './pages/AuthResetPasswordPage';
-import { products } from './data/products';
-import {
-  seo,
-  clamp,
-  organizationJsonLd,
-  websiteJsonLd,
-  productJsonLd,
-  breadcrumbJsonLd,
-} from './lib/seo';
-import { pageHead, SHOP_CATEGORIES } from './lib/pageSeo';
+
+const ShopPage = lazyRouteComponent(() => import('./pages/ShopPage'), 'ShopPage');
+const ProductPage = lazyRouteComponent(() => import('./pages/ProductPage'), 'ProductPage');
+const AboutPage = lazyRouteComponent(() => import('./pages/AboutPage'), 'AboutPage');
+const TeamPage = lazyRouteComponent(() => import('./pages/TeamPage'), 'TeamPage');
+const ContactPage = lazyRouteComponent(() => import('./pages/ContactPage'), 'ContactPage');
+const CareersPage = lazyRouteComponent(() => import('./pages/CareersPage'), 'CareersPage');
+const SustainabilityPage = lazyRouteComponent(
+  () => import('./pages/SustainabilityPage'),
+  'SustainabilityPage',
+);
+const SafetyDisclaimerPage = lazyRouteComponent(
+  () => import('./pages/SafetyDisclaimerPage'),
+  'SafetyDisclaimerPage',
+);
+const ShippingPolicyPage = lazyRouteComponent(
+  () => import('./pages/ShippingPolicyPage'),
+  'ShippingPolicyPage',
+);
+const TermsPage = lazyRouteComponent(() => import('./pages/TermsPage'), 'TermsPage');
+const BeginnersPage = lazyRouteComponent(() => import('./pages/BeginnersPage'), 'BeginnersPage');
+const TourPureGuidePage = lazyRouteComponent(
+  () => import('./pages/TourPureGuidePage'),
+  'TourPureGuidePage',
+);
+const FeelRightBandGuidePage = lazyRouteComponent(
+  () => import('./pages/FeelRightBandGuidePage'),
+  'FeelRightBandGuidePage',
+);
+const GrantPage = lazyRouteComponent(() => import('./pages/GrantPage'), 'GrantPage');
+const GrantSuccessPage = lazyRouteComponent(
+  () => import('./pages/GrantSuccessPage'),
+  'GrantSuccessPage',
+);
+const AccountProfilePage = lazyRouteComponent(
+  () => import('./pages/account/AccountProfilePage'),
+  'AccountProfilePage',
+);
+const AccountOrdersPage = lazyRouteComponent(
+  () => import('./pages/account/AccountOrdersPage'),
+  'AccountOrdersPage',
+);
+const AccountAddressesPage = lazyRouteComponent(
+  () => import('./pages/account/AccountAddressesPage'),
+  'AccountAddressesPage',
+);
+const AccountPreferencesPage = lazyRouteComponent(
+  () => import('./pages/account/AccountPreferencesPage'),
+  'AccountPreferencesPage',
+);
+const LoginPage = lazyRouteComponent(() => import('./pages/LoginPage'), 'LoginPage');
+const SignupPage = lazyRouteComponent(() => import('./pages/SignupPage'), 'SignupPage');
+const ProDirectoryPage = lazyRouteComponent(
+  () => import('./pages/ProDirectoryPage'),
+  'ProDirectoryPage',
+);
+const LeroyBatesPage = lazyRouteComponent(() => import('./pages/LeroyBatesPage'), 'LeroyBatesPage');
+const GabeSalvaneraPage = lazyRouteComponent(
+  () => import('./pages/GabeSalvaneraPage'),
+  'GabeSalvaneraPage',
+);
+const WishlistPage = lazyRouteComponent(() => import('./pages/WishlistPage'), 'WishlistPage');
+const AuthConfirmedPage = lazyRouteComponent(
+  () => import('./pages/AuthConfirmedPage'),
+  'AuthConfirmedPage',
+);
+const AuthResetPasswordPage = lazyRouteComponent(
+  () => import('./pages/AuthResetPasswordPage'),
+  'AuthResetPasswordPage',
+);
+
+import { seo, organizationJsonLd, websiteJsonLd } from './lib/seo';
+import { pageHead, shopCategoryHead, productHead } from './lib/pageSeo';
 import { initAnalytics, trackPageView } from './lib/analytics';
 
 /**
- * index.html carries a static copy of the sitewide meta tags so that crawlers
- * which do not execute JavaScript (most social link unfurlers) still see
- * something useful. Once the router mounts it manages the head itself, so the
- * static copies are removed to avoid duplicate tags in the live DOM.
+ * Every prerendered HTML file carries a static copy of that route's meta tags so
+ * crawlers which do not execute JavaScript (most social link unfurlers) see the
+ * right ones. Once the router mounts it manages the head itself, so the static
+ * copies are removed to avoid duplicate tags in the live DOM.
  *
- * Prerendering the routes at build time would make this unnecessary.
+ * This is load-bearing, not a leftover: the prerender plugin marks everything it
+ * writes with data-static-seo precisely so this can clear it. Without it, a
+ * client-side navigation would leave the previous page's og:* and canonical tags
+ * sitting alongside the new page's.
  */
 function useStaticHeadCleanup() {
   useEffect(() => {
@@ -119,62 +175,14 @@ const indexRoute = createRoute({
 const shopRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/shop/$category',
-  head: ({ params }) => {
-    const meta = (SHOP_CATEGORIES as Record<string, { label: string; description: string }>)[
-      params.category
-    ];
-    return seo({
-      path: `/shop/${params.category}`,
-      title: meta?.label ?? 'Shop',
-      description:
-        meta?.description ?? 'Browse golf training systems, apparel, and accessories.',
-      jsonLd: [
-        breadcrumbJsonLd([
-          { name: 'Home', path: '/' },
-          { name: meta?.label ?? 'Shop', path: `/shop/${params.category}` },
-        ]),
-      ],
-    });
-  },
+  head: ({ params }) => shopCategoryHead(params.category),
   component: ShopPage,
 });
 
 const productRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/product/$id',
-  head: ({ params }) => {
-    const product = products.find((p) => p.id === params.id);
-
-    // Unknown id renders the not-found path — give it a title but keep it out
-    // of the index rather than emitting Product schema for nothing.
-    if (!product) {
-      return seo({
-        path: `/product/${params.id}`,
-        title: 'Product Not Found',
-        description: 'This product could not be found.',
-        noindex: true,
-      });
-    }
-
-    return seo({
-      path: `/product/${product.id}`,
-      title: product.name,
-      // The product's own opening paragraph, clipped — better than a generic
-      // template line, and it is copy that was already written deliberately.
-      description: clamp(product.description.split('\n\n')[0]),
-      // JPEG twin, not the .webp catalog image — see SITE.ogImage.
-      image: `/images/og/${product.id}.jpg`,
-      type: 'product',
-      jsonLd: [
-        productJsonLd(product),
-        breadcrumbJsonLd([
-          { name: 'Home', path: '/' },
-          { name: 'Shop', path: '/shop/all' },
-          { name: product.name, path: `/product/${product.id}` },
-        ]),
-      ],
-    });
-  },
+  head: ({ params }) => productHead(params.id),
   component: ProductPage,
 });
 

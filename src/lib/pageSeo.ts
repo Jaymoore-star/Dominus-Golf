@@ -1,17 +1,28 @@
 /**
- * Per-page titles and meta descriptions for every static route.
+ * Per-page titles and meta descriptions for every static route, plus the head
+ * builders for the two dynamic route patterns.
  *
- * This is user-facing copy: the title is the clickable blue line in Google
- * results and the description is the grey text under it. Both are worth
+ * The static table is user-facing copy: the title is the clickable blue line in
+ * Google results and the description is the grey text under it. Both are worth
  * writing deliberately — these are first-pass drafts, not final copy.
  *
  * Guidelines: titles under ~60 characters, descriptions 120–155. Anything
  * longer gets truncated with an ellipsis by Google.
  *
- * Dynamic routes (/product/$id, /shop/$category) build their head in App.tsx
- * from live catalog data instead.
+ * Everything a route's head needs lives in this module rather than in App.tsx,
+ * because two callers need it: the router at runtime, and the prerender plugin
+ * in vite.config.ts at build time. A build tool cannot import App.tsx (it pulls
+ * in every page component), so anything only reachable from there would silently
+ * be missing from the prerendered HTML.
  */
-import { seo, type SeoInput } from './seo';
+import { products } from '../data/products';
+import {
+  seo,
+  clamp,
+  productJsonLd,
+  breadcrumbJsonLd,
+  type SeoInput,
+} from './seo';
 
 type PageSeo = Omit<SeoInput, 'path'>;
 
@@ -190,4 +201,87 @@ export type StaticPath = keyof typeof PAGE_SEO;
 /** Build a route `head()` for a static path from the table above. */
 export function pageHead(path: StaticPath) {
   return () => seo({ path, ...PAGE_SEO[path] });
+}
+
+// ── Dynamic routes ─────────────────────────────────────────────────────────
+// These take the route param rather than a router context, so the prerender
+// plugin can call them with a plain string.
+
+/** Head for `/shop/$category`. Unknown categories get generic but valid meta. */
+export function shopCategoryHead(category: string) {
+  const meta = (SHOP_CATEGORIES as Record<string, { label: string; description: string }>)[
+    category
+  ];
+
+  return seo({
+    path: `/shop/${category}`,
+    title: meta?.label ?? 'Shop',
+    description:
+      meta?.description ?? 'Browse golf training systems, apparel, and accessories.',
+    jsonLd: [
+      breadcrumbJsonLd([
+        { name: 'Home', path: '/' },
+        { name: meta?.label ?? 'Shop', path: `/shop/${category}` },
+      ]),
+    ],
+  });
+}
+
+/** Head for `/product/$id`, including Product and BreadcrumbList JSON-LD. */
+export function productHead(id: string) {
+  const product = products.find((p) => p.id === id);
+
+  // An unknown id renders the not-found path — give it a title but keep it out
+  // of the index rather than emitting Product schema for nothing.
+  if (!product) {
+    return seo({
+      path: `/product/${id}`,
+      title: 'Product Not Found',
+      description: 'This product could not be found.',
+      noindex: true,
+    });
+  }
+
+  return seo({
+    path: `/product/${product.id}`,
+    title: product.name,
+    // The product's own opening paragraph, clipped — better than a generic
+    // template line, and it is copy that was already written deliberately.
+    description: clamp(product.description.split('\n\n')[0]),
+    // JPEG twin, not the .webp catalog image — see SITE.ogImage.
+    image: `/images/og/${product.id}.jpg`,
+    type: 'product',
+    jsonLd: [
+      productJsonLd(product),
+      breadcrumbJsonLd([
+        { name: 'Home', path: '/' },
+        { name: 'Shop', path: '/shop/all' },
+        { name: product.name, path: `/product/${product.id}` },
+      ]),
+    ],
+  });
+}
+
+/**
+ * Every URL the prerender plugin should emit static HTML for: the static table,
+ * one page per shop category, and one per product.
+ *
+ * Deliberately includes the `noindex` pages. They cost a couple of KB each and
+ * baking their `robots` tag into the HTML means a crawler sees it without having
+ * to run JavaScript — which is the whole point of prerendering.
+ */
+export function prerenderRoutes(): Array<{ path: string; head: ReturnType<typeof seo> }> {
+  const routes: Array<{ path: string; head: ReturnType<typeof seo> }> = [];
+
+  for (const [path, meta] of Object.entries(PAGE_SEO)) {
+    routes.push({ path, head: seo({ path, ...(meta as PageSeo) }) });
+  }
+  for (const category of Object.keys(SHOP_CATEGORIES)) {
+    routes.push({ path: `/shop/${category}`, head: shopCategoryHead(category) });
+  }
+  for (const product of products) {
+    routes.push({ path: `/product/${product.id}`, head: productHead(product.id) });
+  }
+
+  return routes;
 }
