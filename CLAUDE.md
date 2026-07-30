@@ -19,14 +19,24 @@ See [Blink Migration](#blink-migration) below — **do not break the running app
 - **3D/animation:** `@react-three/fiber` + `drei`, `framer-motion`
 - **Backend:** Hono app in `backend/index.ts` (Square checkout + grant email)
 - **Payments:** Square (production + sandbox)
+- **Hosting:** two Cloudflare Workers — `dominus-golf-backend` (the API,
+  `wrangler.backend.toml`) and `tit` (the site, assets-only, `wrangler.toml`).
+  There is **no** Cloudflare Pages project; the Git connection is Workers Builds.
+- **SEO:** the build prerenders one static HTML file per route with that route's
+  head baked in, so non-JS crawlers see real per-page tags. See `vite.config.ts`
+  → `prerenderPlugin`, and `docs/HANDOFF.md` §2b.
 
 ## Commands
 
 ```bash
 npm install        # install dependencies
 npm run dev        # start dev server → http://localhost:3000 (strict port)
-npm run build      # production build (vite build)
-npm run preview    # preview the production build
+npm run build      # production build (vite build) + prerenders 45 route HTML files
+npm run preview    # preview the production build — see the caveat below
+
+npm run dev:backend     # backend Worker locally on 127.0.0.1:8787 (reads .dev.vars)
+npm run deploy:backend  # deploy the API  (wrangler.backend.toml)
+npm run deploy:site     # deploy the site (wrangler.toml, runs the build first)
 
 # Linting / checks
 npm run lint       # types + js + css, in that order
@@ -50,8 +60,12 @@ re-enabling anything.
 ## Structure
 
 ```
-index.html            App entry (loads /src/main.tsx)
-backend/index.ts      Hono API: /api/square/checkout, /api/grant/checkout, /api/grant/confirm
+index.html            App entry (loads /src/main.tsx). Keep the seo:start/seo:end
+                      markers — the prerenderer replaces that region per route.
+wrangler.toml         Frontend Worker (static assets). Read automatically by
+                      Workers Builds on every push, so a push deploys the site.
+wrangler.backend.toml Backend Worker. Nothing reads it implicitly — pass -c.
+backend/index.ts      Hono API: /api/square/checkout, /api/grant/checkout, /api/grant/complete
 src/
   main.tsx            React bootstrap
   App.tsx             Router + all route definitions
@@ -108,6 +122,21 @@ Payments already run on **Square**, not Blink.
 - ✅ **Email migrated to Resend (code)** — `@blinkdotnew/sdk` fully removed from the repo. Needs: Resend API key in `.dev.vars`, domain verified in Resend, and backend self-hosted before it sends live.
 - ✅ **Backend deployed to Cloudflare Workers** (2026-07-28), account `d52c80b6632554c75458cf115c6d74b0`, pinned as `account_id` in `wrangler.toml` — the login sees two accounts, so deploys fail non-interactively without it. All 9 secrets uploaded via `wrangler secret put`; production Square checkout verified live.
 - ✅ Google OAuth **enabled** in Supabase (verified via `GET /auth/v1/settings`). Redirect URLs configured: `https://www.dominusgolf.com/**` and `http://localhost:3000/**` — the `/**` matters, since Google OAuth redirects to an unpredictable path.
-- ⏳ Still on Blink: **frontend hosting only**. `www.dominusgolf.com` is a CNAME to `cname.blink.new` serving an old build. Cloudflare Pages must be connected by **Jay** — `Jaymoore-star/tit` is a personal GitHub account and only the owner can install the Cloudflare Pages GitHub App. Then one CNAME change at IONOS (DNS is at IONOS; do NOT move nameservers — MX and the Resend DKIM key live there).
+- ✅ **Blink is fully out of the code** as of 2026-07-29 — the last reference was the
+  dead `45pi183s.backend.blink.new` fallback in `src/lib/backend.ts`, now the real Worker.
+- ✅ **GitHub connected to Cloudflare** (2026-07-29, by Jay) — but as **Workers Builds**,
+  not Pages. It first deployed a secret-less copy of the *backend* as a Worker named
+  `tit`, because `wrangler.toml` described `backend/index.ts`. Fixed by splitting the
+  configs; `wrangler.toml` is now the frontend and a push deploys the site.
+- 🔴 **DNS is broken as of 2026-07-29.** `www.dominusgolf.com` → CNAME `dominusgolf.com`
+  → A `199.34.228.186` = `cms27.weebly.com` (Square Online), which serves a bare 404.
+  It no longer points at Blink. Nobody on the dev side changed this — establish who did
+  before repointing it at the frontend Worker. DNS is at IONOS; do NOT move nameservers
+  — MX and the Resend DKIM key live there.
 - ⚠️ Post-launch TODO: rotate the Square access token (both the old and current tokens were shared in plaintext during setup) and the Resend key.
-- To run the backend locally: `npx wrangler dev --port 8787 --local --ip 127.0.0.1` (reads `.dev.vars`). Use `127.0.0.1`, not `localhost`.
+- To run the backend locally: `npm run dev:backend` (reads `.dev.vars`). Use `127.0.0.1`, not `localhost`.
+- ⚠️ Backend `wrangler` commands need `-c wrangler.backend.toml`, including `wrangler secret put`.
+  Without it wrangler reads `wrangler.toml` and targets the **frontend** Worker.
+- ⚠️ `vite preview` is not a valid check of route serving — its SPA fallback returns the
+  root shell for every deep link, which masks prerendering and trailing-slash bugs. Use
+  `npx wrangler dev` instead; it reproduces production asset resolution.
