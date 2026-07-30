@@ -17,7 +17,7 @@ import { useCart } from '../../store/cartStore';
 import { useWishlist } from '../../store/wishlistStore';
 import { useAuth } from '../../hooks/useAuth';
 import { useScrollLock } from '../../hooks/useScrollLock';
-import { SearchOverlay } from './SearchOverlay';
+import { products } from '../../data/products';
 
 type MegaMenuKey = 'training' | 'guide' | 'apparel' | 'accessories' | 'pros' | 'company' | null;
 
@@ -131,9 +131,11 @@ export function Navbar() {
   const [mobileAccordion, setMobileAccordion] = useState<string | null>(null);
   const [announcementIndex, setAnnouncementIndex] = useState(0);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [accountOpen, setAccountOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
   const accountRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const announcements = [
     { text: 'The Dominus Golf Development Grant is Now Open - $5,000 Awarded to One Golfer Nationwide. Apply by August 15.', link: '/grant', linkLabel: 'Apply Now' },
@@ -149,11 +151,13 @@ export function Navbar() {
     return () => clearInterval(timer);
   }, [announcements.length]);
 
-  // Close mega menu when clicking outside
+  // Close mega menu / search when clicking outside the header
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (navRef.current && !navRef.current.contains(e.target as Node)) {
         setActiveMega(null);
+        setSearchOpen(false);
+        setSearchQuery('');
       }
       if (accountRef.current && !accountRef.current.contains(e.target as Node)) {
         setAccountOpen(false);
@@ -162,6 +166,40 @@ export function Navbar() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Focus the inline search field as it expands
+  useEffect(() => {
+    if (searchOpen) {
+      searchInputRef.current?.focus();
+    }
+  }, [searchOpen]);
+
+  function closeSearch() {
+    setSearchOpen(false);
+    setSearchQuery('');
+  }
+
+  const searchResults = searchQuery.trim()
+    ? products
+        .filter(
+          (p) =>
+            p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            p.subcategory?.toLowerCase().includes(searchQuery.toLowerCase()),
+        )
+        .slice(0, 6)
+    : [];
+
+  function handleSearchKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Escape') {
+      closeSearch();
+    }
+    if (e.key === 'Enter' && searchResults.length > 0) {
+      const first = searchResults[0];
+      closeSearch();
+      navigate({ to: '/product/$id', params: { id: first.id } });
+    }
+  }
 
   // Lock body scroll when mobile menu open
   useScrollLock(mobileOpen);
@@ -174,21 +212,27 @@ export function Navbar() {
     { label: 'Development Grant', key: null, href: '/grant' },
   ];
 
+  // Icons tighten up while the search field is open so it has room to grow.
+  const iconBtnClass = `relative ${
+    searchOpen ? 'p-1' : 'p-2'
+  } text-foreground hover:text-accent transition-all duration-300 active:scale-90`;
+
   return (
     <>
       <header className="sticky top-0 z-30" ref={navRef}>
-        {/* Announcement Bar */}
-        <div className="bg-primary text-primary-foreground h-9 flex items-center justify-center relative overflow-hidden px-4">
+        {/* Announcement Bar — stacked in one grid cell so the bar is as tall as the
+            longest message and never clips it on a narrow screen. */}
+        <div className="bg-primary text-primary-foreground min-h-9 grid items-center px-4 py-1.5 overflow-hidden">
           {announcements.map((item, i) => (
             <div
               key={i}
-              className={`absolute inset-0 flex items-center justify-center transition-all duration-700 ease-in-out px-4 ${
+              className={`col-start-1 row-start-1 flex items-center justify-center transition-all duration-700 ease-in-out ${
                 i === announcementIndex
                   ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 -translate-y-4'
+                  : 'opacity-0 -translate-y-4 pointer-events-none'
               }`}
             >
-              <span className="font-sans text-[11px] font-medium tracking-widest uppercase text-accent text-center">
+              <span className="font-sans text-[10px] sm:text-[11px] font-medium tracking-wide sm:tracking-widest uppercase text-accent text-center leading-snug">
                 {item.text}{' '}
                 {item.link && (
                   <a
@@ -208,7 +252,7 @@ export function Navbar() {
         {/* Main Nav */}
         <nav className="bg-background border-b border-border">
           <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
+            <div className="flex items-center justify-between h-16 gap-2">
               {/* Mobile hamburger */}
               <button
                 className="lg:hidden p-2 text-foreground hover:text-accent transition-colors"
@@ -221,24 +265,28 @@ export function Navbar() {
               {/* Wordmark */}
               <Link
                 to="/"
-                className="flex-shrink-0 font-serif font-bold tracking-[0.22em] text-[22px] text-foreground hover:text-accent transition-colors duration-200"
+                className={`flex-shrink-0 font-serif font-bold text-foreground hover:text-accent transition-all duration-300 ${
+                  searchOpen
+                    ? 'hidden sm:block tracking-[0.14em] text-[17px]'
+                    : 'tracking-[0.22em] text-[22px]'
+                }`}
               >
                 DOMINUS GOLF
               </Link>
 
-              {/* Desktop Nav Links */}
-              <div className="hidden lg:flex items-center gap-1">
+              {/* Desktop Nav Links — tighten (and clip, if it comes to that) while searching */}
+              <div className="hidden lg:flex items-center gap-1 min-w-0 overflow-hidden">
                 {navLinks.map((link) => (
-                  <div key={link.label} className="relative">
+                  <div key={link.label} className="relative shrink-0">
                     {link.key ? (
                       <button
                         onMouseEnter={() => setActiveMega(link.key)}
                         onClick={() =>
                           setActiveMega(activeMega === link.key ? null : link.key)
                         }
-                        className={`flex items-center gap-1 px-3 py-2 font-sans text-[13px] font-medium tracking-wide text-foreground hover:text-accent transition-colors duration-150 ${
-                          activeMega === link.key ? 'text-accent' : ''
-                        }`}
+                        className={`flex items-center gap-1 whitespace-nowrap py-2 font-sans font-medium tracking-wide text-foreground hover:text-accent transition-all duration-300 ${
+                          searchOpen ? 'px-1.5 text-[12px]' : 'px-3 text-[13px]'
+                        } ${activeMega === link.key ? 'text-accent' : ''}`}
                       >
                         {link.label}
                         <ChevronDown
@@ -253,14 +301,18 @@ export function Navbar() {
                         href={link.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-3 py-2 font-sans text-[13px] font-medium tracking-wide text-foreground hover:text-accent transition-colors duration-150"
+                        className={`block whitespace-nowrap py-2 font-sans font-medium tracking-wide text-foreground hover:text-accent transition-all duration-300 ${
+                          searchOpen ? 'px-1.5 text-[12px]' : 'px-3 text-[13px]'
+                        }`}
                       >
                         {link.label}
                       </a>
                     ) : (
                       <Link
                         to={link.href ?? '/'}
-                        className="px-3 py-2 font-sans text-[13px] font-medium tracking-wide text-foreground hover:text-accent transition-colors duration-150"
+                        className={`block whitespace-nowrap py-2 font-sans font-medium tracking-wide text-foreground hover:text-accent transition-all duration-300 ${
+                          searchOpen ? 'px-1.5 text-[12px]' : 'px-3 text-[13px]'
+                        }`}
                       >
                         {link.label}
                       </Link>
@@ -269,12 +321,99 @@ export function Navbar() {
                 ))}
               </div>
 
+              {/* Inline search — the field and its results share one width */}
+              <div
+                className={`relative transition-all duration-300 ease-out ${
+                  searchOpen
+                    ? 'flex-1 min-w-[110px] max-w-[420px] mx-2 lg:mx-4 opacity-100'
+                    : 'flex-none w-0 max-w-0 mx-0 opacity-0 pointer-events-none'
+                }`}
+              >
+                <div
+                  className={`flex w-full items-center gap-2 overflow-hidden border-b transition-colors ${
+                    searchOpen ? 'border-border focus-within:border-accent' : 'border-transparent'
+                  }`}
+                >
+                  <Search size={17} className="text-muted-foreground shrink-0" />
+                  <input
+                    ref={searchInputRef}
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={handleSearchKeyDown}
+                    placeholder="Search products..."
+                    tabIndex={searchOpen ? 0 : -1}
+                    aria-hidden={!searchOpen}
+                    className="flex-1 min-w-0 bg-transparent border-none outline-none py-2 font-sans text-sm text-foreground placeholder:text-muted-foreground/50"
+                  />
+                  <button
+                    onClick={closeSearch}
+                    tabIndex={searchOpen ? 0 : -1}
+                    className="p-1 shrink-0 text-muted-foreground hover:text-foreground hover:rotate-90 transition-all duration-300 active:scale-90"
+                    aria-label="Close search"
+                  >
+                    <X size={17} />
+                  </button>
+                </div>
+
+                {/* Results — same width as the field, hanging under it */}
+                {searchOpen && searchQuery.trim() !== '' && (
+                  <div className="absolute left-0 right-0 top-full mt-3 bg-background border border-border shadow-xl z-50 animate-in fade-in slide-in-from-top-1 duration-200">
+                    <div className="max-h-[70vh] overflow-y-auto px-3">
+                      {searchResults.length > 0 ? (
+                        <ul className="divide-y divide-border">
+                          {searchResults.map((p) => (
+                            <li key={p.id}>
+                              <Link
+                                to="/product/$id"
+                                params={{ id: p.id }}
+                                onClick={closeSearch}
+                                className="group flex items-center gap-3 py-2.5"
+                              >
+                                <div className="w-11 h-11 shrink-0 bg-white border border-border overflow-hidden">
+                                  <img
+                                    src={p.image}
+                                    alt={p.name}
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <p className="font-sans text-[8px] tracking-widest uppercase text-muted-foreground">
+                                    {p.subcategory || p.category.replace(/-/g, ' ')}
+                                  </p>
+                                  <h4 className="font-serif text-[13px] font-semibold text-foreground truncate group-hover:text-accent transition-colors">
+                                    {p.name}
+                                  </h4>
+                                </div>
+                                <p className="font-sans text-xs font-medium text-foreground shrink-0">
+                                  ${p.price.toFixed(2)}
+                                </p>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="font-sans text-xs text-muted-foreground py-3">
+                          No results found for "{searchQuery}"
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
               {/* Right Icons */}
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 shrink-0">
                 <button
-                  onClick={() => setSearchOpen(true)}
-                  className="p-2 text-foreground hover:text-accent transition-colors"
+                  onClick={() => {
+                    setActiveMega(null);
+                    setSearchOpen(true);
+                  }}
+                  tabIndex={searchOpen ? -1 : 0}
                   aria-label="Search"
+                  className={`text-foreground hover:text-accent overflow-hidden transition-all duration-300 active:scale-90 ${
+                    searchOpen ? 'w-0 p-0 opacity-0 scale-75 pointer-events-none' : 'w-9 p-2 opacity-100 scale-100'
+                  }`}
                 >
                   <Search size={20} />
                 </button>
@@ -289,7 +428,7 @@ export function Navbar() {
                         navigate({ to: '/login' });
                       }
                     }}
-                    className="p-2 text-foreground hover:text-accent transition-colors"
+                    className={iconBtnClass}
                     aria-label="Account"
                   >
                     <User size={20} />
@@ -337,7 +476,7 @@ export function Navbar() {
 
                 <Link
                   to="/wishlist"
-                  className="relative p-2 text-foreground hover:text-accent transition-colors"
+                  className={iconBtnClass}
                   aria-label="Wishlist"
                 >
                   <Heart size={20} />
@@ -348,7 +487,7 @@ export function Navbar() {
 
                 <button
                   onClick={toggleCart}
-                  className="relative p-2 text-foreground hover:text-accent transition-colors"
+                  className={iconBtnClass}
                   aria-label="Cart"
                 >
                   <ShoppingBag size={20} />
@@ -582,8 +721,6 @@ export function Navbar() {
           </div>
         )}
       </header>
-
-      <SearchOverlay isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
   );
 }
