@@ -1,16 +1,29 @@
-# Handoff — session of 28–29 July 2026
+# Handoff — sessions of 28–30 July 2026
 
-Where the project stands, what changed, and what to do next. Written to close
-out a working session; update it as things move.
+Where the project stands, what changed, and what to do next. Written to close out
+a working session; update it as things move.
 
-Baseline at session start: `cf4dfe7`. Twelve commits on top, all pushed to
-`origin/main`, plus one uncommitted change (see [Uncommitted](#uncommitted)).
+**Read this first, then `CLAUDE.md`.** §1 is the current state, §3 is the list of
+traps that each cost real debugging time, §4 is what is left.
+
+History: baseline `cf4dfe7` → twelve commits (28–29 July, SEO/auth/email/lint) →
+`e8ce296` (handoff notes) → four commits on 30 July taking the site live:
+
+| Commit | What |
+|---|---|
+| `327e074` | `build(deploy)` — wrangler config split, `_headers`, `_redirects` removal, wrangler pinned |
+| `45bb1b6` | `feat(seo)` — prerender 45 routes, code-split pages |
+| `58b6847` | `fix(checkout)` — localhost URL shipped to production; 3 duplicate `BACKEND_URL` constants |
+| `f53d3c6` | `docs` — hosting reality, traps, remaining work |
+
+Working tree clean, `main` in sync with `origin/main` and with the deployed site.
 
 ---
 
 ## 1. Go-live status
 
-Updated 29 July, ~19:30 UTC, after Jay connected GitHub.
+Updated 30 July, ~05:00 UTC. **The site is built, deployed and working; only DNS
+stands between it and real customers.**
 
 | Piece | State |
 |---|---|
@@ -58,9 +71,11 @@ That is fixed in the repo now, not in the dashboard:
 - **`wrangler.backend.toml`** describes the **backend**, and nothing reads it
   automatically. A push can no longer touch the live API.
 
-Consequence: **the next push to `main` deploys the website** over the `tit`
-Worker, replacing the stray backend copy. That is the intent, but it means a push
-is now a production deploy.
+Consequence: **a push to `main` is a production deploy.** This is verified, not
+theoretical: the 30 July push triggered a Workers Build that landed in ~30 seconds
+and produced a main chunk **byte-identical** to a local `npm run deploy:site`. That
+identical hash is the useful part — it proves Jay's dashboard build variables agree
+with the repo's fallbacks, so both deploy routes are safe and reproducible.
 
 Build variables (`VITE_BACKEND_URL`, `VITE_SUPABASE_URL`,
 `VITE_SUPABASE_ANON_KEY`) are set by Jay in the Worker's build settings. They are
@@ -374,39 +389,51 @@ keep revalidating or deploys would never reach anyone.
 
 ---
 
-## 5. Uncommitted
+## 5. Local setup notes
+
+**Nothing is uncommitted.** All work through 30 July is on `origin/main` and
+deployed; see the commit table at the top of this file.
+
+### ⚠️ `VITE_BACKEND_URL` in `.env` is a live trap
+
+`.env` is gitignored, so a fresh clone will not have this problem — but the machine
+this was set up on does. The variable is **commented out**, and it must stay that
+way except while actively working on the backend:
+
+```bash
+# .env — leave commented unless testing against npm run dev:backend
+# VITE_BACKEND_URL=http://127.0.0.1:8787
+```
+
+Uncommenting it changes `npm run dev` to use the local backend, which is the point.
+But `wrangler deploy` also reads `.env` and injects it into the build process
+environment, where Vite ranks it above everything else — so leaving it active makes
+the next `npm run deploy:site` ship a production bundle whose checkout calls
+`127.0.0.1`. That happened once already; see §3.
+
+With it commented out, `src/lib/backend.ts` falls back to the production Worker,
+which is correct for both dev and deploys.
+
+### Verification commands worth keeping
+
+```bash
+npm run lint          # expect 0 errors / 46 pre-existing warnings
+npm run build         # expect "prerendered 45 routes"
+
+# Real asset routing (NOT `vite preview` — see §3)
+npx wrangler dev --port 4323 --ip 127.0.0.1
+
+# After ANY deploy, check the SERVED bundle, never dist/
+curl -s https://tit.jaymoore.workers.dev/ | grep -oE '/assets/index-[^"]+\.js'
+curl -s https://tit.jaymoore.workers.dev/assets/index-XXXX.js | grep -c '127.0.0.1'
+```
+
+### Images
 
 The image optimisation previously listed here was committed as `2ab1b1d`. The
 durable follow-up is still open: a build-time resize step, so nobody can drop a
 5 MB phone photo into `public/images/` again. Next largest asset is
 `GolfTowel2.webp` at 241 KB (1440×1920), not on the home page.
-
-Currently uncommitted — the prerendering and deploy-config work from 29 July:
-
-| File | Change |
-|---|---|
-| `vite.config.ts` | `prerenderPlugin()` — writes 45 per-route HTML files |
-| `src/lib/headHtml.ts` | **new** — serialises head output to HTML, with escaping |
-| `src/lib/pageSeo.ts` | `productHead()`, `shopCategoryHead()`, `prerenderRoutes()` |
-| `src/App.tsx` | dynamic routes now call the shared builders; stale imports dropped |
-| `index.html` | `seo:start` / `seo:end` markers |
-| `wrangler.toml` | **rewritten** — now the frontend assets Worker |
-| `wrangler.backend.toml` | **new** — the backend, moved out of the auto-read slot |
-| `package.json` | `dev:backend`, `deploy:backend`, `deploy:site`; **`wrangler` added as a devDependency** — it was never installed, so every previous command relied on `npx` fetching it, and a bare `wrangler` in an npm script failed with "not recognized". Pinning it via the lockfile also means Cloudflare's build uses the same version instead of whatever is latest that day |
-| `src/lib/backend.ts` | fallback URL: dead Blink host → real Worker |
-| `public/_redirects` | **deleted** — would have shadowed every prerendered file |
-| `public/_headers` | **new** — immutable caching for `/assets/*`, 1 day for images |
-| `src/App.tsx` | pages code-split via `lazyRouteComponent` (see §4b) |
-| `.env.production.local` | **new, gitignored** — stops a hand-deploy baking `localhost` into the bundle |
-
-Verified: `npm run build` (45 routes), `npx wrangler deploy --dry-run` (150 assets
-read), `npm run lint` (0 errors / 46 pre-existing warnings), and `wrangler dev`
-route-by-route — every canonical URL returns 200 with its own title, trailing
-slashes redirect toward the canonical form, unknown URLs fall back to the shell,
-and `og-default.jpg` / `sitemap.xml` still serve.
-
-Not committed, per the working convention below. Note that committing and pushing
-this **is** a production deploy of the website.
 
 ---
 
@@ -441,4 +468,34 @@ npx wrangler dev --port 4323 --ip 127.0.0.1
 
 Working convention as of 2026-07-28: **do not commit or push without being
 asked.** This is now literal, not precautionary — Workers Builds is connected to
-`main`, so a push deploys the website to production.
+`main`, so a push deploys the website to production. Verified 30 July: push →
+deployed in ~30 seconds.
+
+---
+
+## 7. Picking this up next session
+
+The single next action is **DNS**, and it needs IONOS access the dev side does not
+have. Everything else is either done or waiting on an external account.
+
+1. Find out who repointed `dominusgolf.com` at Weebly/Square Online on 29 July.
+   Do this before changing anything — if a Square Online store is being set up on
+   the domain, a competing DNS edit will just be reverted.
+2. Attach `www.dominusgolf.com` as a custom domain on the `tit` Worker, take the
+   target Cloudflare gives you, and change the `www` record at IONOS.
+   **Do not move nameservers** — MX and the Resend DKIM key live at IONOS.
+3. Once the domain resolves, verify the social unfurl for real: Facebook's Sharing
+   Debugger plus a WhatsApp/iMessage paste, on a **product** URL, not the homepage.
+   The homepage looked correct even back when every other page was broken.
+4. Then the real production grant payment (§4, item 2) — the one flow that has
+   never run end to end.
+
+To confirm nothing regressed while away:
+
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" https://tit.jaymoore.workers.dev/product/tour-pure-men
+curl -s https://dominus-golf-backend.jaymoore.workers.dev/health   # {"ok":true}
+```
+
+Both should be `200` / `{"ok":true}`. If the site 404s with plain text, something
+redeployed the API over it — re-read §1.
