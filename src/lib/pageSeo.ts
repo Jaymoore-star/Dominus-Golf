@@ -150,6 +150,11 @@ export const PAGE_SEO = {
     description: 'Your Dominus Golf purchase history.',
     noindex: true,
   },
+  '/account/wishlist': {
+    title: 'Your Wishlist',
+    description: 'Products you have saved at Dominus Golf.',
+    noindex: true,
+  },
   '/account/addresses': {
     title: 'Your Addresses',
     description: 'Manage your saved shipping addresses.',

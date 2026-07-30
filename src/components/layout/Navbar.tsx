@@ -25,7 +25,7 @@ type MegaMenuKey = 'training' | 'guide' | 'apparel' | 'accessories' | 'pros' | '
 const accountMenu = [
   { label: 'Profile', to: '/account', icon: <User size={16} /> },
   { label: 'Orders', to: '/account/orders', icon: <Package size={16} /> },
-  { label: 'Wishlist', to: '/wishlist', icon: <Heart size={16} /> },
+  { label: 'Wishlist', to: '/account/wishlist', icon: <Heart size={16} /> },
   { label: 'Addresses', to: '/account/addresses', icon: <MapPin size={16} /> },
   { label: 'Preferences', to: '/account/preferences', icon: <SlidersHorizontal size={16} /> },
 ];

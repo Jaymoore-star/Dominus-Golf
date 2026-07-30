@@ -12,7 +12,7 @@ export type AccountSection = 'profile' | 'orders' | 'wishlist' | 'addresses' | '
 const NAV: { key: AccountSection; label: string; to: string; icon: ReactNode }[] = [
   { key: 'profile', label: 'Profile', to: '/account', icon: <User size={16} /> },
   { key: 'orders', label: 'Orders', to: '/account/orders', icon: <Package size={16} /> },
-  { key: 'wishlist', label: 'Wishlist', to: '/wishlist', icon: <Heart size={16} /> },
+  { key: 'wishlist', label: 'Wishlist', to: '/account/wishlist', icon: <Heart size={16} /> },
   { key: 'addresses', label: 'Addresses', to: '/account/addresses', icon: <MapPin size={16} /> },
   {
     key: 'preferences',
