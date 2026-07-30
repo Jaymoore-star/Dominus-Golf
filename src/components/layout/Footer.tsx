@@ -75,7 +75,8 @@ export function Footer() {
     <footer className="bg-primary text-primary-foreground">
       {/* Main Links Grid */}
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 lg:gap-12">
+        {/* 5 groups, so 5 columns at lg — a 4-col grid orphans Legal on its own row */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-10">
           {Object.entries(footerLinks).map(([category, links]) => (
             <div key={category}>
               <h4 className="font-sans text-[10px] font-semibold tracking-[0.3em] uppercase text-white mb-5">
@@ -147,21 +148,11 @@ export function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-white/10">
         <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p className="font-sans text-[11px] text-white/40">
-              &copy; 2026 Dominus Golf. All rights reserved.
-            </p>
-            <div className="flex items-center gap-5">
-              {['Privacy Policy', 'Terms of Use', 'Cookie Settings'].map((item) => (
-                <button
-                  key={item}
-                  className="font-sans text-[11px] text-white/40 hover:text-white/70 transition-colors"
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
-          </div>
+          {/* Policy links live in the Legal column above. The buttons that used to sit
+              here went nowhere — there is no privacy or cookie page to point them at. */}
+          <p className="font-sans text-[11px] text-white/40 text-center sm:text-left">
+            &copy; 2026 Dominus Golf. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
