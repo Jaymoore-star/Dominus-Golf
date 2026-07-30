@@ -66,7 +66,13 @@ export function CareersPage() {
             We value story and character as much as a resume. Send your background and a brief "golf story" to us - tell us who you are, why golf matters to you, and what you'd bring to the Dominus stable.
           </p>
           <p className="font-sans text-sm font-semibold text-foreground">
-            Apply to: <span className="text-accent">[Insert Business Email]</span>
+            Apply to:{' '}
+            <a
+              href="mailto:Customersupport@dominusgolf.com"
+              className="text-accent hover:underline"
+            >
+              Customersupport@dominusgolf.com
+            </a>
           </p>
         </div>
       </div>
