@@ -102,12 +102,29 @@
     scroll-padding-top: 7rem;
   }
 
+  /* Nothing may scroll the page sideways.
+   *
+   * Every route measures clean from 320px up in both Blink and WebKit, but a
+   * phone can still widen the layout in ways a desktop harness never reproduces:
+   * a fallback font with wider metrics while the web font loads, a stale cached
+   * bundle, or a retained pinch-zoom. This is the backstop for all of them.
+   *
+   * `clip` rather than `hidden` deliberately — `hidden` makes this a scroll
+   * container and breaks the sticky navbar. `clip` does not. Safari below 16
+   * ignores it and simply behaves as before. */
+  html {
+    overflow-x: clip;
+  }
+
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-sans);
     letter-spacing: var(--tracking-normal);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* A long unbroken token (order id, URL, email) can otherwise set a minimum
+       width for its container and push the whole page wide. */
+    overflow-wrap: break-word;
   }
 
   h1, h2, h3, h4, h5, h6 {
