@@ -1,11 +1,10 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 
 export const ConnectionSection = () => {
   return (
-    <section className="py-24 bg-gray-50 text-black overflow-hidden border-t border-black/5 relative">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-32 items-center">
+    <section className="py-20 sm:py-24 bg-white text-black overflow-hidden border-t border-black/5 relative">
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -16,13 +15,13 @@ export const ConnectionSection = () => {
             <span className="inline-block px-6 py-2 bg-black/10 text-black text-[10px] font-bold tracking-[0.4em] uppercase mb-10 rounded-full border border-black/5 shadow-2xl">
               COMING SOON
             </span>
-            <h2 className="text-3xl md:text-6xl font-bold tracking-tight mb-8 font-serif uppercase leading-[1.05] text-accent">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-8 font-serif uppercase leading-[1.05] text-accent">
               THE EVOLUTION OF CONNECTION TRAINING
             </h2>
-            <p className="text-lg md:text-2xl text-black mb-10 font-sans font-medium italic text-gray-600 tracking-tight leading-snug">
+            <p className="text-base sm:text-lg text-black mb-10 font-sans font-medium italic text-gray-600 tracking-tight leading-snug">
               "The drill made famous on tour-engineered into a system you can use every day."
             </p>
-            <p className="text-gray-600 text-lg md:text-xl mb-14 font-sans leading-relaxed">
+            <p className="text-gray-600 text-lg md:text-xl mb-10 font-sans leading-relaxed">
               Many golfers have tried towels, headcovers, floaties, and elbow gadgets to create connection. The next evolution of the Tour Pure System features the <span className="text-black font-bold">Feel Right Band</span>-a connection training tool designed to provide immediate feedback when the swing becomes disconnected, helping you maintain perfect arm-to-body synchronization.
             </p>
           </motion.div>

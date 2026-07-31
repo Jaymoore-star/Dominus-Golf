@@ -1,4 +1,4 @@
-import React from 'react';
+import { Link } from '@tanstack/react-router';
 import { Check } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -9,14 +9,14 @@ const IMAGES = {
 
 export const NewHeroSection = () => {
   return (
-    <section className="relative min-h-screen pt-32 pb-20 overflow-hidden bg-white text-black">
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center mb-16">
+    <section className="relative pt-20 sm:pt-28 pb-20 sm:pb-24 overflow-hidden bg-white text-black">
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-4xl mx-auto text-center mb-12">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-5xl md:text-8xl font-bold tracking-tighter mb-6 font-serif leading-[1.05] text-accent"
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 font-serif leading-[1.08] text-accent"
           >
             THE FEEDBACK YOUR SWING<br /><span className="text-black">HAS BEEN MISSING.</span>
           </motion.h1>
@@ -25,7 +25,9 @@ export const NewHeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mb-10 max-w-lg mx-auto text-left"
+            /* w-fit, not a fixed max-w: a fixed-width block leaves the left-aligned
+               items sitting left of the heading's centre, which reads as misaligned. */
+            className="mb-10 w-fit max-w-lg mx-auto text-left"
           >
             <ul className="space-y-2.5">
               {[
@@ -51,18 +53,18 @@ export const NewHeroSection = () => {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
           >
-            <a 
-              href="/shop/training-system" 
-              className="w-full sm:w-auto px-10 py-5 bg-black text-white font-bold tracking-widest uppercase hover:bg-gray-800 transition-colors text-sm"
+            <Link
+              to="/shop/$category" params={{ category: 'training-system' }} 
+              className="w-full sm:w-auto px-10 py-4 bg-black text-white font-bold tracking-widest uppercase hover:bg-gray-800 transition-colors text-xs"
             >
               SHOP THE TOUR PURE SYSTEM
-            </a>
-            <a 
-              href="/tour-pure-guide" 
-              className="w-full sm:w-auto px-10 py-5 border border-black/20 text-black font-bold tracking-widest uppercase hover:bg-black hover:text-white transition-all text-sm"
+            </Link>
+            <Link
+              to="/tour-pure-guide" 
+              className="w-full sm:w-auto px-10 py-4 border border-black/20 text-black font-bold tracking-widest uppercase hover:bg-black hover:text-white transition-all text-xs"
             >
               HOW IT WORKS
-            </a>
+            </Link>
           </motion.div>
 
           <motion.div 
@@ -111,10 +113,9 @@ export const NewHeroSection = () => {
         </motion.div>
       </div>
 
-      {/* Atmospheric depth elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20">
-        <div className="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 bg-black blur-[150px] rounded-full" />
-      </div>
+      {/* Removed: a 20%-opacity blurred black circle anchored at -top-1/4 -left-1/4.
+          On a wide screen it washed the top-left quarter grey, which made a centred
+          hero read as lopsided. A white hero needs no atmosphere behind the type. */}
     </section>
   );
 };

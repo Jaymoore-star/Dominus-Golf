@@ -1,4 +1,4 @@
-import React from 'react';
+import { Link } from '@tanstack/react-router';
 import { motion } from 'framer-motion';
 
 const SYSTEM_CARDS = [
@@ -21,15 +21,15 @@ const SYSTEM_CARDS = [
 
 export const SystemSection = () => {
   return (
-    <section className="py-24 bg-white text-black">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-24">
+    <section className="py-20 sm:py-24 bg-white text-black">
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-3xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4 font-serif uppercase text-accent"
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4 font-serif uppercase text-accent"
           >
             THE TOUR PURE SYSTEM
           </motion.h2>
@@ -44,7 +44,7 @@ export const SystemSection = () => {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 mb-24">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-10 mb-12">
           {SYSTEM_CARDS.map((card, index) => (
             <motion.div 
               key={card.title}
@@ -74,12 +74,12 @@ export const SystemSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <a 
-              href="/shop/training-system" 
-              className="inline-block px-14 py-6 bg-black text-white font-bold tracking-widest uppercase hover:bg-gray-800 transition-colors text-sm shadow-xl"
+            <Link
+              to="/shop/$category" params={{ category: 'training-system' }} 
+              className="inline-block px-10 py-4 bg-black text-white font-bold tracking-widest uppercase hover:bg-gray-800 transition-colors text-xs shadow-xl"
             >
               BUILD YOUR SYSTEM
-            </a>
+            </Link>
           </motion.div>
         </div>
       </div>
