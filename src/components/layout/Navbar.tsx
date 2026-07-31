@@ -104,6 +104,7 @@ const megaMenuData = {
           { label: 'Contact Us', href: '/about/contact' },
           { label: 'Careers', href: '/about/careers' },
           { label: 'Development Grant', href: '/grant' },
+          { label: 'Affiliate Program', href: '/affiliates' },
           { label: 'Sustainability', href: '/about/sustainability' },
         ],
       },
@@ -140,6 +141,7 @@ export function Navbar() {
   const announcements = [
     { text: 'The Dominus Golf Development Grant is Now Open - $5,000 Awarded to One Golfer Nationwide. Apply by August 15.', link: '/grant', linkLabel: 'Apply Now' },
     { text: 'Free Shipping on Orders Over $150', link: null, linkLabel: null },
+    { text: 'Earn Commission Promoting Dominus Golf.', link: '/affiliates', linkLabel: 'Become an Affiliate' },
     { text: 'Shop New Training Systems - Build Your Best Swing', link: null, linkLabel: null },
   ];
 
@@ -210,6 +212,10 @@ export function Navbar() {
     { label: 'Accessories', key: 'accessories' },
     { label: 'Company', key: 'company' },
     { label: 'Development Grant', key: null, href: '/grant' },
+    // Short label on purpose: the row is 6 items plus the wordmark and four icons,
+    // and the nav container clips rather than wraps. "Affiliate Program" pushed it
+    // over on a 1024px viewport.
+    { label: 'Affiliates', key: null, href: '/affiliates' },
   ];
 
   // Icons tighten up while the search field is open so it has room to grow.
@@ -285,7 +291,7 @@ export function Navbar() {
                           setActiveMega(activeMega === link.key ? null : link.key)
                         }
                         className={`flex items-center gap-1 whitespace-nowrap py-2 font-sans font-medium tracking-wide text-foreground hover:text-accent transition-all duration-300 ${
-                          searchOpen ? 'px-1.5 text-[12px]' : 'px-3 text-[13px]'
+                          searchOpen ? 'px-1.5 text-[12px]' : 'px-2 xl:px-3 text-[13px]'
                         } ${activeMega === link.key ? 'text-accent' : ''}`}
                       >
                         {link.label}
@@ -302,7 +308,7 @@ export function Navbar() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`block whitespace-nowrap py-2 font-sans font-medium tracking-wide text-foreground hover:text-accent transition-all duration-300 ${
-                          searchOpen ? 'px-1.5 text-[12px]' : 'px-3 text-[13px]'
+                          searchOpen ? 'px-1.5 text-[12px]' : 'px-2 xl:px-3 text-[13px]'
                         }`}
                       >
                         {link.label}
@@ -311,7 +317,7 @@ export function Navbar() {
                       <Link
                         to={link.href ?? '/'}
                         className={`block whitespace-nowrap py-2 font-sans font-medium tracking-wide text-foreground hover:text-accent transition-all duration-300 ${
-                          searchOpen ? 'px-1.5 text-[12px]' : 'px-3 text-[13px]'
+                          searchOpen ? 'px-1.5 text-[12px]' : 'px-2 xl:px-3 text-[13px]'
                         }`}
                       >
                         {link.label}

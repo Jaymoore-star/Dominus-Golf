@@ -25,6 +25,7 @@ const footerLinks = {
     { label: 'Contact Us', href: '/about/contact' },
     { label: 'Careers', href: '/about/careers' },
     { label: 'Development Grant', href: '/grant' },
+    { label: 'Affiliate Program', href: '/affiliates' },
     { label: 'Sustainability', href: '/about/sustainability' },
   ],
   Legal: [

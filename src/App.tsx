@@ -97,6 +97,10 @@ const GabeSalvaneraPage = lazyRouteComponent(
   'GabeSalvaneraPage',
 );
 const WishlistPage = lazyRouteComponent(() => import('./pages/WishlistPage'), 'WishlistPage');
+const AffiliatesPage = lazyRouteComponent(
+  () => import('./pages/AffiliatesPage'),
+  'AffiliatesPage',
+);
 const AuthConfirmedPage = lazyRouteComponent(
   () => import('./pages/AuthConfirmedPage'),
   'AuthConfirmedPage',
@@ -211,6 +215,7 @@ const prosRoute = createRoute({ getParentRoute: () => rootRoute, path: '/pros', 
 const leroyBatesRoute = createRoute({ getParentRoute: () => rootRoute, path: '/leroy-bates', head: pageHead('/leroy-bates'), component: LeroyBatesPage });
 const gabeSalvaneraRoute = createRoute({ getParentRoute: () => rootRoute, path: '/gabe-salvanera', head: pageHead('/gabe-salvanera'), component: GabeSalvaneraPage });
 const wishlistRoute = createRoute({ getParentRoute: () => rootRoute, path: '/wishlist', head: pageHead('/wishlist'), component: WishlistPage });
+const affiliatesRoute = createRoute({ getParentRoute: () => rootRoute, path: '/affiliates', head: pageHead('/affiliates'), component: AffiliatesPage });
 const accountRoute = createRoute({ getParentRoute: () => rootRoute, path: '/account', head: pageHead('/account'), component: AccountProfilePage });
 const accountOrdersRoute = createRoute({ getParentRoute: () => rootRoute, path: '/account/orders', head: pageHead('/account/orders'), component: AccountOrdersPage });
 const accountWishlistRoute = createRoute({ getParentRoute: () => rootRoute, path: '/account/wishlist', head: pageHead('/account/wishlist'), component: AccountWishlistPage });
@@ -262,6 +267,7 @@ const routeTree = rootRoute.addChildren([
   leroyBatesRoute,
   gabeSalvaneraRoute,
   wishlistRoute,
+  affiliatesRoute,
   accountRoute,
   accountOrdersRoute,
   accountWishlistRoute,

@@ -100,6 +100,12 @@ export const PAGE_SEO = {
     description: 'Golf professional Gabe Salvanera - profile and training background.',
   },
 
+  '/affiliates': {
+    title: 'Affiliate Program',
+    description:
+      'Earn commission promoting Dominus Golf. For coaches, content creators, clubs and academies.',
+  },
+
   '/shipping-policy': {
     title: 'Shipping Policy',
     description: 'Shipping timelines, rates, and delivery information for Dominus Golf orders.',
