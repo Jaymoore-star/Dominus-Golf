@@ -220,7 +220,7 @@ export function Navbar() {
 
   // Icons tighten up while the search field is open so it has room to grow.
   const iconBtnClass = `relative ${
-    searchOpen ? 'p-1' : 'p-2'
+    searchOpen ? 'p-1' : 'p-1.5 sm:p-2'
   } text-foreground hover:text-accent transition-all duration-300 active:scale-90`;
 
   return (
@@ -261,7 +261,7 @@ export function Navbar() {
             <div className="flex items-center justify-between h-16 gap-2">
               {/* Mobile hamburger */}
               <button
-                className="lg:hidden p-2 text-foreground hover:text-accent transition-colors"
+                className="lg:hidden p-1.5 sm:p-2 text-foreground hover:text-accent transition-colors"
                 onClick={() => setMobileOpen(true)}
                 aria-label="Open menu"
               >
@@ -274,7 +274,11 @@ export function Navbar() {
                 className={`flex-shrink-0 font-serif font-bold text-foreground hover:text-accent transition-all duration-300 ${
                   searchOpen
                     ? 'hidden sm:block tracking-[0.14em] text-[17px]'
-                    : 'tracking-[0.22em] text-[22px]'
+                    // Sized down on phones: at 22px/0.22em the wordmark is ~216px, and
+                    // hamburger + wordmark + three icons came to 424px inside a 375px
+                    // screen. Since the icon group is shrink-0, the row pushed 49px past
+                    // the edge and every page scrolled sideways.
+                    : 'tracking-[0.1em] text-[15px] sm:tracking-[0.16em] sm:text-[19px] lg:tracking-[0.22em] lg:text-[22px]'
                 }`}
               >
                 DOMINUS GOLF
@@ -669,6 +673,43 @@ export function Navbar() {
                   )}
                 </div>
               ))}
+
+              {/* Account links, mirroring the desktop dropdown. Without these the
+                  only way into the account area on a phone is the icon below, so
+                  Orders, Addresses and Preferences were effectively desktop-only. */}
+              {isAuthenticated && (
+                <div className="border-b border-border">
+                  <p className="px-6 pt-5 pb-1 font-sans text-[10px] font-semibold tracking-widest uppercase text-muted-foreground">
+                    My Account
+                  </p>
+                  {user?.email && (
+                    <p className="px-6 pb-3 font-sans text-xs text-muted-foreground truncate">
+                      {user.email}
+                    </p>
+                  )}
+                  {accountMenu.map((item) => (
+                    <Link
+                      key={item.to}
+                      to={item.to}
+                      onClick={() => setMobileOpen(false)}
+                      className="flex items-center gap-2.5 px-6 py-3 font-sans text-sm text-foreground hover:text-accent transition-colors"
+                    >
+                      {item.icon}
+                      {item.label}
+                    </Link>
+                  ))}
+                  <button
+                    onClick={() => {
+                      setMobileOpen(false);
+                      signOut();
+                    }}
+                    className="w-full flex items-center gap-2.5 px-6 py-3 font-sans text-sm text-foreground hover:text-accent transition-colors"
+                  >
+                    <LogOut size={16} />
+                    Sign Out
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Mobile Footer Icons */}
@@ -686,11 +727,10 @@ export function Navbar() {
               <button
                 onClick={() => {
                   setMobileOpen(false);
-                  if (isAuthenticated) {
-                    // Could show account page; for now just close
-                  } else {
-                    navigate({ to: '/login' });
-                  }
+                  // Was a no-op for signed-in users, so /account was unreachable on a
+                  // phone: this is the only account entry point there, since the
+                  // desktop dropdown is hidden below lg.
+                  navigate({ to: isAuthenticated ? '/account' : '/login' });
                 }}
                 className="flex flex-col items-center gap-1 text-foreground"
               >
