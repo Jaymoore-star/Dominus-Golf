@@ -278,7 +278,10 @@ export function Navbar() {
                     // hamburger + wordmark + three icons came to 424px inside a 375px
                     // screen. Since the icon group is shrink-0, the row pushed 49px past
                     // the edge and every page scrolled sideways.
-                    : 'tracking-[0.1em] text-[15px] sm:tracking-[0.16em] sm:text-[19px] lg:tracking-[0.22em] lg:text-[22px]'
+                    // The max-[359px] step is for 320px-class phones, where the row was
+                    // still ~2px too wide and the absolutely-positioned cart badge
+                    // (right: -6px) pushed the total 3px past the edge.
+                    : 'max-[359px]:text-[13px] max-[359px]:tracking-[0.04em] tracking-[0.1em] text-[15px] sm:tracking-[0.16em] sm:text-[19px] lg:tracking-[0.22em] lg:text-[22px]'
                 }`}
               >
                 DOMINUS GOLF
