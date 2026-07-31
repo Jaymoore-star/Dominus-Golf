@@ -1,0 +1,92 @@
+; ══════════════════════════════════════════════════════════════════════════════
+; Records to import into Cloudflare for dominusgolf.com
+;
+; This is everything IONOS publishes that Cloudflare's scan did NOT import.
+; Values verified against live public DNS on 2026-07-30.
+;
+; HOW TO USE
+;   Cloudflare -> dominusgolf.com -> DNS -> "Import DNS Records" -> upload this file.
+;   TTL 1 means "Auto" in Cloudflare.
+;
+; AFTER IMPORTING
+;   1. Check the Proxy status column. Every record in this file must be
+;      "DNS only" (grey cloud) — none of them are the website. The qr A/AAAA
+;      records are an IONOS redirect service and proxying them can break it.
+;   2. Add the Bing record by hand (see MANUAL below).
+;
+; ── ALREADY IN CLOUDFLARE — not repeated here, do not add twice ────────────────
+;   CNAME  autodiscover              adsredir.ionos.info
+;   CNAME  _domainconnect            _domainconnect.ionos.com
+;   MX     @  (10)                   mx00.ionos.com
+;   MX     @  (10)                   mx01.ionos.com
+;   TXT    @                         "v=spf1 include:_spf-us.ionos.com ~all"
+;   TXT    @                         "fb319c20-8b5b-11f1-a2ce-713663116963"
+;   TXT    resend._domainkey.send    "p=MIGf..."
+;
+; ── DELIBERATELY EXCLUDED — these two ARE the 404 ─────────────────────────────
+;   A      @                         199.34.228.186   (Weebly / Square Online)
+;   CNAME  www                       dominusgolf.com
+;   Attaching the domain to the `tit` Worker recreates www and the apex properly.
+;
+; ── MANUAL: one record cannot be read from outside ─────────────────────────────
+;   IONOS truncates its name as  b28cdc07eba29d049167...
+;   In IONOS click the pencil icon on that row, copy the full host name, then add
+;   in Cloudflare:   Type CNAME | Name <that full name> | Target verify.bing.com
+;   This is Bing Webmaster Tools verification. Losing it only means re-verifying.
+;
+; ── NAMING NOTE, do not "correct" this ────────────────────────────────────────
+;   IONOS displays these as  s1-ionos_domainkey  (underscore).
+;   The real DNS name has a DOT:  s1-ionos._domainkey  — confirmed by query.
+;   The names below are the correct ones.
+; ══════════════════════════════════════════════════════════════════════════════
+
+
+; ─── IONOS outbound mail signing (DKIM) ───────────────────────────────────────
+; Without these, mail sent FROM @dominusgolf.com stops being signed and is far
+; more likely to be filtered as spam.
+s1-ionos._domainkey.dominusgolf.com.	1	IN	CNAME	s1.dkim.ionos.com.
+s2-ionos._domainkey.dominusgolf.com.	1	IN	CNAME	s2.dkim.ionos.com.
+s42582890._domainkey.dominusgolf.com.	1	IN	CNAME	s42582890.dkim.ionos.com.
+
+
+; ─── Resend sending subdomain — this FIXES an existing misconfiguration ───────
+; At IONOS these two sit at "send.send.dominusgolf.com", which is wrong: whoever
+; added them typed the full name into a field that already appends the domain.
+; Confirmed by query — send.dominusgolf.com has no MX and no SPF, while
+; send.send.dominusgolf.com has both. That is why Resend's sending domain looked
+; only half configured.
+;
+; Written below at the CORRECT name. Do not recreate the send.send version.
+send.dominusgolf.com.	1	IN	MX	10 feedback-smtp.us-east-1.amazonses.com.
+send.dominusgolf.com.	1	IN	TXT	"v=spf1 include:amazonses.com ~all"
+
+
+; ─── qr.dominusgolf.com — a LIVE redirect, do not lose it ─────────────────────
+; qr.dominusgolf.com currently redirects to a YouTube video via IONOS's redirect
+; service. If a printed QR code points at it, dropping these breaks that code.
+; The _dep_ws_mutex records are IONOS's ownership proof for the redirect.
+qr.dominusgolf.com.	1	IN	A	74.208.236.40
+qr.dominusgolf.com.	1	IN	AAAA	2607:f1c0:100f:f000::200
+www.qr.dominusgolf.com.	1	IN	A	74.208.236.40
+www.qr.dominusgolf.com.	1	IN	AAAA	2607:f1c0:100f:f000::200
+_dep_ws_mutex.qr.dominusgolf.com.	1	IN	TXT	"bf65c4e13f56794ac1ce827c9c306a927501a7fba57e721649e30a26d3617cff_1782402122138"
+_dep_ws_mutex.www.qr.dominusgolf.com.	1	IN	TXT	"3160482507d47876b0a322c32386fc29027b1d75a4e741ef1a694fa508571429_1782402122133"
+
+
+; ─── Mail records IONOS auto-created for the qr subdomain ─────────────────────
+; Only needed if a mailbox exists at @qr.dominusgolf.com. Harmless either way,
+; and cheaper to carry across than to debug later.
+qr.dominusgolf.com.	1	IN	MX	10 mx00.ionos.com.
+qr.dominusgolf.com.	1	IN	MX	10 mx01.ionos.com.
+qr.dominusgolf.com.	1	IN	TXT	"v=spf1 include:_spf-us.ionos.com ~all"
+s1-ionos._domainkey.qr.dominusgolf.com.	1	IN	CNAME	s1.dkim.ionos.com.
+s2-ionos._domainkey.qr.dominusgolf.com.	1	IN	CNAME	s2.dkim.ionos.com.
+autodiscover.qr.dominusgolf.com.	1	IN	CNAME	adsredir.ionos.info.
+
+
+; ─── grant.dominusgolf.com — a HubSpot page that currently returns 404 ────────
+; Included to preserve the status quo exactly: copying a broken subdomain keeps
+; it exactly as broken, whereas dropping it is a change you did not choose.
+; The site has its own /grant route, so this subdomain may well be dead — safe
+; to delete in Cloudflare later once you have confirmed nothing points at it.
+grant.dominusgolf.com.	1	IN	CNAME	246543983.group0.sites.hscoscdn-na2.net.
