@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dominus Golf — layout diagnostics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;600&display=swap" />
+  <style>
+    body { margin: 0; padding: 16px; font-family: 'DM Sans', system-ui, sans-serif; font-size: 15px; line-height: 1.5; }
+    h1 { font-size: 18px; margin: 0 0 12px; }
+    table { width: 100%; border-collapse: collapse; }
+    td { padding: 7px 4px; border-bottom: 1px solid #ddd; vertical-align: top; }
+    td:first-child { color: #666; width: 52%; }
+    td:last-child { font-weight: 600; font-variant-numeric: tabular-nums; }
+    .bad { color: #b00; }
+    .good { color: #070; }
+    /* Rendered at exactly the size the real navbar wordmark uses, so its measured
+       width tells us whether text is wider on this device than on the test rig. */
+    #probe { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 15px; letter-spacing: 0.1em; white-space: nowrap; display: inline-block; }
+    #fallbackProbe { font-family: serif; font-weight: 700; font-size: 15px; letter-spacing: 0.1em; white-space: nowrap; display: inline-block; }
+    .note { margin-top: 14px; padding: 10px; background: #f4f4f4; font-size: 13px; }
+  </style>
+</head>
+
+<body>
+  <h1>Layout diagnostics</h1>
+  <p style="margin:0 0 10px;font-size:13px;color:#666">Screenshot this whole page and send it back.</p>
+
+  <div style="position:absolute;visibility:hidden;top:-9999px">
+    <span id="probe">DOMINUS GOLF</span>
+    <span id="fallbackProbe">DOMINUS GOLF</span>
+  </div>
+
+  <table id="out"></table>
+
+  <div class="note" id="verdict"></div>
+
+  <script>
+    function row(k, v, cls) {
+      return '<tr><td>' + k + '</td><td' + (cls ? ' class="' + cls + '"' : '') + '>' + v + '</td></tr>';
+    }
+
+    function render() {
+      var de = document.documentElement;
+      var vv = window.visualViewport;
+      var probe = document.getElementById('probe');
+      var fb = document.getElementById('fallbackProbe');
+      var pw = probe.getBoundingClientRect().width;
+      var fbw = fb.getBoundingClientRect().width;
+
+      var playfairLoaded = false;
+      try { playfairLoaded = document.fonts && document.fonts.check('700 15px "Playfair Display"'); } catch (e) {}
+
+      var scale = vv ? vv.scale : null;
+      var html = '';
+      html += row('layout viewport width', de.clientWidth + ' px', de.clientWidth < 300 ? 'bad' : 'good');
+      html += row('window.innerWidth', window.innerWidth + ' px');
+      html += row('screen.width', screen.width + ' px');
+      html += row('devicePixelRatio', window.devicePixelRatio);
+      html += row('visualViewport.width', vv ? Math.round(vv.width) + ' px' : 'n/a');
+      html += row('visualViewport.scale (1 = not zoomed)', scale === null ? 'n/a' : scale.toFixed(3),
+        scale !== null && Math.abs(scale - 1) > 0.01 ? 'bad' : 'good');
+      html += row('document scrollWidth', de.scrollWidth + ' px',
+        de.scrollWidth > de.clientWidth + 1 ? 'bad' : 'good');
+      html += row('this page overflows sideways', de.scrollWidth > de.clientWidth + 1 ? 'YES' : 'no',
+        de.scrollWidth > de.clientWidth + 1 ? 'bad' : 'good');
+      html += row('Playfair Display loaded', playfairLoaded ? 'yes' : 'NO - using fallback',
+        playfairLoaded ? 'good' : 'bad');
+      html += row('"DOMINUS GOLF" width, Playfair', pw.toFixed(1) + ' px  (rig: 134.7)',
+        Math.abs(pw - 134.7) > 12 ? 'bad' : 'good');
+      html += row('"DOMINUS GOLF" width, serif fallback', fbw.toFixed(1) + ' px');
+      html += row('text-size-adjust in effect', getComputedStyle(de).webkitTextSizeAdjust || getComputedStyle(de).textSizeAdjust || 'n/a');
+      html += row('root font-size', getComputedStyle(de).fontSize);
+      html += row('user agent', navigator.userAgent.slice(0, 120));
+      document.getElementById('out').innerHTML = html;
+
+      var v = [];
+      if (scale !== null && Math.abs(scale - 1) > 0.01) v.push('Page is ZOOMED (scale ' + scale.toFixed(2) + '). That alone crops content on the right.');
+      if (!playfairLoaded) v.push('Playfair Display did NOT load, so headings use a wider fallback.');
+      if (Math.abs(pw - 134.7) > 12) v.push('Text renders ' + Math.round((pw / 134.7 - 1) * 100) + '% ' + (pw > 134.7 ? 'WIDER' : 'narrower') + ' than on the test rig.');
+      if (getComputedStyle(de).fontSize !== '16px') v.push('Root font-size is ' + getComputedStyle(de).fontSize + ', not 16px - text scaling is active.');
+      if (de.scrollWidth > de.clientWidth + 1) v.push('This plain page itself overflows, so the cause is device-level, not the site CSS.');
+      document.getElementById('verdict').innerHTML = v.length
+        ? '<strong>Findings:</strong><br>' + v.join('<br>')
+        : '<strong>Nothing anomalous.</strong> Viewport, zoom, fonts and text scale all match the test rig.';
+    }
+
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(render); else window.addEventListener('load', render);
+    window.addEventListener('resize', render);
+    if (window.visualViewport) window.visualViewport.addEventListener('resize', render);
+  </script>
+</body>
+
+</html>

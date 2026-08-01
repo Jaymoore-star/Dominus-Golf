@@ -32,4 +32,19 @@
 
 # HTML is deliberately absent from this file. Every prerendered *.html must keep
 # revalidating, or a deploy would not reach anyone holding a cached copy — the
-# HTML is what points at the new hashed asset filenames.
+# HTML is what points at the new hashed asset filenames. Cloudflare's default for
+# documents, `public, max-age=0, must-revalidate`, already does that.
+#
+# DO NOT add a `/*` rule to force `no-cache` on documents. It was tried on
+# 2026-07-31 and reverted, because these rules MERGE rather than override —
+# verified with `npx wrangler dev`:
+#
+#   /assets/index-BzGe2PpN.js -> no-cache, public, max-age=31536000, immutable
+#
+# Both land on the same response and `no-cache` wins for freshness, so every
+# returning visitor would revalidate the whole JS bundle on every page view —
+# precisely what the /assets rule above exists to prevent. There is no negation
+# syntax, so a catch-all cannot exclude /assets.
+#
+# If a stale document ever needs forcing out of browsers, do it in the app: fetch
+# a small uncached version file on load and reload when it differs from the build.
