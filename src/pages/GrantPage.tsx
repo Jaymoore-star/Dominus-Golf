@@ -422,9 +422,14 @@ export function GrantPage() {
             transition={{ duration: 0.5, delay: 0.6 }}
             className="mt-9 sm:mt-11 flex flex-wrap items-center justify-center"
           >
-            <div className="inline-flex items-stretch divide-x divide-border border border-border bg-secondary">
+            {/* Was inline-flex with four min-w-[110px] items: a 440px floor that
+                cannot fit a 320-390px screen, and inline-flex will not wrap
+                internally, so "Winner Notified" was cut off. Now two per row on
+                phones, one row from sm. Dividers only apply once it is a single
+                row, otherwise wrapping leaves them stranded mid-row. */}
+            <div className="flex flex-wrap justify-center items-stretch sm:divide-x divide-border border border-border bg-secondary">
               {STATS.map((stat) => (
-                <div key={stat.label} className="flex flex-col items-center justify-center gap-1.5 px-5 sm:px-7 py-3.5 min-w-[110px]">
+                <div key={stat.label} className="flex flex-col items-center justify-center gap-1.5 px-5 sm:px-7 py-3.5 basis-1/2 sm:basis-auto min-w-0 sm:min-w-[110px]">
                   <span className="text-lg sm:text-xl font-bold font-serif text-foreground tracking-tight">{stat.value}</span>
                   <span className="text-[10px] sm:text-[11px] uppercase tracking-wider text-muted-foreground font-sans font-medium text-center">{stat.label}</span>
                 </div>

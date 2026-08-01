@@ -737,58 +737,9 @@ export function Navbar() {
               )}
             </div>
 
-            {/* Mobile Footer Icons */}
-            <div className="flex items-center justify-around px-6 py-5 border-t border-border shrink-0">
-              <button
-                onClick={() => {
-                  setMobileOpen(false);
-                  setSearchOpen(true);
-                }}
-                className="flex flex-col items-center gap-1 text-foreground"
-              >
-                <Search size={20} />
-                <span className="font-sans text-[10px] tracking-widest uppercase">Search</span>
-              </button>
-              <button
-                onClick={() => {
-                  setMobileOpen(false);
-                  // Was a no-op for signed-in users, so /account was unreachable on a
-                  // phone: this is the only account entry point there, since the
-                  // desktop dropdown is hidden below lg.
-                  navigate({ to: isAuthenticated ? '/account' : '/login' });
-                }}
-                className="flex flex-col items-center gap-1 text-foreground"
-              >
-                <User size={20} />
-                <span className="font-sans text-[10px] tracking-widest uppercase">
-                  {isAuthenticated ? 'Account' : 'Sign In'}
-                </span>
-              </button>
-              <Link
-                to="/wishlist"
-                onClick={() => setMobileOpen(false)}
-                className="relative flex flex-col items-center gap-1 text-foreground"
-              >
-                <Heart size={20} />
-                {wishlistCount > 0 && (
-                  <span className="cart-badge">{wishlistCount > 9 ? '9+' : wishlistCount}</span>
-                )}
-                <span className="font-sans text-[10px] tracking-widest uppercase">Saved</span>
-              </Link>
-              <button
-                onClick={() => {
-                  setMobileOpen(false);
-                  toggleCart();
-                }}
-                className="relative flex flex-col items-center gap-1 text-foreground"
-              >
-                <ShoppingBag size={20} />
-                {itemCount > 0 && (
-                  <span className="cart-badge">{itemCount > 9 ? '9+' : itemCount}</span>
-                )}
-                <span className="font-sans text-[10px] tracking-widest uppercase">Bag</span>
-              </button>
-            </div>
+            {/* The Search / Account / Saved / Bag row that used to sit here is gone:
+                all four are on the main bar now, so it was a duplicate set of
+                controls one tap further away. */}
           </div>
         )}
       </header>
