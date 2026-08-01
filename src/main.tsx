@@ -7,6 +7,12 @@ import './index.css'
 
 const queryClient = new QueryClient()
 
+// Temporary: ?diag=1 mounts an on-device layout probe. See src/lib/layoutDiag.ts
+// for why, and delete both once the mobile overflow cause is identified.
+if (typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('diag')) {
+  import('./lib/layoutDiag').then((m) => m.mountLayoutDiag()).catch(() => {})
+}
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
