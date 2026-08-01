@@ -258,7 +258,11 @@ export function Navbar() {
         {/* Main Nav */}
         <nav className="bg-background border-b border-border">
           <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16 gap-2">
+            {/* min-w-0 so the row can never be forced wider than the screen: the
+                wordmark below is allowed to shrink and truncate, absorbing any
+                pressure instead of shoving the icon group off the right edge.
+                That is what put the cart icon off-screen on real phones. */}
+            <div className="flex items-center justify-between h-16 gap-2 min-w-0">
               {/* Mobile hamburger */}
               <button
                 className="lg:hidden p-1.5 sm:p-2 text-foreground hover:text-accent transition-colors"
@@ -271,7 +275,7 @@ export function Navbar() {
               {/* Wordmark */}
               <Link
                 to="/"
-                className={`flex-shrink-0 font-serif font-bold text-foreground hover:text-accent transition-all duration-300 ${
+                className={`min-w-0 truncate font-serif font-bold text-foreground hover:text-accent transition-all duration-300 ${
                   searchOpen
                     ? 'hidden sm:block tracking-[0.14em] text-[17px]'
                     // Sized down on phones: at 22px/0.22em the wordmark is ~216px, and
