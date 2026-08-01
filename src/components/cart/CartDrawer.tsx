@@ -81,13 +81,26 @@ export function CartDrawer() {
         />
       )}
 
-      {/* Drawer */}
-      <div
-        className={`fixed top-0 right-0 h-full w-full sm:w-[420px] bg-background z-50 flex flex-col transition-transform duration-300 ease-in-out ${
-          state.isOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
-        style={{ boxShadow: 'var(--shadow-2xl)' }}
-      >
+      {/*
+        Viewport-sized clipping wrapper.
+
+        Closed, the panel below is translated a full width to the right, so it sits
+        outside the viewport — an on-device probe at 440px showed it and its whole
+        subtree (header, item list, subtotal) extending to right=880. That was
+        contained only by `html { overflow-x: clip }`, which Safari 15 and older
+        ignore, so on those the closed bag could still make the page scroll
+        sideways. Clipping it here makes it correct rather than merely masked.
+
+        pointer-events-none so the wrapper never swallows taps meant for the page;
+        the panel re-enables them for itself.
+      */}
+      <div className="fixed inset-0 z-50 overflow-hidden pointer-events-none">
+        <div
+          className={`absolute top-0 right-0 h-full w-full sm:w-[420px] bg-background flex flex-col pointer-events-auto transition-transform duration-300 ease-in-out ${
+            state.isOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
+          style={{ boxShadow: 'var(--shadow-2xl)' }}
+        >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-border">
           <div className="flex items-center gap-3">
@@ -271,6 +284,7 @@ export function CartDrawer() {
             </button>
           </div>
         )}
+        </div>
       </div>
     </>
   );

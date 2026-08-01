@@ -220,7 +220,8 @@ export function Navbar() {
 
   // Icons tighten up while the search field is open so it has room to grow.
   const iconBtnClass = `relative ${
-    searchOpen ? 'p-1' : 'p-1.5 sm:p-2'
+    // Four icons now, so they start tighter and relax as width allows.
+    searchOpen ? 'p-1' : 'p-1 min-[360px]:p-1.5 sm:p-2'
   } text-foreground hover:text-accent transition-all duration-300 active:scale-90`;
 
   return (
@@ -282,10 +283,12 @@ export function Navbar() {
                     // hamburger + wordmark + three icons came to 424px inside a 375px
                     // screen. Since the icon group is shrink-0, the row pushed 49px past
                     // the edge and every page scrolled sideways.
-                    // The max-[359px] step is for 320px-class phones, where the row was
-                    // still ~2px too wide and the absolutely-positioned cart badge
-                    // (right: -6px) pushed the total 3px past the edge.
-                    : 'max-[359px]:text-[13px] max-[359px]:tracking-[0.04em] tracking-[0.1em] text-[15px] sm:tracking-[0.16em] sm:text-[19px] lg:tracking-[0.22em] lg:text-[22px]'
+                    // Ramped by width rather than one mobile size, because the row now
+                    // carries four icons as well as the hamburger. Every step was
+                    // measured at 320/360/375/390/393/412/430/440px — the wordmark is
+                    // the only thing with slack to give, and it is `min-w-0 truncate`
+                    // so it yields rather than pushing the icons off if anything grows.
+                    : 'text-[12px] tracking-[0.02em] min-[360px]:text-[14px] min-[360px]:tracking-[0.05em] min-[375px]:text-[16px] min-[375px]:tracking-[0.08em] min-[390px]:text-[17px] min-[390px]:tracking-[0.1em] min-[430px]:text-[19px] min-[430px]:tracking-[0.12em] sm:tracking-[0.16em] lg:text-[18px] lg:tracking-[0.12em] xl:text-[22px] xl:tracking-[0.22em]'
                 }`}
               >
                 DOMINUS GOLF
@@ -302,7 +305,9 @@ export function Navbar() {
                           setActiveMega(activeMega === link.key ? null : link.key)
                         }
                         className={`flex items-center gap-1 whitespace-nowrap py-2 font-sans font-medium tracking-wide text-foreground hover:text-accent transition-all duration-300 ${
-                          searchOpen ? 'px-1.5 text-[12px]' : 'px-2 xl:px-3 text-[13px]'
+                          searchOpen
+                            ? 'px-1.5 text-[12px]'
+                            : 'px-1.5 text-[12px] xl:px-3 xl:text-[13px]'
                         } ${activeMega === link.key ? 'text-accent' : ''}`}
                       >
                         {link.label}
@@ -319,7 +324,9 @@ export function Navbar() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`block whitespace-nowrap py-2 font-sans font-medium tracking-wide text-foreground hover:text-accent transition-all duration-300 ${
-                          searchOpen ? 'px-1.5 text-[12px]' : 'px-2 xl:px-3 text-[13px]'
+                          searchOpen
+                            ? 'px-1.5 text-[12px]'
+                            : 'px-1.5 text-[12px] xl:px-3 xl:text-[13px]'
                         }`}
                       >
                         {link.label}
@@ -328,7 +335,9 @@ export function Navbar() {
                       <Link
                         to={link.href ?? '/'}
                         className={`block whitespace-nowrap py-2 font-sans font-medium tracking-wide text-foreground hover:text-accent transition-all duration-300 ${
-                          searchOpen ? 'px-1.5 text-[12px]' : 'px-2 xl:px-3 text-[13px]'
+                          searchOpen
+                            ? 'px-1.5 text-[12px]'
+                            : 'px-1.5 text-[12px] xl:px-3 xl:text-[13px]'
                         }`}
                       >
                         {link.label}
@@ -435,25 +444,34 @@ export function Navbar() {
                   <Search size={20} />
                 </button>
 
-                {/* Account - Desktop */}
-                <div className="relative hidden lg:block" ref={accountRef}>
+                {/* Account — now on every screen, not just lg. It was the only icon
+                    missing on mobile while wishlist and bag were both there, so the
+                    account was reachable solely through the hamburger. */}
+                <div className="relative" ref={accountRef}>
                   <button
                     onClick={() => {
-                      if (isAuthenticated) {
+                      if (!isAuthenticated) {
+                        navigate({ to: '/login' });
+                        return;
+                      }
+                      // A hover dropdown is wrong on touch, so below lg the icon goes
+                      // straight to the account page instead of opening the menu.
+                      if (window.matchMedia('(min-width: 1024px)').matches) {
                         setAccountOpen(!accountOpen);
                       } else {
-                        navigate({ to: '/login' });
+                        navigate({ to: '/account' });
                       }
                     }}
                     className={iconBtnClass}
-                    aria-label="Account"
+                    aria-label={isAuthenticated ? 'Account' : 'Sign in'}
                   >
                     <User size={20} />
                   </button>
 
-                  {/* Account Dropdown */}
+                  {/* Account Dropdown — desktop only. It can only be opened above lg,
+                      but this also covers resizing down while it is open. */}
                   {accountOpen && isAuthenticated && (
-                    <div className="absolute right-0 top-full mt-2 w-56 bg-background border border-border shadow-lg z-50">
+                    <div className="hidden lg:block absolute right-0 top-full mt-2 w-56 bg-background border border-border shadow-lg z-50">
                       <div className="px-4 py-3 border-b border-border">
                         <p className="font-sans text-sm font-medium text-foreground truncate">
                           {user?.displayName || 'Member'}
