@@ -234,7 +234,12 @@ export function ProductPage() {
       {/* Sticky Mobile Add to Cart */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4 z-20 shadow-lg animate-in fade-in slide-in-from-bottom-4 duration-300">
         <div className="flex items-center gap-4">
-          <div className="flex-1">
+          {/* min-w-0 is load-bearing: a flex item keeps min-width:auto, so it will
+              not shrink below its content, and `truncate` sets white-space:nowrap
+              which makes that min-content the WHOLE product name. Without it the
+              long names (Mastering the Game, Training Manual PDF) widened this row
+              and pushed the button off screen - 170px past the edge at 320px. */}
+          <div className="flex-1 min-w-0">
             <p className="font-serif text-sm font-bold text-foreground truncate">
               {product.name}
             </p>
@@ -246,7 +251,7 @@ export function ProductPage() {
             <button
               onClick={handleBuyNow}
               disabled={isBuyingNow}
-              className="px-6 py-3 font-sans font-semibold text-xs tracking-widest uppercase btn-gold transition-colors duration-200 flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+              className="shrink-0 px-6 py-3 font-sans font-semibold text-xs tracking-widest uppercase btn-gold transition-colors duration-200 flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {isBuyingNow ? (
                 <><Loader2 size={12} className="animate-spin" /> Preparing…</>
@@ -256,7 +261,7 @@ export function ProductPage() {
             <button
               onClick={handleAddToCart}
               disabled={!product.inStock}
-              className={`px-6 py-3 font-sans font-semibold text-xs tracking-widest uppercase transition-colors duration-200 ${
+              className={`shrink-0 px-6 py-3 font-sans font-semibold text-xs tracking-widest uppercase transition-colors duration-200 ${
                 addedEffect
                   ? 'bg-accent text-accent-foreground'
                   : product.inStock
