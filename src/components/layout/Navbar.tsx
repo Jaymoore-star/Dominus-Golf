@@ -429,7 +429,7 @@ export function Navbar() {
               </div>
 
               {/* Right Icons */}
-              <div className="flex items-center gap-1 shrink-0">
+              <div className="flex items-center gap-1 shrink-0 pr-1.5">
                 <button
                   onClick={() => {
                     setActiveMega(null);

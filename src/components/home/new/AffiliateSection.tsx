@@ -43,7 +43,7 @@ export const AffiliateSection = () => {
 
       {/* Centred, like FinalSection's. An off-centre blob washes one side and makes
           centred content read as lopsided — which is what the hero's used to do. */}
-      <div className="absolute inset-0 pointer-events-none opacity-10">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-10">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent blur-[200px] rounded-full" />
       </div>
     </section>

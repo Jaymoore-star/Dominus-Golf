@@ -58,7 +58,7 @@ export const MissionSection = () => {
       </div>
 
       {/* Background visual motif */}
-      <div className="absolute top-0 right-0 w-full h-full opacity-5 pointer-events-none">
+      <div className="absolute top-0 right-0 w-full h-full overflow-hidden opacity-5 pointer-events-none">
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-black blur-[200px] -mr-[400px] -mt-[400px] rounded-full" />
       </div>
     </section>
