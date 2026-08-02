@@ -27,25 +27,50 @@ function toAuthUser(user: User | null | undefined): AuthUser | null {
   }
 }
 
+/**
+ * The resolved session, shared across every useAuth() caller.
+ *
+ * Without this, each mount started at `isLoading: true` and re-resolved the
+ * session asynchronously. Every /account page renders its own AccountLayout, so
+ * moving between Profile, Orders, Wishlist, Addresses and Preferences unmounted
+ * one layout and mounted another — and the new one showed its loading spinner
+ * before the session came back. The page blanked and rebuilt on every click,
+ * which reads as the site refreshing itself.
+ *
+ * Module scope rather than a context so no call site has to change, and so the
+ * value survives unmounting the entire tree.
+ */
+let cachedUser: AuthUser | null = null
+let sessionResolved = false
+
 export function useAuth() {
-  const [user, setUser] = useState<AuthUser | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [user, setUser] = useState<AuthUser | null>(cachedUser)
+  const [isLoading, setIsLoading] = useState(!sessionResolved)
 
   useEffect(() => {
-    // Seed with the current session, then subscribe to changes.
-    supabase.auth.getSession().then(({ data }) => {
-      setUser(toAuthUser(data.session?.user))
+    let active = true
+
+    // Cache first, then update this instance — so a component mounting later in
+    // the same tick already sees the answer instead of flashing a spinner.
+    const apply = (next: AuthUser | null) => {
+      cachedUser = next
+      sessionResolved = true
+      if (!active) return
+      setUser(next)
       setIsLoading(false)
-    })
+    }
+
+    // Seed with the current session, then subscribe to changes.
+    supabase.auth.getSession().then(({ data }) => apply(toAuthUser(data.session?.user)))
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(toAuthUser(session?.user))
-      setIsLoading(false)
-    })
+    } = supabase.auth.onAuthStateChange((_event, session) => apply(toAuthUser(session?.user)))
 
-    return () => subscription.unsubscribe()
+    return () => {
+      active = false
+      subscription.unsubscribe()
+    }
   }, [])
 
   const signOut = async () => {

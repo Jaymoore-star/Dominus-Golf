@@ -241,15 +241,17 @@ export function Navbar() {
             >
               <span className="font-sans text-[10px] sm:text-[11px] font-medium tracking-wide sm:tracking-widest uppercase text-accent text-center leading-snug">
                 {item.text}{' '}
+                {/* Router Link, not an anchor with target="_blank". Every
+                    announcement points somewhere on this site, so opening a new
+                    tab meant a full page load and a duplicate tab — which looks
+                    exactly like the site reloading itself. */}
                 {item.link && (
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Link
+                    to={item.link}
                     className="underline underline-offset-4 hover:text-white transition-colors duration-200 font-bold"
                   >
                     {item.linkLabel}
-                  </a>
+                  </Link>
                 )}
               </span>
             </div>

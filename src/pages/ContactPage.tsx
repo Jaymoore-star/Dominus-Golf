@@ -1,9 +1,38 @@
+import { useState, type FormEvent } from 'react';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { CartDrawer } from '../components/cart/CartDrawer';
 import { Mail, MapPin, Clock } from 'lucide-react';
 
+const SUPPORT_EMAIL = 'Customersupport@dominusgolf.com';
+
 export function ContactPage() {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+
+  /**
+   * The form had no onSubmit at all, so pressing Send Message did a native form
+   * post: the page reloaded and the message was thrown away. That reload is what
+   * looked like the site refreshing itself.
+   *
+   * There is no contact endpoint on the backend yet, so this hands off to the
+   * customer's mail client with everything they typed already filled in. Replace
+   * with a real POST once /api/contact exists.
+   */
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const name = [firstName, lastName].filter(Boolean).join(' ');
+    const subject = name ? `Website enquiry from ${name}` : 'Website enquiry';
+    const lines: string[] = [];
+    if (name) lines.push(`Name: ${name}`);
+    if (email) lines.push(`Email: ${email}`);
+    lines.push('', message);
+    const body = lines.join('\n');
+    window.location.href = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -71,7 +100,7 @@ export function ContactPage() {
         {/* Contact Form */}
         <div className="border-t border-border pt-14">
           <h2 className="font-serif text-2xl font-bold text-foreground mb-8">Send a Message</h2>
-          <form className="space-y-5 max-w-2xl">
+          <form onSubmit={handleSubmit} className="space-y-5 max-w-2xl">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
                 <label className="block font-sans text-[11px] font-semibold tracking-widest uppercase text-foreground mb-2">
@@ -79,7 +108,9 @@ export function ContactPage() {
                 </label>
                 <input
                   type="text"
-                  className="w-full border border-border px-4 py-3 font-sans text-sm bg-background focus:outline-none focus:border-foreground transition-colors"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="w-full border border-border px-4 py-3 font-sans text-base sm:text-sm bg-background focus:outline-none focus:border-foreground transition-colors"
                   placeholder="John"
                 />
               </div>
@@ -89,7 +120,9 @@ export function ContactPage() {
                 </label>
                 <input
                   type="text"
-                  className="w-full border border-border px-4 py-3 font-sans text-sm bg-background focus:outline-none focus:border-foreground transition-colors"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="w-full border border-border px-4 py-3 font-sans text-base sm:text-sm bg-background focus:outline-none focus:border-foreground transition-colors"
                   placeholder="Doe"
                 />
               </div>
@@ -100,7 +133,9 @@ export function ContactPage() {
               </label>
               <input
                 type="email"
-                className="w-full border border-border px-4 py-3 font-sans text-sm bg-background focus:outline-none focus:border-foreground transition-colors"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full border border-border px-4 py-3 font-sans text-base sm:text-sm bg-background focus:outline-none focus:border-foreground transition-colors"
                 placeholder="you@example.com"
               />
             </div>
@@ -110,7 +145,9 @@ export function ContactPage() {
               </label>
               <textarea
                 rows={5}
-                className="w-full border border-border px-4 py-3 font-sans text-sm bg-background focus:outline-none focus:border-foreground transition-colors resize-none"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                className="w-full border border-border px-4 py-3 font-sans text-base sm:text-sm bg-background focus:outline-none focus:border-foreground transition-colors resize-none"
                 placeholder="Tell us how we can help..."
               />
             </div>
