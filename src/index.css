@@ -118,6 +118,25 @@
     overflow-x: clip;
   }
 
+  /* iOS Safari magnifies the entire page when a focused form control has a
+   * font-size below 16px, and it does not zoom back out afterwards. Because this
+   * is a single-page app there is no page load to reset it, so one tap on a
+   * 14px login field left every page for the rest of the session enlarged and
+   * cut off at the right edge — the bug Jeet spent hours reporting.
+   *
+   * The individual field classes are already text-base sm:text-sm, which is the
+   * proper fix. This is the backstop so a new form cannot reintroduce it.
+   * !important is deliberate: Tailwind utilities out-specify a bare element
+   * selector, and this must beat any text-sm that slips through.
+   */
+  @media (max-width: 639px) {
+    input:not([type='checkbox']):not([type='radio']):not([type='range']),
+    select,
+    textarea {
+      font-size: 16px !important;
+    }
+  }
+
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-sans);

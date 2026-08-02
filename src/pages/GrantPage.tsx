@@ -371,7 +371,7 @@ export function GrantPage() {
     setSubmitting(false);
   };
 
-  const inputBaseClass = "w-full bg-background border border-border px-4 py-3 text-sm text-foreground font-sans placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-1 focus:ring-accent/20 transition-colors disabled:opacity-50";
+  const inputBaseClass = "w-full bg-background border border-border px-4 py-3 text-base sm:text-sm text-foreground font-sans placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-1 focus:ring-accent/20 transition-colors disabled:opacity-50";
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
