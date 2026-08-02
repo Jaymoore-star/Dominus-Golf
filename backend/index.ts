@@ -342,6 +342,77 @@ async function sendGrantEmail(
   return { ok: true, id: data.id }
 }
 
+// POST /api/contact — deliver a website enquiry to customer support.
+// Body: { firstName, lastName, email, message }
+//
+// The contact form previously had no handler at all: submitting it did a native
+// form post, so the page reloaded and the message was discarded. Nothing was ever
+// received from it.
+//
+// Sends to SUPPORT_INBOX with reply_to set to the enquirer, so hitting Reply in
+// the inbox goes straight back to them.
+app.post("/api/contact", async (c) => {
+  const env = c.env as Record<string, string>
+  const body = (await c.req.json().catch(() => ({}))) as {
+    firstName?: string
+    lastName?: string
+    email?: string
+    message?: string
+  }
+
+  const firstName = (body.firstName || "").trim()
+  const lastName = (body.lastName || "").trim()
+  const email = (body.email || "").trim()
+  const message = (body.message || "").trim()
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return c.json({ error: "A valid email address is required." }, 400)
+  }
+  if (!message) {
+    return c.json({ error: "Please include a message." }, 400)
+  }
+  // Generous ceilings; enough to stop someone posting a novel through the form.
+  if (message.length > 5000 || firstName.length > 100 || lastName.length > 100) {
+    return c.json({ error: "That message is too long. Please shorten it and try again." }, 400)
+  }
+
+  const resendApiKey = env.RESEND_API_KEY
+  if (!resendApiKey) {
+    console.error("Contact form: RESEND_API_KEY missing")
+    return c.json({ error: "Messaging is temporarily unavailable. Please email us directly." }, 503)
+  }
+
+  const fromAddress = env.RESEND_FROM || "Dominus Golf <Customersupport@send.dominusgolf.com>"
+  const supportInbox = env.SUPPORT_INBOX || "Customersupport@dominusgolf.com"
+  const name = [firstName, lastName].filter(Boolean).join(" ") || "Website visitor"
+  const escape = (s: string) =>
+    s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${resendApiKey}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      from: fromAddress,
+      to: supportInbox,
+      reply_to: email,
+      subject: `Website enquiry from ${name}`,
+      text: `From: ${name}\nEmail: ${email}\n\n${message}`,
+      html:
+        `<p><strong>From:</strong> ${escape(name)}<br/>` +
+        `<strong>Email:</strong> <a href="mailto:${escape(email)}">${escape(email)}</a></p>` +
+        `<hr/><p style="white-space:pre-wrap">${escape(message)}</p>`,
+    }),
+  })
+
+  const data = (await response.json().catch(() => ({}))) as { id?: string; message?: string; name?: string }
+  if (!response.ok) {
+    console.error("Contact form Resend error:", JSON.stringify(data))
+    return c.json({ error: "Could not send your message. Please email us directly." }, 502)
+  }
+
+  return c.json({ ok: true, id: data.id })
+})
+
 // POST /api/grant/complete — verify the Square payment, THEN send the eBook email.
 // Body: { orderId?, paymentId?, sandbox?, email?, name? }
 app.post("/api/grant/complete", async (c) => {

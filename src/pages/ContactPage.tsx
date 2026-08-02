@@ -2,7 +2,8 @@ import { useState, type FormEvent } from 'react';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { CartDrawer } from '../components/cart/CartDrawer';
-import { Mail, MapPin, Clock } from 'lucide-react';
+import { Mail, MapPin, Clock, Loader2, CheckCircle2 } from 'lucide-react';
+import { BACKEND_URL } from '../lib/backend';
 
 const SUPPORT_EMAIL = 'Customersupport@dominusgolf.com';
 
@@ -11,26 +12,54 @@ export function ContactPage() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState('');
 
   /**
-   * The form had no onSubmit at all, so pressing Send Message did a native form
-   * post: the page reloaded and the message was thrown away. That reload is what
-   * looked like the site refreshing itself.
+   * The form had no onSubmit at all: pressing Send Message did a native form
+   * post, so the page reloaded and the message was discarded. Nothing sent from
+   * here has ever reached anyone.
    *
-   * There is no contact endpoint on the backend yet, so this hands off to the
-   * customer's mail client with everything they typed already filled in. Replace
-   * with a real POST once /api/contact exists.
+   * Now posts to /api/contact, which relays it to customer support via Resend
+   * with reply_to set to the sender.
    */
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const name = [firstName, lastName].filter(Boolean).join(' ');
-    const subject = name ? `Website enquiry from ${name}` : 'Website enquiry';
-    const lines: string[] = [];
-    if (name) lines.push(`Name: ${name}`);
-    if (email) lines.push(`Email: ${email}`);
-    lines.push('', message);
-    const body = lines.join('\n');
-    window.location.href = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setError('');
+
+    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      setError('Please enter a valid email address so we can reply.');
+      return;
+    }
+    if (!message.trim()) {
+      setError('Please write a message.');
+      return;
+    }
+
+    setSending(true);
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ firstName, lastName, email, message }),
+      });
+      const data = (await res.json().catch(() => ({}))) as { error?: string };
+      if (!res.ok) throw new Error(data.error || 'Could not send your message.');
+      setSent(true);
+      setFirstName('');
+      setLastName('');
+      setEmail('');
+      setMessage('');
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : `Could not send your message. Please email ${SUPPORT_EMAIL}.`,
+      );
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -151,11 +180,37 @@ export function ContactPage() {
                 placeholder="Tell us how we can help..."
               />
             </div>
+            {error && (
+              <p role="alert" className="font-sans text-sm text-destructive">
+                {error}
+              </p>
+            )}
+
+            {sent && (
+              <div
+                role="status"
+                className="flex items-start gap-2.5 border border-accent/40 bg-accent/5 px-4 py-3"
+              >
+                <CheckCircle2 size={16} className="text-accent shrink-0 mt-0.5" />
+                <p className="font-sans text-sm text-foreground">
+                  <span className="font-semibold">Message sent.</span> Thanks for getting in
+                  touch — our team replies within one business day.
+                </p>
+              </div>
+            )}
+
             <button
               type="submit"
-              className="btn-primary-black px-8 py-4 font-sans font-semibold text-sm tracking-widest uppercase"
+              disabled={sending}
+              className="btn-primary-black px-8 py-4 font-sans font-semibold text-sm tracking-widest uppercase flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              Send Message
+              {sending ? (
+                <>
+                  <Loader2 size={15} className="animate-spin" /> Sending…
+                </>
+              ) : (
+                'Send Message'
+              )}
             </button>
           </form>
         </div>

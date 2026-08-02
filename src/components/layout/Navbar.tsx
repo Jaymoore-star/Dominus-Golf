@@ -299,10 +299,18 @@ export function Navbar() {
               {/* Desktop Nav Links — tighten (and clip, if it comes to that) while searching */}
               <div className="hidden lg:flex items-center gap-1 min-w-0 overflow-hidden">
                 {navLinks.map((link) => (
-                  <div key={link.label} className="relative shrink-0">
+                  // Hover handled on the wrapper so it covers plain links too:
+                  // link.key is null for Development Grant and Affiliates, which
+                  // closes whatever mega menu was open. Previously only the mega
+                  // buttons had a hover handler, so sliding across to those two
+                  // left the Company panel hanging open over the page.
+                  <div
+                    key={link.label}
+                    className="relative shrink-0"
+                    onMouseEnter={() => setActiveMega(link.key)}
+                  >
                     {link.key ? (
                       <button
-                        onMouseEnter={() => setActiveMega(link.key)}
                         onClick={() =>
                           setActiveMega(activeMega === link.key ? null : link.key)
                         }
@@ -701,47 +709,11 @@ export function Navbar() {
                 </div>
               ))}
 
-              {/* Account links, mirroring the desktop dropdown. Without these the
-                  only way into the account area on a phone is the icon below, so
-                  Orders, Addresses and Preferences were effectively desktop-only. */}
-              {isAuthenticated && (
-                <div className="border-b border-border">
-                  <p className="px-6 pt-5 pb-1 font-sans text-[10px] font-semibold tracking-widest uppercase text-muted-foreground">
-                    My Account
-                  </p>
-                  {user?.email && (
-                    <p className="px-6 pb-3 font-sans text-xs text-muted-foreground truncate">
-                      {user.email}
-                    </p>
-                  )}
-                  {accountMenu.map((item) => (
-                    <Link
-                      key={item.to}
-                      to={item.to}
-                      onClick={() => setMobileOpen(false)}
-                      className="flex items-center gap-2.5 px-6 py-3 font-sans text-sm text-foreground hover:text-accent transition-colors"
-                    >
-                      {item.icon}
-                      {item.label}
-                    </Link>
-                  ))}
-                  <button
-                    onClick={() => {
-                      setMobileOpen(false);
-                      signOut();
-                    }}
-                    className="w-full flex items-center gap-2.5 px-6 py-3 font-sans text-sm text-foreground hover:text-accent transition-colors"
-                  >
-                    <LogOut size={16} />
-                    Sign Out
-                  </button>
-                </div>
-              )}
             </div>
 
-            {/* The Search / Account / Saved / Bag row that used to sit here is gone:
-                all four are on the main bar now, so it was a duplicate set of
-                controls one tap further away. */}
+            {/* The account block and the Search / Account / Saved / Bag row that
+                used to sit here are both gone: the account icon is on the main bar
+                at every width now, so this menu holds shop navigation only. */}
           </div>
         )}
       </header>

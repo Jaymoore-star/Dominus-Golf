@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useParams, Link } from '@tanstack/react-router';
+import { useNavigate, useParams, Link } from '@tanstack/react-router';
 import { SlidersHorizontal, ChevronDown, X } from 'lucide-react';
 import { products, type Category } from '../data/products';
 import { ProductCard } from '../components/ui/ProductCard';
@@ -27,6 +27,8 @@ const categoryHeroes: Record<string, string> = {
   'womens-gear': 'https://images.unsplash.com/photo-1622398925373-3f91b1e275f5?w=1400&q=80',
 };
 
+type FilterValues = { category: string; maxPrice: number; inStockOnly: boolean };
+
 export function ShopPage() {
   const { category } = useParams({ from: '/shop/$category' });
   const [sort, setSort] = useState<SortKey>('featured');
@@ -35,6 +37,29 @@ export function ShopPage() {
   const [displayPrice, setDisplayPrice] = useState(200);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
+  const navigate = useNavigate();
+
+  // What the mobile drawer is editing. Seeded from the live values when it opens
+  // and only committed on Apply Filters, so the results behind it hold still.
+  const [draft, setDraft] = useState<FilterValues>({
+    category,
+    maxPrice: 200,
+    inStockOnly: false,
+  });
+
+  const openMobileFilters = () => {
+    setDraft({ category, maxPrice, inStockOnly });
+    setMobileFiltersOpen(true);
+  };
+
+  const applyMobileFilters = () => {
+    setMaxPrice(draft.maxPrice);
+    setInStockOnly(draft.inStockOnly);
+    setMobileFiltersOpen(false);
+    if (draft.category !== category) {
+      navigate({ to: '/shop/$category', params: { category: draft.category } });
+    }
+  };
 
   const categoryLabel = categoryLabels[category] ?? category;
   const heroImage = categoryHeroes[category] ?? categoryHeroes['training-system'];
@@ -88,7 +113,22 @@ export function ShopPage() {
 
   const priceRanges = [25, 50, 75, 100, 150, 200];
 
-  const FilterContent = () => (
+  /**
+   * Rendered twice with different wiring.
+   *
+   * Desktop sidebar: `values` are the live ones and every change applies at once,
+   * which is what you want when the results are visible beside the controls.
+   *
+   * Mobile drawer: `values` are a draft. Nothing reaches the results until Apply
+   * Filters. Category was the worst of it — it was a Link, so tapping one
+   * navigated immediately, changing the page behind a drawer that stayed open and
+   * had to be dismissed by hand.
+   */
+  const renderFilters = (
+    values: FilterValues,
+    onChange: (patch: Partial<FilterValues>) => void,
+    categoryAsLink: boolean,
+  ) => (
     <div className="space-y-8">
       {/* Categories */}
       <div>
@@ -96,21 +136,25 @@ export function ShopPage() {
           Category
         </h4>
         <ul className="space-y-2">
-          {Object.entries(categoryLabels).map(([key, label]) => (
-            <li key={key}>
-              <Link
-                to="/shop/$category"
-                params={{ category: key }}
-                className={`font-sans text-sm transition-colors ${
-                  key === category
-                    ? 'text-foreground font-medium'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                {label}
-              </Link>
-            </li>
-          ))}
+          {Object.entries(categoryLabels).map(([key, label]) => {
+            const active = key === values.category;
+            const cls = `font-sans text-sm transition-colors text-left ${
+              active ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground'
+            }`;
+            return (
+              <li key={key}>
+                {categoryAsLink ? (
+                  <Link to="/shop/$category" params={{ category: key }} className={cls}>
+                    {label}
+                  </Link>
+                ) : (
+                  <button type="button" onClick={() => onChange({ category: key })} className={cls}>
+                    {label}
+                  </button>
+                )}
+              </li>
+            );
+          })}
         </ul>
       </div>
 
@@ -120,16 +164,16 @@ export function ShopPage() {
           Max Price
         </h4>
         <p className="font-sans text-sm font-semibold text-foreground mb-3">
-          Up to ${maxPrice.toLocaleString()}
+          Up to ${values.maxPrice.toLocaleString()}
         </p>
         <div className="py-3">
           <Slider
             min={10}
             max={200}
             step={5}
-            value={maxPrice}
-            onValueChange={(val) => setMaxPrice(val)}
-            onValueCommitted={(val) => setMaxPrice(val)}
+            value={values.maxPrice}
+            onValueChange={(val) => onChange({ maxPrice: val })}
+            onValueCommitted={(val) => onChange({ maxPrice: val })}
             className="w-full"
           />
         </div>
@@ -137,9 +181,9 @@ export function ShopPage() {
           {priceRanges.map((p) => (
             <button
               key={p}
-              onClick={() => setMaxPrice(p)}
+              onClick={() => onChange({ maxPrice: p })}
               className={`font-sans text-[10px] tracking-wide px-2.5 py-1 border transition-colors ${
-                maxPrice === p
+                values.maxPrice === p
                   ? 'bg-primary text-primary-foreground border-primary'
                   : 'border-border text-muted-foreground hover:border-foreground hover:text-foreground'
               }`}
@@ -157,14 +201,14 @@ export function ShopPage() {
         </h4>
         <label className="flex items-center gap-3 cursor-pointer">
           <div
-            onClick={() => setInStockOnly(!inStockOnly)}
+            onClick={() => onChange({ inStockOnly: !values.inStockOnly })}
             className={`w-8 h-4 relative rounded-full transition-colors cursor-pointer ${
-              inStockOnly ? 'bg-primary' : 'bg-border'
+              values.inStockOnly ? 'bg-primary' : 'bg-border'
             }`}
           >
             <div
               className={`absolute top-0.5 w-3 h-3 rounded-full bg-background shadow-sm transition-transform ${
-                inStockOnly ? 'translate-x-[18px]' : 'translate-x-0.5'
+                values.inStockOnly ? 'translate-x-[18px]' : 'translate-x-0.5'
               }`}
             />
           </div>
@@ -173,6 +217,13 @@ export function ShopPage() {
       </div>
     </div>
   );
+
+  const liveValues: FilterValues = { category, maxPrice, inStockOnly };
+
+  const applyLive = (patch: Partial<FilterValues>) => {
+    if (patch.maxPrice !== undefined) setMaxPrice(patch.maxPrice);
+    if (patch.inStockOnly !== undefined) setInStockOnly(patch.inStockOnly);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -206,7 +257,7 @@ export function ShopPage() {
         {/* Mobile Filter / Sort bar */}
         <div className="flex items-center justify-between mb-6 lg:hidden">
           <button
-            onClick={() => setMobileFiltersOpen(true)}
+            onClick={openMobileFilters}
             className="flex items-center gap-2 font-sans text-sm font-medium text-foreground border border-border px-4 py-2.5 hover:bg-muted transition-colors"
           >
             <SlidersHorizontal size={15} />
@@ -242,7 +293,7 @@ export function ShopPage() {
         <div className="flex gap-10">
           {/* Sidebar - desktop */}
           <aside className="hidden lg:block w-56 shrink-0">
-            {FilterContent()}
+            {renderFilters(liveValues, applyLive, true)}
           </aside>
 
           {/* Product Grid */}
@@ -327,9 +378,9 @@ export function ShopPage() {
                 <X size={20} />
               </button>
             </div>
-            {FilterContent()}
+            {renderFilters(draft, (patch) => setDraft((d) => ({ ...d, ...patch })), false)}
             <button
-              onClick={() => setMobileFiltersOpen(false)}
+              onClick={applyMobileFilters}
               className="mt-8 w-full py-3 bg-primary text-primary-foreground font-sans font-semibold text-xs tracking-widest uppercase"
             >
               Apply Filters

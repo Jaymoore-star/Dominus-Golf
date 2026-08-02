@@ -34,6 +34,30 @@ export function CartDrawer() {
 
   useScrollLock(state.isOpen);
 
+  /**
+   * Make the browser Back button close the bag instead of leaving the page.
+   *
+   * Opening the bag changed nothing in history, so Back did what it always does
+   * and navigated away — losing the page behind an overlay the customer thought
+   * they were dismissing. Opening now pushes one history entry; Back pops it and
+   * we close instead. Closing through the X or Continue Shopping goes back
+   * ourselves so the entry never lingers.
+   */
+  useEffect(() => {
+    if (!state.isOpen) return;
+
+    window.history.pushState({ dominusCart: true }, '');
+    const onPop = () => closeCart();
+    window.addEventListener('popstate', onPop);
+
+    return () => {
+      window.removeEventListener('popstate', onPop);
+      // Only unwind the entry we added. If this cleanup ran because the user
+      // pressed Back, it is already gone and going back again would skip a page.
+      if (window.history.state?.dominusCart) window.history.back();
+    };
+  }, [state.isOpen, closeCart]);
+
   // Coming back from the login gate, reopen the cart so checkout is one click
   // away rather than buried behind the cart icon again. Only claim the action
   // if it is ours — this component mounts on pages that stash other actions.
