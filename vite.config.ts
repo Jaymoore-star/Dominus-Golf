@@ -9,7 +9,7 @@ import { SITE } from './src/lib/seo';
 
 /**
  * Generates sitemap.xml from the live catalog, so a new product is listed for
- * search engines the moment it ships — no separate file to remember to update.
+ * search engines the moment it ships - no separate file to remember to update.
  *
  * Pages marked noindex in PAGE_SEO are excluded: listing a page in the sitemap
  * while telling robots not to index it sends Google contradictory signals.
@@ -67,7 +67,7 @@ function sitemapPlugin(): Plugin {
   };
 }
 
-/** Region of index.html the prerenderer owns — see the markers in that file. */
+/** Region of index.html the prerenderer owns - see the markers in that file. */
 const SEO_BLOCK = /<!--\s*seo:start[\s\S]*?<!--\s*seo:end\s*-->/;
 
 /**
@@ -75,7 +75,7 @@ const SEO_BLOCK = /<!--\s*seo:start[\s\S]*?<!--\s*seo:end\s*-->/;
  * Open Graph and JSON-LD baked into the <head>.
  *
  * Why this exists: the app is client-rendered, so its per-route SEO only appears
- * after JavaScript runs. Google executes JS, but social link unfurlers do not —
+ * after JavaScript runs. Google executes JS, but social link unfurlers do not -
  * Facebook, WhatsApp, LinkedIn and iMessage read the raw HTML and stop. Before
  * this, every shared link showed the same generic sitewide card no matter which
  * product it pointed at.
@@ -119,7 +119,7 @@ function prerenderPlugin(): Plugin {
       for (const { path: routePath, head } of prerenderRoutes()) {
         const html = template.replace(
           SEO_BLOCK,
-          `<!-- prerendered for ${routePath} — see prerenderPlugin in vite.config.ts -->\n${renderHeadHtml(head)}`,
+          `<!-- prerendered for ${routePath} - see prerenderPlugin in vite.config.ts -->\n${renderHeadHtml(head)}`,
         );
 
         // '/' is the shell itself and doubles as the SPA fallback for any URL

@@ -13,7 +13,7 @@
        to download index.css, parse it, THEN fetch the Google Fonts stylesheet,
        THEN the font files. Until that finishes, `display=swap` renders every
        heading in the generic `serif` fallback, whose metrics differ from Playfair
-       Display — so text is a different width during the wait. On a laptop that
+       Display - so text is a different width during the wait. On a laptop that
        window is imperceptible; on a phone it is long enough to see.
        Declaring them here lets the fetch start immediately, in parallel with the
        CSS, and the preconnects remove two round trips of DNS/TLS setup. -->
@@ -23,7 +23,7 @@
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" />
 
   <!-- seo:start
-      Sitewide fallback tags for crawlers that do not execute JavaScript —
+      Sitewide fallback tags for crawlers that do not execute JavaScript -
       notably social link unfurlers (Facebook, WhatsApp, iMessage, LinkedIn).
       Once the app mounts, the router manages the head and removes everything
       marked data-static-seo so the live DOM has no duplicates. See src/App.tsx.
@@ -31,7 +31,7 @@
       At build time the prerender plugin in vite.config.ts REPLACES everything
       between the seo:start and seo:end markers with the real per-route tags,
       once per route, writing dist/<route>/index.html. What is written here is
-      only the fallback for unmatched URLs. Do not remove the markers — without
+      only the fallback for unmatched URLs. Do not remove the markers - without
       them the plugin has nothing to substitute and every page ships this
       generic copy instead.
     -->

@@ -292,6 +292,89 @@ function buildGrantEmailHtml(rawName: string): string {
 </div>`
 }
 
+/** Escape user-supplied text before it goes anywhere near the HTML template. */
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+}
+
+/**
+ * Enquiry notification, styled to match the grant email and the site: cream
+ * ground, gold rule, Georgia headings. Read internally rather than by a customer,
+ * so the message body is the focus and Reply is one tap.
+ */
+function buildContactEmailHtml(name: string, email: string, message: string): string {
+  const safeName = escapeHtml(name)
+  const safeEmail = escapeHtml(email)
+  // Preserve the paragraph breaks the sender typed.
+  const safeMessage = escapeHtml(message).replace(/\r?\n/g, "<br/>")
+
+  return `<div style="background:#f4f1ea;margin:0;padding:32px 0;font-family:Georgia,'Times New Roman',serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f1ea;">
+    <tr><td align="center">
+      <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;background:#ffffff;border:1px solid #e6e0d4;">
+        <tr><td style="height:4px;background:#C4963B;font-size:0;line-height:0;">&nbsp;</td></tr>
+        <tr><td align="center" style="padding:34px 40px 6px;">
+          <div style="font-family:Georgia,serif;font-size:22px;letter-spacing:4px;color:#1a1a1a;font-weight:bold;text-transform:uppercase;">Dominus Golf</div>
+          <div style="font-family:Arial,sans-serif;font-size:11px;letter-spacing:2px;color:#C4963B;text-transform:uppercase;margin-top:6px;">Website Enquiry</div>
+        </td></tr>
+
+        <tr><td style="padding:24px 40px 0;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#faf8f4;border:1px solid #e6e0d4;">
+            <tr>
+              <td style="padding:14px 18px;font-family:Arial,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#8a8375;width:74px;">From</td>
+              <td style="padding:14px 18px 14px 0;font-family:Georgia,serif;font-size:16px;color:#1a1a1a;">${safeName}</td>
+            </tr>
+            <tr><td colspan="2" style="padding:0 18px;"><div style="border-top:1px solid #e6e0d4;"></div></td></tr>
+            <tr>
+              <td style="padding:14px 18px;font-family:Arial,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#8a8375;">Email</td>
+              <td style="padding:14px 18px 14px 0;font-family:Arial,sans-serif;font-size:14px;">
+                <a href="mailto:${safeEmail}" style="color:#C4963B;text-decoration:none;">${safeEmail}</a>
+              </td>
+            </tr>
+          </table>
+        </td></tr>
+
+        <tr><td style="padding:26px 40px 6px;">
+          <p style="margin:0 0 12px;font-family:Arial,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#8a8375;">Message</p>
+          <div style="font-family:Georgia,serif;font-size:16px;line-height:1.7;color:#1a1a1a;border-left:3px solid #C4963B;padding:2px 0 2px 16px;">${safeMessage}</div>
+        </td></tr>
+
+        <tr><td align="center" style="padding:26px 40px 30px;">
+          <table role="presentation" cellpadding="0" cellspacing="0"><tr>
+            <td style="background:#C4963B;">
+              <a href="mailto:${safeEmail}" style="display:inline-block;padding:14px 34px;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#ffffff;text-decoration:none;">Reply to ${safeName}</a>
+            </td>
+          </tr></table>
+        </td></tr>
+
+        <tr><td style="padding:20px 40px 32px;background:#faf8f4;font-family:Arial,sans-serif;font-size:12px;line-height:1.6;color:#8a8375;">
+          Sent from the contact form on dominusgolf.com. Replying to this email goes straight back to the sender.
+          <div style="margin-top:12px;color:#b3ab9a;">&copy; Dominus Golf - Excellence Recognized. Development Funded.</div>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</div>`
+}
+
+function buildContactEmailText(name: string, email: string, message: string): string {
+  return [
+    `New website enquiry`,
+    ``,
+    `From:  ${name}`,
+    `Email: ${email}`,
+    ``,
+    `Message:`,
+    message,
+    ``,
+    `Sent from the contact form on dominusgolf.com. Reply to this email to answer the sender.`,
+  ].join("\n")
+}
+
 function buildGrantEmailText(rawName: string): string {
   const name = rawName.replace(/[<>]/g, "").trim() || "Applicant"
   return [
@@ -385,8 +468,6 @@ app.post("/api/contact", async (c) => {
   const fromAddress = env.RESEND_FROM || "Dominus Golf <Customersupport@send.dominusgolf.com>"
   const supportInbox = env.SUPPORT_INBOX || "Customersupport@dominusgolf.com"
   const name = [firstName, lastName].filter(Boolean).join(" ") || "Website visitor"
-  const escape = (s: string) =>
-    s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
 
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -396,11 +477,8 @@ app.post("/api/contact", async (c) => {
       to: supportInbox,
       reply_to: email,
       subject: `Website enquiry from ${name}`,
-      text: `From: ${name}\nEmail: ${email}\n\n${message}`,
-      html:
-        `<p><strong>From:</strong> ${escape(name)}<br/>` +
-        `<strong>Email:</strong> <a href="mailto:${escape(email)}">${escape(email)}</a></p>` +
-        `<hr/><p style="white-space:pre-wrap">${escape(message)}</p>`,
+      text: buildContactEmailText(name, email, message),
+      html: buildContactEmailHtml(name, email, message),
     }),
   })
 

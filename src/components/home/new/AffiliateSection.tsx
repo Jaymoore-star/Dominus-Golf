@@ -28,7 +28,7 @@ export const AffiliateSection = () => {
           </h2>
 
           <p className="text-white/70 text-base sm:text-lg mb-10 font-sans leading-relaxed">
-            Coaches, content creators, clubs and academies — get paid commission for
+            Coaches, content creators, clubs and academies - get paid commission for
             sending serious players to equipment that works.
           </p>
 

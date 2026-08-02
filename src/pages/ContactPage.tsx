@@ -194,7 +194,7 @@ export function ContactPage() {
                 <CheckCircle2 size={16} className="text-accent shrink-0 mt-0.5" />
                 <p className="font-sans text-sm text-foreground">
                   <span className="font-semibold">Message sent.</span> Thanks for getting in
-                  touch — our team replies within one business day.
+                  touch - our team replies within one business day.
                 </p>
               </div>
             )}
