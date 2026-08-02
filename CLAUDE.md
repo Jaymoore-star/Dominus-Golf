@@ -86,6 +86,25 @@ src/
 - Keep the dev server running while making changes; verify http://localhost:3000 still
   responds after edits to `index.html`, routing, or the entry point.
 
+### Mobile invariants — each of these was a real bug, do not undo them
+
+- **Form controls must be ≥16px on phones.** Use `text-base sm:text-sm`, never a
+  bare `text-sm`. Below 16px, iOS Safari magnifies the whole page on focus and
+  never restores it — and in an SPA there is no reload to reset it, so one tap on
+  a login field leaves every later page enlarged and clipped. `src/index.css`
+  forces 16px under 640px as a backstop; do not remove it.
+- **Internal links use the router `<Link>`, never `<a href="/…">`.** A plain
+  anchor reloads the whole app. Same for `target="_blank"` on internal URLs.
+- **`truncate` inside a flex row needs `min-w-0` on the flex item**, or it does the
+  opposite of truncating: `white-space: nowrap` makes min-content the full string
+  and the row grows instead.
+- **Avoid horizontal entrance offsets** in Framer Motion (`initial={{ x: … }}`).
+  They park an element outside the viewport until it scrolls into view. Use `y`.
+- Measure mobile layout by **visual clipping**, not `scrollWidth`. `html` has
+  `overflow-x: clip`, so the page can never report horizontal overflow — check
+  whether elements extend past `clientWidth`, and do not skip subtrees inside an
+  `overflow-hidden` ancestor, because "contained" means "cut off" to a user.
+
 ## Secrets
 
 - Backend env vars (`.dev.vars`): `SQUARE_ACCESS_TOKEN`, `SQUARE_LOCATION_ID`,
@@ -109,7 +128,7 @@ Phase 2 (functional dependencies still on Blink) — replace each before removin
 | ✅ Email | `backend/index.ts` `/api/grant/confirm` | ~~`blink.notifications.email`~~ | **DONE (code)** — now POSTs to **Resend** API (`RESEND_API_KEY`/`RESEND_FROM`). Goes live once backend is self-hosted + domain verified in Resend |
 | ✅ UI lib | ~~`src/Shell.tsx`, `AppSidebarShell.tsx`, `layouts/shared-app-layout.tsx`~~ | `@blinkdotnew/ui` | **DONE** — dead code deleted; no `@blinkdotnew/ui` refs remain |
 | ✅ Images | `src/data/*.ts`, some pages | `blink-451505.firebasestorage.app` URLs | **DONE** — 32 images downloaded to `public/images/`, all URLs rewritten to `/images/...` |
-| Default URLs | `backend/index.ts` grant success/cancel | `…blinkpowered.com` | Real domain (`dominusgolf.com`) |
+| ✅ Default URLs | `backend/index.ts` grant success/cancel | ~~`…blinkpowered.com`~~ | **DONE** — already `https://www.dominusgolf.com` |
 
 Suggested order: ~~UI dead-code~~ → ~~images~~ → email → self-host backend + fix URLs → auth.
 Payments already run on **Square**, not Blink.
@@ -128,11 +147,16 @@ Payments already run on **Square**, not Blink.
   not Pages. It first deployed a secret-less copy of the *backend* as a Worker named
   `tit`, because `wrangler.toml` described `backend/index.ts`. Fixed by splitting the
   configs; `wrangler.toml` is now the frontend and a push deploys the site.
-- 🔴 **DNS is broken as of 2026-07-29.** `www.dominusgolf.com` → CNAME `dominusgolf.com`
-  → A `199.34.228.186` = `cms27.weebly.com` (Square Online), which serves a bare 404.
-  It no longer points at Blink. Nobody on the dev side changed this — establish who did
-  before repointing it at the frontend Worker. DNS is at IONOS; do NOT move nameservers
-  — MX and the Resend DKIM key live there.
+- ✅ **DNS done 2026-07-30 — the site is LIVE at `https://dominusgolf.com`.**
+  Nameservers moved to Cloudflare (`armando`/`daniella.ns.cloudflare.com`); `www` and
+  the apex are both Custom Domains on the `tit` Worker. Registrar is still IONOS, which
+  holds the old zone dormant as the rollback. Full runbook and record inventory in
+  `docs/DNS-MIGRATION.md`. Two things to know: Cloudflare's import scan found only
+  **7 of 28 records** (it missed all three IONOS outbound-DKIM CNAMEs), and Resend's
+  SPF/bounce MX had been published at `send.send.dominusgolf.com` rather than `send.`.
+  Both fixed during the move. Still **no DMARC record** — see `docs/HANDOFF.md` §4.
+- ⚠️ **A push to `main` deploys only the SITE.** The backend Worker is deployed
+  separately with `npm run deploy:backend`; Workers Builds does not touch it.
 - ⚠️ Post-launch TODO: rotate the Square access token (both the old and current tokens were shared in plaintext during setup) and the Resend key.
 - To run the backend locally: `npm run dev:backend` (reads `.dev.vars`). Use `127.0.0.1`, not `localhost`.
 - ⚠️ Backend `wrangler` commands need `-c wrangler.backend.toml`, including `wrangler secret put`.

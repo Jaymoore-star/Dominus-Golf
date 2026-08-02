@@ -1,54 +1,155 @@
-# Handoff — sessions of 28–30 July 2026
+# Handoff - sessions of 28 July to 2 August 2026
 
 Where the project stands, what changed, and what to do next. Written to close out
 a working session; update it as things move.
 
-**Read this first, then `CLAUDE.md`.** §1 is the current state, §3 is the list of
-traps that each cost real debugging time, §4 is what is left.
+**Read this first, then `CLAUDE.md`.** §1 is the current state, §1b is the newest
+session, §3 is the list of traps that each cost real debugging time, §4 is what is
+left.
 
-History: baseline `cf4dfe7` → twelve commits (28–29 July, SEO/auth/email/lint) →
-`e8ce296` (handoff notes) → four commits on 30 July taking the site live:
+History: baseline `cf4dfe7` → twelve commits (28-29 July) → `e8ce296` → four
+commits on 30 July taking the site live (`327e074`, `45bb1b6`, `58b6847`,
+`f53d3c6`) → **twenty-three commits 31 July to 2 August**, summarised in §1b.
 
-| Commit | What |
-|---|---|
-| `327e074` | `build(deploy)` — wrangler config split, `_headers`, `_redirects` removal, wrangler pinned |
-| `45bb1b6` | `feat(seo)` — prerender 45 routes, code-split pages |
-| `58b6847` | `fix(checkout)` — localhost URL shipped to production; 3 duplicate `BACKEND_URL` constants |
-| `f53d3c6` | `docs` — hosting reality, traps, remaining work |
-
-Working tree clean, `main` in sync with `origin/main` and with the deployed site.
+Working tree clean, `main` in sync with `origin/main`. Backend Worker deployed
+separately and also current (see §1b, it is NOT covered by Workers Builds).
 
 ---
 
 ## 1. Go-live status
 
-Updated 30 July, ~05:00 UTC. **The site is built, deployed and working; only DNS
-stands between it and real customers.**
+Updated 2 August. **The site is live at `https://dominusgolf.com` and customers
+can reach it.** DNS was the last blocker and it is done.
 
 | Piece | State |
 |---|---|
-| Backend Worker | ✅ **live** — `https://dominus-golf-backend.jaymoore.workers.dev`, 9 secrets |
-| Square checkout (store + grant) | ✅ verified live, production credentials |
+| **DNS** | ✅ **done** - nameservers moved to Cloudflare 30 July, zone active 19:55 UTC |
+| **Live domain** | ✅ `https://www.dominusgolf.com` and the apex both serve the site |
+| Backend Worker | ✅ live - `https://dominus-golf-backend.jaymoore.workers.dev`, 9 secrets |
+| Square checkout (store + grant) | ✅ verified reaching Square, production credentials |
 | Supabase auth | ✅ email/password + Google, redirect URLs configured |
-| GitHub → Cloudflare connection | ✅ **done** — Workers Builds on `Jaymoore-star/tit` |
-| Frontend build config | ✅ repo now deploys the site (see below) |
-| Frontend deployed | ✅ **live** — `https://tit.jaymoore.workers.dev`, prerendering + code splitting + immutable caching all verified in the served bundle |
-| Store checkout from the live site | ✅ verified reaching Square (after the `.env` fix in §3) |
-| **DNS** | 🔴 **points at Weebly and 404s — customers still cannot reach the site** |
+| GitHub → Cloudflare | ✅ Workers Builds on `Jaymoore-star/tit`; a push to `main` deploys the site |
+| Prerendering | ✅ 47 routes, per-route head baked in |
+| Email (inbound + outbound) | ✅ survived the nameserver move, verified record by record |
+| Contact form | ✅ now actually delivers (it never had before, see §1b) |
+| Mobile layout | ✅ 0 overflow, 320-1440px, both engines, signed in and out |
 
-### 🔴 The domain currently serves a 404
+### DNS: what was done
 
-`www.dominusgolf.com` is a CNAME to `dominusgolf.com`, which is an A record to
-`199.34.228.186`. That address reverse-resolves to **`cms27.weebly.com`** — Square
-Online. It serves a bare "404 - Page Not Found" page, and the apex 301s to `www`,
-so both hostnames dead-end.
+Nameservers moved from IONOS to Cloudflare so the `tit` Worker could take a custom
+domain. Full runbook, the complete record inventory and the rollback are in
+**`docs/DNS-MIGRATION.md`**, with the records Cloudflare failed to import in
+**`docs/dns-missing-records.zone`**.
 
-This is a change from the previous state: DNS used to point at `cname.blink.new`
-and served the old Blink build. Nobody on this side made that change. **Find out
-who repointed it at Weebly/Square Online before changing it again** — if someone
-is mid-way through setting up a Square Online store on the domain, a competing
-DNS edit will just produce a fight. The fix is at **IONOS**, pointing `www` at the
-frontend Worker instead.
+Two things worth remembering from it:
+
+- **Cloudflare's import scan found 7 of 28 records.** The 21 it missed included
+  all three IONOS outbound-DKIM CNAMEs, the live `qr.dominusgolf.com` redirect and
+  Bing verification. Switching nameservers on the scanned set alone would have
+  unsigned every outgoing mail.
+- **Resend's SPF and bounce MX were published at `send.send.dominusgolf.com`**,
+  not `send.` - someone typed the full name into a field that already appends the
+  domain. Fixed as part of the move.
+
+IONOS still holds the old zone, untouched, which is the rollback: point the
+nameservers back at `ns.ui-global-dns.{biz,com,de,org}`. Cloudflare's are
+`armando.ns.cloudflare.com` and `daniella.ns.cloudflare.com`. The IONOS domain
+contact is Jay's personal Gmail and **Domain Guard** blocks nameserver, DNSSEC and
+contact changes until a link in that inbox is clicked, so every protected change
+needs him.
+
+---
+
+## 1b. Sessions of 31 July to 2 August
+
+Twenty-three commits. Roughly: DNS cutover, an affiliate programme, a homepage
+pass, then a long mobile-layout hunt, then five UX fixes.
+
+### Features
+
+| What | Where |
+|---|---|
+| Wishlist inside the account chrome | `/account/wishlist`, shared body with the standalone `/wishlist` |
+| **Wishlist and cart bound to the account** | `src/lib/accountBaskets.ts` + `basketStorage.ts` - clear on sign-out, restored on sign-in, cross-device |
+| **Affiliate programme** | `/affiliates` page, nav + Company menu + footer + announcement bar + homepage band |
+| Homepage consistency pass | one width, one type scale, one CTA size, alternating backgrounds, Connection and Final sections dropped |
+| **Contact form that works** | `POST /api/contact` → Resend, branded email, on-screen confirmation |
+| Cart: Back closes the bag | history entry pushed on open, popped on close |
+| Shop: mobile filters staged behind Apply | draft state; desktop still applies live |
+
+Baskets are stored on Supabase `user_metadata`, the same place as the address and
+preferences, so there is no table or RLS to maintain. Sign-in **merges** rather
+than replaces, because the common flow is add-to-cart then sign in to check out.
+Guest cart quantities sum; the account's own mirror takes the larger, which is
+what stops a reload doubling the cart.
+
+### The mobile layout hunt, and what it cost
+
+Jeet reported pages not fitting on his iPhone. This took far longer than it should
+have. **Three of my own mistakes, worth not repeating:**
+
+1. **I tested only Chrome for hours.** Installed WebKit eventually; it made no
+   difference, but that was luck rather than method.
+2. **I skipped 440px.** Swept 320/360/375/390/393/412/430 then jumped to 768. His
+   device is a 440px iPhone Pro Max.
+3. **The worst one: I measured the wrong thing.** He said content was *cut off*; I
+   kept testing whether the page *scrolled*. My detector also skipped anything
+   inside an `overflow-hidden` ancestor as "contained" - but contained means cut
+   off to a user, and the announcement bar and homepage sections are both
+   `overflow-hidden`. **Adding `html { overflow-x: clip }` then disabled the very
+   measurement I was relying on**, so "0 overflow" stopped meaning anything.
+
+What actually found it: **instrumenting his device** rather than arguing from a
+desktop rig. A throwaway `?diag=1` probe reported his real numbers, and comparing
+signed-out against signed-in isolated the cause in one reading.
+
+**Root cause: iOS Safari zooms the page when a focused form control is under 16px,
+and never zooms back.** `fieldClass` was `text-sm` = 14px. Tapping the email field
+to sign in zoomed the page, and because this is an SPA there is no page load
+afterwards to reset it - so every route for the rest of the session rendered
+enlarged and clipped. It explained everything: fine signed out, broken signed in,
+broken in every browser on the phone (all WebKit), never reproducible on desktop
+(no focus-zoom), and `visualViewport.scale` reading 1.000 because the probe
+sampled at load.
+
+Real defects found along the way, all fixed:
+
+- Two product pages overflowed up to **170px** - `flex-1` with `truncate` but no
+  `min-w-0`, so long names widened the sticky Buy Now bar instead of truncating
+- Homepage clipped **14px** - Framer Motion `initial={{ x: 30 }}` parks a block
+  off to the right until it scrolls into view
+- `/grant` stats bar clipped **40px** - four `inline-flex` items at
+  `min-w-[110px]` is a 440px floor and `inline-flex` will not wrap
+- Navbar **6px** over when signed in - `.cart-badge` is `right: -6px` and badges
+  only render when there is something to count
+- Mobile **Account button was a no-op placeholder**, so `/account` was unreachable
+  on a phone
+- Every homepage CTA was a plain `<a>`, so each click **reloaded the whole app**
+
+### Guards now in place
+
+- `html { overflow-x: clip }` and `body { overflow-wrap: break-word }`
+- `input, select, textarea` forced to 16px below 640px, so no new form can
+  reintroduce the iOS zoom
+- Navbar row `min-w-0` with a `truncate` wordmark, so the wordmark yields instead
+  of pushing icons off; icon group has `pr-1.5` to absorb the badge overhang
+- Cart drawer sits in a viewport-sized `overflow-hidden` wrapper rather than
+  relying on the html clip, which Safari 15 ignores
+
+### The resolved session is now cached
+
+`useAuth` now caches the resolved session at module scope. Each `/account` page
+renders its own `AccountLayout`, so navigating between Orders, Wishlist and
+Addresses unmounted one and mounted another - and every mount started at
+`isLoading: true` and re-resolved, flashing the spinner. Measured: five sidebar
+navigations went from one spinner each to zero.
+
+### Backend deploys are separate
+
+`npm run deploy:backend` was run twice this session for `/api/contact`. **Workers
+Builds only deploys the site.** A push to `main` will not ship a backend change.
+Right after a backend deploy expect a minute of intermittent 404s on new routes
+while Cloudflare propagates.
 
 ### There is no Pages project — it is a Worker
 
@@ -88,23 +189,17 @@ Deploying by hand, if a push is not wanted: `npm run deploy:site` (frontend) and
 `npm run deploy:backend` (API). Never bare `npx wrangler deploy` for the backend —
 that reads `wrangler.toml` and would push the API over the website.
 
-### Then the DNS cutover
+### ~~Then the DNS cutover~~ — done
 
-Attach `www.dominusgolf.com` as a custom domain on the `tit` Worker, then change
-the `www` record at **IONOS** to the target it gives you (currently pointing at
-Weebly, see above).
-
-> **Do not move the nameservers to Cloudflare.** DNS is at IONOS and the MX
-> records point at IONOS mail. Moving nameservers without recreating every
-> record takes down `Customersupport@dominusgolf.com` and the Resend DKIM key on
-> `send.dominusgolf.com`. Changing the one `www` CNAME is all that is needed;
-> rollback is switching it back.
-
-The apex already redirects to `www` via IONOS and is unaffected.
+Superseded. This section used to say **do not move the nameservers**, on the
+grounds that MX and the Resend DKIM key lived at IONOS. That was written before
+anyone had audited the zone. They were moved to Cloudflare on 30 July, with every
+record carried across first and verified afterwards — see §1 and
+`docs/DNS-MIGRATION.md`.
 
 ---
 
-## 2. What changed this session
+## 2. What changed in the 28-29 July sessions
 
 Twelve commits, `cf4dfe7..6d50b4a`.
 
@@ -282,10 +377,7 @@ or two after first deploy while the certificate provisions.
 ## 4. Outstanding
 
 ### Blocking launch
-1. 🔴 **DNS points at Weebly and the site 404s** (section 1) — now the ONLY thing
-   between a working site and real customers. Establish who repointed it, attach
-   `www.dominusgolf.com` as a custom domain on the `tit` Worker, then update the
-   `www` record at IONOS. Needs IONOS access, which the dev side does not have.
+1. ~~DNS~~ — **done 30 July**, see §1. The site is live.
 2. **Real production payment test** — one real $15 grant checkout with a real
    card, confirm `/grant/success` verifies it and the eBook email arrives, then
    refund in Square. Store checkout is confirmed reaching Square, but the grant
@@ -293,15 +385,27 @@ or two after first deploy while the certificate provisions.
    production; sandbox links are preview-only and cannot be paid.
 3. **Paste the email templates** into Supabase → Authentication → Email
    Templates, from `docs/email-templates/`. They are not in the dashboard yet.
-4. **Add a DMARC record** at IONOS. There is currently **none**, which is
-   plausibly behind the earlier "Resend says Sent but it never arrived" test.
-   Start in monitor mode — it changes nothing about delivery:
+4. **Add a DMARC record**, now at **Cloudflare**, not IONOS. There is still
+   **none**. Start in monitor mode — it changes nothing about delivery:
    ```
-   _dmarc.dominusgolf.com  TXT  v=DMARC1; p=none; rua=mailto:Customersupport@dominusgolf.com
+   _dmarc  TXT  v=DMARC1; p=none; rua=mailto:Customersupport@dominusgolf.com
    ```
 5. **Rotate the Square and Resend credentials** — both were shared in plaintext
    during setup — then re-upload with
    `npx wrangler secret put NAME -c wrangler.backend.toml`.
+6. **Finish the Resend sending domain.** `send.dominusgolf.com` has its DKIM key,
+   and the SPF and bounce MX were moved to the correct name during the DNS
+   migration, but confirm the domain reads **Verified** in the Resend dashboard
+   and that a received grant email shows `dkim=pass` in its headers.
+7. **Re-enable Domain Guard** at IONOS if it is still off from the nameserver
+   change.
+
+### Verify on a real device (I could not)
+- Sign in on a phone, then walk Profile → Orders → Wishlist → Addresses. Should be
+  continuous now, no spinner flash.
+- Send a real message through the contact form and confirm it lands in the support
+  inbox. Two smoke-test emails from 2 August are already in there; safe to delete.
+- Sign out and back in; cart and wishlist should come back.
 
 ### High value, not blocking
 6. ~~Prerendering~~ — **done**, see section 2b.
@@ -448,9 +552,10 @@ durable follow-up is still open: a build-time resize step, so nobody can drop a
 - **Pages:** none. Zero projects in either account; the Git connection is Workers
   Builds, not Pages.
 - **Supabase project:** `woobljhidgbjgtdkmouc`
-- **DNS:** IONOS. `www` → CNAME `dominusgolf.com` → A `199.34.228.186`
-  (`cms27.weebly.com`, Square Online) — **currently 404s, must be repointed**.
-  MX → IONOS. DKIM on `send.dominusgolf.com`. No DMARC.
+- **DNS:** **Cloudflare** since 30 July (`armando`/`daniella.ns.cloudflare.com`).
+  Registrar is still IONOS, which holds the old zone dormant as the rollback.
+  `www` and the apex are both Custom Domains on the `tit` Worker. MX still → IONOS
+  mail. DKIM on `send.dominusgolf.com`. **No DMARC yet.**
 - **Canonical domain:** `https://www.dominusgolf.com` (no trailing slashes)
 
 ```bash
@@ -475,27 +580,47 @@ deployed in ~30 seconds.
 
 ## 7. Picking this up next session
 
-The single next action is **DNS**, and it needs IONOS access the dev side does not
-have. Everything else is either done or waiting on an external account.
+The site is live and the build side is in good shape. **Everything left needs an
+external account or a real card, not code.**
 
-1. Find out who repointed `dominusgolf.com` at Weebly/Square Online on 29 July.
-   Do this before changing anything — if a Square Online store is being set up on
-   the domain, a competing DNS edit will just be reverted.
-2. Attach `www.dominusgolf.com` as a custom domain on the `tit` Worker, take the
-   target Cloudflare gives you, and change the `www` record at IONOS.
-   **Do not move nameservers** — MX and the Resend DKIM key live at IONOS.
-3. Once the domain resolves, verify the social unfurl for real: Facebook's Sharing
-   Debugger plus a WhatsApp/iMessage paste, on a **product** URL, not the homepage.
-   The homepage looked correct even back when every other page was broken.
-4. Then the real production grant payment (§4, item 2) — the one flow that has
-   never run end to end.
+1. **The real production grant payment** (§4, item 2). The one flow that has never
+   run end to end. Do this before promoting the grant anywhere.
+2. **Rotate the Square and Resend credentials** (§4, item 5). Overdue.
+3. **DMARC** (§4, item 4) and confirm the Resend domain reads Verified (item 6).
+4. **Verify the social unfurl for real** now that the domain resolves: Facebook's
+   Sharing Debugger plus a WhatsApp/iMessage paste, on a **product** URL, not the
+   homepage. The homepage looked correct even when every other page was broken.
+5. Then the non-blocking list in §4 — email capture and the orders pipeline are
+   the two with real commercial weight.
 
 To confirm nothing regressed while away:
 
 ```bash
-curl -s -o /dev/null -w "%{http_code}\n" https://tit.jaymoore.workers.dev/product/tour-pure-men
-curl -s https://dominus-golf-backend.jaymoore.workers.dev/health   # {"ok":true}
+curl -s -o /dev/null -w "%{http_code}\n" https://dominusgolf.com/product/tour-pure-men   # 200
+curl -s https://dominus-golf-backend.jaymoore.workers.dev/health                         # {"ok":true}
+
+# the contact endpoint should reject a bad payload rather than 404
+curl -s -X POST https://dominus-golf-backend.jaymoore.workers.dev/api/contact \
+  -H 'Content-Type: application/json' --data '{"email":"a@b.com"}'   # 400 "Please include a message."
 ```
 
-Both should be `200` / `{"ok":true}`. If the site 404s with plain text, something
-redeployed the API over it — re-read §1.
+A plain-text 404 from the site means something redeployed the API over it — re-read
+§1. A 404 from `/api/contact` means the backend was rolled back; redeploy with
+`npm run deploy:backend`.
+
+### Loose ends worth knowing
+
+- **`ConnectionSection.tsx` and `FinalSection.tsx` are committed but unused.**
+  Deliberate, so restoring either is a one-line change in `HomePage.tsx`. Delete
+  once you are confident.
+- **Eleven old `src/components/home/*.tsx` sections are dead code** — zero imports.
+  The live homepage is `src/components/home/new/`.
+- **The contact form has no spam protection.** It is a public endpoint that sends
+  email. Fine for now; add a honeypot or Turnstile if it gets abused.
+- **Em dashes are gone from everything shipped** (HTML, CSS, our JS). They remain
+  in source-code comments, which are stripped at build. One remains inside
+  `supabase-js`, third-party and never rendered.
+- **Desktop shop filters still apply instantly**; only mobile stages behind Apply.
+  Deliberate — the desktop results sit beside the controls.
+- `lint:js` reports **43 warnings, 0 errors**. That is the baseline; unused vars
+  and `any` in pre-existing code.
