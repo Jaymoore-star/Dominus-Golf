@@ -412,6 +412,51 @@
   border-radius: 0 !important;
 }
 
+/* ─── Rounded buttons ──────────────────────────────────────────────────────
+ *
+ * The enforcer directly above flattens every corner on the site with !important,
+ * which is why no rounded-* utility has any effect anywhere. So this has to
+ * re-round with !important too, and has to sit after it.
+ *
+ * Scoped to things you click. Cards, images, panels and inputs stay sharp, so the
+ * layout keeps its architectural feel and only the interactive elements soften.
+ *
+ * Tune or revert from the single value below:
+ *   0px      square — reverts to the original look
+ *   4px      barely there
+ *   8px      clearly rounded, still tailored   <- current
+ *   14px     soft
+ *   9999px   full pill
+ */
+:root {
+  --btn-radius: 8px;
+}
+
+button,
+input[type='submit'],
+input[type='button'],
+.btn-gold,
+.btn-primary-black,
+.btn-outline-white,
+/* Links styled as buttons. Padding on both axes is what separates a CTA from a
+   text link here — every text link and breadcrumb has at most one axis. Of the 65
+   anchors that match, 57 carry a background or border and are genuine buttons;
+   the remaining 8 have neither, so rounding them changes nothing on screen.
+   Matching on "border" instead would have caught 212 elements and curved the
+   underline on every border-b link. */
+a[class*='px-'][class*='py-'] {
+  border-radius: var(--btn-radius) !important;
+}
+
+/* Anything that asked to be a circle gets to be one. The wishlist heart on a
+   product card is the visible case — the enforcer had been squaring it off, so
+   this is the first time that class does what it says. */
+button.rounded-full,
+a.rounded-full,
+.rounded-full-override {
+  border-radius: 9999px !important;
+}
+
 /* exceptions for specific circular elements */
 .rounded-full-override {
   border-radius: 9999px !important;
