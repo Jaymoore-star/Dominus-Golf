@@ -127,10 +127,12 @@ export function ProductCard({ product, aspectRatio = 'square' }: ProductCardProp
             {product.subcategory}
           </p>
         )}
-        {/* Name and price share a row so the card stays short enough for the
-            two action buttons underneath. min-w-0 is what lets the name
-            actually truncate inside a flex row instead of forcing it wider. */}
-        <div className="flex items-baseline justify-between gap-3 mb-1">
+        {/* Name and price share a row from sm up, which keeps the card short
+            enough for the two buttons underneath. They stack on a phone: the
+            grid is 2-up there, so sharing a ~161px row left the name about
+            107px and truncated nearly every product. min-w-0 is what lets the
+            name truncate inside the flex row rather than widening it. */}
+        <div className="flex flex-col items-start gap-0.5 mb-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
           <h3
             title={product.name}
             className="font-serif text-base font-semibold text-foreground leading-tight min-w-0 truncate group-hover:text-accent transition-colors duration-200"
@@ -173,12 +175,18 @@ export function ProductCard({ product, aspectRatio = 'square' }: ProductCardProp
         )}
 
         {/* Always visible, rather than the old panel that slid up over the photo
-            on hover — that was unreachable on touch and hid the product. */}
-        <div className="grid grid-cols-2 gap-2 mt-auto pt-3">
+            on hover — that was unreachable on touch and hid the product.
+
+            Stacked below lg. Side by side, a card on a 375px phone gives each
+            button ~77px while "Add to Bag" plus its icon needs ~90px, so the
+            label wrapped. lg rather than md because the related-products grid
+            on a product page is 4-up from sm, where even a md card is only ~165px.
+            Taller rows also give a proper 44px touch target. */}
+        <div className="grid grid-cols-1 gap-2 mt-auto pt-3 lg:grid-cols-2">
           <button
             onClick={handleAddToCart}
             disabled={!product.inStock}
-            className="flex items-center justify-center gap-1.5 py-2.5 border border-foreground font-sans text-[10px] font-semibold tracking-widest uppercase text-foreground hover:bg-foreground hover:text-background transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-foreground"
+            className="flex items-center justify-center gap-1.5 py-3 lg:py-2.5 border border-foreground font-sans text-[10px] font-semibold tracking-widest uppercase text-foreground hover:bg-foreground hover:text-background transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-foreground"
           >
             <ShoppingBag size={12} />
             Add to Bag
@@ -186,7 +194,7 @@ export function ProductCard({ product, aspectRatio = 'square' }: ProductCardProp
           <button
             onClick={handleBuyNow}
             disabled={!product.inStock || isBuyingNow}
-            className="flex items-center justify-center gap-1.5 py-2.5 bg-primary font-sans text-[10px] font-semibold tracking-widest uppercase text-primary-foreground hover:bg-primary/90 transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex items-center justify-center gap-1.5 py-3 lg:py-2.5 bg-primary font-sans text-[10px] font-semibold tracking-widest uppercase text-primary-foreground hover:bg-primary/90 transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {isBuyingNow ? <Loader2 size={12} className="animate-spin" /> : 'Buy Now'}
           </button>
