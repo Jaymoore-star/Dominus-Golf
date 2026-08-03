@@ -20,7 +20,14 @@ app.post("/api/square/checkout", async (c) => {
   }
 
   let body: {
-    items: { name: string; price: number; quantity: number; image?: string }[]
+    items: {
+      name: string
+      price: number
+      quantity: number
+      image?: string
+      /** Chosen size/colour. Becomes the Square line item's variation_name. */
+      variant?: string
+    }[]
     successUrl?: string
     cancelUrl?: string
   }
@@ -37,15 +44,33 @@ app.post("/api/square/checkout", async (c) => {
     return c.json({ error: "No items provided" }, 400)
   }
 
-  // Calculate total in cents
-  const totalCents = items.reduce(
-    (sum, item) => sum + Math.round(item.price * 100) * item.quantity,
-    0
-  )
+  /**
+   * One Square line item per cart line.
+   *
+   * This used to be a `quick_pay`, which by design is a single ad-hoc charge with
+   * one name and one amount — so every order reached Square as "Dominus Golf
+   * Order - N items" with no product names and no sizes. The item detail was
+   * being passed as `pre_populated_data.note`, but PrePopulatedData only accepts
+   * buyer_email / buyer_phone_number / buyer_address, so Square dropped it: none
+   * of it survived the request.
+   *
+   * An `order` carries real line items instead, so the buyer sees what they are
+   * paying for and the Seller Dashboard shows what has to be picked and shipped.
+   * Quantity is a string — the Orders API requires it.
+   */
+  const lineItems = items.map((item) => ({
+    name: item.name,
+    quantity: String(Math.max(1, Math.floor(item.quantity))),
+    ...(item.variant ? { variation_name: item.variant } : {}),
+    base_price_money: {
+      amount: Math.round(item.price * 100),
+      currency: "USD",
+    },
+  }))
 
-  // Build a readable item summary for the Square note
+  // Kept for the Dashboard order view, now under the field Square actually reads.
   const itemSummary = items
-    .map((item) => `${item.name} x${item.quantity}`)
+    .map((item) => `${item.name}${item.variant ? ` (${item.variant})` : ""} x${item.quantity}`)
     .join(", ")
 
   const idempotencyKey = `checkout_${Date.now()}_${crypto.randomUUID().substring(0, 8)}`
@@ -55,13 +80,9 @@ app.post("/api/square/checkout", async (c) => {
 
   const squareBody = {
     idempotency_key: idempotencyKey,
-    quick_pay: {
-      name: `Dominus Golf Order - ${items.length} item${items.length > 1 ? "s" : ""}`,
-      price_money: {
-        amount: totalCents,
-        currency: "USD",
-      },
+    order: {
       location_id: locationId,
+      line_items: lineItems,
     },
     checkout_options: {
       redirect_url: successUrl || "https://www.dominusgolf.com",
@@ -73,9 +94,7 @@ app.post("/api/square/checkout", async (c) => {
         cash_app_pay: true,
       },
     },
-    pre_populated_data: {
-      note: itemSummary,
-    },
+    payment_note: itemSummary.slice(0, 500),
   }
 
   const controller = new AbortController()

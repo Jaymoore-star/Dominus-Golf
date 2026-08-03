@@ -5,6 +5,8 @@ export type CheckoutLineItem = {
   price: number;
   quantity: number;
   image?: string;
+  /** Chosen size/colour. Becomes the Square line item variation_name. */
+  variant?: string;
 };
 
 /**

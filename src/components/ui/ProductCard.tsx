@@ -7,7 +7,7 @@ import { useCart } from '../../store/cartStore';
 import { useWishlist } from '../../store/wishlistStore';
 import { useRequireAuth } from '../../hooks/useRequireAuth';
 import { createCheckoutSession } from '../../lib/checkout';
-import { resolveCardVariant, variantLabel, withVariantName } from '../../lib/productVariants';
+import { resolveCardVariant, variantLabel, variantDescriptor } from '../../lib/productVariants';
 import { trackBeginCheckout } from '../../lib/analytics';
 
 interface ProductCardProps {
@@ -54,7 +54,8 @@ export function ProductCard({ product, aspectRatio = 'square' }: ProductCardProp
       trackBeginCheckout([{ product, quantity: 1 }]);
       const url = await createCheckoutSession([
         {
-          name: withVariantName(product, variant),
+          name: product.name,
+          variant: variantDescriptor(product, variant),
           price: product.price,
           quantity: 1,
           image: product.image,

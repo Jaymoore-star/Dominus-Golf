@@ -5,7 +5,7 @@ import { ChevronRight, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 import { createCheckoutSession } from '../lib/checkout';
-import { withVariantName } from '../lib/productVariants';
+import { variantDescriptor } from '../lib/productVariants';
 
 import { products } from '../data/products';
 import { useCart } from '../store/cartStore';
@@ -110,9 +110,8 @@ export function ProductPage() {
     trackBeginCheckout([{ product, quantity }]);
     try {
       const url = await createCheckoutSession([{
-        // Size folded into the name: it is the only free-text field Square
-        // receives, and an order without it cannot be fulfilled.
-        name: withVariantName(product, selectedVariant),
+        name: product.name,
+        variant: variantDescriptor(product, selectedVariant),
         price: product.price,
         quantity,
         image: product.image,

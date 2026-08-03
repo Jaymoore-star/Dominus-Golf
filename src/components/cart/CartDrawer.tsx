@@ -7,7 +7,7 @@ import { clearPendingAction, peekPendingAction } from '../../lib/pendingAction';
 import { trackBeginCheckout } from '../../lib/analytics';
 import { Link } from '@tanstack/react-router';
 import { createCheckoutSession } from '../../lib/checkout';
-import { variantLabel, withVariantName } from '../../lib/productVariants';
+import { variantLabel, variantDescriptor } from '../../lib/productVariants';
 import { displayProductName } from '../../lib/productName';
 
 
@@ -65,7 +65,8 @@ export function CartDrawer() {
       // Square receives only these fields, so the size has to be folded into
       // the name — otherwise the order arrives with no way to fulfil it.
       const lineItems = state.items.map((item) => ({
-        name: withVariantName(item.product, item.variant),
+        name: item.product.name,
+        variant: variantDescriptor(item.product, item.variant),
         price: item.product.price,
         quantity: item.quantity,
         image: item.product.image,

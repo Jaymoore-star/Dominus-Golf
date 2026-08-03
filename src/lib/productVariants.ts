@@ -22,9 +22,15 @@ export function variantLabel(product: Product): string {
   return product.variants?.[0]?.label ?? 'Size';
 }
 
-/** How a chosen variant is written onto a checkout line item. */
-export function withVariantName(product: Product, variant?: string): string {
-  return variant ? `${product.name} — ${variantLabel(product)} ${variant}` : product.name;
+/**
+ * The chosen variant, labelled — "Size M", "Color Black".
+ *
+ * Sent to Square as the line item's `variation_name`, which renders beneath the
+ * product name on the checkout page and in the Seller Dashboard. Labelled rather
+ * than a bare "M" so the order is readable by whoever packs it.
+ */
+export function variantDescriptor(product: Product, variant?: string): string | undefined {
+  return variant ? `${variantLabel(product)} ${variant}` : undefined;
 }
 
 export function resolveCardVariant(product: Product): {
