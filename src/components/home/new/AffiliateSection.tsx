@@ -10,7 +10,7 @@ import { Link } from '@tanstack/react-router';
  */
 export const AffiliateSection = () => {
   return (
-    <section className="py-20 sm:py-24 on-dark bg-primary text-primary-foreground relative overflow-hidden">
+    <section className="py-20 sm:py-24 bg-primary text-primary-foreground relative overflow-hidden">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

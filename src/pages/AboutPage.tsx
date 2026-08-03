@@ -9,7 +9,7 @@ export function AboutPage() {
       <Navbar />
 
       {/* Hero */}
-      <div className="on-dark bg-black text-white py-20 px-4 border-b border-white/10">
+      <div className="bg-black text-white py-20 px-4 border-b border-white/10">
         <div className="max-w-4xl mx-auto text-center">
           <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-4">
             The Dominus Standard

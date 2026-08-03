@@ -114,7 +114,7 @@ export function BundlesPage() {
 
       <main>
         {/* Hero Section */}
-        <section className="on-dark bg-primary text-primary-foreground py-20 px-4 relative overflow-hidden">
+        <section className="bg-primary text-primary-foreground py-20 px-4 relative overflow-hidden">
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-accent/40 via-transparent to-transparent"></div>
           </div>

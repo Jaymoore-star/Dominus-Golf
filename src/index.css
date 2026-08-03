@@ -20,14 +20,7 @@
     --secondary-foreground: 0 0% 10%;
     --muted: 0 0% 96%;
     --muted-foreground: 0 0% 45%;
-    /* Same hue and saturation as the brand gold, 12 points darker.
-
-       At 50% lightness gold measured 2.81:1 against white — a WCAG AA failure
-       for the 10-11px eyebrow labels it is used on, and white-on-gold badges and
-       the gold checkout button failed at the same ratio. At 38% both directions
-       land on 4.61:1 and pass. Dark surfaces keep the brighter gold via .on-dark
-       below, where 50% was already 6.19:1. */
-    --accent: 38 53% 38%;
+    --accent: 38 53% 50%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
@@ -102,23 +95,6 @@
 
   * {
     @apply border-border;
-  }
-
-  /* Opt a dark container back into the brighter brand gold.
-   *
-   * The site mixes light and dark surfaces inside one theme — a dark footer, a
-   * dark announcement bar, dark hero bands, alternating home sections — so a
-   * single gold cannot serve both. --accent is tuned for the common case (light),
-   * and this restores 50% for everything inside a dark box: text, fills, borders
-   * and the /20-style opacity variants all follow the variable, so no per-element
-   * classes are needed.
-   *
-   * Put it on the element that owns the dark background. Forgetting it is the
-   * safe failure — gold drops to 3.46:1 on dark, which is still legible; the
-   * unsafe direction is putting it on a light box, which reinstates the 2.81:1
-   * problem it exists to fix. */
-  .on-dark {
-    --accent: 38 53% 50%;
   }
 
   /* Offset in-page scrolling (anchor links, scrollIntoView) by the sticky

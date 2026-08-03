@@ -264,7 +264,7 @@ export function Navbar() {
       <header className="sticky top-0 z-30" ref={navRef}>
         {/* Announcement Bar — stacked in one grid cell so the bar is as tall as the
             longest message and never clips it on a narrow screen. */}
-        <div className="on-dark bg-primary text-primary-foreground min-h-9 grid items-center px-4 py-1.5 overflow-hidden">
+        <div className="bg-primary text-primary-foreground min-h-9 grid items-center px-4 py-1.5 overflow-hidden">
           {announcements.map((item, i) => (
             <div
               key={i}
