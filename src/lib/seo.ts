@@ -174,15 +174,10 @@ export function productJsonLd(product: Product): Record<string, unknown> {
     },
   };
 
-  // Only advertise ratings we actually have — Google penalises invented review
-  // markup, and a missing field is far safer than a fabricated one.
-  if (product.rating && product.reviewCount) {
-    data.aggregateRating = {
-      '@type': 'AggregateRating',
-      ratingValue: product.rating,
-      reviewCount: product.reviewCount,
-    };
-  }
+  /* No aggregateRating. It used to be emitted from hardcoded product figures,
+     which is exactly the invented review markup Google penalises. Real reviews
+     live in Supabase and are not readable at prerender time, so the safe
+     answer is to omit the field rather than fabricate it. */
 
   return data;
 }

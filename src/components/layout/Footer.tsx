@@ -73,7 +73,7 @@ function TwitterXIcon() {
 
 export function Footer() {
   return (
-    <footer className="bg-primary text-primary-foreground">
+    <footer className="on-dark bg-primary text-primary-foreground">
       {/* Main Links Grid */}
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         {/* 5 groups, so 5 columns at lg — a 4-col grid orphans Legal on its own row */}

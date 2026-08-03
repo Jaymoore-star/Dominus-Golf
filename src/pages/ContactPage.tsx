@@ -67,7 +67,7 @@ export function ContactPage() {
       <Navbar />
 
       {/* Hero */}
-      <div className="bg-primary text-primary-foreground py-20 px-4">
+      <div className="on-dark bg-primary text-primary-foreground py-20 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-4">
             Reach Out

@@ -33,8 +33,6 @@ export const apparel: Product[] = [
     ],
     variants: [{ label: 'Size', options: ['S', 'M', 'L', 'XL', 'XXL'] }],
     inStock: true,
-    rating: 4.9,
-    reviewCount: 87,
   },
   {
     id: 'dominus-tee-wordmark-white',
@@ -65,8 +63,6 @@ export const apparel: Product[] = [
     ],
     variants: [{ label: 'Size', options: ['S', 'M', 'L', 'XL', 'XXL'] }],
     inStock: true,
-    rating: 4.8,
-    reviewCount: 63,
   },
   {
     id: 'dominus-tee-performance-black',
@@ -97,8 +93,6 @@ export const apparel: Product[] = [
     ],
     variants: [{ label: 'Size', options: ['S', 'M', 'L', 'XL', 'XXL'] }],
     inStock: true,
-    rating: 4.9,
-    reviewCount: 0,
   },
   // Women's Apparel
   {
@@ -134,8 +128,6 @@ export const apparel: Product[] = [
     ],
     variants: [{ label: 'Size', options: ['S', 'M', 'L', 'XL', 'XXL'] }],
     inStock: true,
-    rating: 4.9,
-    reviewCount: 32,
   },
   {
     id: 'dominus-womens-tee-white-icon',
@@ -170,8 +162,6 @@ export const apparel: Product[] = [
     ],
     variants: [{ label: 'Size', options: ['S', 'M', 'L', 'XL', 'XXL'] }],
     inStock: true,
-    rating: 4.8,
-    reviewCount: 18,
   },
   {
     id: 'dominus-womens-tee-black-performance',
@@ -203,7 +193,5 @@ export const apparel: Product[] = [
     ],
     variants: [{ label: 'Size', options: ['S', 'M', 'L', 'XL', 'XXL'] }],
     inStock: true,
-    rating: 4.9,
-    reviewCount: 19,
   },
 ];

@@ -21,19 +21,6 @@ export const accessories: Product[] = [
       'Easy to use anywhere',
     ],
     inStock: true,
-    rating: 4.8,
-    reviewCount: 1324,
-    reviews: [
-      {
-        id: 'rev-b1',
-        author: 'Robert T.',
-        rating: 5,
-        date: '2024-03-10',
-        title: 'Essential for connection',
-        body: 'The band really helps keep the arms connected. Simple but very effective.',
-        verified: true,
-      },
-    ],
   },
   {
     id: 'dominus-towel',
@@ -52,17 +39,6 @@ export const accessories: Product[] = [
     paymentUrl: 'https://square.link/u/mxCT3IDV',
     features: ['Durable fabric', 'Bag-ready size', 'Clean branding', 'Premium feel'],
     inStock: true,
-    reviews: [
-      {
-        id: 'rev-t1',
-        author: 'Kevin B.',
-        rating: 5,
-        date: '2024-03-15',
-        title: 'Premium quality',
-        body: 'Large size, absorbent, and looks great on the bag. The material is much better than my previous towel.',
-        verified: true,
-      },
-    ],
   },
   {
     id: 'mastering-the-game-book',

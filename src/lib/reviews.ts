@@ -67,6 +67,45 @@ export async function fetchProductReviews(productId: string): Promise<ReviewsRes
   return { status: 'ok', reviews: (data as ReviewRow[]).map(toReview) };
 }
 
+export type ReviewSummary = { average: number; count: number };
+
+/**
+ * Rating and count for every reviewed product, in one request.
+ *
+ * A shop grid needs a rating per card. Asking per card would fire one query per
+ * product on every listing page, so this fetches the two columns it needs for the
+ * whole table and aggregates client-side. Cheap while the store is young; if
+ * review volume ever makes that wasteful, replace it with a Postgres view or an
+ * RPC that returns the aggregate and keep this signature.
+ */
+export async function fetchReviewSummaries(): Promise<Map<string, ReviewSummary>> {
+  const { data, error } = await supabase.from('product_reviews').select('product_id, rating');
+
+  // Same as fetchProductReviews: a missing table means the migration has not run,
+  // which is not an error worth surfacing to a shopper.
+  if (error) {
+    if (isMissingTable(error)) return new Map();
+    throw new Error(error.message);
+  }
+
+  const totals = new Map<string, { sum: number; count: number }>();
+  for (const row of data as { product_id: string; rating: number }[]) {
+    const entry = totals.get(row.product_id) ?? { sum: 0, count: 0 };
+    entry.sum += row.rating;
+    entry.count += 1;
+    totals.set(row.product_id, entry);
+  }
+
+  const summaries = new Map<string, ReviewSummary>();
+  for (const [productId, { sum, count }] of totals) {
+    summaries.set(productId, {
+      average: Math.round((sum / count) * 10) / 10,
+      count,
+    });
+  }
+  return summaries;
+}
+
 export type ReviewDraft = {
   productId: string;
   rating: number;

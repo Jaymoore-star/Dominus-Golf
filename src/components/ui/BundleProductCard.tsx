@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { ShoppingBag, Star } from 'lucide-react';
+import { ShoppingBag } from 'lucide-react';
 import type { Product } from '../../data/products';
 import { useCart } from '../../store/cartStore';
 
@@ -101,27 +101,6 @@ export function BundleProductCard({ product }: BundleProductCardProps) {
         <h3 className="font-serif text-base font-semibold text-foreground leading-tight mb-1 group-hover:text-accent transition-colors duration-200">
           {product.name}
         </h3>
-
-        {product.rating !== undefined && product.reviewCount !== undefined && (
-          <div className="flex items-center gap-1.5 mb-2">
-            <div className="flex items-center gap-0.5">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  size={10}
-                  className={
-                    i < Math.floor(product.rating!)
-                      ? 'fill-accent text-accent'
-                      : 'text-border fill-border'
-                  }
-                />
-              ))}
-            </div>
-            <span className="text-[10px] text-muted-foreground font-sans">
-              ({product.reviewCount.toLocaleString()})
-            </span>
-          </div>
-        )}
 
         <div className="flex items-baseline gap-2">
           <span className="font-sans font-semibold text-sm text-foreground">

@@ -108,12 +108,13 @@ export function ProductReviews({ product }: ProductReviewsProps) {
 
 
 
-  // Seeded marketing copy is only a stand-in. The moment a real review exists it
-  // takes over completely, so the two never appear mixed together.
+  // Real customer reviews are the only source. The seeded example reviews and
+  // hardcoded 4.9/87-review figures were removed from the product data: they
+  // were fabricated, and they were also being emitted as aggregateRating
+  // structured data, which Google treats as review spam.
   const showingReal = reviews.length > 0;
-  const seeded = product.reviews ?? [];
-  const headlineRating = summary?.average ?? product.rating;
-  const headlineCount = summary?.count ?? product.reviewCount ?? 0;
+  const headlineRating = summary?.average;
+  const headlineCount = summary?.count ?? 0;
 
   const inputClass =
     'w-full border border-border bg-background px-4 py-3 font-sans text-base sm:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent transition-colors';
@@ -251,34 +252,6 @@ export function ProductReviews({ product }: ProductReviewsProps) {
                 {user?.id === review.userId && (
                   <span className="text-[9px] font-bold text-accent tracking-widest uppercase">
                     Your review
-                  </span>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : seeded.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {seeded.map((review) => (
-            <div key={review.id} className="bg-muted/30 border border-border p-8 flex flex-col">
-              <div className="mb-4">
-                <Stars value={review.rating} />
-              </div>
-              <h3 className="font-serif text-lg font-bold text-foreground mb-3">{review.title}</h3>
-              <p className="font-sans text-sm text-muted-foreground leading-relaxed flex-1 mb-6 italic">
-                "{review.body}"
-              </p>
-              <div className="flex items-center justify-between pt-6 border-t border-border/50">
-                <div>
-                  <p className="text-sm font-semibold text-foreground">{review.author}</p>
-                  <p className="text-[10px] text-muted-foreground uppercase tracking-widest">
-                    {review.date}
-                  </p>
-                </div>
-                {review.verified && (
-                  <span className="text-[9px] font-bold text-accent tracking-widest uppercase flex items-center gap-1">
-                    <span className="w-1 h-1 rounded-full bg-accent" />
-                    Verified
                   </span>
                 )}
               </div>

@@ -35,8 +35,8 @@ export function ProductInfo({
   const wishlisted = isWishlisted(product.id);
 
   const { summary } = useProductReviews(product.id);
-  const ratingValue = summary?.average ?? product.rating;
-  const ratingCount = summary?.count ?? product.reviewCount ?? 0;
+  const ratingValue = summary?.average;
+  const ratingCount = summary?.count ?? 0;
 
   const handleToggleWishlist = () => {
     toggle(product.id);
@@ -63,9 +63,9 @@ export function ProductInfo({
         {displayProductName(product.name)}
       </h1>
 
-      {/* Rating. Real customer reviews win as soon as any exist; the seeded
-          figures are only a stand-in until then. Shares its query with the
-          review section below, so the two can never show different numbers. */}
+      {/* Rating, from real customer reviews only — nothing shows until someone
+          writes one. Shares its query with the review section below, so the two
+          can never disagree. */}
       {ratingValue !== undefined && ratingCount > 0 && (
         <div className="flex items-center gap-3 mb-5">
           <div className="flex items-center gap-0.5">

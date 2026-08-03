@@ -10,15 +10,6 @@ export type Variant = {
   options: string[];
 };
 
-export type Review = {
-  id: string;
-  author: string;
-  rating: number;
-  date: string;
-  title: string;
-  body: string;
-  verified: boolean;
-};
 
 export type Product = {
   id: string;
@@ -36,9 +27,9 @@ export type Product = {
   specs?: string[];
   variants?: Variant[];
   inStock: boolean;
-  rating?: number;
-  reviewCount?: number;
-  reviews?: Review[];
+  /* No rating/reviewCount/reviews here. Reviews are real customer records in
+     Supabase (see lib/reviews.ts); the fields that used to sit here held
+     invented figures that also reached Google as aggregateRating markup. */
   includedImages?: { label: string; image: string }[];
   colorVariants?: Record<string, string>;
   paymentUrl?: string;

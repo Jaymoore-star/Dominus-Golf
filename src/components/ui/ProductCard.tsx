@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Link, useNavigate } from '@tanstack/react-router';
-import { ShoppingBag, Star, Heart, Loader2 } from 'lucide-react';
+import { ShoppingBag, Heart, Loader2, Star } from 'lucide-react';
 import toast from 'react-hot-toast';
 import type { Product } from '../../data/products';
 import { useCart } from '../../store/cartStore';
 import { useWishlist } from '../../store/wishlistStore';
 import { useRequireAuth } from '../../hooks/useRequireAuth';
+import { useReviewSummaries } from '../../hooks/useProductReviews';
 import { createCheckoutSession } from '../../lib/checkout';
 import { resolveCardVariant, variantLabel, variantDescriptor } from '../../lib/productVariants';
 import { trackBeginCheckout } from '../../lib/analytics';
@@ -20,6 +21,8 @@ export function ProductCard({ product, aspectRatio = 'square' }: ProductCardProp
   const { isWishlisted, toggle } = useWishlist();
   const { ensureAuth } = useRequireAuth();
   const navigate = useNavigate();
+  const { summaryFor } = useReviewSummaries();
+  const rating = summaryFor(product.id);
 
   // Apparel has five sizes and this card has no picker, so those products
   // route to the product page instead of entering the bag without a size.
@@ -146,8 +149,9 @@ export function ProductCard({ product, aspectRatio = 'square' }: ProductCardProp
           </div>
         </div>
 
-        {/* Rating - only shown if present */}
-        {product.rating !== undefined && product.reviewCount !== undefined && (
+        {/* Real customer reviews only. Absent until someone writes one, so a
+            product with no reviews shows no stars rather than an invented 4.9. */}
+        {rating && (
           <div className="flex items-center gap-1.5 mb-2">
             <div className="flex items-center gap-0.5">
               {[...Array(5)].map((_, i) => (
@@ -155,7 +159,7 @@ export function ProductCard({ product, aspectRatio = 'square' }: ProductCardProp
                   key={i}
                   size={10}
                   className={
-                    i < Math.floor(product.rating!)
+                    i < Math.round(rating.average)
                       ? 'fill-accent text-accent'
                       : 'text-border fill-border'
                   }
@@ -163,11 +167,10 @@ export function ProductCard({ product, aspectRatio = 'square' }: ProductCardProp
               ))}
             </div>
             <span className="text-[10px] text-muted-foreground font-sans">
-              ({product.reviewCount.toLocaleString()})
+              {rating.average} ({rating.count.toLocaleString()})
             </span>
           </div>
         )}
-
 
         {/* Always visible, rather than the old panel that slid up over the photo
             on hover — that was unreachable on touch and hid the product. */}
