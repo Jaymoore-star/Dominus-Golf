@@ -226,12 +226,16 @@ export function ApparelProductCard({ product }: ApparelProductCardProps) {
             button ~77px while "Add to Bag" plus its icon needs ~90px, so the
             label wrapped. lg rather than md because the related-products grid
             on a product page is 4-up from sm, where even a md card is only ~165px.
-            Taller rows also give a proper 44px touch target. */}
+            Taller rows also give a proper 44px touch target.
+
+            Labels are 12px. Letter-spacing tightens from lg up, where the two
+            buttons share a ~105px-wide card: at widest spacing "Add to Bag"
+            plus its icon measures ~104px and would wrap. */}
         <div className="grid grid-cols-1 gap-2 mt-auto pt-3 lg:grid-cols-2">
           <button
             onClick={handleAddToCart}
             disabled={!product.inStock}
-            className="flex items-center justify-center gap-1.5 py-3 lg:py-2.5 border border-foreground font-sans text-[10px] font-semibold tracking-widest uppercase text-foreground hover:bg-foreground hover:text-background transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-foreground"
+            className="flex items-center justify-center gap-1.5 py-3 lg:py-2.5 border border-foreground font-sans text-xs font-semibold tracking-widest lg:tracking-wider uppercase text-foreground hover:bg-foreground hover:text-background transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-foreground"
           >
             <ShoppingBag size={12} />
             Add to Bag
@@ -239,7 +243,7 @@ export function ApparelProductCard({ product }: ApparelProductCardProps) {
           <button
             onClick={handleBuyNow}
             disabled={!product.inStock || isBuyingNow}
-            className="flex items-center justify-center gap-1.5 py-3 lg:py-2.5 bg-primary font-sans text-[10px] font-semibold tracking-widest uppercase text-primary-foreground hover:bg-primary/90 transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex items-center justify-center gap-1.5 py-3 lg:py-2.5 bg-primary font-sans text-xs font-semibold tracking-widest lg:tracking-wider uppercase text-primary-foreground hover:bg-primary/90 transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {isBuyingNow ? <Loader2 size={12} className="animate-spin" /> : 'Buy Now'}
           </button>
