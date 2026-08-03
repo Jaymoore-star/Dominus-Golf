@@ -21,51 +21,56 @@ export const NewHeroSection = () => {
             THE FEEDBACK YOUR SWING<br /><span className="text-black">HAS BEEN MISSING.</span>
           </motion.h1>
           
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            /* w-fit, not a fixed max-w: a fixed-width block leaves the left-aligned
-               items sitting left of the heading's centre, which reads as misaligned. */
-            className="mb-10 w-fit max-w-lg mx-auto text-left"
-          >
-            <ul className="space-y-2.5">
-              {[
-                'Weighted training system',
-                'Teaches swing path and swing plane',
-                'Immediate feedback on every rep',
-                'Works on full swing, chipping, putting alignment',
-                'Used indoors or outdoors',
-              ].map((item, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <span className="mt-2 w-1.5 h-1.5 bg-accent shrink-0" />
-                  <span className="text-base md:text-lg text-gray-600 font-sans leading-relaxed">
-                    {item}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
+          {/* The bullets and the buttons share one shrink-to-fit column.
+              Centring them separately gave each its own width and so its own left
+              edge — the list sat about 48px inside the buttons, which is what read
+              as misaligned. Sizing them together means one left edge for both.
+              max-w-full so the long bullets wrap on a phone instead of overflowing. */}
+          <div className="w-fit max-w-full mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="mb-10 text-left"
+            >
+              <ul className="space-y-2.5">
+                {[
+                  'Weighted training system',
+                  'Teaches swing path and swing plane',
+                  'Immediate feedback on every rep',
+                  'Works on full swing, chipping, putting alignment',
+                  'Used indoors or outdoors',
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <span className="mt-2 w-1.5 h-1.5 bg-accent shrink-0" />
+                    <span className="text-base md:text-lg text-gray-600 font-sans leading-relaxed">
+                      {item}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
 
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
-          >
-            <Link
-              to="/shop/$category" params={{ category: 'training-system' }} 
-              className="w-full sm:w-auto px-10 py-4 bg-black text-white font-bold tracking-widest uppercase hover:bg-gray-800 transition-colors text-xs"
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-12"
             >
-              SHOP THE TOUR PURE SYSTEM
-            </Link>
-            <Link
-              to="/tour-pure-guide" 
-              className="w-full sm:w-auto px-10 py-4 border border-black/20 text-black font-bold tracking-widest uppercase hover:bg-black hover:text-white transition-all text-xs"
-            >
-              HOW IT WORKS
-            </Link>
-          </motion.div>
+              <Link
+                to="/shop/$category" params={{ category: 'training-system' }}
+                className="px-10 py-4 bg-black text-white font-bold tracking-widest uppercase hover:bg-gray-800 transition-colors text-xs text-center"
+              >
+                SHOP THE TOUR PURE SYSTEM
+              </Link>
+              <Link
+                to="/tour-pure-guide"
+                className="px-10 py-4 border border-black/20 text-black font-bold tracking-widest uppercase hover:bg-black hover:text-white transition-all text-xs text-center"
+              >
+                HOW IT WORKS
+              </Link>
+            </motion.div>
+          </div>
 
           <motion.div 
             initial={{ opacity: 0 }}
