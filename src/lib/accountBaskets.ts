@@ -16,7 +16,17 @@
 
 import { supabase } from './supabase';
 
-export type StoredCartLine = { id: string; quantity: number };
+/**
+ * `variant` is the chosen size ("M", "XL"). It is part of a line's identity, not
+ * a decoration: the same tee in two sizes is two lines, and without it the size a
+ * customer picked never reached the cart — or the Square order.
+ */
+export type StoredCartLine = { id: string; quantity: number; variant?: string };
+
+/** Identity of a cart line. Two lines are the same only if product *and* size match. */
+export function cartLineKey(id: string, variant?: string): string {
+  return `${id}::${variant ?? ''}`;
+}
 
 type Metadata = Record<string, unknown> | undefined;
 
@@ -33,11 +43,21 @@ export function readCartLines(metadata: Metadata): StoredCartLine[] {
   if (!Array.isArray(raw)) return [];
 
   return raw
-    .map((entry) => {
+    .map((entry): StoredCartLine | null => {
       if (!entry || typeof entry !== 'object') return null;
-      const { id, quantity } = entry as { id?: unknown; quantity?: unknown };
+      const { id, quantity, variant } = entry as {
+        id?: unknown;
+        quantity?: unknown;
+        variant?: unknown;
+      };
       if (typeof id !== 'string') return null;
-      return { id, quantity: Math.max(1, Math.floor(Number(quantity) || 1)) };
+      return {
+        id,
+        quantity: Math.max(1, Math.floor(Number(quantity) || 1)),
+        // Absent on lines saved before sizes were tracked — those stay sizeless
+        // rather than being guessed at.
+        variant: typeof variant === 'string' && variant ? variant : undefined,
+      };
     })
     .filter((line): line is StoredCartLine => line !== null);
 }
@@ -48,8 +68,8 @@ export function mergeWishlistIds(account: string[], guest: string[]): string[] {
 }
 
 /**
- * Union by product id. How quantities combine depends on where the local cart
- * came from, which is why the caller has to say:
+ * Union by product id *and* size. How quantities combine depends on where the
+ * local cart came from, which is why the caller has to say:
  *
  * - **Guest cart** (`localIsSameAccount: false`) — sum. Someone who adds one of
  *   something they already had two of in their account cart means to have three.
@@ -66,7 +86,9 @@ export function mergeCartLines(
   const merged = account.map((line) => ({ ...line }));
 
   for (const line of local) {
-    const existing = merged.find((m) => m.id === line.id);
+    const existing = merged.find(
+      (m) => cartLineKey(m.id, m.variant) === cartLineKey(line.id, line.variant),
+    );
     if (!existing) {
       merged.push({ ...line });
     } else if (localIsSameAccount) {

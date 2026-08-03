@@ -2,26 +2,11 @@ import { useEffect, useState } from 'react';
 
 import { useParams, Link } from '@tanstack/react-router';
 import { ChevronRight, Loader2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
-import { BACKEND_URL } from '../lib/backend';
+import { createCheckoutSession } from '../lib/checkout';
+import { withVariantName } from '../lib/productVariants';
 
-async function createCheckoutSession(
-  items: { name: string; price: number; quantity: number; image?: string }[]
-): Promise<string> {
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://www.dominusgolf.com';
-  const res = await fetch(`${BACKEND_URL}/api/square/checkout`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      items,
-      successUrl: `${origin}/?checkout=success`,
-      cancelUrl: `${origin}/?checkout=cancelled`,
-    }),
-  });
-  const data = await res.json() as { url?: string; error?: string };
-  if (!res.ok || !data.url) throw new Error(data.error || 'Failed to create checkout session');
-  return data.url;
-}
 import { products } from '../data/products';
 import { useCart } from '../store/cartStore';
 import { useRequireAuth } from '../hooks/useRequireAuth';
@@ -41,7 +26,7 @@ import { FeelRightBandOverview } from '../features/product/components/FeelRightB
 export function ProductPage() {
   const { id } = useParams({ from: '/product/$id' });
   const product = products.find((p) => p.id === id);
-  const { addItem, openCart } = useCart();
+  const { addItem } = useCart();
   const { ensureAuth } = useRequireAuth();
 
   // If the login gate interrupted a Buy Now on this product, bring the user's
@@ -125,7 +110,9 @@ export function ProductPage() {
     trackBeginCheckout([{ product, quantity }]);
     try {
       const url = await createCheckoutSession([{
-        name: product.name,
+        // Size folded into the name: it is the only free-text field Square
+        // receives, and an order without it cannot be fulfilled.
+        name: withVariantName(product, selectedVariant),
         price: product.price,
         quantity,
         image: product.image,
@@ -140,10 +127,12 @@ export function ProductPage() {
 
   const handleAddToCart = () => {
     for (let i = 0; i < quantity; i++) {
-      addItem(product, { track: false });
+      addItem(product, { track: false, variant: selectedVariant });
     }
     trackAddToCart(product, quantity);
-    openCart();
+    // No openCart(): the button already flips to its added state, so pulling
+    // the drawer open on top of it just interrupts the shopper.
+    toast.success('Added to bag');
     setAddedEffect(true);
     setTimeout(() => setAddedEffect(false), 1500);
   };

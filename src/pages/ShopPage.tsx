@@ -19,13 +19,15 @@ const categoryLabels: Record<string, string> = {
   'womens-gear': "Women's Gear",
 };
 
-const categoryHeroes: Record<string, string> = {
-  'training-system': '/images/Photoroom-20251125_1425462241__e480e1c6.webp',
-  'apparel': '/images/unnamed-11__fc5a40f7.webp',
-  'accessories': '/images/Screenshot_20260324_042207_SamsungInternet__2f2a1710.webp',
-  'mens-gear': 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=1400&q=80',
-  'womens-gear': 'https://images.unsplash.com/photo-1622398925373-3f91b1e275f5?w=1400&q=80',
-};
+/**
+ * Categories with nothing in them are dropped from the sidebar, so a shopper is
+ * never sent to a dead end. They come back on their own as soon as a product is
+ * assigned — no second list to keep in sync. The category being viewed is always
+ * kept, otherwise a direct link to an empty one renders a sidebar with no active
+ * item. Counted off the raw catalogue, not the filtered list, so moving the price
+ * slider doesn't make categories disappear mid-browse.
+ */
+const stockedCategories = new Set(products.map((p) => p.category));
 
 type FilterValues = { category: string; maxPrice: number; inStockOnly: boolean };
 
@@ -62,7 +64,16 @@ export function ShopPage() {
   };
 
   const categoryLabel = categoryLabels[category] ?? category;
-  const heroImage = categoryHeroes[category] ?? categoryHeroes['training-system'];
+
+  const categoryIsEmpty = !stockedCategories.has(category as Category);
+
+  const visibleCategories = useMemo(
+    () =>
+      Object.entries(categoryLabels).filter(
+        ([key]) => stockedCategories.has(key as Category) || key === category,
+      ),
+    [category],
+  );
 
   const filtered = useMemo(() => {
     // For apparel: only show primary products (those with colorVariants or no duplicate)
@@ -136,7 +147,7 @@ export function ShopPage() {
           Category
         </h4>
         <ul className="space-y-2">
-          {Object.entries(categoryLabels).map(([key, label]) => {
+          {visibleCategories.map(([key, label]) => {
             const active = key === values.category;
             const cls = `font-sans text-sm transition-colors text-left ${
               active ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground'
@@ -229,29 +240,24 @@ export function ShopPage() {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* Category Hero */}
-      <div className="relative h-52 sm:h-64 overflow-hidden bg-primary">
-        <img
-          src={heroImage}
-          alt={categoryLabel}
-          className="w-full h-full object-cover opacity-50"
-        />
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-          <nav className="flex items-center gap-2 font-sans text-[11px] tracking-widest uppercase text-white/60 mb-4">
-            <Link to="/" className="hover:text-white/90 transition-colors">
-              Home
-            </Link>
-            <span>/</span>
-            <span className="text-white">{categoryLabel}</span>
-          </nav>
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white">
-            {categoryLabel}
-          </h1>
-          <p className="font-sans text-white/70 text-sm mt-2">
-            {filtered.length} {filtered.length === 1 ? 'product' : 'products'}
-          </p>
-        </div>
-      </div>
+      {/* Category header. Deliberately typographic rather than a photo band: a
+          short full-width crop turns centred product shots into a blown-up
+          detail, and every category would need a wide image shot for it. */}
+      <header className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-6 border-b border-border">
+        <nav className="flex items-center gap-2 font-sans text-[11px] tracking-widest uppercase text-muted-foreground mb-4">
+          <Link to="/" className="hover:text-foreground transition-colors">
+            Home
+          </Link>
+          <span aria-hidden="true">/</span>
+          <span className="text-foreground">{categoryLabel}</span>
+        </nav>
+        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground">
+          {categoryLabel}
+        </h1>
+        <p className="font-sans text-muted-foreground text-sm mt-2">
+          {filtered.length} {filtered.length === 1 ? 'product' : 'products'}
+        </p>
+      </header>
 
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Mobile Filter / Sort bar */}
@@ -273,7 +279,7 @@ export function ShopPage() {
               <ChevronDown size={14} />
             </button>
             {sortOpen && (
-              <div className="absolute right-0 top-full mt-1 bg-background border border-border shadow-lg z-10 w-52">
+              <div className="absolute right-0 top-full mt-1 bg-background border border-border shadow-lg z-20 w-52">
                 {(Object.keys(sortLabels) as SortKey[]).map((key) => (
                   <button
                     key={key}
@@ -312,7 +318,7 @@ export function ShopPage() {
                   <ChevronDown size={13} />
                 </button>
                 {sortOpen && (
-                  <div className="absolute right-0 top-full mt-1 bg-background border border-border shadow-lg z-10 w-52">
+                  <div className="absolute right-0 top-full mt-1 bg-background border border-border shadow-lg z-20 w-52">
                     {(Object.keys(sortLabels) as SortKey[]).map((key) => (
                       <button
                         key={key}
@@ -330,20 +336,42 @@ export function ShopPage() {
             </div>
 
             {filtered.length === 0 ? (
-              <div className="text-center py-20">
-                <p className="font-serif text-2xl text-muted-foreground mb-4">
-                  No products found
-                </p>
-                <p className="font-sans text-sm text-muted-foreground mb-6">
-                  Try adjusting your filters.
-                </p>
-                <button
-                  onClick={() => { setMaxPrice(200); setInStockOnly(false); }}
-                  className="font-sans text-xs font-semibold tracking-widest uppercase border border-border px-6 py-3 hover:bg-primary hover:text-primary-foreground transition-colors"
-                >
-                  Clear Filters
-                </button>
-              </div>
+              /* A category with nothing in it isn't a filtering problem, so it
+                 doesn't get filtering advice — that reads as broken when the
+                 shopper hasn't touched a control. Only reachable by direct link
+                 now that empty categories are hidden from the sidebar. */
+              categoryIsEmpty ? (
+                <div className="text-center py-20">
+                  <p className="font-serif text-2xl text-muted-foreground mb-4">
+                    Coming soon
+                  </p>
+                  <p className="font-sans text-sm text-muted-foreground mb-6">
+                    There is nothing in this category yet.
+                  </p>
+                  <Link
+                    to="/shop/$category"
+                    params={{ category: 'training-system' }}
+                    className="inline-block font-sans text-xs font-semibold tracking-widest uppercase border border-border px-6 py-3 hover:bg-primary hover:text-primary-foreground transition-colors"
+                  >
+                    Browse Training Systems
+                  </Link>
+                </div>
+              ) : (
+                <div className="text-center py-20">
+                  <p className="font-serif text-2xl text-muted-foreground mb-4">
+                    No products found
+                  </p>
+                  <p className="font-sans text-sm text-muted-foreground mb-6">
+                    Try adjusting your filters.
+                  </p>
+                  <button
+                    onClick={() => { setMaxPrice(200); setInStockOnly(false); }}
+                    className="font-sans text-xs font-semibold tracking-widest uppercase border border-border px-6 py-3 hover:bg-primary hover:text-primary-foreground transition-colors"
+                  >
+                    Clear Filters
+                  </button>
+                </div>
+              )
             ) : (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-5 gap-y-8">
                 {filtered.map((product) =>

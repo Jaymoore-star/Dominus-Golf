@@ -19,6 +19,10 @@ See [Blink Migration](#blink-migration) below — **do not break the running app
 - **3D/animation:** `@react-three/fiber` + `drei`, `framer-motion`
 - **Backend:** Hono app in `backend/index.ts` (Square checkout + grant email)
 - **Payments:** Square (production + sandbox)
+- **Reviews:** customer product reviews live in Supabase (`product_reviews`, RLS: public
+  read, author-only write). Schema in `supabase/migrations/` — run it in the SQL Editor.
+  The client degrades to read-only if the table is absent, so a missing migration is
+  silent rather than an error.
 - **Hosting:** two Cloudflare Workers — `dominus-golf-backend` (the API,
   `wrangler.backend.toml`) and `tit` (the site, assets-only, `wrangler.toml`).
   There is **no** Cloudflare Pages project; the Git connection is Workers Builds.

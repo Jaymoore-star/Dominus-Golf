@@ -1,5 +1,6 @@
 import React, {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useReducer,
@@ -11,6 +12,7 @@ import { products } from '../data/products';
 import { trackAddToCart } from '../lib/analytics';
 import { useAuth } from '../hooks/useAuth';
 import {
+  cartLineKey,
   mergeCartLines,
   readCartLines,
   scheduleCartSync,
@@ -26,17 +28,25 @@ import {
 /** Rehydrate stored lines into cart items, dropping ids no longer in the catalog. */
 function linesToItems(lines: StoredCartLine[]): CartItem[] {
   return lines
-    .map((line) => {
+    .map((line): CartItem | null => {
       const product = products.find((p) => p.id === line.id);
       if (!product) return null;
-      return { product, quantity: Math.max(1, Math.floor(line.quantity)) };
+      return {
+        product,
+        quantity: Math.max(1, Math.floor(line.quantity)),
+        variant: line.variant,
+      };
     })
     .filter((item): item is CartItem => item !== null);
 }
 
 /** The shape stored on the account: ids and quantities only. */
 function itemsToLines(items: CartItem[]): StoredCartLine[] {
-  return items.map((item) => ({ id: item.product.id, quantity: item.quantity }));
+  return items.map((item) => ({
+    id: item.product.id,
+    quantity: item.quantity,
+    variant: item.variant,
+  }));
 }
 
 // Persist only ids + quantities; product details are rehydrated from the live
@@ -46,14 +56,18 @@ function loadPersistedItems(): CartItem[] {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return [];
-    const parsed = JSON.parse(raw) as { id: string; quantity: number }[];
+    const parsed = JSON.parse(raw) as StoredCartLine[];
     if (!Array.isArray(parsed)) return [];
     return parsed
-      .map((entry) => {
+      .map((entry): CartItem | null => {
         const product = products.find((p) => p.id === entry.id);
         if (!product) return null;
         const quantity = Math.max(1, Math.floor(Number(entry.quantity) || 1));
-        return { product, quantity };
+        return {
+          product,
+          quantity,
+          variant: typeof entry.variant === 'string' && entry.variant ? entry.variant : undefined,
+        };
       })
       .filter((item): item is CartItem => item !== null);
   } catch {
@@ -67,6 +81,7 @@ function persistItems(items: CartItem[]) {
     const payload = items.map((item) => ({
       id: item.product.id,
       quantity: item.quantity,
+      variant: item.variant,
     }));
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
   } catch {
@@ -77,7 +92,14 @@ function persistItems(items: CartItem[]) {
 export type CartItem = {
   product: Product;
   quantity: number;
+  /** Chosen size, when the product offers them. Part of the line identity. */
+  variant?: string;
 };
+
+/** The same product in two sizes is two separate lines. */
+export function lineKeyOf(item: CartItem): string {
+  return cartLineKey(item.product.id, item.variant);
+}
 
 export type CartState = {
   items: CartItem[];
@@ -85,9 +107,9 @@ export type CartState = {
 };
 
 type CartAction =
-  | { type: 'ADD_ITEM'; product: Product }
-  | { type: 'REMOVE_ITEM'; productId: string }
-  | { type: 'UPDATE_QUANTITY'; productId: string; quantity: number }
+  | { type: 'ADD_ITEM'; product: Product; variant?: string }
+  | { type: 'REMOVE_ITEM'; lineKey: string }
+  | { type: 'UPDATE_QUANTITY'; lineKey: string; quantity: number }
   | { type: 'TOGGLE_CART' }
   | { type: 'OPEN_CART' }
   | { type: 'CLOSE_CART' }
@@ -103,14 +125,13 @@ const initialState: CartState = {
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case 'ADD_ITEM': {
-      const existing = state.items.find(
-        (item) => item.product.id === action.product.id,
-      );
+      const key = cartLineKey(action.product.id, action.variant);
+      const existing = state.items.find((item) => lineKeyOf(item) === key);
       if (existing) {
         return {
           ...state,
           items: state.items.map((item) =>
-            item.product.id === action.product.id
+            lineKeyOf(item) === key
               ? { ...item, quantity: item.quantity + 1 }
               : item,
           ),
@@ -118,29 +139,28 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       }
       return {
         ...state,
-        items: [...state.items, { product: action.product, quantity: 1 }],
+        items: [
+          ...state.items,
+          { product: action.product, quantity: 1, variant: action.variant },
+        ],
       };
     }
     case 'REMOVE_ITEM':
       return {
         ...state,
-        items: state.items.filter(
-          (item) => item.product.id !== action.productId,
-        ),
+        items: state.items.filter((item) => lineKeyOf(item) !== action.lineKey),
       };
     case 'UPDATE_QUANTITY': {
       if (action.quantity <= 0) {
         return {
           ...state,
-          items: state.items.filter(
-            (item) => item.product.id !== action.productId,
-          ),
+          items: state.items.filter((item) => lineKeyOf(item) !== action.lineKey),
         };
       }
       return {
         ...state,
         items: state.items.map((item) =>
-          item.product.id === action.productId
+          lineKeyOf(item) === action.lineKey
             ? { ...item, quantity: action.quantity }
             : item,
         ),
@@ -168,9 +188,10 @@ type CartContextValue = {
    * `{ track: false }` and fire a single trackAddToCart with the real quantity,
    * so analytics records one add-to-cart rather than one per unit.
    */
-  addItem: (product: Product, opts?: { track?: boolean }) => void;
-  removeItem: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
+  addItem: (product: Product, opts?: { track?: boolean; variant?: string }) => void;
+  /** Keyed by line, not product — see lineKeyOf. */
+  removeItem: (lineKey: string) => void;
+  updateQuantity: (lineKey: string, quantity: number) => void;
   toggleCart: () => void;
   openCart: () => void;
   closeCart: () => void;
@@ -248,18 +269,36 @@ export function CartProvider({ children }: { children: ReactNode }) {
     scheduleCartSync(itemsToLines(state.items));
   }, [state.items]);
 
-  const addItem = (product: Product, opts?: { track?: boolean }) => {
-    dispatch({ type: 'ADD_ITEM', product });
-    if (opts?.track !== false) trackAddToCart(product);
-  };
-  const removeItem = (productId: string) =>
-    dispatch({ type: 'REMOVE_ITEM', productId });
-  const updateQuantity = (productId: string, quantity: number) =>
-    dispatch({ type: 'UPDATE_QUANTITY', productId, quantity });
-  const toggleCart = () => dispatch({ type: 'TOGGLE_CART' });
-  const openCart = () => dispatch({ type: 'OPEN_CART' });
-  const closeCart = () => dispatch({ type: 'CLOSE_CART' });
-  const clearCart = () => dispatch({ type: 'CLEAR_CART' });
+  /**
+   * These are memoised because consumers put them in effect dependency arrays,
+   * and a fresh identity on every render makes those effects re-run on every
+   * cart change. The bag's Back-button handler was the casualty: removing a line
+   * re-rendered the provider, which re-ran the effect, whose cleanup called
+   * history.back() — and the resulting popstate landed on the newly registered
+   * listener and closed the bag. Deleting an item shut the drawer.
+   *
+   * `dispatch` is stable across renders, so an empty dependency list is correct.
+   */
+  const addItem = useCallback(
+    (product: Product, opts?: { track?: boolean; variant?: string }) => {
+      dispatch({ type: 'ADD_ITEM', product, variant: opts?.variant });
+      if (opts?.track !== false) trackAddToCart(product);
+    },
+    [],
+  );
+  const removeItem = useCallback(
+    (lineKey: string) => dispatch({ type: 'REMOVE_ITEM', lineKey }),
+    [],
+  );
+  const updateQuantity = useCallback(
+    (lineKey: string, quantity: number) =>
+      dispatch({ type: 'UPDATE_QUANTITY', lineKey, quantity }),
+    [],
+  );
+  const toggleCart = useCallback(() => dispatch({ type: 'TOGGLE_CART' }), []);
+  const openCart = useCallback(() => dispatch({ type: 'OPEN_CART' }), []);
+  const closeCart = useCallback(() => dispatch({ type: 'CLOSE_CART' }), []);
+  const clearCart = useCallback(() => dispatch({ type: 'CLEAR_CART' }), []);
 
   const total = state.items.reduce(
     (sum, item) => sum + item.product.price * item.quantity,

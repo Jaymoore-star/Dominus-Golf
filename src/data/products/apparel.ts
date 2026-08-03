@@ -44,7 +44,7 @@ export const apparel: Product[] = [
     price: 19.99,
     image: '/images/ninjapod_11843683_f_4980_00_f__c9a61eee.webp',
     colorVariants: {
-      Black: '/images/ninjapod_11843683_f_4980_00_f__c9a61eee.webp',
+      White: '/images/ninjapod_11843683_f_4980_00_f__c9a61eee.webp',
     },
     gallery: [
       '/images/ninjapod_11843683_f_4980_00_f__c9a61eee.webp',
@@ -103,15 +103,16 @@ export const apparel: Product[] = [
   // Women's Apparel
   {
     id: 'dominus-womens-tee-black-icon',
-    name: "Icon Tee (Women's)",
+    name: "Icon Tee - Black (Women's)",
     category: 'apparel',
     subcategory: "Women's Apparel",
     price: 19.99,
     image: '/images/unnamed-11__fc5a40f7.webp',
     hoverImage: '/images/unnamed-16__4cc41a28.webp',
+    // Black only. This and the white icon tee are separate products, so each
+    // offers just its own colour — listing both made them look like duplicates.
     colorVariants: {
       Black: '/images/unnamed-11__fc5a40f7.webp',
-      White: '/images/unnamed-12__3c0a4238.webp',
     },
     gallery: [
       '/images/unnamed-11__fc5a40f7.webp',
@@ -144,8 +145,9 @@ export const apparel: Product[] = [
     price: 19.99,
     image: '/images/unnamed-12__3c0a4238.webp',
     hoverImage: '/images/unnamed-13__94ffe0c4.webp',
+    // White only. It used to list Black first, and the card defaults to the first
+    // colour in COLOR_ORDER — which is why this product showed the black shirt.
     colorVariants: {
-      Black: '/images/unnamed-11__fc5a40f7.webp',
       White: '/images/unnamed-12__3c0a4238.webp',
     },
     gallery: [
@@ -178,9 +180,9 @@ export const apparel: Product[] = [
     subcategory: "Women's Apparel",
     price: 19.99,
     image: '/images/a2d1da0a-6213-4a84-8dca-5122fd81823a__3ed0e102.webp',
+    // Black only.
     colorVariants: {
       Black: '/images/a2d1da0a-6213-4a84-8dca-5122fd81823a__3ed0e102.webp',
-      White: '/images/unnamed-13__94ffe0c4.webp',
     },
     gallery: [
       '/images/a2d1da0a-6213-4a84-8dca-5122fd81823a__3ed0e102.webp',

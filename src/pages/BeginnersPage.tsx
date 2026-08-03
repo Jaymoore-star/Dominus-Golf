@@ -51,41 +51,41 @@ export function BeginnersPage() {
       <Navbar />
 
       {/* Hero */}
-      <section className="bg-primary py-24 px-4">
+      <section className="bg-muted py-24 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-4">
             New to Golf
           </p>
-          <h1 className="font-serif text-4xl sm:text-5xl font-bold text-white leading-tight mb-6">
+          <h1 className="font-serif text-4xl sm:text-5xl font-bold text-foreground leading-tight mb-6">
             The Beginner's Guide<br />to Dominus Golf
           </h1>
-          <p className="font-sans text-base text-white/60 leading-relaxed max-w-xl mx-auto">
+          <p className="font-sans text-base text-muted-foreground leading-relaxed max-w-xl mx-auto">
             You don't need to spend thousands to get better. You need the right system, the right fundamentals, and 15 minutes a day.
           </p>
         </div>
       </section>
 
       {/* 4 Steps */}
-      <section className="w-full bg-[#0e0e0e] border-b border-white/10 py-16 sm:py-20 lg:py-24">
+      <section className="w-full bg-background border-b border-border py-16 sm:py-20 lg:py-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-12">
             <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-4">
               The Path
             </p>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white">
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-foreground">
               How to Get Started
             </h2>
           </div>
 
-          <div className="space-y-0 divide-y divide-white/10 border border-white/10">
+          <div className="space-y-0 divide-y divide-border border border-border">
             {steps.map((s) => (
-              <div key={s.number} className="flex gap-8 p-8 hover:bg-white/[0.02] transition-colors">
-                <span className="font-sans text-[13px] font-semibold tracking-widest text-accent/50 shrink-0 w-8">
+              <div key={s.number} className="flex gap-8 p-8 hover:bg-muted transition-colors">
+                <span className="font-sans text-[13px] font-semibold tracking-widest text-accent shrink-0 w-8">
                   {s.number}
                 </span>
                 <div>
-                  <h3 className="font-serif text-xl font-bold text-white mb-3">{s.title}</h3>
-                  <p className="font-sans text-sm text-white/55 leading-relaxed">{s.body}</p>
+                  <h3 className="font-serif text-xl font-bold text-foreground mb-3">{s.title}</h3>
+                  <p className="font-sans text-sm text-muted-foreground leading-relaxed">{s.body}</p>
                 </div>
               </div>
             ))}
@@ -94,23 +94,26 @@ export function BeginnersPage() {
       </section>
 
       {/* Myth Busting */}
-      <section className="w-full bg-[#111] border-b border-white/10 py-16 sm:py-20">
+      <section className="w-full bg-muted border-b border-border py-16 sm:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-12">
             <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-4">
               Common Mistakes
             </p>
-            <h2 className="font-serif text-3xl font-bold text-white">
+            <h2 className="font-serif text-3xl font-bold text-foreground">
               Golf Myths - Debunked
             </h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {myths.map((m) => (
-              <div key={m.myth} className="bg-[#1a1a1a] border border-white/10 p-7 hover:border-accent/30 transition-colors">
-                <p className="font-serif text-base font-semibold text-white/50 italic mb-4">{m.myth}</p>
+              <div key={m.myth} className="bg-background border border-border p-7 hover:border-accent/30 transition-colors">
+                <p className="font-serif text-base font-semibold text-muted-foreground italic mb-4">{m.myth}</p>
                 <div className="w-8 h-px bg-accent mb-4" />
-                <p className="font-sans text-sm text-white/70 leading-relaxed">{m.truth}</p>
+                {/* The truth outranked the myth in the dark theme (white/70 over
+                    white/50). Both mapped to muted-foreground, so it takes the
+                    stronger token back to keep that order. */}
+                <p className="font-sans text-sm text-foreground leading-relaxed">{m.truth}</p>
               </div>
             ))}
           </div>
@@ -118,11 +121,11 @@ export function BeginnersPage() {
       </section>
 
       {/* Safety note */}
-      <section className="w-full bg-[#0a0a0a] border-b border-white/10 py-10">
+      <section className="w-full bg-background border-b border-border py-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-start gap-4 bg-accent/5 border border-accent/20 p-6">
+          <div className="flex items-start gap-4 bg-accent/10 border border-accent/20 p-6">
             <span className="text-accent text-lg shrink-0 mt-0.5">⚠</span>
-            <p className="font-sans text-sm text-white/70 leading-relaxed">
+            <p className="font-sans text-sm text-muted-foreground leading-relaxed">
               <span className="font-semibold text-accent">Safety First:</span> Always use Tour Pure at 50-75% of maximum swing speed. Warm up before every session. Read the full{' '}
               <Link to="/safety-disclaimer" className="text-accent hover:underline">
                 Safety Disclaimer
@@ -134,29 +137,29 @@ export function BeginnersPage() {
       </section>
 
       {/* CTA */}
-      <section className="w-full bg-[#0e0e0e] py-16 sm:py-20">
+      <section className="w-full bg-muted py-16 sm:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="font-sans text-[11px] font-semibold tracking-[0.35em] uppercase text-accent mb-4">
             Ready to Begin?
           </p>
-          <h2 className="font-serif text-3xl font-bold text-white mb-5">
+          <h2 className="font-serif text-3xl font-bold text-foreground mb-5">
             Your First Step Starts Here
           </h2>
-          <p className="font-sans text-sm text-white/50 leading-relaxed mb-10 max-w-md mx-auto">
+          <p className="font-sans text-sm text-muted-foreground leading-relaxed mb-10 max-w-md mx-auto">
             Pick up the Tour Pure Men's or Women's trainer and start building the swing that holds up when it counts.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               to="/product/$id"
               params={{ id: 'tour-pure-men' }}
-              className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-10 py-4 bg-accent text-white hover:bg-accent/90 transition-colors duration-200"
+              className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-10 py-4 bg-accent text-accent-foreground hover:bg-accent/90 transition-colors duration-200"
             >
               Shop Tour Pure Men
             </Link>
             <Link
               to="/product/$id"
               params={{ id: 'tour-pure-women' }}
-              className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-10 py-4 border border-white/20 text-white/70 hover:border-white hover:text-white transition-colors duration-200"
+              className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-10 py-4 border border-border text-muted-foreground hover:border-foreground hover:text-foreground transition-colors duration-200"
             >
               Shop Tour Pure Women
             </Link>

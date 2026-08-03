@@ -30,67 +30,93 @@ const accountMenu = [
   { label: 'Preferences', to: '/account/preferences', icon: <SlidersHorizontal size={16} /> },
 ];
 
-const megaMenuData = {
+type MegaLink = { label: string; href: string };
+
+type MegaMenuEntry = {
+  /** Every column is a real grouping. A heading over a single link, or over a
+      catch-all that isn't a product, reads as filler and was the main reason
+      these menus looked arbitrary. */
+  columns: { heading: string; links: MegaLink[] }[];
+  /** At most one catch-all per menu, rendered as a footer action rather than a
+      list item. As a list item it was indistinguishable from a product — and
+      Training Systems had two of them under different names. */
+  shopAll?: MegaLink;
+  image: string;
+  imageCaption: string;
+};
+
+const megaMenuData: Partial<Record<NonNullable<MegaMenuKey>, MegaMenuEntry>> = {
   training: {
     columns: [
       {
-        heading: 'Training Systems',
+        heading: 'Tour Pure',
         links: [
           { label: 'Tour Pure Men', href: '/product/tour-pure-men' },
           { label: 'Tour Pure Women', href: '/product/tour-pure-women' },
           { label: 'Tour Pure Jr', href: '/product/tour-pure-jr' },
-          { label: 'All Training Systems', href: '/shop/training-system' },
         ],
       },
       {
-        heading: 'Shop All',
-        links: [{ label: 'View All Products', href: '/shop/training-system' }],
+        heading: 'Guides & Coaching',
+        links: [
+          { label: 'Tour Pure Training Guide', href: '/tour-pure-guide' },
+          { label: 'Golf Training for Beginners', href: '/beginners' },
+          { label: 'Practice With Pros', href: '/pros' },
+        ],
       },
     ],
+    shopAll: { label: 'Shop All Training Systems', href: '/shop/training-system' },
     image: '/images/Photoroom-20251125_1425462241__e480e1c6.webp',
     imageCaption: 'Tour Pure - Build Your Best Swing',
   },
   apparel: {
     columns: [
+      // The column heading already says whose tees these are, so the per-link
+      // "(Men's)" / "(Women's)" suffix was repeating it on every row — and it was
+      // long enough to wrap the longer labels onto a second line. Each label is
+      // still unique within its own column.
       {
         heading: "Men's Tees",
         links: [
-          { label: "Icon Tee - White (Men's)", href: '/product/dominus-tee-icon-white' },
-          { label: "Wordmark Tee - White (Men's)", href: '/product/dominus-tee-wordmark-white' },
-          { label: "Performance Tee - Black (Men's)", href: '/product/dominus-tee-performance-black' },
-          { label: "Performance Tee - White (Men's)", href: '/product/dominus-tee-performance-white' },
+          { label: 'Icon Tee - White', href: '/product/dominus-tee-icon-white' },
+          { label: 'Wordmark Tee - White', href: '/product/dominus-tee-wordmark-white' },
+          // Labelled White because that is the only colour it ships in. The id
+          // says "black" but its sole colorVariant is White — the id is historic
+          // and is not worth changing, since it is a live product URL.
+          { label: 'Performance Tee - White', href: '/product/dominus-tee-performance-black' },
         ],
       },
       {
         heading: "Women's Tees",
         links: [
-          { label: "Icon Tee - Black (Women's)", href: '/product/dominus-womens-tee-black-icon' },
-          { label: "Icon Tee - White (Women's)", href: '/product/dominus-womens-tee-white-icon' },
-          { label: "Performance Tee - Black (Women's)", href: '/product/dominus-womens-tee-black-performance' },
-          { label: 'Shop All Apparel', href: '/shop/apparel' },
+          { label: 'Icon Tee - Black', href: '/product/dominus-womens-tee-black-icon' },
+          { label: 'Icon Tee - White', href: '/product/dominus-womens-tee-white-icon' },
+          { label: 'Performance Tee - Black', href: '/product/dominus-womens-tee-black-performance' },
         ],
       },
     ],
+    shopAll: { label: 'Shop All Apparel', href: '/shop/apparel' },
     image: '/images/unnamed-11__fc5a40f7.webp',
     imageCaption: 'Dominus Golf Apparel',
   },
   accessories: {
     columns: [
       {
-        heading: 'Training Aids',
+        heading: 'Gear',
         links: [
           { label: 'Feel Right Band', href: '/product/feel-right-band' },
+          { label: 'Dominus Golf Towel', href: '/product/dominus-towel' },
         ],
       },
       {
-        heading: 'Gear & Education',
+        heading: 'Guides & Books',
         links: [
-          { label: 'Dominus Golf Towel', href: '/product/dominus-towel' },
           { label: 'The Ultimate Guide (Book)', href: '/product/mastering-the-game-book' },
-          { label: 'Shop All Accessories', href: '/shop/accessories' },
+          { label: 'Feel Right Band Guide', href: '/feel-right-band-guide' },
         ],
       },
     ],
+    shopAll: { label: 'Shop All Accessories', href: '/shop/accessories' },
     image: '/images/Screenshot_20260324_042207_SamsungInternet__2f2a1710.webp',
     imageCaption: 'Dominus Golf Accessories',
   },
@@ -101,11 +127,16 @@ const megaMenuData = {
         links: [
           { label: 'About Dominus Golf', href: '/about' },
           { label: 'Team Dominus Golf', href: '/about/team' },
-          { label: 'Contact Us', href: '/about/contact' },
           { label: 'Careers', href: '/about/careers' },
+          { label: 'Sustainability', href: '/about/sustainability' },
+        ],
+      },
+      {
+        heading: 'Get Involved',
+        links: [
           { label: 'Development Grant', href: '/grant' },
           { label: 'Affiliate Program', href: '/affiliates' },
-          { label: 'Sustainability', href: '/about/sustainability' },
+          { label: 'Contact Us', href: '/about/contact' },
         ],
       },
       {
@@ -217,6 +248,10 @@ export function Navbar() {
     // over on a 1024px viewport.
     { label: 'Affiliates', key: null, href: '/affiliates' },
   ];
+
+  // Not every nav key has a panel (Grant and Affiliates go straight to a route),
+  // so this stays undefined for those and the panel simply doesn't render.
+  const mega = activeMega ? megaMenuData[activeMega] : undefined;
 
   // Icons tighten up while the search field is open so it has room to grow.
   const iconBtnClass = `relative ${
@@ -545,62 +580,83 @@ export function Navbar() {
           </div>
 
           {/* Mega Menu */}
-          {activeMega && megaMenuData[activeMega] && (
+          {mega && (
             <div
               className="mega-menu absolute top-full left-0 right-0 bg-background border-t border-b border-border shadow-xl z-20"
               onMouseLeave={() => setActiveMega(null)}
             >
-              <div className="max-w-screen-xl mx-auto px-8 py-10 grid grid-cols-[1fr_auto] gap-12">
-                {/* Columns */}
-                <div className="grid grid-cols-3 gap-8">
-                  {megaMenuData[activeMega].columns.map((col) => (
-                    <div key={col.heading}>
-                      <p className="font-sans text-[10px] font-semibold tracking-widest uppercase text-muted-foreground mb-3 pb-2 border-b border-border">
-                        {col.heading}
-                      </p>
-                      <ul className="space-y-2">
-                        {col.links.map((link) => {
-                          const isExternal = link.href.startsWith('http');
-                          return (
-                          <li key={link.label}>
-                            {isExternal ? (
-                              <a
-                                href={link.href}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={() => setActiveMega(null)}
-                                className="font-sans text-sm text-foreground hover:text-accent transition-colors duration-150 gold-underline-hover inline-block"
-                              >
-                                {link.label}
-                              </a>
-                            ) : (
-                              <Link
-                                to={link.href as any}
-                                onClick={() => setActiveMega(null)}
-                                className="font-sans text-sm text-foreground hover:text-accent transition-colors duration-150 gold-underline-hover inline-block"
-                              >
-                                {link.label}
-                              </Link>
-                            )}
-                          </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  ))}
+              <div className="max-w-screen-xl mx-auto px-8 py-10 flex justify-between gap-12">
+                <div>
+                  {/* Columns are a fixed width rather than equal fractions of the
+                      row: the grid was hard-coded to three tracks while most menus
+                      have two, so the unused track opened a gap that read as a
+                      missing column and stretched the rest far wider than their
+                      labels needed. */}
+                  <div className="flex gap-12">
+                    {mega.columns.map((col) => (
+                      <div key={col.heading} className="w-52 shrink-0">
+                        <p className="font-sans text-[10px] font-semibold tracking-widest uppercase text-muted-foreground mb-3 pb-2 border-b border-border">
+                          {col.heading}
+                        </p>
+                        <ul className="space-y-2">
+                          {col.links.map((link) => {
+                            const isExternal = link.href.startsWith('http');
+                            return (
+                            <li key={link.label}>
+                              {isExternal ? (
+                                <a
+                                  href={link.href}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  onClick={() => setActiveMega(null)}
+                                  className="font-sans text-sm text-foreground hover:text-accent transition-colors duration-150 gold-underline-hover inline-block"
+                                >
+                                  {link.label}
+                                </a>
+                              ) : (
+                                <Link
+                                  to={link.href as any}
+                                  onClick={() => setActiveMega(null)}
+                                  className="font-sans text-sm text-foreground hover:text-accent transition-colors duration-150 gold-underline-hover inline-block"
+                                >
+                                  {link.label}
+                                </Link>
+                              )}
+                            </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Sits under the columns, not in them, so it reads as the way
+                      out of the menu rather than one more product. */}
+                  {mega.shopAll && (
+                    <Link
+                      to={mega.shopAll.href as any}
+                      onClick={() => setActiveMega(null)}
+                      className="group inline-flex items-center gap-2 mt-8 pt-5 border-t border-border font-sans text-[11px] font-semibold tracking-widest uppercase text-foreground hover:text-accent transition-colors"
+                    >
+                      {mega.shopAll.label}
+                      <span aria-hidden="true" className="transition-transform duration-150 group-hover:translate-x-1">
+                        &rarr;
+                      </span>
+                    </Link>
+                  )}
                 </div>
 
                 {/* Feature Image */}
                 <div className="w-52 shrink-0">
                   <div className="aspect-[3/4] overflow-hidden bg-muted">
                     <img
-                      src={megaMenuData[activeMega].image}
-                      alt={megaMenuData[activeMega].imageCaption}
+                      src={mega.image}
+                      alt={mega.imageCaption}
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <p className="font-sans text-xs text-muted-foreground mt-2">
-                    {megaMenuData[activeMega].imageCaption}
+                    {mega.imageCaption}
                   </p>
                 </div>
               </div>
@@ -684,6 +740,19 @@ export function Navbar() {
                               })}
                             </div>
                           ))}
+                          {/* Mirrors the desktop footer link. Without it the
+                              catch-all would be missing on mobile entirely, since
+                              it no longer lives inside a column. */}
+                          {megaMenuData[link.key]?.shopAll && (
+                            <Link
+                              to={megaMenuData[link.key]!.shopAll!.href as any}
+                              onClick={() => setMobileOpen(false)}
+                              className="flex items-center gap-2 mt-4 pt-4 border-t border-border font-sans text-[11px] font-semibold tracking-widest uppercase text-foreground"
+                            >
+                              {megaMenuData[link.key]!.shopAll!.label}
+                              <span aria-hidden="true">&rarr;</span>
+                            </Link>
+                          )}
                         </div>
                       )}
                     </>

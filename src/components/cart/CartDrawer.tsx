@@ -1,30 +1,15 @@
 import { useEffect, useState } from 'react';
 import { X, ShoppingBag, Plus, Minus, Trash2, Loader2 } from 'lucide-react';
-import { useCart } from '../../store/cartStore';
+import { useCart, lineKeyOf } from '../../store/cartStore';
 import { useRequireAuth } from '../../hooks/useRequireAuth';
 import { useScrollLock } from '../../hooks/useScrollLock';
 import { clearPendingAction, peekPendingAction } from '../../lib/pendingAction';
 import { trackBeginCheckout } from '../../lib/analytics';
 import { Link } from '@tanstack/react-router';
-import { BACKEND_URL } from '../../lib/backend';
+import { createCheckoutSession } from '../../lib/checkout';
+import { variantLabel, withVariantName } from '../../lib/productVariants';
+import { displayProductName } from '../../lib/productName';
 
-async function createCheckoutSession(
-  items: { name: string; price: number; quantity: number; image?: string }[]
-): Promise<string> {
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://www.dominusgolf.com';
-  const res = await fetch(`${BACKEND_URL}/api/square/checkout`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      items,
-      successUrl: `${origin}/?checkout=success`,
-      cancelUrl: `${origin}/?checkout=cancelled`,
-    }),
-  });
-  const data = await res.json() as { url?: string; error?: string };
-  if (!res.ok || !data.url) throw new Error(data.error || 'Failed to create checkout session');
-  return data.url;
-}
 
 export function CartDrawer() {
   const { state, closeCart, openCart, removeItem, updateQuantity, total, itemCount } = useCart();
@@ -77,8 +62,10 @@ export function CartDrawer() {
     trackBeginCheckout(state.items);
 
     try {
+      // Square receives only these fields, so the size has to be folded into
+      // the name — otherwise the order arrives with no way to fulfil it.
       const lineItems = state.items.map((item) => ({
-        name: item.product.name,
+        name: withVariantName(item.product, item.variant),
         price: item.product.price,
         quantity: item.quantity,
         image: item.product.image,
@@ -192,7 +179,7 @@ export function CartDrawer() {
           ) : (
             <ul className="divide-y divide-border">
               {state.items.map((item) => (
-                <li key={item.product.id} className="flex gap-4 px-6 py-5">
+                <li key={lineKeyOf(item)} className="flex gap-4 px-6 py-5">
                   {/* Image */}
                   <Link
                     to="/product/$id"
@@ -215,11 +202,17 @@ export function CartDrawer() {
                           {item.product.subcategory}
                         </p>
                         <h4 className="font-serif text-sm font-semibold text-foreground leading-tight">
-                          {item.product.name}
+                          {displayProductName(item.product.name)}
                         </h4>
+                        {item.variant && (
+                          <p className="font-sans text-[11px] text-muted-foreground mt-1">
+                            {variantLabel(item.product)}:{' '}
+                            <span className="text-foreground font-medium">{item.variant}</span>
+                          </p>
+                        )}
                       </div>
                       <button
-                        onClick={() => removeItem(item.product.id)}
+                        onClick={() => removeItem(lineKeyOf(item))}
                         className="shrink-0 text-muted-foreground hover:text-foreground transition-colors p-0.5"
                         aria-label="Remove item"
                       >
@@ -231,7 +224,7 @@ export function CartDrawer() {
                       {/* Quantity */}
                       <div className="flex items-center border border-border">
                         <button
-                          onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                          onClick={() => updateQuantity(lineKeyOf(item), item.quantity - 1)}
                           className="w-8 h-8 flex items-center justify-center hover:bg-muted transition-colors text-foreground"
                           aria-label="Decrease quantity"
                         >
@@ -241,7 +234,7 @@ export function CartDrawer() {
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                          onClick={() => updateQuantity(lineKeyOf(item), item.quantity + 1)}
                           className="w-8 h-8 flex items-center justify-center hover:bg-muted transition-colors text-foreground"
                           aria-label="Increase quantity"
                         >

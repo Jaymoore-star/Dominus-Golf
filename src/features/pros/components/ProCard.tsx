@@ -11,11 +11,11 @@ export function ProCard({ pro, onClick }: ProCardProps) {
   const profileTo = `/${pro.id}`;
 
   return (
-    <div className="w-full bg-[#141414] border border-white/10 flex flex-col overflow-hidden group hover:border-accent/50 transition-colors duration-300">
+    <div className="w-full bg-background border border-border flex flex-col overflow-hidden group hover:border-accent/50 transition-colors duration-300">
       {/* Photo */}
       <Link
         to={profileTo}
-        className="relative h-[220px] bg-[#1e1e1e] overflow-hidden flex items-center justify-center cursor-pointer"
+        className="relative h-[220px] bg-muted overflow-hidden flex items-center justify-center cursor-pointer"
       >
         {pro.photo ? (
           <img
@@ -24,7 +24,7 @@ export function ProCard({ pro, onClick }: ProCardProps) {
             className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          <div className="flex flex-col items-center gap-3 text-white/20">
+          <div className="flex flex-col items-center gap-3 text-muted-foreground">
             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.75">
               <circle cx="12" cy="8" r="4" />
               <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
@@ -37,27 +37,27 @@ export function ProCard({ pro, onClick }: ProCardProps) {
 
       {/* Content */}
       <div className="p-6 flex flex-col flex-1">
-        <h3 className="font-serif text-xl font-bold text-white mb-1">{pro.name}</h3>
+        <h3 className="font-serif text-xl font-bold text-foreground mb-1">{pro.name}</h3>
         <p className="font-sans text-[10px] font-semibold tracking-[0.25em] uppercase text-accent mb-1">
           {pro.affiliation}
         </p>
         {(pro.city || pro.state) && (
-          <p className="font-sans text-[11px] text-white/35 flex items-center gap-1 mb-3">
+          <p className="font-sans text-[11px] text-muted-foreground flex items-center gap-1 mb-3">
             <MapPin size={10} />
             {[pro.city, pro.state].filter(Boolean).join(', ')}
           </p>
         )}
-        <p className="font-sans text-sm text-white/55 leading-relaxed flex-1 mb-5">{pro.bio}</p>
+        <p className="font-sans text-sm text-muted-foreground leading-relaxed flex-1 mb-5">{pro.bio}</p>
         <div className="grid grid-cols-2 gap-2">
           <button
             onClick={onClick}
-            className="font-sans font-semibold text-[10px] tracking-widest uppercase py-2.5 border border-white/20 text-white/60 hover:border-white hover:text-white transition-colors duration-200"
+            className="font-sans font-semibold text-[10px] tracking-widest uppercase py-2.5 border border-border text-muted-foreground hover:border-foreground hover:text-foreground transition-colors duration-200"
           >
             Quick View
           </button>
           <Link
             to={profileTo}
-            className="font-sans font-semibold text-[10px] tracking-widest uppercase py-2.5 bg-accent text-white group-hover:bg-accent/90 transition-colors duration-200 text-center"
+            className="font-sans font-semibold text-[10px] tracking-widest uppercase py-2.5 bg-accent text-accent-foreground group-hover:bg-accent/90 transition-colors duration-200 text-center"
           >
             View Profile
           </Link>

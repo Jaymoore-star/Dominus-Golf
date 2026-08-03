@@ -3,6 +3,8 @@ import { Star, Minus, Plus, Loader2, Heart } from 'lucide-react';
 import toast from 'react-hot-toast';
 import type { Product } from '../../../data/products';
 import { useWishlist } from '../../../store/wishlistStore';
+import { useProductReviews } from '../../../hooks/useProductReviews';
+import { displayProductName } from '../../../lib/productName';
 
 interface ProductInfoProps {
   product: Product;
@@ -32,6 +34,10 @@ export function ProductInfo({
   const { isWishlisted, toggle } = useWishlist();
   const wishlisted = isWishlisted(product.id);
 
+  const { summary } = useProductReviews(product.id);
+  const ratingValue = summary?.average ?? product.rating;
+  const ratingCount = summary?.count ?? product.reviewCount ?? 0;
+
   const handleToggleWishlist = () => {
     toggle(product.id);
     toast(wishlisted ? 'Removed from wishlist' : 'Saved to wishlist', {
@@ -54,11 +60,13 @@ export function ProductInfo({
       )}
 
       <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground leading-tight mb-4">
-        {product.name}
+        {displayProductName(product.name)}
       </h1>
 
-      {/* Rating - only shown if present */}
-      {product.rating !== undefined && product.reviewCount !== undefined && (
+      {/* Rating. Real customer reviews win as soon as any exist; the seeded
+          figures are only a stand-in until then. Shares its query with the
+          review section below, so the two can never show different numbers. */}
+      {ratingValue !== undefined && ratingCount > 0 && (
         <div className="flex items-center gap-3 mb-5">
           <div className="flex items-center gap-0.5">
             {[...Array(5)].map((_, i) => (
@@ -66,7 +74,7 @@ export function ProductInfo({
                 key={i}
                 size={14}
                 className={
-                  i < Math.floor(product.rating!)
+                  i < Math.floor(ratingValue)
                     ? 'fill-accent text-accent'
                     : 'text-border fill-border'
                 }
@@ -78,7 +86,8 @@ export function ProductInfo({
             onClick={scrollToReviews}
             className="font-sans text-sm text-muted-foreground hover:text-accent transition-colors underline underline-offset-4"
           >
-            {product.rating} ({product.reviewCount.toLocaleString()} reviews)
+            {ratingValue} ({ratingCount.toLocaleString()}{' '}
+            {ratingCount === 1 ? 'review' : 'reviews'})
           </a>
         </div>
       )}
