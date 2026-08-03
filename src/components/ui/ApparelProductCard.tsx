@@ -235,7 +235,7 @@ export function ApparelProductCard({ product }: ApparelProductCardProps) {
           <button
             onClick={handleAddToCart}
             disabled={!product.inStock}
-            className="flex items-center justify-center gap-1.5 py-3 lg:py-2.5 border border-foreground font-sans text-xs font-semibold tracking-widest lg:tracking-wider uppercase text-foreground hover:bg-foreground hover:text-background transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-foreground"
+            className="flex items-center justify-center gap-1.5 py-3 lg:py-2.5 btn-primary-black font-sans text-xs font-semibold tracking-widest lg:tracking-wider uppercase transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <ShoppingBag size={12} />
             Add to Bag
@@ -243,7 +243,7 @@ export function ApparelProductCard({ product }: ApparelProductCardProps) {
           <button
             onClick={handleBuyNow}
             disabled={!product.inStock || isBuyingNow}
-            className="flex items-center justify-center gap-1.5 py-3 lg:py-2.5 bg-primary font-sans text-xs font-semibold tracking-widest lg:tracking-wider uppercase text-primary-foreground hover:bg-primary/90 transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex items-center justify-center gap-1.5 py-3 lg:py-2.5 btn-outline-dark font-sans text-xs font-semibold tracking-widest lg:tracking-wider uppercase transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {isBuyingNow ? <Loader2 size={12} className="animate-spin" /> : 'Buy Now'}
           </button>

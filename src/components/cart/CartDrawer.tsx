@@ -281,7 +281,7 @@ export function CartDrawer() {
             <button
               onClick={handleCheckout}
               disabled={isCheckingOut}
-              className="btn-gold w-full py-4 font-sans font-semibold tracking-widest uppercase text-sm flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+              className="btn-primary-black w-full py-4 font-sans font-semibold tracking-widest uppercase text-sm flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {isCheckingOut ? (
                 <>

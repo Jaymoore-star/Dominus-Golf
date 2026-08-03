@@ -239,7 +239,7 @@ export function ProductPage() {
             <button
               onClick={handleBuyNow}
               disabled={isBuyingNow}
-              className="shrink-0 px-6 py-3 font-sans font-semibold text-xs tracking-widest uppercase btn-gold transition-colors duration-200 flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+              className="shrink-0 px-6 py-3 font-sans font-semibold text-xs tracking-widest uppercase btn-primary-black transition-colors duration-200 flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {isBuyingNow ? (
                 <><Loader2 size={12} className="animate-spin" /> Preparing…</>

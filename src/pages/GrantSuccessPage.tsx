@@ -123,7 +123,7 @@ export function GrantSuccessPage() {
               <div className="mt-12">
                 <Link
                   to="/"
-                  className="inline-flex items-center gap-2 btn-gold px-8 py-4 text-sm font-sans font-semibold tracking-wider uppercase transition-all duration-200 active:scale-[0.98]"
+                  className="inline-flex items-center gap-2 btn-primary-black px-8 py-4 text-sm font-sans font-semibold tracking-wider uppercase transition-all duration-200 active:scale-[0.98]"
                 >
                   Continue to Home
                 </Link>

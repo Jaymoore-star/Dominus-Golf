@@ -36,7 +36,7 @@ function GrantCTA({ className = '', onClick }: { className?: string; onClick?: (
     <button
       onClick={onClick}
       className={`inline-flex items-center gap-2.5 px-8 py-3.5 text-sm font-semibold tracking-wider uppercase
-        btn-gold active:scale-[0.98] transition-all duration-200 ${className}`}
+        btn-primary-black active:scale-[0.98] transition-all duration-200 ${className}`}
     >
       Apply Now <ArrowRightIcon className="w-4 h-4" />
     </button>
@@ -662,7 +662,7 @@ export function GrantPage() {
                   {error && <div className="border border-destructive/30 bg-destructive/5 px-4 py-3"><p className="text-sm text-destructive font-sans">{error}</p></div>}
 
                   <div className="pt-2">
-                    <button type="button" onClick={handleNext} className="btn-gold inline-flex items-center gap-2 px-10 py-4 text-sm font-semibold tracking-wider uppercase transition-all duration-200 active:scale-[0.98]">Next <ArrowRight className="w-4 h-4" /></button>
+                    <button type="button" onClick={handleNext} className="btn-primary-black inline-flex items-center gap-2 px-10 py-4 text-sm font-semibold tracking-wider uppercase transition-all duration-200 active:scale-[0.98]">Next <ArrowRight className="w-4 h-4" /></button>
                   </div>
                 </div>
               )}
@@ -703,7 +703,7 @@ export function GrantPage() {
 
                   <div className="flex items-center gap-3 pt-2">
                     <button type="button" onClick={handlePrev} className="inline-flex items-center gap-2 px-8 py-4 text-sm font-semibold tracking-wider uppercase border border-border text-foreground hover:bg-secondary transition-colors"><ArrowLeft className="w-4 h-4" /> Previous</button>
-                    <button type="button" onClick={handleNext} className="btn-gold inline-flex items-center gap-2 px-10 py-4 text-sm font-semibold tracking-wider uppercase transition-all duration-200 active:scale-[0.98]">Next <ArrowRight className="w-4 h-4" /></button>
+                    <button type="button" onClick={handleNext} className="btn-primary-black inline-flex items-center gap-2 px-10 py-4 text-sm font-semibold tracking-wider uppercase transition-all duration-200 active:scale-[0.98]">Next <ArrowRight className="w-4 h-4" /></button>
                   </div>
                 </div>
               )}
@@ -733,7 +733,7 @@ export function GrantPage() {
 
                   <div className="flex items-center justify-between gap-3 pt-2">
                     <button type="button" onClick={handlePrev} className="inline-flex items-center gap-2 px-8 py-4 text-sm font-semibold tracking-wider uppercase border border-border text-foreground hover:bg-secondary transition-colors"><ArrowLeft className="w-4 h-4" /> Previous</button>
-                    <button type="submit" disabled={submitting} className="btn-gold inline-flex items-center gap-2.5 px-10 py-4 text-sm font-semibold tracking-wider uppercase transition-all duration-200 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed">
+                    <button type="submit" disabled={submitting} className="btn-primary-black inline-flex items-center gap-2.5 px-10 py-4 text-sm font-semibold tracking-wider uppercase transition-all duration-200 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed">
                       {submitting ? <><Loader2 className="w-4 h-4 animate-spin" /> Submitting...</> : <>Submit Application <ArrowRight className="w-4 h-4" /></>}
                     </button>
                   </div>

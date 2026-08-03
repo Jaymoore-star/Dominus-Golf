@@ -36,7 +36,7 @@ export function PromoSection() {
             <Link
               to="/shop/$category"
               params={{ category: 'training-system' }}
-              className="btn-gold inline-block px-8 py-4 font-sans font-semibold text-sm tracking-widest uppercase"
+              className="btn-primary-black inline-block px-8 py-4 font-sans font-semibold text-sm tracking-widest uppercase"
             >
               Shop Systems
             </Link>

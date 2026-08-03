@@ -187,7 +187,7 @@ export function ProductInfo({
           <button
             onClick={handleBuyNow}
             disabled={isBuyingNow}
-            className="block w-full py-4 font-sans font-semibold text-sm tracking-widest uppercase text-center btn-gold transition-colors duration-200 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+            className="block w-full py-4 font-sans font-semibold text-sm tracking-widest uppercase text-center btn-outline-dark transition-colors duration-200 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
           >
             {isBuyingNow ? (
               <>
@@ -204,8 +204,10 @@ export function ProductInfo({
           aria-pressed={wishlisted}
           className={`w-full py-4 font-sans font-semibold text-sm tracking-widest uppercase transition-colors duration-200 flex items-center justify-center gap-2 border ${
             wishlisted
-              ? 'border-accent text-accent'
-              : 'border-border text-foreground hover:border-foreground'
+              ? 'border-accent text-accent hover:bg-accent/10'
+              // Hovering an unsaved one previews the gold saved state, so the
+              // hover doubles as a hint at what the click does.
+              : 'border-border text-foreground hover:border-accent hover:text-accent hover:bg-accent/10'
           }`}
         >
           <Heart
