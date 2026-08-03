@@ -25,6 +25,7 @@ export function AccountProfilePage() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [savingPassword, setSavingPassword] = useState(false);
   const [passwordNotice, setPasswordNotice] = useState('');
   const [passwordError, setPasswordError] = useState('');
@@ -222,20 +223,30 @@ export function AccountProfilePage() {
             <label htmlFor="confirmNewPassword" className={labelClass}>
               Confirm New Password
             </label>
-            <input
-              id="confirmNewPassword"
-              type={showPassword ? 'text' : 'password'}
-              value={confirmPassword}
-              onChange={(e) => {
-                setConfirmPassword(e.target.value);
-                if (confirmError) setConfirmError('');
-              }}
-              disabled={savingPassword}
-              placeholder="Re-enter your new password"
-              aria-invalid={!!confirmError}
-              aria-describedby={confirmError ? 'confirm-new-password-error' : undefined}
-              className={fieldClass(!!confirmError)}
-            />
+            <div className="relative">
+              <input
+                id="confirmNewPassword"
+                type={showConfirmPassword ? 'text' : 'password'}
+                value={confirmPassword}
+                onChange={(e) => {
+                  setConfirmPassword(e.target.value);
+                  if (confirmError) setConfirmError('');
+                }}
+                disabled={savingPassword}
+                placeholder="Re-enter your new password"
+                aria-invalid={!!confirmError}
+                aria-describedby={confirmError ? 'confirm-new-password-error' : undefined}
+                className={fieldClass(!!confirmError, 'pr-12')}
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
             {confirmError && (
               <FieldError id="confirm-new-password-error">{confirmError}</FieldError>
             )}
