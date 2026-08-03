@@ -27,7 +27,18 @@
     --border: 0 0% 88%;
     --input: 0 0% 88%;
     --ring: 38 53% 50%;
-    --radius: 0px;
+
+    /* Drives the whole Tailwind radius scale — rounded-lg is var(--radius),
+       rounded-md is calc(--radius - 2px), rounded-sm is calc(--radius - 4px).
+       It was 0px, which is why 192 rounded-* classes across the components had
+       no effect even before the enforcer got to them. Set this back to 0px to
+       return the whole site to square corners. */
+    --radius: 8px;
+
+    /* Controls that carry no radius class of their own. Kept separate so buttons
+       and fields can be tuned without moving cards and panels with them. */
+    --btn-radius: 8px;
+    --input-radius: var(--btn-radius);
 
     --chart-1: 38 53% 50%;
     --chart-2: 0 0% 10%;
@@ -150,6 +161,27 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-serif);
+  }
+
+  /* Bordered containers round by default.
+   *
+   * 154 elements carry Tailwind's full `border` utility and only 26 of them also
+   * declare a radius, so the rest were drawing square boxes. `[class~="border"]`
+   * matches the exact token, which is what keeps this off `border-b` dividers and
+   * off `border-border` — a `*=` substring match would have caught both and curved
+   * every horizontal rule on the site.
+   *
+   * Deliberately in @layer base: utilities outrank base, so any element that names
+   * its own radius — including the 26 above and anything rounded-full — keeps it,
+   * and this only fills in where nothing was specified.
+   *
+   * No tag exclusions. Full-bleed bands are drawn with border-t / border-b /
+   * border-y, which the exact-token match already skips, and excluding <section>
+   * would have missed AccountCard — which renders its card as a <section> and is
+   * exactly the box this is for.
+   */
+  [class~='border'] {
+    border-radius: var(--radius);
   }
 }
 
@@ -407,36 +439,35 @@
   animation: marqueeScroll 20s linear infinite;
 }
 
-/* ─── Sharp corners enforcer ─── */
-*, *::before, *::after {
-  border-radius: 0 !important;
-}
-
-/* ─── Rounded buttons ──────────────────────────────────────────────────────
+/* ─── Rounded theme ───────────────────────────────────────────────────────────
  *
- * The enforcer directly above flattens every corner on the site with !important,
- * which is why no rounded-* utility has any effect anywhere. So this has to
- * re-round with !important too, and has to sit after it.
+ * This replaced a "sharp corners enforcer" that read:
  *
- * Scoped to things you click. Cards, images, panels and inputs stay sharp, so the
- * layout keeps its architectural feel and only the interactive elements soften.
+ *     *, *::before, *::after { border-radius: 0 !important; }
  *
- * Tune or revert from the single value below:
- *   0px      square — reverts to the original look
- *   4px      barely there
- *   8px      clearly rounded, still tailored   <- current
- *   14px     soft
- *   9999px   full pill
+ * That single rule was overriding 192 rounded-* classes already written across
+ * the components — 60 rounded-full, 40 rounded-lg, 26 rounded-md, 16 rounded-sm,
+ * 10 rounded-xl. Every one of them was dead. Removing it is what turns the theme
+ * round, because each component already declares the radius it wants; nothing
+ * here has to guess on their behalf.
+ *
+ * --radius drives the Tailwind scale (see tailwind.config.cjs borderRadius):
+ *   rounded-lg = var(--radius) = 8px
+ *   rounded-md = calc(--radius - 2px) = 6px
+ *   rounded-sm = calc(--radius - 4px) = 4px
+ *
+ * Full-bleed bands — sections, heroes, the footer, the announcement bar — carry
+ * no rounded-* class and so stay square, which is what you want: a rounded corner
+ * on an edge-to-edge band just notches the viewport.
+ *
+ * The two rules below only cover controls that have no class of their own.
  */
-:root {
-  --btn-radius: 8px;
-}
 
 button,
 input[type='submit'],
 input[type='button'],
-.btn-gold,
 .btn-primary-black,
+.btn-outline-dark,
 .btn-outline-white,
 /* Links styled as buttons. Padding on both axes is what separates a CTA from a
    text link here — every text link and breadcrumb has at most one axis. Of the 65
@@ -445,38 +476,84 @@ input[type='button'],
    Matching on "border" instead would have caught 212 elements and curved the
    underline on every border-b link. */
 a[class*='px-'][class*='py-'] {
-  border-radius: var(--btn-radius) !important;
+  border-radius: var(--btn-radius);
 }
 
-/* Anything that asked to be a circle gets to be one. The wishlist heart on a
-   product card is the visible case — the enforcer had been squaring it off, so
-   this is the first time that class does what it says. */
-button.rounded-full,
-a.rounded-full,
-.rounded-full-override {
-  border-radius: 9999px !important;
+/* Text fields, selects and textareas.
+ *
+ * Chained :not() rather than :not(a, b, c) — the selector-list form is unsupported
+ * below Safari 16.4, which drops the whole rule. Same reason the iOS font-size
+ * backstop earlier in this file is written the long way.
+ *
+ * Deliberate exclusions:
+ *   checkbox / radio — their shape is their meaning.
+ *   range            — the slider builds its own track and thumb geometry above,
+ *                      and it is the one control that has already broken in Safari.
+ *   submit / button  — already carry --btn-radius from the rule above.
+ */
+input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='submit']):not([type='button']),
+select,
+textarea {
+  border-radius: var(--input-radius);
 }
 
-/* exceptions for specific circular elements */
-.rounded-full-override {
-  border-radius: 9999px !important;
+
+/* ─── Buttons ──────────────────────────────────────────────────────────────────
+ *
+ * Two roles, used everywhere. Every button on the site is one of these, so the
+ * shop grid, the product page, the bag and the grant form cannot drift apart.
+ *
+ *   .btn-primary-black   the action being encouraged. Solid, white text.
+ *   .btn-outline-dark    the alternative beside it. Outlined, fills on hover.
+ *
+ * This replaced a .btn-gold that filled large areas with hsl(38 53% 50%). Gold
+ * works small — badges, stars, eyebrow labels, links — and goes flat as a slab,
+ * where white on it also measures only 2.81:1. It is no longer used on buttons.
+ *
+ * The old hover here turned the dark button gold, which made hovering "Add to
+ * Bag" look like it had become "Buy Now". Hover now stays in the same family.
+ */
+.btn-primary-black {
+  background-color: hsl(0 0% 18%);
+  color: hsl(0 0% 98%);
+  transition: background-color 0.25s ease, transform 0.15s ease;
 }
 
-/* ─── Gold button ─── */
-.btn-gold {
-  background-color: hsl(var(--accent));
-  color: hsl(var(--accent-foreground));
-  transition: background-color 0.2s ease, transform 0.15s ease;
+/* Lifts on hover rather than deepening.
+
+   Going darker was the obvious choice and the wrong one: from 18% lightness
+   down to 6% is a 1.40 ratio, while lifting to 32% is 1.77 — dark tones compress
+   perceptually, so the darkening was almost invisible. */
+.btn-primary-black:hover {
+  background-color: hsl(0 0% 32%);
 }
 
-.btn-gold:hover {
-  background-color: hsl(38 53% 42%);
-}
-
-.btn-gold:active {
+.btn-primary-black:active {
   transform: scale(0.98);
 }
 
+.btn-outline-dark {
+  background-color: transparent;
+  color: hsl(0 0% 18%);
+  box-shadow: inset 0 0 0 1px hsl(0 0% 18%);
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.15s ease;
+}
+
+/* Hovers to a light tint, NOT to the primary fill.
+
+   Filling this dark on hover made it land on exactly the primary button's
+   resting colour, so hovering Buy Now turned it into a copy of Add to Bag
+   sitting right beside it. The two roles have to stay distinguishable in every
+   state: primary is always dark, secondary is always light. */
+.btn-outline-dark:hover {
+  background-color: hsl(0 0% 86%);
+  color: hsl(0 0% 10%);
+  box-shadow: inset 0 0 0 1px hsl(0 0% 10%);
+}
+
+.btn-outline-dark:active {
+  transform: scale(0.98);
+}
 /* ─── Outline white button (hero) ─── */
 .btn-outline-white {
   border: 1.5px solid white;
@@ -490,21 +567,6 @@ a.rounded-full,
   color: hsl(0 0% 10%);
 }
 
-/* ─── Primary dark button → gold hover ─── */
-.btn-primary-black {
-  background-color: hsl(0 0% 18%);
-  color: hsl(0 0% 93%);
-  transition: background-color 0.25s ease, transform 0.15s ease;
-}
-
-.btn-primary-black:hover {
-  background-color: hsl(var(--accent));
-  color: hsl(var(--accent-foreground));
-}
-
-.btn-primary-black:active {
-  transform: scale(0.98);
-}
 
 /* ─── Image hover scale ─── */
 .img-hover-scale {
@@ -543,6 +605,6 @@ a.rounded-full,
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 9999px !important;
+  border-radius: 9999px;
 }
 

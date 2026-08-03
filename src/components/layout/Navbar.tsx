@@ -429,7 +429,7 @@ export function Navbar() {
 
                 {/* Results — same width as the field, hanging under it */}
                 {searchOpen && searchQuery.trim() !== '' && (
-                  <div className="absolute left-0 right-0 top-full mt-3 bg-background border border-border shadow-xl z-50 animate-in fade-in slide-in-from-top-1 duration-200">
+                  <div className="absolute left-0 right-0 top-full mt-3 bg-background border border-border rounded-lg shadow-xl z-50 animate-in fade-in slide-in-from-top-1 duration-200">
                     <div className="max-h-[70vh] overflow-y-auto px-3">
                       {searchResults.length > 0 ? (
                         <ul className="divide-y divide-border">
@@ -516,7 +516,7 @@ export function Navbar() {
                   {/* Account Dropdown — desktop only. It can only be opened above lg,
                       but this also covers resizing down while it is open. */}
                   {accountOpen && isAuthenticated && (
-                    <div className="hidden lg:block absolute right-0 top-full mt-2 w-56 bg-background border border-border shadow-lg z-50">
+                    <div className="hidden lg:block absolute right-0 top-full mt-2 w-56 bg-background border border-border rounded-lg shadow-lg z-50">
                       <div className="px-4 py-3 border-b border-border">
                         <p className="font-sans text-sm font-medium text-foreground truncate">
                           {user?.displayName || 'Member'}

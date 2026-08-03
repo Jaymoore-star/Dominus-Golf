@@ -279,7 +279,7 @@ export function ShopPage() {
               <ChevronDown size={14} />
             </button>
             {sortOpen && (
-              <div className="absolute right-0 top-full mt-1 bg-background border border-border shadow-lg z-20 w-52">
+              <div className="absolute right-0 top-full mt-1 bg-background border border-border rounded-lg shadow-lg z-20 w-52">
                 {(Object.keys(sortLabels) as SortKey[]).map((key) => (
                   <button
                     key={key}
@@ -318,7 +318,7 @@ export function ShopPage() {
                   <ChevronDown size={13} />
                 </button>
                 {sortOpen && (
-                  <div className="absolute right-0 top-full mt-1 bg-background border border-border shadow-lg z-20 w-52">
+                  <div className="absolute right-0 top-full mt-1 bg-background border border-border rounded-lg shadow-lg z-20 w-52">
                     {(Object.keys(sortLabels) as SortKey[]).map((key) => (
                       <button
                         key={key}

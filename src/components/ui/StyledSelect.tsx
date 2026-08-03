@@ -78,7 +78,7 @@ export function StyledSelect({
         <div
           role="listbox"
           aria-labelledby={id}
-          className="absolute z-20 mt-1 w-full bg-background border border-border shadow-lg max-h-56 overflow-y-auto"
+          className="absolute z-20 mt-1 w-full bg-background border border-border rounded-lg shadow-lg max-h-56 overflow-y-auto"
         >
           {options.map((opt) => (
             <button

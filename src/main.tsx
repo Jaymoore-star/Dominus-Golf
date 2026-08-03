@@ -22,10 +22,12 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         toastOptions={{
           duration: 2600,
           style: {
-            background: '#1A1A1A',
-            color: '#ffffff',
-            borderRadius: '0',
-            border: '1px solid rgba(255,255,255,0.1)',
+            // Theme tokens rather than the hardcoded #1A1A1A/#ffffff this used to
+            // carry, so the toast tracks the palette instead of drifting from it.
+            background: 'hsl(var(--primary))',
+            color: 'hsl(var(--primary-foreground))',
+            border: '1px solid hsl(var(--accent) / 0.4)',
+            borderRadius: 'var(--radius)',
             fontSize: '15px',
             fontFamily: 'var(--font-sans)',
             letterSpacing: '0.02em',
@@ -33,6 +35,18 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             minWidth: '340px',
             maxWidth: '90vw',
             justifyContent: 'center',
+          },
+          // Default icons are a generic green tick and red cross. Gold for success
+          // puts the brand on the most frequent toast ("Added to bag"); errors keep
+          // a red, since that is the one place the colour carries meaning.
+          success: {
+            iconTheme: { primary: 'hsl(var(--accent))', secondary: 'hsl(var(--primary))' },
+          },
+          error: {
+            iconTheme: {
+              primary: 'hsl(var(--destructive))',
+              secondary: 'hsl(var(--primary-foreground))',
+            },
           },
         }}
       />
