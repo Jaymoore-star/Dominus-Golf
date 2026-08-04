@@ -3,7 +3,17 @@ import { supabase } from './supabase';
 import { readReferral } from './referral';
 
 export type CheckoutLineItem = {
+  /** What the backend prices the line from. Everything below is display only. */
+  id: string;
   name: string;
+  /**
+   * Ignored by the backend, which prices from the catalogue — the browser used
+   * to set the charge, so a hand-written POST could buy anything for a cent.
+   *
+   * Still sent because the site and the API deploy separately: dropping it would
+   * break checkout in the window where the site is newer than the backend.
+   * Removable once both have shipped.
+   */
   price: number;
   quantity: number;
   image?: string;

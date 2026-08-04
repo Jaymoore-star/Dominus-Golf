@@ -7,6 +7,7 @@ import { clearPendingAction, peekPendingAction } from '../../lib/pendingAction';
 import { trackBeginCheckout } from '../../lib/analytics';
 import { Link } from '@tanstack/react-router';
 import { createCheckoutSession } from '../../lib/checkout';
+import { FREE_SHIPPING_THRESHOLD } from '../../lib/shipping';
 import { variantLabel, variantDescriptor } from '../../lib/productVariants';
 import { displayProductName } from '../../lib/productName';
 
@@ -65,6 +66,7 @@ export function CartDrawer() {
       // Square receives only these fields, so the size has to be folded into
       // the name — otherwise the order arrives with no way to fulfil it.
       const lineItems = state.items.map((item) => ({
+        id: item.product.id,
         name: item.product.name,
         variant: variantDescriptor(item.product, item.variant),
         price: item.product.price,
@@ -141,20 +143,20 @@ export function CartDrawer() {
             <div className="px-6 py-4 border-b border-border bg-accent/5">
               <div className="flex items-center justify-between mb-2">
                 <span className="font-sans text-[10px] font-semibold tracking-widest uppercase">
-                  {total >= 150 ? (
+                  {total >= FREE_SHIPPING_THRESHOLD ? (
                     <span className="text-accent">Congrats! You've got Free Shipping</span>
                   ) : (
-                    <>You're <span className="text-accent">${(150 - total).toFixed(2)}</span> away from Free Shipping</>
+                    <>You're <span className="text-accent">${(FREE_SHIPPING_THRESHOLD - total).toFixed(2)}</span> away from Free Shipping</>
                   )}
                 </span>
                 <span className="font-sans text-[10px] font-medium opacity-60">
-                  {Math.min(100, (total / 150) * 100).toFixed(0)}%
+                  {Math.min(100, (total / FREE_SHIPPING_THRESHOLD) * 100).toFixed(0)}%
                 </span>
               </div>
               <div className="h-1 w-full bg-border overflow-hidden">
                 <div
                   className="h-full bg-accent transition-all duration-500 ease-out"
-                  style={{ width: `${Math.min(100, (total / 150) * 100)}%` }}
+                  style={{ width: `${Math.min(100, (total / FREE_SHIPPING_THRESHOLD) * 100)}%` }}
                 />
               </div>
             </div>

@@ -1,6 +1,7 @@
 import { Hono } from "hono"
 import { cors } from "hono/cors"
 import { registerOrderRoutes } from "./orders"
+import { resolveCart, type IncomingItem } from "./pricing"
 
 const EBOOK_URL = "https://drive.google.com/uc?export=download&id=1Ir1DaLgMH-8eVzlQA6xrb7kKO8H_N95p"
 
@@ -24,14 +25,8 @@ app.post("/api/square/checkout", async (c) => {
   }
 
   let body: {
-    items: {
-      name: string
-      price: number
-      quantity: number
-      image?: string
-      /** Chosen size/colour. Becomes the Square line item's variation_name. */
-      variant?: string
-    }[]
+    /** Which products and how many. Priced from the catalogue — see resolveCart. */
+    items: IncomingItem[]
     successUrl?: string
     cancelUrl?: string
     /** Signed-in buyer, so the webhook can attach the order to their account. */
@@ -53,7 +48,7 @@ app.post("/api/square/checkout", async (c) => {
   }
 
   /**
-   * One Square line item per cart line.
+   * One Square line item per cart line, priced from the catalogue.
    *
    * This used to be a `quick_pay`, which by design is a single ad-hoc charge with
    * one name and one amount — so every order reached Square as "Dominus Golf
@@ -64,22 +59,13 @@ app.post("/api/square/checkout", async (c) => {
    *
    * An `order` carries real line items instead, so the buyer sees what they are
    * paying for and the Seller Dashboard shows what has to be picked and shipped.
-   * Quantity is a string — the Orders API requires it.
    */
-  const lineItems = items.map((item) => ({
-    name: item.name,
-    quantity: String(Math.max(1, Math.floor(item.quantity))),
-    ...(item.variant ? { variation_name: item.variant } : {}),
-    base_price_money: {
-      amount: Math.round(item.price * 100),
-      currency: "USD",
-    },
-  }))
-
-  // Kept for the Dashboard order view, now under the field Square actually reads.
-  const itemSummary = items
-    .map((item) => `${item.name}${item.variant ? ` (${item.variant})` : ""} x${item.quantity}`)
-    .join(", ")
+  const resolved = resolveCart(items)
+  if (!resolved.ok) {
+    // 400 with a message the cart drawer can show the shopper as-is.
+    return c.json({ error: resolved.error }, 400)
+  }
+  const { lineItems, shippingCents, summary: itemSummary } = resolved.cart
 
   const idempotencyKey = `checkout_${Date.now()}_${crypto.randomUUID().substring(0, 8)}`
 
@@ -103,6 +89,19 @@ app.post("/api/square/checkout", async (c) => {
     checkout_options: {
       redirect_url: successUrl || "https://www.dominusgolf.com",
       ask_for_shipping_address: true,
+      /* Sent explicitly, and omitted entirely once the order qualifies for free
+         shipping. Square otherwise applies the flat rate set in the Dashboard to
+         every payment link regardless of cart value, which contradicted the free
+         shipping over $150 the site promises. Keep the Dashboard rate at $0 —
+         these would stack. */
+      ...(shippingCents > 0
+        ? {
+            shipping_fee: {
+              name: "Standard Shipping",
+              charge: { amount: shippingCents, currency: "USD" },
+            },
+          }
+        : {}),
       enable_coupon: false,
       enable_loyalty: false,
       accepted_payment_methods: {

@@ -74,6 +74,7 @@ export function ApparelProductCard({ product }: ApparelProductCardProps) {
       trackBeginCheckout([{ product, quantity: 1 }]);
       const url = await createCheckoutSession([
         {
+          id: product.id,
           name: product.name,
           variant: variantDescriptor(product, variant),
           price: product.price,

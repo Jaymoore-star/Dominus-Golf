@@ -110,6 +110,7 @@ export function ProductPage() {
     trackBeginCheckout([{ product, quantity }]);
     try {
       const url = await createCheckoutSession([{
+        id: product.id,
         name: product.name,
         variant: variantDescriptor(product, selectedVariant),
         price: product.price,
