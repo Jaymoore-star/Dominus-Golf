@@ -94,14 +94,14 @@ app.post("/api/square/checkout", async (c) => {
          every payment link regardless of cart value, which contradicted the free
          shipping over $150 the site promises. Keep the Dashboard rate at $0 —
          these would stack. */
-      ...(shippingCents > 0
-        ? {
-            shipping_fee: {
-              name: "Standard Shipping",
-              charge: { amount: shippingCents, currency: "USD" },
-            },
-          }
-        : {}),
+      shipping_fee: {
+        /* Named for what it is. Above the threshold this used to be omitted, which
+           let Square fall back to the Dashboard profile's own $0 rate — correct
+           money, but the line read "Standard Shipping $0.00" on the one order that
+           had earned free shipping. Sending our own zero keeps the label ours. */
+        name: shippingCents > 0 ? "Standard Shipping" : "Free Shipping",
+        charge: { amount: shippingCents, currency: "USD" },
+      },
       enable_coupon: false,
       enable_loyalty: false,
       accepted_payment_methods: {
