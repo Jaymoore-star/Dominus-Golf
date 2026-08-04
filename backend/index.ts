@@ -1,11 +1,15 @@
 import { Hono } from "hono"
 import { cors } from "hono/cors"
+import { registerOrderRoutes } from "./orders"
 
 const EBOOK_URL = "https://drive.google.com/uc?export=download&id=1Ir1DaLgMH-8eVzlQA6xrb7kKO8H_N95p"
 
 const app = new Hono()
 
 app.use("*", cors())
+
+// Order recording + affiliate reporting. See backend/orders.ts.
+registerOrderRoutes(app)
 
 app.get("/health", (c) => c.json({ ok: true }))
 
@@ -30,6 +34,10 @@ app.post("/api/square/checkout", async (c) => {
     }[]
     successUrl?: string
     cancelUrl?: string
+    /** Signed-in buyer, so the webhook can attach the order to their account. */
+    userId?: string
+    /** GoAffPro code captured from ?ref= on the landing page. */
+    referralCode?: string
   }
 
   try {
@@ -38,7 +46,7 @@ app.post("/api/square/checkout", async (c) => {
     return c.json({ error: "Invalid request body" }, 400)
   }
 
-  const { items, successUrl, cancelUrl } = body
+  const { items, successUrl, cancelUrl, userId, referralCode } = body
 
   if (!items || items.length === 0) {
     return c.json({ error: "No items provided" }, 400)
@@ -83,6 +91,14 @@ app.post("/api/square/checkout", async (c) => {
     order: {
       location_id: locationId,
       line_items: lineItems,
+      /* The only channel that survives a Square-hosted checkout. Square knows
+         nothing about our user ids or affiliate codes, so they ride along here
+         and the webhook reads them back off the order. Values are trimmed to
+         Square's 255-character limit. */
+      metadata: {
+        ...(userId ? { user_id: String(userId).slice(0, 255) } : {}),
+        ...(referralCode ? { referral_code: String(referralCode).slice(0, 255) } : {}),
+      },
     },
     checkout_options: {
       redirect_url: successUrl || "https://www.dominusgolf.com",
@@ -587,5 +603,6 @@ app.post("/api/grant/complete", async (c) => {
   if (!result.ok) return c.json({ success: false, paid: true, emailed: false, error: result.error }, 500)
   return c.json({ success: true, paid: true, emailed: true, id: result.id, email })
 })
+
 
 export default app

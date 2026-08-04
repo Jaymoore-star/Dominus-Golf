@@ -13,6 +13,7 @@ import { CartProvider } from './store/cartStore';
 import { WishlistProvider } from './store/wishlistStore';
 import { AuthPromptProvider } from './store/authPromptStore';
 import { LoginPromptModal } from './components/auth/LoginPromptModal';
+import { captureReferralFromUrl } from './lib/referral';
 
 /**
  * Page components are code-split: each becomes its own chunk, fetched when its
@@ -140,6 +141,13 @@ function AnalyticsTracker() {
   useEffect(() => {
     initAnalytics();
   }, []);
+
+  // Affiliate links land on any page, so the code is read on every navigation
+  // rather than only at startup. captureReferralFromUrl keeps the first code it
+  // sees, so this cannot overwrite an earlier affiliate's claim.
+  useEffect(() => {
+    captureReferralFromUrl();
+  }, [path]);
 
   useEffect(() => {
     trackPageView(path);

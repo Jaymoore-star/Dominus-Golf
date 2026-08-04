@@ -23,3 +23,30 @@ account_id = "d52c80b6632554c75458cf115c6d74b0"
 #   npx wrangler secret put SQUARE_ACCESS_TOKEN -c wrangler.backend.toml
 # The -c matters — without it wrangler reads wrangler.toml and targets the
 # frontend Worker, which would put backend secrets on the public site Worker.
+#
+# Order recording (backend/orders.ts) needs these five in addition to the
+# Square/Resend ones already set:
+#
+# This file is tracked in git. Names only — never paste a value here. Real values
+# go in .dev.vars for local dev (gitignored) and into `wrangler secret put` for
+# production.
+#
+#   SQUARE_WEBHOOK_SIGNATURE_KEY  Square Dashboard → Developer → Webhooks →
+#                                 Subscriptions, shown beside the subscription.
+#                                 Every request is rejected without it.
+#   SQUARE_WEBHOOK_URL            The notification URL exactly as typed into that
+#                                 subscription. Square signs URL + body, so a
+#                                 mismatch of even a trailing slash fails every
+#                                 signature. Configured rather than read from the
+#                                 request because behind Cloudflare the inbound
+#                                 URL can differ from what Square was given.
+#   SUPABASE_URL                  Same project as the frontend's VITE_SUPABASE_URL.
+#   SUPABASE_SERVICE_ROLE_KEY     Required: the orders table has no insert policy,
+#                                 so the anon key cannot write. This key bypasses
+#                                 RLS entirely — it belongs only here, never in
+#                                 .env or any VITE_ variable, which ship to the
+#                                 browser.
+#   GOAFFPRO_ACCESS_TOKEN         Optional. GoAffPro admin → Settings → Integrations
+#                                 → API. Without it orders still record and the
+#                                 referral code is still stored; only the report to
+#                                 GoAffPro is skipped.

@@ -1,4 +1,6 @@
 import { BACKEND_URL } from './backend';
+import { supabase } from './supabase';
+import { readReferral } from './referral';
 
 export type CheckoutLineItem = {
   name: string;
@@ -16,6 +18,11 @@ export type CheckoutLineItem = {
  * card needs it too for Buy Now, so it moved here rather than becoming a third copy.
  */
 export async function createCheckoutSession(items: CheckoutLineItem[]): Promise<string> {
+  // Best effort. A guest checkout is still a valid order; it just cannot be
+  // attached to an account afterwards.
+  const { data: auth } = await supabase.auth.getUser();
+  const userId = auth?.user?.id;
+
   const origin =
     typeof window !== 'undefined' ? window.location.origin : 'https://www.dominusgolf.com';
   const res = await fetch(`${BACKEND_URL}/api/square/checkout`, {
@@ -23,6 +30,11 @@ export async function createCheckoutSession(items: CheckoutLineItem[]): Promise<
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       items,
+      // Both ride along as Square order metadata and come back on the webhook.
+      // Resolved here rather than at each call site so no caller can forget and
+      // silently lose the order record or the affiliate's commission.
+      userId,
+      referralCode: readReferral() ?? undefined,
       successUrl: `${origin}/?checkout=success`,
       cancelUrl: `${origin}/?checkout=cancelled`,
     }),
