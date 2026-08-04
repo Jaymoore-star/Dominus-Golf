@@ -337,16 +337,20 @@
   transition: transform 0.3s cubic-bezier(0.0, 0.0, 0.2, 1);
 }
 
-.product-card:hover .product-card-overlay {
-  transform: translateY(0);
+@media (hover: hover) {
+  .product-card:hover .product-card-overlay {
+    transform: translateY(0);
+  }
 }
 
 .product-card img.product-image {
   transition: transform 0.5s cubic-bezier(0.0, 0.0, 0.2, 1);
 }
 
-.product-card:hover img.product-image {
-  transform: scale(1.05);
+@media (hover: hover) {
+  .product-card:hover img.product-image {
+    transform: scale(1.05);
+  }
 }
 
 /* ─── Mega Menu ─── */
@@ -384,8 +388,10 @@
   transition: width 0.3s ease-out;
 }
 
-.gold-underline-hover:hover::after {
-  width: 100%;
+@media (hover: hover) {
+  .gold-underline-hover:hover::after {
+    width: 100%;
+  }
 }
 
 /* ─── Category card gold line ─── */
@@ -406,8 +412,10 @@
   transition: width 0.3s ease-out;
 }
 
-.category-card:hover .category-gold-line::after {
-  width: 40px;
+@media (hover: hover) {
+  .category-card:hover .category-gold-line::after {
+    width: 40px;
+  }
 }
 
 /* ─── Accordion ─── */
@@ -524,8 +532,10 @@ textarea {
    Going darker was the obvious choice and the wrong one: from 18% lightness
    down to 6% is a 1.40 ratio, while lifting to 32% is 1.77 — dark tones compress
    perceptually, so the darkening was almost invisible. */
-.btn-primary-black:hover {
-  background-color: hsl(0 0% 32%);
+@media (hover: hover) {
+  .btn-primary-black:hover {
+    background-color: hsl(0 0% 32%);
+  }
 }
 
 .btn-primary-black:active {
@@ -545,10 +555,12 @@ textarea {
    resting colour, so hovering Buy Now turned it into a copy of Add to Bag
    sitting right beside it. The two roles have to stay distinguishable in every
    state: primary is always dark, secondary is always light. */
-.btn-outline-dark:hover {
-  background-color: hsl(0 0% 86%);
-  color: hsl(0 0% 10%);
-  box-shadow: inset 0 0 0 1px hsl(0 0% 10%);
+@media (hover: hover) {
+  .btn-outline-dark:hover {
+    background-color: hsl(0 0% 86%);
+    color: hsl(0 0% 10%);
+    box-shadow: inset 0 0 0 1px hsl(0 0% 10%);
+  }
 }
 
 .btn-outline-dark:active {
@@ -562,9 +574,11 @@ textarea {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-.btn-outline-white:hover {
-  background: white;
-  color: hsl(0 0% 10%);
+@media (hover: hover) {
+  .btn-outline-white:hover {
+    background: white;
+    color: hsl(0 0% 10%);
+  }
 }
 
 
@@ -577,8 +591,10 @@ textarea {
   transition: transform 0.5s cubic-bezier(0.0, 0.0, 0.2, 1);
 }
 
-.img-hover-scale:hover img {
-  transform: scale(1.05);
+@media (hover: hover) {
+  .img-hover-scale:hover img {
+    transform: scale(1.05);
+  }
 }
 
 /* ─── Smooth transitions ─── */

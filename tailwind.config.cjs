@@ -1,5 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  // Wraps every hover: utility in @media (hover: hover).
+  //
+  // On a touchscreen a tap counts as a hover and the state sticks until you tap
+  // somewhere else, so Add to Bag and Buy Now stayed in their hover colour after
+  // the action had finished. This applies to all 314 hover: utilities at once;
+  // the custom .btn-*:hover rules in index.css are gated the same way by hand.
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   darkMode: ["class"],
   content: [
     "./index.html",
