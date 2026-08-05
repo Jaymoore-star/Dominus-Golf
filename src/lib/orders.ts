@@ -272,6 +272,32 @@ export function orderItemsSummary(order: Order): string {
  */
 const imageByProductName = new Map(products.map((p) => [p.name, p.image]));
 
+/** Catalogue names of everything delivered by email rather than posted. */
+const digitalProductNames = new Set(
+  products.filter((p) => p.digital).map((p) => p.name),
+);
+
+/**
+ * Whether the order was all downloads.
+ *
+ * Read from the catalogue rather than from the absence of a Square fulfilment.
+ * Absence only means "digital" for orders placed after checkout stopped asking
+ * for an address on a download — before that, Square collected an address and
+ * created a shipment for a PDF, and refunding then cancelled it. Those orders
+ * carry fulfillment_state CANCELED, so the fulfilment-based test told the
+ * customer their eBook had failed to ship.
+ *
+ * Falls back to the fulfilment for an order whose products have since been
+ * renamed or retired, where the catalogue can no longer answer.
+ */
+export function orderIsDigitalOnly(order: Order): boolean {
+  const known = order.items.filter((i) => imageByProductName.has(i.name));
+  if (known.length === order.items.length && known.length > 0) {
+    return known.every((i) => digitalProductNames.has(i.name));
+  }
+  return order.fulfillmentState === null;
+}
+
 export function orderThumbnail(order: Order): string | null {
   for (const item of order.items) {
     const image = imageByProductName.get(item.name);
@@ -288,9 +314,10 @@ export function orderThumbnail(order: Order): string | null {
  * it" without repeating the detail page.
  */
 export function orderDeliverySummary(order: Order): string {
-  // Square only creates a fulfilment once it has collected an address, which it
-  // never does for a download. No fulfilment therefore means nothing to post.
-  if (order.fulfillmentState === null) return 'Delivered by email';
+  // Checked before the fulfilment: a download bought before checkout stopped
+  // asking for an address has a real, and now cancelled, shipment attached.
+  if (orderIsDigitalOnly(order)) return 'Delivered by email';
+  if (order.fulfillmentState === null) return 'Order placed';
 
   switch (order.fulfillmentState.toUpperCase()) {
     case 'COMPLETED':
@@ -358,9 +385,11 @@ export function orderTimeline(order: Order): {
     });
   }
 
-  /* No fulfilment means nothing is being posted. Square only creates one when it
-     has collected an address, which it does not do for a download-only order. */
-  const isDigitalOnly = order.fulfillmentState === null;
+  /* From the catalogue, not the fulfilment — see orderIsDigitalOnly. A download
+     bought before checkout stopped asking for an address carries a shipment that
+     the refund then cancelled, and reading that would tell the customer their
+     eBook failed to ship. */
+  const isDigitalOnly = orderIsDigitalOnly(order);
   if (isDigitalOnly) {
     return {
       payment,
