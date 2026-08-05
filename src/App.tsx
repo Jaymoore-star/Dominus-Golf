@@ -62,6 +62,10 @@ const FeelRightBandGuidePage = lazyRouteComponent(
   'FeelRightBandGuidePage',
 );
 const GrantPage = lazyRouteComponent(() => import('./pages/GrantPage'), 'GrantPage');
+const OrderConfirmedPage = lazyRouteComponent(
+  () => import('./pages/OrderConfirmedPage'),
+  'OrderConfirmedPage',
+);
 const GrantSuccessPage = lazyRouteComponent(
   () => import('./pages/GrantSuccessPage'),
   'GrantSuccessPage',
@@ -69,6 +73,10 @@ const GrantSuccessPage = lazyRouteComponent(
 const AccountProfilePage = lazyRouteComponent(
   () => import('./pages/account/AccountProfilePage'),
   'AccountProfilePage',
+);
+const AccountOrderDetailPage = lazyRouteComponent(
+  () => import('./pages/account/AccountOrderDetailPage'),
+  'AccountOrderDetailPage',
 );
 const AccountOrdersPage = lazyRouteComponent(
   () => import('./pages/account/AccountOrdersPage'),
@@ -215,6 +223,7 @@ const tourPureGuideRoute = createRoute({ getParentRoute: () => rootRoute, path: 
 const feelRightBandGuideRoute = createRoute({ getParentRoute: () => rootRoute, path: '/feel-right-band-guide', head: pageHead('/feel-right-band-guide'), component: FeelRightBandGuidePage });
 const grantRoute = createRoute({ getParentRoute: () => rootRoute, path: '/grant', head: pageHead('/grant'), component: GrantPage });
 const grantSuccessRoute = createRoute({ getParentRoute: () => rootRoute, path: '/grant/success', head: pageHead('/grant/success'), component: GrantSuccessPage });
+const checkoutSuccessRoute = createRoute({ getParentRoute: () => rootRoute, path: '/checkout/success', head: pageHead('/checkout/success'), component: OrderConfirmedPage });
 const loginRoute = createRoute({ getParentRoute: () => rootRoute, path: '/login', head: pageHead('/login'), component: LoginPage });
 const signupRoute = createRoute({ getParentRoute: () => rootRoute, path: '/signup', head: pageHead('/signup'), component: SignupPage });
 const authConfirmedRoute = createRoute({ getParentRoute: () => rootRoute, path: '/auth/confirmed', head: pageHead('/auth/confirmed'), component: AuthConfirmedPage });
@@ -226,6 +235,9 @@ const wishlistRoute = createRoute({ getParentRoute: () => rootRoute, path: '/wis
 const affiliatesRoute = createRoute({ getParentRoute: () => rootRoute, path: '/affiliates', head: pageHead('/affiliates'), component: AffiliatesPage });
 const accountRoute = createRoute({ getParentRoute: () => rootRoute, path: '/account', head: pageHead('/account'), component: AccountProfilePage });
 const accountOrdersRoute = createRoute({ getParentRoute: () => rootRoute, path: '/account/orders', head: pageHead('/account/orders'), component: AccountOrdersPage });
+// Dynamic, so it is deliberately absent from the prerendered route list — the
+// content is per-customer and behind RLS.
+const accountOrderDetailRoute = createRoute({ getParentRoute: () => rootRoute, path: '/account/orders/$orderId', head: pageHead('/account/orders'), component: AccountOrderDetailPage });
 const accountWishlistRoute = createRoute({ getParentRoute: () => rootRoute, path: '/account/wishlist', head: pageHead('/account/wishlist'), component: AccountWishlistPage });
 const accountAddressesRoute = createRoute({ getParentRoute: () => rootRoute, path: '/account/addresses', head: pageHead('/account/addresses'), component: AccountAddressesPage });
 const accountPreferencesRoute = createRoute({ getParentRoute: () => rootRoute, path: '/account/preferences', head: pageHead('/account/preferences'), component: AccountPreferencesPage });
@@ -267,6 +279,7 @@ const routeTree = rootRoute.addChildren([
   feelRightBandGuideRoute,
   grantRoute,
   grantSuccessRoute,
+  checkoutSuccessRoute,
   loginRoute,
   signupRoute,
   authConfirmedRoute,
@@ -278,6 +291,7 @@ const routeTree = rootRoute.addChildren([
   affiliatesRoute,
   accountRoute,
   accountOrdersRoute,
+  accountOrderDetailRoute,
   accountWishlistRoute,
   accountAddressesRoute,
   accountPreferencesRoute,

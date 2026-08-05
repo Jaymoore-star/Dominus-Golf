@@ -86,5 +86,7 @@ export const accessories: Product[] = [
       'Technical Mechanical Breakdowns',
     ],
     inStock: true,
+    // Emailed as a download link on payment — there is nothing to post.
+    digital: true,
   },
 ];

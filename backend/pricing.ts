@@ -40,8 +40,10 @@ export type ResolvedCart = {
   lineItems: SquareLineItem[]
   /** Goods only, before shipping. */
   subtotalCents: number
-  /** 0 when the order qualifies for free shipping. */
+  /** 0 when the order qualifies for free shipping, or has nothing to ship. */
   shippingCents: number
+  /** False for a download-only order, which needs no address and no carrier. */
+  hasPhysicalItems: boolean
   /** Human-readable summary for the Square payment note. */
   summary: string
 }
@@ -94,6 +96,7 @@ export function resolveCart(
   const lineItems: SquareLineItem[] = []
   const summaryParts: string[] = []
   let subtotalCents = 0
+  let hasPhysicalItems = false
 
   for (const item of items) {
     const product = resolveProduct(item)
@@ -113,6 +116,7 @@ export function resolveCart(
     const quantity = Math.max(1, Math.floor(Number(item.quantity) || 1))
     const unitCents = Math.round(product.price * 100)
     subtotalCents += unitCents * quantity
+    if (!product.digital) hasPhysicalItems = true
 
     const descriptor = variantDescriptor(product, variant.variant)
     lineItems.push({
@@ -129,7 +133,8 @@ export function resolveCart(
     cart: {
       lineItems,
       subtotalCents,
-      shippingCents: Math.round(shippingFeeFor(subtotalCents / 100) * 100),
+      shippingCents: Math.round(shippingFeeFor(subtotalCents / 100, hasPhysicalItems) * 100),
+      hasPhysicalItems,
       summary: summaryParts.join(", "),
     },
   }

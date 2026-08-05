@@ -86,6 +86,14 @@ export const PAGE_SEO = {
     noindex: true,
   },
 
+  '/checkout/success': {
+    title: 'Order Confirmed',
+    description: 'Your Dominus Golf order has been placed.',
+    // Same reasoning as /grant/success — reachable only by paying, useless in
+    // search results, and it would leak an order reference into the index.
+    noindex: true,
+  },
+
   '/pros': {
     title: 'Practice With Pros',
     description:

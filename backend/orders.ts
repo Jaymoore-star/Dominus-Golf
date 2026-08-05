@@ -1,4 +1,6 @@
 import type { Hono } from "hono"
+import { sendOrderConfirmationEmail, type OrderEmailLine } from "./orderEmail"
+import { downloadsForLineItems } from "./digitalGoods"
 
 /**
  * Order recording, driven by a Square webhook.
@@ -105,7 +107,8 @@ async function saveOrder(env: Env, row: Record<string, unknown>) {
   return rows[0] ?? null
 }
 
-async function markReferralReported(env: Env, id: string) {
+/** Stamps a one-shot marker column so a webhook redelivery cannot repeat the work. */
+async function markOrder(env: Env, id: string, patch: Record<string, string>) {
   await fetch(`${env.SUPABASE_URL}/rest/v1/orders?id=eq.${id}`, {
     method: "PATCH",
     headers: {
@@ -113,7 +116,7 @@ async function markReferralReported(env: Env, id: string) {
       Authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ referral_reported_at: new Date().toISOString() }),
+    body: JSON.stringify(patch),
   })
 }
 
@@ -194,7 +197,22 @@ export function registerOrderRoutes(app: Hono) {
     const orderId = payment.order_id as string | undefined
     if (!orderId) return c.json({ ignored: "payment without order_id" })
 
+    /**
+     * A refund does not get its own row — it changes what this order now is.
+     *
+     * Square keeps the payment at COMPLETED after a refund and records the money
+     * returned separately, so reading `status` alone left a fully refunded order
+     * showing "Paid" to the customer forever. Refunding also fires payment.updated,
+     * so this needs no extra webhook subscription.
+     */
     const paymentStatus = payment.status as string | undefined
+    const refundedCents = (payment.refunded_money as { amount?: number } | undefined)?.amount ?? 0
+    const paidCents = (payment.amount_money as { amount?: number } | undefined)?.amount ?? 0
+
+    let effectiveStatus = paymentStatus
+    if (refundedCents > 0) {
+      effectiveStatus = refundedCents >= paidCents && paidCents > 0 ? "REFUNDED" : "PARTIALLY_REFUNDED"
+    }
 
     const order = await fetchOrder(env.SQUARE_ACCESS_TOKEN, orderId)
     // 500 so Square retries. Dropping it here would lose the order permanently.
@@ -215,7 +233,7 @@ export function registerOrderRoutes(app: Hono) {
       square_payment_id: payment.id as string | undefined,
       user_id: metadata.user_id || null,
       email,
-      status: paymentStatus ?? String(order.state ?? "UNKNOWN"),
+      status: effectiveStatus ?? String(order.state ?? "UNKNOWN"),
       total_cents: totals.amount ?? 0,
       currency: totals.currency ?? "USD",
       items: order.line_items ?? [],
@@ -232,7 +250,46 @@ export function registerOrderRoutes(app: Hono) {
         email: (saved.email as string | null) ?? null,
         referralCode: String(saved.referral_code),
       })
-      if (reported) await markReferralReported(env, String(saved.id))
+      if (reported) await markOrder(env, String(saved.id), { referral_reported_at: new Date().toISOString() })
+    }
+
+    /* Branded confirmation, on the same once-only footing as the commission —
+       one real payment produced five deliveries in testing, and Square's own
+       receipt already covers the legal side, so a duplicate here is pure spam.
+       Skipped silently when Square gave us no buyer email. */
+    /* The column is absent from the returned row, rather than null, until
+       0003_order_confirmation_email.sql has been run. Checking for the key means
+       an un-migrated database sends nothing at all, instead of sending one email
+       per redelivery because the marker can never be written. */
+    const canTrackEmail = "confirmation_emailed_at" in saved
+    if (!canTrackEmail) {
+      console.warn("Skipping confirmation email: run supabase/migrations/0003_order_confirmation_email.sql")
+    }
+
+    if (canTrackEmail && paymentStatus === "COMPLETED" && saved.email && !saved.confirmation_emailed_at) {
+      const netAmounts = (order.net_amounts ?? {}) as {
+        service_charge_money?: { amount?: number }
+        tax_money?: { amount?: number }
+      }
+      const lines = (order.line_items ?? []) as OrderEmailLine[]
+      const downloads = downloadsForLineItems(lines)
+      const shippingCents = netAmounts.service_charge_money?.amount ?? 0
+      const sent = await sendOrderConfirmationEmail(env, {
+        email: String(saved.email),
+        reference: orderId,
+        currency: String(saved.currency ?? "USD"),
+        totalCents: Number(saved.total_cents ?? 0),
+        lines,
+        // shipping_fee reaches the order as a service charge.
+        shippingCents,
+        taxCents: netAmounts.tax_money?.amount ?? 0,
+        // This email is the delivery for anything digital in the order.
+        downloads,
+        /* Square asks for no address on a download-only order, so a fulfilment
+           is the reliable tell that something is actually being posted. */
+        hasPhysicalItems: Array.isArray(order.fulfillments) && order.fulfillments.length > 0,
+      })
+      if (sent) await markOrder(env, String(saved.id), { confirmation_emailed_at: new Date().toISOString() })
     }
 
     return c.json({ ok: true, orderId, status: paymentStatus })

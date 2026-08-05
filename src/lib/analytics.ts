@@ -217,6 +217,43 @@ export function trackGrantPurchase(orderId?: string): void {
   }
 }
 
+/**
+ * A store order, confirmed paid.
+ *
+ * begin_checkout has always fired and this never did, so GA4 and the Pixel saw
+ * every basket start and not one sale — no conversion rate, no revenue, and ad
+ * platforms optimising against a signal that was missing entirely.
+ *
+ * Fired from the confirmation page against the order row written by the Square
+ * webhook, rather than from the cart: the cart is empty on Buy Now, and a
+ * redirect is not proof of payment. The figures here are what Square charged.
+ */
+export function trackPurchase(order: {
+  transactionId: string;
+  valueCents: number;
+  currency: string;
+  shippingCents?: number;
+  items: Array<{ name: string; quantity: number; priceCents: number }>;
+}): void {
+  const value = order.valueCents / 100;
+  if (hasGa4()) {
+    window.gtag!('event', 'purchase', {
+      transaction_id: order.transactionId,
+      currency: order.currency,
+      value,
+      shipping: (order.shippingCents ?? 0) / 100,
+      items: order.items.map((i) => ({
+        item_name: i.name,
+        price: i.priceCents / 100,
+        quantity: i.quantity,
+      })),
+    });
+  }
+  if (hasPixel()) {
+    window.fbq!('track', 'Purchase', { value, currency: order.currency });
+  }
+}
+
 export function trackSignup(method: string): void {
   if (hasGa4()) window.gtag!('event', 'sign_up', { method });
   if (hasPixel()) window.fbq!('track', 'CompleteRegistration');

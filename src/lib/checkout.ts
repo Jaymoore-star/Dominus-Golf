@@ -45,7 +45,11 @@ export async function createCheckoutSession(items: CheckoutLineItem[]): Promise<
       // silently lose the order record or the affiliate's commission.
       userId,
       referralCode: readReferral() ?? undefined,
-      successUrl: `${origin}/?checkout=success`,
+      /* Square appends orderId and transactionId to whichever of these it uses.
+         successUrl used to be `/?checkout=success` — a parameter nothing in the
+         app ever read, so paying dropped the customer on the home page with no
+         acknowledgement. */
+      successUrl: `${origin}/checkout/success`,
       cancelUrl: `${origin}/?checkout=cancelled`,
     }),
   });

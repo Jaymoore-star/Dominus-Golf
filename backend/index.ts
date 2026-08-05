@@ -65,7 +65,7 @@ app.post("/api/square/checkout", async (c) => {
     // 400 with a message the cart drawer can show the shopper as-is.
     return c.json({ error: resolved.error }, 400)
   }
-  const { lineItems, shippingCents, summary: itemSummary } = resolved.cart
+  const { lineItems, shippingCents, hasPhysicalItems, summary: itemSummary } = resolved.cart
 
   const idempotencyKey = `checkout_${Date.now()}_${crypto.randomUUID().substring(0, 8)}`
 
@@ -88,20 +88,33 @@ app.post("/api/square/checkout", async (c) => {
     },
     checkout_options: {
       redirect_url: successUrl || "https://www.dominusgolf.com",
-      ask_for_shipping_address: true,
-      /* Sent explicitly, and omitted entirely once the order qualifies for free
-         shipping. Square otherwise applies the flat rate set in the Dashboard to
-         every payment link regardless of cart value, which contradicted the free
-         shipping over $150 the site promises. Keep the Dashboard rate at $0 —
-         these would stack. */
-      shipping_fee: {
-        /* Named for what it is. Above the threshold this used to be omitted, which
-           let Square fall back to the Dashboard profile's own $0 rate — correct
-           money, but the line read "Standard Shipping $0.00" on the one order that
-           had earned free shipping. Sending our own zero keeps the label ours. */
-        name: shippingCents > 0 ? "Standard Shipping" : "Free Shipping",
-        charge: { amount: shippingCents, currency: "USD" },
-      },
+      /* Nothing to post on a download-only order, so do not make the buyer type
+         an address to receive an email. */
+      ask_for_shipping_address: hasPhysicalItems,
+      /* Sent explicitly rather than left to Square, which otherwise applies the
+         flat rate set in the Dashboard to every payment link regardless of cart
+         value — that is what contradicted the free shipping over $150 the site
+         promises. Keep the Dashboard rate at $0 or the two stack.
+
+         Only ever sent alongside a shipping address: Square rejects the whole
+         request with "AskForShippingAddress cannot be set to 'false' if
+         ShippingFee is present", which broke digital checkout outright. A
+         download-only order sends no fee at all, and the Dashboard's $0 rate
+         cannot appear either because Square costs shipping only when it is
+         collecting an address. */
+      ...(hasPhysicalItems
+        ? {
+            shipping_fee: {
+              /* Named for what it is. Above the threshold this used to be omitted,
+                 which let Square fall back to the Dashboard profile's own $0 rate —
+                 correct money, but the line read "Standard Shipping $0.00" on the
+                 one order that had earned free shipping. Sending our own zero keeps
+                 the label ours. */
+              name: shippingCents > 0 ? "Standard Shipping" : "Free Shipping",
+              charge: { amount: shippingCents, currency: "USD" },
+            },
+          }
+        : {}),
       enable_coupon: false,
       enable_loyalty: false,
       accepted_payment_methods: {

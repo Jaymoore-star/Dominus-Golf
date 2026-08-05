@@ -19,7 +19,19 @@ export const FREE_SHIPPING_THRESHOLD = 150;
 /** Flat standard shipping below the threshold. */
 export const STANDARD_SHIPPING_FEE = 6.99;
 
-/** What the buyer pays for shipping on a given subtotal, in dollars. */
-export function shippingFeeFor(subtotal: number): number {
+/**
+ * What the buyer pays for shipping, in dollars.
+ *
+ * An order with nothing physical in it is never charged. The eBook is a download
+ * link in an email, so billing $6.99 to post it was charging for a delivery that
+ * does not exist — a $9.99 PDF came to $16.98.
+ *
+ * The threshold is still measured against the whole subtotal rather than the
+ * physical part alone: someone whose basket clears $150 has cleared it, and
+ * explaining that their download does not count toward free shipping would be a
+ * worse conversation than absorbing the fee.
+ */
+export function shippingFeeFor(subtotal: number, hasPhysicalItems: boolean): number {
+  if (!hasPhysicalItems) return 0;
   return subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING_FEE;
 }

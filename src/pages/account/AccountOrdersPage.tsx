@@ -7,6 +7,7 @@ import {
   formatMoney,
   formatOrderDate,
   orderStatusLabel,
+  orderStatusTone,
   type Order,
 } from '../../lib/orders';
 
@@ -61,7 +62,12 @@ export function AccountOrdersPage() {
       ) : orders.length > 0 ? (
         <div className="space-y-6">
           {orders.map((order) => (
-            <article key={order.id} className="border border-border p-6 sm:p-8">
+            <Link
+              key={order.id}
+              to="/account/orders/$orderId"
+              params={{ orderId: order.id }}
+              className="block border border-border p-6 sm:p-8 hover:border-accent transition-colors"
+            >
               <header className="flex flex-wrap items-start justify-between gap-4 pb-5 border-b border-border">
                 <div>
                   <p className="font-sans text-[10px] font-semibold tracking-widest uppercase text-muted-foreground">
@@ -72,7 +78,13 @@ export function AccountOrdersPage() {
                   </h3>
                 </div>
                 <div className="text-right">
-                  <span className="font-sans text-[10px] font-semibold tracking-widest uppercase text-accent">
+                  <span
+                    className={`font-sans text-[10px] font-semibold tracking-widest uppercase ${
+                      orderStatusTone(order.status) === 'positive'
+                        ? 'text-accent'
+                        : 'text-muted-foreground'
+                    }`}
+                  >
                     {orderStatusLabel(order.status)}
                   </span>
                   {/* Square's id, not ours — it is what support and the Square
@@ -101,7 +113,11 @@ export function AccountOrdersPage() {
                   </li>
                 ))}
               </ul>
-            </article>
+
+              <p className="mt-5 pt-4 border-t border-border font-sans text-[10px] font-semibold tracking-widest uppercase text-accent">
+                View order
+              </p>
+            </Link>
           ))}
         </div>
       ) : (

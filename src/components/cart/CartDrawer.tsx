@@ -138,8 +138,9 @@ export function CartDrawer() {
 
         {/* Items */}
         <div className="flex-1 overflow-y-auto">
-          {/* Shipping Progress */}
-          {state.items.length > 0 && (
+          {/* Shipping Progress. Hidden for a download-only bag — nothing is being
+              shipped, so counting down to free shipping would be nonsense. */}
+          {state.items.length > 0 && state.items.some((i) => !i.product.digital) && (
             <div className="px-6 py-4 border-b border-border bg-accent/5">
               <div className="flex items-center justify-between mb-2">
                 <span className="font-sans text-[10px] font-semibold tracking-widest uppercase">
