@@ -6,9 +6,11 @@ import {
   fetchOrders,
   formatMoney,
   formatOrderDate,
+  orderDeliverySummary,
   orderItemsSummary,
   orderStatusLabel,
   orderStatusTone,
+  orderThumbnail,
   type Order,
 } from '../../lib/orders';
 
@@ -69,45 +71,64 @@ export function AccountOrdersPage() {
            page, the list only has to answer "which order is this" — when, how
            much, what state, and roughly what was in it. */
         <ul className="divide-y divide-border border-y border-border">
-          {orders.map((order) => (
-            <li key={order.id}>
-              <Link
-                to="/account/orders/$orderId"
-                params={{ orderId: order.id }}
-                className="group flex items-center gap-4 py-5 hover:bg-secondary/40 transition-colors"
-              >
-                <div className="min-w-0 flex-1">
-                  <p className="font-sans text-[10px] font-semibold tracking-widest uppercase text-muted-foreground">
-                    {formatOrderDate(order.createdAt)}
-                  </p>
-                  {/* truncate needs min-w-0 on the flex item or the row grows. */}
-                  <p className="mt-1 font-sans text-sm text-foreground truncate">
-                    {orderItemsSummary(order)}
-                  </p>
-                </div>
+          {orders.map((order) => {
+            const thumbnail = orderThumbnail(order);
+            const positive = orderStatusTone(order.status) === 'positive';
+            return (
+              <li key={order.id}>
+                <Link
+                  to="/account/orders/$orderId"
+                  params={{ orderId: order.id }}
+                  className="group flex items-center gap-4 py-4 px-2 -mx-2 hover:bg-secondary/40 transition-colors"
+                >
+                  {thumbnail ? (
+                    <img
+                      src={thumbnail}
+                      alt=""
+                      loading="lazy"
+                      className="w-14 h-14 shrink-0 object-cover bg-muted"
+                    />
+                  ) : (
+                    // Product renamed or retired since the order was placed.
+                    <div className="w-14 h-14 shrink-0 bg-muted flex items-center justify-center">
+                      <Package size={18} className="text-muted-foreground" strokeWidth={1.5} />
+                    </div>
+                  )}
 
-                <div className="text-right shrink-0">
-                  <p className="font-serif text-base font-bold text-foreground">
-                    {formatMoney(order.totalCents, order.currency)}
-                  </p>
-                  <p
-                    className={`mt-0.5 font-sans text-[10px] font-semibold tracking-widest uppercase ${
-                      orderStatusTone(order.status) === 'positive'
-                        ? 'text-accent'
-                        : 'text-muted-foreground'
-                    }`}
-                  >
-                    {orderStatusLabel(order.status)}
-                  </p>
-                </div>
+                  {/* min-w-0 or truncate does the opposite of truncating in a flex row. */}
+                  <div className="min-w-0 flex-1">
+                    <p className="font-sans text-sm text-foreground truncate">
+                      {orderItemsSummary(order)}
+                    </p>
+                    <p className="mt-1 font-sans text-xs text-muted-foreground truncate">
+                      {formatOrderDate(order.createdAt)} · {orderDeliverySummary(order)}
+                    </p>
+                  </div>
 
-                <ChevronRight
-                  size={16}
-                  className="shrink-0 text-muted-foreground group-hover:text-accent transition-colors"
-                />
-              </Link>
-            </li>
-          ))}
+                  <div className="text-right shrink-0">
+                    <p className="font-serif text-base font-bold text-foreground leading-none">
+                      {formatMoney(order.totalCents, order.currency)}
+                    </p>
+                    {/* A refund is not good news, so it must not wear the gold. */}
+                    <span
+                      className={`inline-block mt-2 px-2 py-0.5 border font-sans text-[9px] font-semibold tracking-widest uppercase ${
+                        positive
+                          ? 'border-accent/40 text-accent'
+                          : 'border-border text-muted-foreground'
+                      }`}
+                    >
+                      {orderStatusLabel(order.status)}
+                    </span>
+                  </div>
+
+                  <ChevronRight
+                    size={16}
+                    className="shrink-0 text-muted-foreground group-hover:text-accent transition-colors"
+                  />
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       ) : (
         <div className="border border-border p-10 sm:p-16 text-center">

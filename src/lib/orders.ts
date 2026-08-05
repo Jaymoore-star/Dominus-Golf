@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { products } from '../data/products';
 
 /**
  * Order history for the signed-in customer.
@@ -257,6 +258,52 @@ export function orderItemsSummary(order: Order): string {
     return units > 1 ? `${first.name} × ${units}` : first.name;
   }
   return `${first.name} + ${rest.length} more`;
+}
+
+/**
+ * A product image for the order row, matched back through the catalogue.
+ *
+ * Orders store what Square reported — names and money, no images — so the
+ * picture is looked up rather than stored. Deliberately not stored: a product
+ * whose photography changes should show its current image in the history, and
+ * the price is the only thing that must stay frozen at what was charged.
+ *
+ * Null for a product since renamed or retired, which the row renders as an icon.
+ */
+const imageByProductName = new Map(products.map((p) => [p.name, p.image]));
+
+export function orderThumbnail(order: Order): string | null {
+  for (const item of order.items) {
+    const image = imageByProductName.get(item.name);
+    if (image) return image;
+  }
+  return null;
+}
+
+/**
+ * Where the order is, in three or four words for the list row.
+ *
+ * The payment status already has a chip of its own, so this is the delivery
+ * half only — between them the row answers "did it go through" and "where is
+ * it" without repeating the detail page.
+ */
+export function orderDeliverySummary(order: Order): string {
+  // Square only creates a fulfilment once it has collected an address, which it
+  // never does for a download. No fulfilment therefore means nothing to post.
+  if (order.fulfillmentState === null) return 'Delivered by email';
+
+  switch (order.fulfillmentState.toUpperCase()) {
+    case 'COMPLETED':
+      return order.carrier ? `Shipped · ${order.carrier}` : 'Shipped';
+    case 'PREPARED':
+    case 'RESERVED':
+      return 'Preparing for dispatch';
+    case 'CANCELED':
+    case 'CANCELLED':
+      return 'Shipment cancelled';
+    default:
+      return 'Order placed';
+  }
 }
 
 export type TimelineStep = {
