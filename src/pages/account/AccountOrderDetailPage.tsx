@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useParams } from '@tanstack/react-router';
-import { ArrowLeft, Loader2, Package } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Loader2, Package } from 'lucide-react';
 import { AccountLayout } from './AccountLayout';
 import {
   fetchOrderById,
@@ -9,8 +9,65 @@ import {
   orderStatusLabel,
   orderStatusTone,
   orderSubtotalCents,
+  orderTimeline,
   type Order,
+  type TimelineStep,
 } from '../../lib/orders';
+
+/**
+ * One track of the order timeline.
+ *
+ * A step that has not been reached is deliberately still listed, greyed, so the
+ * customer can see what is coming rather than only what has happened — the usual
+ * question is "what next", not "what already".
+ */
+function Timeline({ title, steps }: { title: string; steps: TimelineStep[] }) {
+  return (
+    <div>
+      <p className="font-sans text-[10px] font-semibold tracking-widest uppercase text-muted-foreground">
+        {title}
+      </p>
+      <ol className="mt-4 space-y-0">
+        {steps.map((step, i) => (
+          <li key={step.label} className="flex gap-4">
+            {/* Marker column: the dot, plus the rule joining it to the next step. */}
+            <div className="flex flex-col items-center" aria-hidden="true">
+              <span
+                className={`mt-1 w-2.5 h-2.5 rounded-full shrink-0 ${
+                  step.done ? 'bg-accent' : 'border border-border bg-background'
+                }`}
+              />
+              {i < steps.length - 1 && (
+                <span
+                  className={`w-px flex-1 min-h-8 ${step.done ? 'bg-accent/40' : 'bg-border'}`}
+                />
+              )}
+            </div>
+            <div className="pb-6 min-w-0">
+              <p
+                className={`font-sans text-sm ${
+                  step.done ? 'text-foreground' : 'text-muted-foreground'
+                } ${step.current ? 'font-semibold' : ''}`}
+              >
+                {step.label}
+              </p>
+              {step.at && (
+                <p className="mt-0.5 font-sans text-xs text-muted-foreground">
+                  {formatOrderDate(step.at)}
+                </p>
+              )}
+              {step.detail && (
+                <p className="mt-1 font-sans text-xs text-muted-foreground break-words">
+                  {step.detail}
+                </p>
+              )}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
 
 /**
  * A single order.
@@ -122,6 +179,29 @@ export function AccountOrderDetailPage() {
               </li>
             ))}
           </ul>
+
+          {(() => {
+            const { payment, delivery } = orderTimeline(order);
+            return (
+              <div className="mt-6 pt-5 border-t border-border grid gap-8 sm:grid-cols-2">
+                <Timeline title="Payment" steps={payment} />
+                <div>
+                  <Timeline title="Delivery" steps={delivery} />
+                  {order.trackingUrl && (
+                    <a
+                      href={order.trackingUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 font-sans text-xs text-accent hover:underline"
+                    >
+                      Track your parcel
+                      <ExternalLink size={12} />
+                    </a>
+                  )}
+                </div>
+              </div>
+            );
+          })()}
 
           <dl className="mt-6 pt-5 border-t border-border space-y-2 font-sans text-sm">
             <div className="flex justify-between">

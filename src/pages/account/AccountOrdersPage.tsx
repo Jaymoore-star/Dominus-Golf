@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from '@tanstack/react-router';
-import { Package, Loader2 } from 'lucide-react';
+import { Package, Loader2, ChevronRight } from 'lucide-react';
 import { AccountLayout } from './AccountLayout';
 import {
   fetchOrders,
   formatMoney,
   formatOrderDate,
+  orderItemsSummary,
   orderStatusLabel,
   orderStatusTone,
   type Order,
@@ -60,66 +61,54 @@ export function AccountOrdersPage() {
           <Loader2 size={22} className="animate-spin mx-auto text-muted-foreground" />
         </div>
       ) : orders.length > 0 ? (
-        <div className="space-y-6">
+        /* One row per order, not a full receipt each.
+
+           Every order used to reprint its whole line-item breakdown and the raw
+           Square id, so three orders filled the screen and the list was no faster
+           to scan than opening them one by one. Now that each order has a detail
+           page, the list only has to answer "which order is this" — when, how
+           much, what state, and roughly what was in it. */
+        <ul className="divide-y divide-border border-y border-border">
           {orders.map((order) => (
-            <Link
-              key={order.id}
-              to="/account/orders/$orderId"
-              params={{ orderId: order.id }}
-              className="block border border-border p-6 sm:p-8 hover:border-accent transition-colors"
-            >
-              <header className="flex flex-wrap items-start justify-between gap-4 pb-5 border-b border-border">
-                <div>
+            <li key={order.id}>
+              <Link
+                to="/account/orders/$orderId"
+                params={{ orderId: order.id }}
+                className="group flex items-center gap-4 py-5 hover:bg-secondary/40 transition-colors"
+              >
+                <div className="min-w-0 flex-1">
                   <p className="font-sans text-[10px] font-semibold tracking-widest uppercase text-muted-foreground">
                     {formatOrderDate(order.createdAt)}
                   </p>
-                  <h3 className="font-serif text-lg font-bold text-foreground mt-1">
-                    {formatMoney(order.totalCents, order.currency)}
-                  </h3>
+                  {/* truncate needs min-w-0 on the flex item or the row grows. */}
+                  <p className="mt-1 font-sans text-sm text-foreground truncate">
+                    {orderItemsSummary(order)}
+                  </p>
                 </div>
-                <div className="text-right">
-                  <span
-                    className={`font-sans text-[10px] font-semibold tracking-widest uppercase ${
+
+                <div className="text-right shrink-0">
+                  <p className="font-serif text-base font-bold text-foreground">
+                    {formatMoney(order.totalCents, order.currency)}
+                  </p>
+                  <p
+                    className={`mt-0.5 font-sans text-[10px] font-semibold tracking-widest uppercase ${
                       orderStatusTone(order.status) === 'positive'
                         ? 'text-accent'
                         : 'text-muted-foreground'
                     }`}
                   >
                     {orderStatusLabel(order.status)}
-                  </span>
-                  {/* Square's id, not ours — it is what support and the Square
-                      dashboard can both look up. */}
-                  <p className="font-sans text-[10px] text-muted-foreground mt-1 break-all">
-                    {order.squareOrderId}
                   </p>
                 </div>
-              </header>
 
-              <ul className="mt-5 space-y-3">
-                {order.items.map((item, i) => (
-                  <li key={i} className="flex items-baseline justify-between gap-4">
-                    <span className="font-sans text-sm text-foreground min-w-0">
-                      {item.name}
-                      {item.variation_name && (
-                        <span className="text-muted-foreground"> · {item.variation_name}</span>
-                      )}
-                      <span className="text-muted-foreground"> × {item.quantity}</span>
-                    </span>
-                    {item.total_money?.amount !== undefined && (
-                      <span className="font-sans text-sm text-foreground shrink-0">
-                        {formatMoney(item.total_money.amount, order.currency)}
-                      </span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-
-              <p className="mt-5 pt-4 border-t border-border font-sans text-[10px] font-semibold tracking-widest uppercase text-accent">
-                View order
-              </p>
-            </Link>
+                <ChevronRight
+                  size={16}
+                  className="shrink-0 text-muted-foreground group-hover:text-accent transition-colors"
+                />
+              </Link>
+            </li>
           ))}
-        </div>
+        </ul>
       ) : (
         <div className="border border-border p-10 sm:p-16 text-center">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-6">

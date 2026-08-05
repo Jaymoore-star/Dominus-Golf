@@ -121,6 +121,96 @@ async function markOrder(env: Env, id: string, patch: Record<string, string>) {
 }
 
 /**
+ * The shipment fulfilment Square is tracking for an order, flattened.
+ *
+ * Square models fulfilment as a list because one order can be split across
+ * several, but nothing here creates more than one, so the shipment is taken and
+ * the rest ignored. A download-only order has no fulfilment at all — Square is
+ * never asked for an address — and that absence is what the timeline reads as
+ * "delivered by email".
+ */
+function fulfillmentFrom(order: Record<string, unknown>) {
+  const fulfillments = (order.fulfillments ?? []) as {
+    type?: string
+    state?: string
+    shipment_details?: {
+      carrier?: string
+      tracking_number?: string
+      tracking_url?: string
+      shipped_at?: string
+    }
+  }[]
+  const shipment = fulfillments.find((f) => f.type === "SHIPMENT") ?? fulfillments[0]
+  if (!shipment) return null
+
+  const details = shipment.shipment_details ?? {}
+  return {
+    fulfillment_state: shipment.state ?? null,
+    carrier: details.carrier ?? null,
+    tracking_number: details.tracking_number ?? null,
+    tracking_url: details.tracking_url ?? null,
+    /* Square only sets shipped_at once the parcel actually goes. Falling back to
+       "now" on COMPLETED keeps the timeline from showing a shipped order with no
+       date, which reads as broken. */
+    shipped_at:
+      details.shipped_at ??
+      (shipment.state === "COMPLETED" ? new Date().toISOString() : null),
+  }
+}
+
+/**
+ * Applies a fulfilment update to an order that already exists.
+ *
+ * PATCH rather than upsert, deliberately: only a payment may bring an order into
+ * being. An order.updated for something we never recorded — a Virtual Terminal
+ * sale, an invoice, anything rung up in person — must not appear in a customer's
+ * order history, and filtering on square_order_id simply matches nothing.
+ */
+async function patchOrderBySquareId(env: Env, squareOrderId: string, patch: Record<string, unknown>) {
+  const res = await fetch(
+    `${env.SUPABASE_URL}/rest/v1/orders?square_order_id=eq.${encodeURIComponent(squareOrderId)}`,
+    {
+      method: "PATCH",
+      headers: {
+        apikey: env.SUPABASE_SERVICE_ROLE_KEY,
+        Authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+        "Content-Type": "application/json",
+        Prefer: "return=representation",
+      },
+      body: JSON.stringify(patch),
+    },
+  )
+  if (!res.ok) {
+    console.error("Supabase fulfilment patch failed:", res.status, await res.text())
+    return null
+  }
+  const rows = (await res.json()) as Record<string, unknown>[]
+  return rows[0] ?? null
+}
+
+/**
+ * The order id out of whichever order-shaped event Square sent.
+ *
+ * order.updated and order.fulfillment.updated nest it differently, and the event
+ * body is not trusted for anything beyond this id — the order is re-fetched from
+ * Square, so a payload shape we did not anticipate degrades to a wasted lookup
+ * rather than a wrong timeline.
+ */
+function orderIdFromEvent(data: Record<string, unknown> | undefined): string | undefined {
+  const object = (data?.object ?? {}) as Record<string, Record<string, unknown> | undefined>
+  const candidates = [
+    object.order_updated?.order_id,
+    object.order_fulfillment_updated?.order_id,
+    object.order?.id,
+  ]
+  const found = candidates.find((v) => typeof v === "string" && v)
+  if (found) return found as string
+  // Some order events carry the id only on the envelope.
+  const id = (data as { id?: unknown } | undefined)?.id
+  return typeof id === "string" && id ? id : undefined
+}
+
+/**
  * Credits the affiliate for a sale.
  *
  * GoAffPro normally hooks a Shopify or WooCommerce order webhook. Our checkout is
@@ -190,6 +280,35 @@ export function registerOrderRoutes(app: Hono) {
     }
 
     const payment = event.data?.object?.payment
+
+    /**
+     * Shipping progress, for the delivery half of the order timeline.
+     *
+     * `status` on the row is the payment — it says whether the money moved, not
+     * whether the parcel did. Marking an order shipped in the Square Dashboard
+     * fires an order event rather than a payment one, so without this the
+     * customer's timeline would stop at "Order placed" forever.
+     *
+     * Requires the order.updated and order.fulfillment.updated subscriptions in
+     * Square → Developer → Webhooks. Without them this branch simply never runs
+     * and the timeline degrades to the payment steps, which is what it did before.
+     */
+    if (!payment && /^order\./.test(event.type ?? "")) {
+      const orderId = orderIdFromEvent(event.data as Record<string, unknown> | undefined)
+      if (!orderId) return c.json({ ignored: "order event without an order id" })
+
+      const order = await fetchOrder(env.SQUARE_ACCESS_TOKEN, orderId)
+      // 500 so Square retries rather than losing the shipping update.
+      if (!order) return c.json({ error: "Could not load order from Square" }, 500)
+
+      const fulfillment = fulfillmentFrom(order)
+      if (!fulfillment) return c.json({ ignored: "order event with no fulfilment" })
+
+      const patched = await patchOrderBySquareId(env, orderId, fulfillment)
+      // No row means this order was never paid for through our checkout.
+      return c.json({ ok: true, orderId, fulfillment: patched ? fulfillment.fulfillment_state : "unknown order" })
+    }
+
     // Acknowledge anything else that happens to be subscribed, so Square does not
     // retry an event we were never going to act on.
     if (!payment) return c.json({ ignored: event.type ?? "unknown" })
@@ -238,6 +357,9 @@ export function registerOrderRoutes(app: Hono) {
       currency: totals.currency ?? "USD",
       items: order.line_items ?? [],
       referral_code: metadata.referral_code || null,
+      /* Square usually attaches the fulfilment at checkout, so the timeline can
+         start at "Preparing" rather than waiting for the first order event. */
+      ...(fulfillmentFrom(order) ?? {}),
     })
     if (!saved) return c.json({ error: "Could not save order" }, 500)
 

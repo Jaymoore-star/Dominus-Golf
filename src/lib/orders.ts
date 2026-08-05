@@ -22,11 +22,18 @@ export type OrderItem = {
 export type Order = {
   id: string;
   squareOrderId: string;
+  /** The payment: COMPLETED, REFUNDED, and so on. Not the delivery. */
   status: string;
   totalCents: number;
   currency: string;
   items: OrderItem[];
   createdAt: string;
+  /** Square's shipment state. Null on a download-only order, which never ships. */
+  fulfillmentState: string | null;
+  carrier: string | null;
+  trackingNumber: string | null;
+  trackingUrl: string | null;
+  shippedAt: string | null;
 };
 
 type OrderRow = {
@@ -37,9 +44,47 @@ type OrderRow = {
   currency: string;
   items: OrderItem[] | null;
   created_at: string;
+  fulfillment_state?: string | null;
+  carrier?: string | null;
+  tracking_number?: string | null;
+  tracking_url?: string | null;
+  shipped_at?: string | null;
 };
 
-const SELECT = 'id, square_order_id, status, total_cents, currency, items, created_at';
+const SELECT_BASE = 'id, square_order_id, status, total_cents, currency, items, created_at';
+const SELECT_FULL =
+  `${SELECT_BASE}, fulfillment_state, carrier, tracking_number, tracking_url, shipped_at`;
+
+/**
+ * Latches to the base columns once the database turns out not to have the
+ * fulfilment ones.
+ *
+ * The site and the migrations ship separately, so between deploying this and
+ * running 0004 every select would name columns that do not exist — and PostgREST
+ * fails the whole query on an unknown column, which would take the order history
+ * down completely rather than just hiding the timeline. Retried once, then
+ * remembered, so the fallback costs one wasted round trip per page load at most.
+ */
+let columns = SELECT_FULL;
+
+/**
+ * supabase-js infers the row shape from the select string, which only works when
+ * that string is a literal. `columns` has to be a variable so it can fall back,
+ * so the shape is asserted here instead — in one place, rather than as a cast at
+ * every call site.
+ */
+function asRows(data: unknown): OrderRow[] {
+  return (data ?? []) as OrderRow[];
+}
+function asRow(data: unknown): OrderRow | null {
+  return (data as OrderRow | null) ?? null;
+}
+
+/** PostgREST reports an undefined column as 42703. */
+function isMissingColumn(error: { code?: string; message?: string } | null): boolean {
+  if (!error) return false;
+  return error.code === '42703' || /column .* does not exist/i.test(error.message ?? '');
+}
 
 function toOrder(row: OrderRow): Order {
   return {
@@ -50,6 +95,13 @@ function toOrder(row: OrderRow): Order {
     currency: row.currency,
     items: row.items ?? [],
     createdAt: row.created_at,
+    // Optional rather than required: the columns are absent, not null, until
+    // 0004_order_fulfillment.sql has been run.
+    fulfillmentState: row.fulfillment_state ?? null,
+    carrier: row.carrier ?? null,
+    trackingNumber: row.tracking_number ?? null,
+    trackingUrl: row.tracking_url ?? null,
+    shippedAt: row.shipped_at ?? null,
   };
 }
 
@@ -64,10 +116,14 @@ export type OrdersResult =
   | { status: 'unavailable'; orders: [] };
 
 export async function fetchOrders(): Promise<OrdersResult> {
-  const { data, error } = await supabase
-    .from('orders')
-    .select(SELECT)
-    .order('created_at', { ascending: false });
+  const run = () =>
+    supabase.from('orders').select(columns).order('created_at', { ascending: false });
+
+  let { data, error } = await run();
+  if (error && isMissingColumn(error)) {
+    columns = SELECT_BASE;
+    ({ data, error } = await run());
+  }
 
   if (error) {
     // Treated as "not set up yet" rather than an error, so the account page can
@@ -76,7 +132,7 @@ export async function fetchOrders(): Promise<OrdersResult> {
     throw new Error(error.message);
   }
 
-  return { status: 'ok', orders: (data as OrderRow[]).map(toOrder) };
+  return { status: 'ok', orders: asRows(data).map(toOrder) };
 }
 
 /**
@@ -86,13 +142,20 @@ export async function fetchOrders(): Promise<OrdersResult> {
  * comes back as not-found rather than forbidden — there is nothing to leak.
  */
 export async function fetchOrderById(id: string): Promise<Order | null> {
-  const { data, error } = await supabase.from('orders').select(SELECT).eq('id', id).maybeSingle();
+  const run = () => supabase.from('orders').select(columns).eq('id', id).maybeSingle();
+
+  let { data, error } = await run();
+  if (error && isMissingColumn(error)) {
+    columns = SELECT_BASE;
+    ({ data, error } = await run());
+  }
 
   if (error) {
     if (isMissingTable(error)) return null;
     throw new Error(error.message);
   }
-  return data ? toOrder(data as OrderRow) : null;
+  const row = asRow(data);
+  return row ? toOrder(row) : null;
 }
 
 /**
@@ -110,11 +173,15 @@ export async function fetchOrderBySquareId(
   for (let i = 0; i < attempts; i++) {
     const { data, error } = await supabase
       .from('orders')
-      .select(SELECT)
+      .select(columns)
       .eq('square_order_id', squareOrderId)
       .maybeSingle();
 
-    if (!error && data) return toOrder(data as OrderRow);
+    if (!error && data) return toOrder(asRow(data)!);
+    if (error && isMissingColumn(error)) {
+      columns = SELECT_BASE;
+      continue; // Retry immediately against the columns that do exist.
+    }
     if (error && isMissingTable(error)) return null;
     if (i < attempts - 1) await new Promise((r) => setTimeout(r, delayMs));
   }
@@ -174,4 +241,124 @@ export function orderStatusTone(status: string): 'positive' | 'muted' {
 /** Goods total, before shipping — Square reports each line's own total. */
 export function orderSubtotalCents(order: Order): number {
   return order.items.reduce((sum, i) => sum + (i.total_money?.amount ?? 0), 0);
+}
+
+/**
+ * What was in the order, in one line for the list view.
+ *
+ * Names the first item and counts the rest, rather than listing everything: the
+ * list is an index, and the detail page is where the full breakdown lives.
+ */
+export function orderItemsSummary(order: Order): string {
+  if (order.items.length === 0) return 'No items recorded';
+  const [first, ...rest] = order.items;
+  const units = order.items.reduce((sum, i) => sum + (Number(i.quantity) || 1), 0);
+  if (rest.length === 0) {
+    return units > 1 ? `${first.name} × ${units}` : first.name;
+  }
+  return `${first.name} + ${rest.length} more`;
+}
+
+export type TimelineStep = {
+  label: string;
+  /** Reached. Rendered filled, with its date. */
+  done: boolean;
+  /** The furthest step reached — the one worth drawing attention to. */
+  current: boolean;
+  at: string | null;
+  detail?: string;
+};
+
+/**
+ * The order's progress, as two tracks the customer actually cares about: what
+ * happened to their money, and where their parcel is.
+ *
+ * The delivery track stops at "Shipped" on purpose. Square's shipment fulfilment
+ * only reaches COMPLETED — meaning handed to the carrier — and knows nothing
+ * after that. "Out for delivery" and "Delivered" are carrier events that would
+ * need a tracking provider, so rather than invent them the timeline ends with a
+ * link to the carrier's own tracking page.
+ *
+ * A download-only order has no fulfilment at all, because Square is never asked
+ * for an address. That absence is the signal, and it gets an email-delivery
+ * track instead of a shipping one — it is not "awaiting shipment" forever.
+ */
+export function orderTimeline(order: Order): {
+  payment: TimelineStep[];
+  delivery: TimelineStep[];
+  isDigitalOnly: boolean;
+} {
+  const status = order.status.toUpperCase();
+  const refunded = status === 'REFUNDED' || status === 'PARTIALLY_REFUNDED';
+  const failed = status === 'FAILED' || status === 'CANCELED' || status === 'CANCELLED';
+
+  const payment: TimelineStep[] = [
+    { label: 'Order placed', done: true, current: false, at: order.createdAt },
+    {
+      label: failed ? orderStatusLabel(status) : 'Payment received',
+      done: !failed,
+      current: !refunded && !failed,
+      at: failed ? null : order.createdAt,
+    },
+  ];
+  if (refunded) {
+    payment.push({
+      label: orderStatusLabel(status),
+      done: true,
+      current: true,
+      at: null,
+      detail: 'The refund can take a few days to appear on your statement.',
+    });
+  }
+
+  /* No fulfilment means nothing is being posted. Square only creates one when it
+     has collected an address, which it does not do for a download-only order. */
+  const isDigitalOnly = order.fulfillmentState === null;
+  if (isDigitalOnly) {
+    return {
+      payment,
+      isDigitalOnly,
+      delivery: [
+        {
+          label: 'Delivered by email',
+          done: true,
+          current: true,
+          at: order.createdAt,
+          detail: 'Your download link is in your confirmation email.',
+        },
+      ],
+    };
+  }
+
+  const state = (order.fulfillmentState ?? '').toUpperCase();
+  const shipped = state === 'COMPLETED';
+  // PREPARED is Square's "packed and waiting for the carrier".
+  const preparing = shipped || state === 'PREPARED' || state === 'RESERVED';
+  const cancelled = state === 'CANCELED' || state === 'CANCELLED';
+
+  if (cancelled) {
+    return {
+      payment,
+      isDigitalOnly,
+      delivery: [{ label: 'Shipment cancelled', done: true, current: true, at: null }],
+    };
+  }
+
+  return {
+    payment,
+    isDigitalOnly,
+    delivery: [
+      { label: 'Order placed', done: true, current: !preparing, at: order.createdAt },
+      { label: 'Preparing for dispatch', done: preparing, current: preparing && !shipped, at: null },
+      {
+        label: 'Shipped',
+        done: shipped,
+        current: shipped,
+        at: order.shippedAt,
+        detail: shipped
+          ? [order.carrier, order.trackingNumber].filter(Boolean).join(' · ') || undefined
+          : undefined,
+      },
+    ],
+  };
 }

@@ -105,12 +105,16 @@ app.post("/api/square/checkout", async (c) => {
       ...(hasPhysicalItems
         ? {
             shipping_fee: {
-              /* Named for what it is. Above the threshold this used to be omitted,
-                 which let Square fall back to the Dashboard profile's own $0 rate —
-                 correct money, but the line read "Standard Shipping $0.00" on the
-                 one order that had earned free shipping. Sending our own zero keeps
-                 the label ours. */
-              name: shippingCents > 0 ? "Standard Shipping" : "Free Shipping",
+              /* One constant name at both prices. Square renders a zero charge as
+                 "Free" by itself, so calling the method "Free Shipping" too gave
+                 the buyer "Free Shipping — Free". Naming the method and letting
+                 Square price it reads correctly either way: "Standard Shipping —
+                 Free" above the threshold, "Standard Shipping — $6.99" below.
+
+                 Still sent rather than omitted above the threshold: leaving it out
+                 lets Square fall back to the Dashboard profile's own $0 rate, and
+                 that line rendered as a bare "$0.00". */
+              name: "Standard Shipping",
               charge: { amount: shippingCents, currency: "USD" },
             },
           }
