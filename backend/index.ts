@@ -5,9 +5,51 @@ import { resolveCart, type IncomingItem } from "./pricing"
 
 const EBOOK_URL = "https://drive.google.com/uc?export=download&id=1Ir1DaLgMH-8eVzlQA6xrb7kKO8H_N95p"
 
+/**
+ * The only origins this API answers to, and the only places Square may send a
+ * buyer after paying. Both lists are the same set, so they are one constant.
+ *
+ * localhost is here for `npm run dev` against `npm run dev:backend`; it grants an
+ * attacker nothing, since they would have to be running code on the victim's own
+ * machine on that port already.
+ */
+const ALLOWED_ORIGINS = [
+  "https://www.dominusgolf.com",
+  "https://dominusgolf.com",
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+]
+
+/**
+ * Keeps Square's post-payment redirect pointed at our own site.
+ *
+ * `successUrl` arrives in the request body and went straight through to Square, so
+ * anyone could mint a *real* payment link on the Dominus merchant account that
+ * dropped the buyer on a page of their choosing once the money had gone through —
+ * a genuine charge from us followed by someone else's "your card was declined,
+ * please re-enter it". Prices were never reachable (see pricing.ts); the redirect
+ * was the way in.
+ *
+ * Anything unparseable or off-origin falls back rather than erroring: a stale
+ * frontend sending an old URL should still be able to check out.
+ */
+function safeRedirect(candidate: string | undefined, fallback: string): string {
+  if (!candidate) return fallback
+  try {
+    const url = new URL(candidate)
+    return ALLOWED_ORIGINS.includes(url.origin) ? url.toString() : fallback
+  } catch {
+    return fallback
+  }
+}
+
 const app = new Hono()
 
-app.use("*", cors())
+/* Browsers only — a CORS header stops a page on another origin reading our
+   responses, and does nothing at all about a server-side POST. It is the
+   redirect allowlist above, not this, that closes the payment-link abuse.
+   Square's webhook sends no Origin header and is unaffected. */
+app.use("*", cors({ origin: ALLOWED_ORIGINS }))
 
 // Order recording + affiliate reporting. See backend/orders.ts.
 registerOrderRoutes(app)
@@ -87,7 +129,7 @@ app.post("/api/square/checkout", async (c) => {
       },
     },
     checkout_options: {
-      redirect_url: successUrl || "https://www.dominusgolf.com",
+      redirect_url: safeRedirect(successUrl, "https://www.dominusgolf.com"),
       /* Nothing to post on a download-only order, so do not make the buyer type
          an address to receive an email. */
       ask_for_shipping_address: hasPhysicalItems,
@@ -214,14 +256,9 @@ app.post("/api/grant/checkout", async (c) => {
     cancelUrl = "https://www.dominusgolf.com/grant",
   } = body
 
-  // Store applicant info in note so we can retrieve it from the Square order
-  const applicantNote = [
-    `Name: ${applicantName}`,
-    `Email: ${applicantEmail}`,
-    `Dev Plan: ${developmentPlan.substring(0, 200)}`,
-    `Training: ${trainingRegimen.substring(0, 200)}`,
-    `Vision: ${competitiveVision.substring(0, 200)}`,
-  ].join(" | ")
+  /* The applicant's answers used to be packed into a note string here and handed
+     to Square, which threw it away every time. They now go to grant_applications
+     below, in full — see saveGrantApplication. */
 
   const idempotencyKey = `grant_${Date.now()}_${crypto.randomUUID().substring(0, 8)}`
 
@@ -238,16 +275,33 @@ app.post("/api/grant/checkout", async (c) => {
 
   const squareBody = {
     idempotency_key: idempotencyKey,
-    quick_pay: {
-      name: paymentName,
-      price_money: {
-        amount: 1500,
-        currency: "USD",
-      },
+    /**
+     * A full order rather than a quick_pay.
+     *
+     * quick_pay cannot carry metadata, and without a tag the order webhook has no
+     * way to tell an application fee from a shop purchase — every Square payment
+     * reaches it the same way. That is how an applicant ended up being sent an
+     * "Order Confirmed — here is what you bought" email, with a shipping line, for
+     * a $15 form submission.
+     */
+    order: {
       location_id: locationId,
+      line_items: [
+        {
+          name: paymentName,
+          quantity: "1",
+          base_price_money: { amount: 1500, currency: "USD" },
+        },
+      ],
+      metadata: { type: "grant" },
+      /* No note. The applicant's answers used to be smuggled through Square as a
+         truncated note string and were silently discarded — verified twice: an
+         order created with `pre_populated_data.note` and one created with
+         `order.note` both come back with `note: undefined`. They are written to
+         grant_applications instead, in full and unabridged. */
     },
     checkout_options: {
-      redirect_url: successUrl,
+      redirect_url: safeRedirect(successUrl, "https://www.dominusgolf.com/grant/success"),
       ask_for_shipping_address: false,
       enable_coupon: false,
       enable_loyalty: false,
@@ -256,9 +310,10 @@ app.post("/api/grant/checkout", async (c) => {
         cash_app_pay: true,
       },
     },
+    /* buyer_email only. `note` used to be passed here too and was discarded every
+       time; it now goes on the order above, where Square keeps it. */
     pre_populated_data: {
       buyer_email: applicantEmail || undefined,
-      note: applicantNote,
     },
   }
 
@@ -287,10 +342,28 @@ app.post("/api/grant/checkout", async (c) => {
       return c.json({ error: msg }, 500)
     }
 
+    /* Stored here, keyed on the Square order, because this is the last point at
+       which we still hold the applicant's answers — after this the browser leaves
+       for Square and never sends them again. Awaited so a paid application is
+       never missing its answers, but it cannot fail the checkout. */
+    const grantOrderId = data.payment_link?.order_id
+    if (grantOrderId) {
+      await saveGrantApplication(env, {
+        square_order_id: grantOrderId,
+        applicant_name: applicantName || null,
+        applicant_email: applicantEmail || null,
+        development_plan: developmentPlan || null,
+        training_regimen: trainingRegimen || null,
+        competitive_vision: competitiveVision || null,
+      })
+    } else {
+      console.error("Grant application NOT stored: Square returned no order_id")
+    }
+
     return c.json({
       url: data.payment_link?.url,
       paymentLinkId: data.payment_link?.id,
-      orderId: data.payment_link?.order_id,
+      orderId: grantOrderId,
     })
   } catch (err: unknown) {
     clearTimeout(timeout)
@@ -542,8 +615,126 @@ app.post("/api/contact", async (c) => {
   return c.json({ ok: true, id: data.id })
 })
 
+/**
+ * Records an application against its Square order.
+ *
+ * Called once the payment link exists but before the applicant has paid, so the
+ * answers survive an abandoned checkout — `paid` is what marks a real entry.
+ *
+ * Never fails the checkout: the applicant is mid-payment, and a storage problem
+ * on our side must not stop them paying. It logs loudly instead, because a silent
+ * failure here is exactly how the answers came to be lost in the first place.
+ */
+async function saveGrantApplication(
+  env: Record<string, string>,
+  row: Record<string, unknown>,
+): Promise<void> {
+  if (!env.SUPABASE_URL || !env.SUPABASE_SERVICE_ROLE_KEY) {
+    console.error("Grant application NOT stored: Supabase env missing")
+    return
+  }
+  const res = await fetch(
+    `${env.SUPABASE_URL}/rest/v1/grant_applications?on_conflict=square_order_id`,
+    {
+      method: "POST",
+      headers: {
+        apikey: env.SUPABASE_SERVICE_ROLE_KEY,
+        Authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+        "Content-Type": "application/json",
+        Prefer: "resolution=merge-duplicates",
+      },
+      body: JSON.stringify(row),
+    },
+  )
+  if (!res.ok) {
+    console.error(
+      "Grant application NOT stored (run supabase/migrations/0006_grant_applications.sql?):",
+      res.status,
+      await res.text(),
+    )
+  }
+}
+
+/** Marks an application as paid once Square has confirmed the fee. */
+async function markGrantApplicationPaid(env: Record<string, string>, squareOrderId: string) {
+  if (!env.SUPABASE_URL || !env.SUPABASE_SERVICE_ROLE_KEY) return
+  const res = await fetch(
+    `${env.SUPABASE_URL}/rest/v1/grant_applications?square_order_id=eq.${encodeURIComponent(squareOrderId)}`,
+    {
+      method: "PATCH",
+      headers: {
+        apikey: env.SUPABASE_SERVICE_ROLE_KEY,
+        Authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ paid: true, paid_at: new Date().toISOString() }),
+    },
+  )
+  if (!res.ok) console.error("Grant application paid-mark failed:", res.status, await res.text())
+}
+
+/**
+ * Claims the one send of the grant eBook for an order.
+ *
+ * The insert *is* the claim: square_order_id is the primary key, so of two
+ * concurrent calls exactly one gets a row back and the other sees a conflict.
+ *
+ * "untracked" means the marker could not be consulted — the migration has not been
+ * run, or Supabase is unreachable. That degrades to the old behaviour of sending
+ * every time, which is the right way round: a paying applicant not receiving their
+ * eBook is a worse failure than receiving it twice.
+ */
+async function claimGrantEmail(
+  env: Record<string, string>,
+  squareOrderId: string,
+  email: string,
+): Promise<"claimed" | "already-sent" | "untracked"> {
+  if (!env.SUPABASE_URL || !env.SUPABASE_SERVICE_ROLE_KEY) return "untracked"
+
+  const res = await fetch(`${env.SUPABASE_URL}/rest/v1/grant_emails?on_conflict=square_order_id`, {
+    method: "POST",
+    headers: {
+      apikey: env.SUPABASE_SERVICE_ROLE_KEY,
+      Authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+      "Content-Type": "application/json",
+      Prefer: "resolution=ignore-duplicates,return=representation",
+    },
+    body: JSON.stringify({ square_order_id: squareOrderId, email }),
+  })
+  if (!res.ok) {
+    console.error(
+      "Grant email claim failed (run supabase/migrations/0005_grant_emails.sql?):",
+      res.status,
+      await res.text(),
+    )
+    return "untracked"
+  }
+  const rows = (await res.json()) as unknown[]
+  return rows.length > 0 ? "claimed" : "already-sent"
+}
+
+/** Gives the claim back when the send then failed, so a retry can take it. */
+async function releaseGrantEmail(env: Record<string, string>, squareOrderId: string) {
+  const res = await fetch(
+    `${env.SUPABASE_URL}/rest/v1/grant_emails?square_order_id=eq.${encodeURIComponent(squareOrderId)}`,
+    {
+      method: "DELETE",
+      headers: {
+        apikey: env.SUPABASE_SERVICE_ROLE_KEY,
+        Authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+      },
+    },
+  )
+  if (!res.ok) console.error("Grant email claim release failed:", res.status, await res.text())
+}
+
 // POST /api/grant/complete — verify the Square payment, THEN send the eBook email.
 // Body: { orderId?, paymentId?, sandbox?, email?, name? }
+//
+// Unauthenticated by necessity: the applicant comes back from a Square-hosted page
+// with only a reference in the URL, so there is no session to check. Two things
+// stand in for that — the recipient is taken from Square rather than the request
+// (see below), and grant_emails makes the send once-only.
 app.post("/api/grant/complete", async (c) => {
   const env = c.env as Record<string, string>
   let body: { orderId?: string; paymentId?: string; sandbox?: boolean; email?: string; name?: string }
@@ -564,15 +755,15 @@ app.post("/api/grant/complete", async (c) => {
   let orderId = body.orderId
   let paid = false
   let note = ""
+  /** The buyer's address as Square recorded it. Authoritative over the request. */
+  let squareEmail = ""
 
   try {
-    // If only a payment id is known, resolve the order id + status from it.
-    if (!orderId && body.paymentId) {
-      const pRes = await fetch(`${squareBaseUrl}/v2/payments/${body.paymentId}`, { headers: sqHeaders })
-      const pData = await pRes.json() as { payment?: { order_id?: string; status?: string } }
-      orderId = pData.payment?.order_id
-      if (pData.payment?.status === "COMPLETED" || pData.payment?.status === "APPROVED") paid = true
-    }
+    /* `transactionId` in the success URL is NOT a payment id. Square puts the
+       *order* id in both query parameters, so /v2/payments/{transactionId} always
+       404s — which is why looking the buyer up by it silently found nothing and
+       fell through to whatever the caller supplied. Treat it as an order id. */
+    if (!orderId && body.paymentId) orderId = body.paymentId
 
     if (!orderId) {
       return c.json({ error: "Missing order reference; cannot verify payment." }, 400)
@@ -580,7 +771,12 @@ app.post("/api/grant/complete", async (c) => {
 
     const oRes = await fetch(`${squareBaseUrl}/v2/orders/${orderId}`, { headers: sqHeaders })
     const oData = await oRes.json() as {
-      order?: { state?: string; note?: string; net_amount_due_money?: { amount?: number } }
+      order?: {
+        state?: string
+        note?: string
+        net_amount_due_money?: { amount?: number }
+        tenders?: { payment_id?: string }[]
+      }
       errors?: unknown
     }
     if (!oRes.ok || !oData.order) {
@@ -589,6 +785,22 @@ app.post("/api/grant/complete", async (c) => {
     }
     note = oData.order.note || ""
     if (oData.order.state === "COMPLETED" || oData.order.net_amount_due_money?.amount === 0) paid = true
+
+    /* The real payment id lives on the order's tender, and the payment is the
+       only place Square records the buyer's email. That email is what binds this
+       send to an actual purchase instead of to whatever the request asked for. */
+    const paymentId = oData.order.tenders?.[0]?.payment_id
+    if (paymentId) {
+      const pRes = await fetch(`${squareBaseUrl}/v2/payments/${paymentId}`, { headers: sqHeaders })
+      const pData = await pRes.json() as {
+        payment?: { status?: string; buyer_email_address?: string; receipt_email?: string }
+      }
+      const p = pData.payment
+      if (p) {
+        if (p.status === "COMPLETED" || p.status === "APPROVED") paid = true
+        squareEmail = (p.buyer_email_address || p.receipt_email || "").trim()
+      }
+    }
   } catch (err: unknown) {
     console.error("Grant completion verify error:", err instanceof Error ? err.message : String(err))
     return c.json({ error: "Payment verification failed." }, 502)
@@ -598,13 +810,34 @@ app.post("/api/grant/complete", async (c) => {
     return c.json({ success: false, paid: false, error: "Payment not completed." }, 402)
   }
 
-  // Recipient: prefer values passed from the checkout form; fall back to the order note.
-  let name = (body.name || "").trim()
-  let email = (body.email || "").trim()
+  /* Square has confirmed the fee, so this application is a real entry rather than
+     an abandoned checkout. Marked before the email, which can fail independently:
+     a judgeable application matters more than the eBook going out. */
+  await markGrantApplicationPaid(env, orderId)
+
+  /**
+   * Recipient, in order of how much it can be trusted.
+   *
+   * Square first. `body.email` is read straight off the `?e=` in the success URL,
+   * so preferring it — which is what this did — turned an unauthenticated endpoint
+   * into a way to have Dominus-branded mail delivered to any address at all, given
+   * one order id. Square's own record of the buyer cannot be steered that way.
+   *
+   * The note is the second source, though Square drops `pre_populated_data.note`
+   * (see the checkout handler above), so in practice it is empty. The request is
+   * last, kept only so a payment that somehow carries no email still reaches the
+   * applicant rather than failing outright.
+   */
+  let email = squareEmail
   if (!email) {
     const m = note.match(/Email:\s*([^\s|]+)/)
     if (m) email = m[1]
   }
+  if (!email) email = (body.email || "").trim()
+
+  // Cosmetic only — it appears in the greeting, and buildGrantEmailHtml strips
+  // angle brackets — so the form's value is fine here.
+  let name = (body.name || "").trim()
   if (!name) {
     const m = note.match(/Name:\s*(.*?)\s*\|/)
     if (m) name = m[1]
@@ -615,8 +848,19 @@ app.post("/api/grant/complete", async (c) => {
     return c.json({ success: false, paid: true, error: "Payment verified but no valid email found." }, 400)
   }
 
+  const claim = await claimGrantEmail(env, orderId, email)
+  if (claim === "already-sent") {
+    /* Reported as success, not as an error: the applicant's eBook did go, and a
+       refresh of the success page must not tell them something went wrong. */
+    return c.json({ success: true, paid: true, emailed: false, alreadySent: true, email })
+  }
+
   const result = await sendGrantEmail(env, name, email)
-  if (!result.ok) return c.json({ success: false, paid: true, emailed: false, error: result.error }, 500)
+  if (!result.ok) {
+    // Nothing was delivered, so the claim must not stand or nothing ever will be.
+    if (claim === "claimed") await releaseGrantEmail(env, orderId)
+    return c.json({ success: false, paid: true, emailed: false, error: result.error }, 500)
+  }
   return c.json({ success: true, paid: true, emailed: true, id: result.id, email })
 })
 

@@ -52,6 +52,17 @@ const byId = new Map(products.map((p) => [p.id, p]))
 const byName = new Map(products.map((p) => [p.name, p]))
 
 /**
+ * Per-line ceiling.
+ *
+ * The quantity is the one number the browser really does decide, and it was taken
+ * unbounded: `Number("1e9")` is a valid quantity, and past roughly nine quadrillion
+ * cents the multiplication silently loses precision, so the charge stops matching
+ * the cart. Nobody buys a hundred of anything here — a genuine bulk order is a
+ * conversation with support, not a checkout.
+ */
+const MAX_QUANTITY_PER_LINE = 99
+
+/**
  * Id first, name second.
  *
  * The name fallback exists because the site and the API deploy separately — a
@@ -114,6 +125,14 @@ export function resolveCart(
     }
 
     const quantity = Math.max(1, Math.floor(Number(item.quantity) || 1))
+    if (quantity > MAX_QUANTITY_PER_LINE) {
+      // Refused rather than clamped: quietly charging for 99 when 500 was asked
+      // for is worse than saying so.
+      return {
+        ok: false,
+        error: `You can order up to ${MAX_QUANTITY_PER_LINE} of ${product.name} at a time. Please email Customersupport@dominusgolf.com for a larger order.`,
+      }
+    }
     const unitCents = Math.round(product.price * 100)
     subtotalCents += unitCents * quantity
     if (!product.digital) hasPhysicalItems = true
