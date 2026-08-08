@@ -11,6 +11,7 @@
     "lint:js": "eslint . --report-unused-disable-directives",
     "lint:types": "tsc --noEmit",
     "og:images": "node scripts/generate-og-images.mjs",
+    "migrate": "node scripts/run-migration.mjs",
     "lint": "npm run lint:types && npm run lint:js && npm run lint:css",
     "dev:backend": "wrangler dev -c wrangler.backend.toml --port 8787 --local --ip 127.0.0.1",
     "deploy:backend": "wrangler deploy -c wrangler.backend.toml",
