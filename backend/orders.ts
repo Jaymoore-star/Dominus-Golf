@@ -24,6 +24,15 @@ import { downloadsForLineItems } from "./digitalGoods"
 
 type Env = Record<string, string>
 
+/** Service-role auth for PostgREST. Bypasses RLS, so it never leaves the Worker. */
+function serviceHeaders(env: Env): Record<string, string> {
+  return {
+    apikey: env.SUPABASE_SERVICE_ROLE_KEY,
+    Authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+    "Content-Type": "application/json",
+  }
+}
+
 /**
  * Square signs the concatenation of the notification URL and the raw request body.
  *
@@ -92,9 +101,7 @@ async function saveOrder(env: Env, row: Record<string, unknown>) {
   const res = await fetch(`${env.SUPABASE_URL}/rest/v1/orders?on_conflict=square_order_id`, {
     method: "POST",
     headers: {
-      apikey: env.SUPABASE_SERVICE_ROLE_KEY,
-      Authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
-      "Content-Type": "application/json",
+      ...serviceHeaders(env),
       Prefer: "resolution=merge-duplicates,return=representation",
     },
     body: JSON.stringify(row),
@@ -107,17 +114,64 @@ async function saveOrder(env: Env, row: Record<string, unknown>) {
   return rows[0] ?? null
 }
 
-/** Stamps a one-shot marker column so a webhook redelivery cannot repeat the work. */
-async function markOrder(env: Env, id: string, patch: Record<string, string>) {
-  await fetch(`${env.SUPABASE_URL}/rest/v1/orders?id=eq.${id}`, {
-    method: "PATCH",
-    headers: {
-      apikey: env.SUPABASE_SERVICE_ROLE_KEY,
-      Authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
-      "Content-Type": "application/json",
+/**
+ * Atomically claims a one-shot job on an order — sending the confirmation email,
+ * reporting the commission — and reports whether this caller won it.
+ *
+ * Reading the marker off the row and stamping it afterwards was not enough. Square
+ * delivers payment.created and payment.updated for the same payment, the Worker
+ * serves them concurrently, and both read a null marker before either wrote one:
+ * exactly the race that turned one real payment into five identical emails. Here
+ * the `is.null` filter is part of the UPDATE, so Postgres serialises the writers
+ * and only one of them gets a row back.
+ *
+ * The claim is taken *before* the work, so a Worker that dies mid-send loses the
+ * email rather than sending it twice. That is the right way round: Square's own
+ * receipt still reaches the customer, and support can resend.
+ *
+ * False on any failure — a lost claim, a column that predates its migration, or
+ * Supabase being down. Never acting twice matters more than always acting once.
+ */
+async function claimOrderJob(env: Env, id: string, column: string): Promise<boolean> {
+  const res = await fetch(
+    `${env.SUPABASE_URL}/rest/v1/orders?id=eq.${encodeURIComponent(id)}&${column}=is.null`,
+    {
+      method: "PATCH",
+      headers: { ...serviceHeaders(env), Prefer: "return=representation" },
+      body: JSON.stringify({ [column]: new Date().toISOString() }),
     },
-    body: JSON.stringify(patch),
+  )
+  if (!res.ok) {
+    console.error(`Supabase claim of ${column} failed:`, res.status, await res.text())
+    return false
+  }
+  const rows = (await res.json()) as unknown[]
+  return rows.length > 0
+}
+
+/**
+ * Hands a claim back when the work it was taken for then failed, so the next
+ * webhook delivery can pick it up. Square retries a 500 on its own schedule; this
+ * just makes sure the retry is not blocked by a marker for work that never ran.
+ */
+async function releaseOrderJob(env: Env, id: string, column: string) {
+  const res = await fetch(`${env.SUPABASE_URL}/rest/v1/orders?id=eq.${encodeURIComponent(id)}`, {
+    method: "PATCH",
+    headers: serviceHeaders(env),
+    body: JSON.stringify({ [column]: null }),
   })
+  if (!res.ok) {
+    console.error(`Supabase release of ${column} failed:`, res.status, await res.text())
+  }
+}
+
+type FulfillmentPatch = {
+  fulfillment_state: string | null
+  carrier: string | null
+  tracking_number: string | null
+  tracking_url: string | null
+  /** Present only when Square supplied a real date. See stampShippedAt. */
+  shipped_at?: string
 }
 
 /**
@@ -125,11 +179,15 @@ async function markOrder(env: Env, id: string, patch: Record<string, string>) {
  *
  * Square models fulfilment as a list because one order can be split across
  * several, but nothing here creates more than one, so the shipment is taken and
- * the rest ignored. A download-only order has no fulfilment at all — Square is
- * never asked for an address — and that absence is what the timeline reads as
- * "delivered by email".
+ * the rest ignored. An order with nothing to post has no SHIPMENT at all, and
+ * that absence is what the timeline reads as "delivered by email".
+ *
+ * SHIPMENT only, with no fallback to the first entry of any type: Square also
+ * creates DIGITAL fulfilments, and taking one of those recorded a state like
+ * PROPOSED against columns that mean "where is the parcel" — for an order with
+ * no parcel.
  */
-function fulfillmentFrom(order: Record<string, unknown>) {
+function fulfillmentFrom(order: Record<string, unknown>): FulfillmentPatch | null {
   const fulfillments = (order.fulfillments ?? []) as {
     type?: string
     state?: string
@@ -140,7 +198,7 @@ function fulfillmentFrom(order: Record<string, unknown>) {
       shipped_at?: string
     }
   }[]
-  const shipment = fulfillments.find((f) => f.type === "SHIPMENT") ?? fulfillments[0]
+  const shipment = fulfillments.find((f) => f.type === "SHIPMENT")
   if (!shipment) return null
 
   const details = shipment.shipment_details ?? {}
@@ -149,13 +207,41 @@ function fulfillmentFrom(order: Record<string, unknown>) {
     carrier: details.carrier ?? null,
     tracking_number: details.tracking_number ?? null,
     tracking_url: details.tracking_url ?? null,
-    /* Square only sets shipped_at once the parcel actually goes. Falling back to
-       "now" on COMPLETED keeps the timeline from showing a shipped order with no
-       date, which reads as broken. */
-    shipped_at:
-      details.shipped_at ??
-      (shipment.state === "COMPLETED" ? new Date().toISOString() : null),
+    /* Only ever Square's own timestamp, and omitted entirely when there is none.
+       A COMPLETED shipment that Square never dated still needs a date — that is
+       what stampShippedAt is for — but minting it here would re-run on every
+       later order.* and payment.updated event, walking the ship date forward and
+       re-dating a month-old shipment to the day it was refunded. Omitting rather
+       than nulling also stops a redelivery wiping a date already recorded. */
+    ...(details.shipped_at ? { shipped_at: details.shipped_at } : {}),
   }
+}
+
+/**
+ * Dates a shipment Square left undated, once.
+ *
+ * Square fills shipped_at only when the parcel physically goes, so a fulfilment
+ * can reach COMPLETED with no date, and a shipped order showing a blank date
+ * reads as broken. The `is.null` filter is what keeps this to the first time:
+ * every later event finds the column already set and changes nothing.
+ */
+async function stampShippedAt(env: Env, squareOrderId: string) {
+  const res = await fetch(
+    `${env.SUPABASE_URL}/rest/v1/orders?square_order_id=eq.${encodeURIComponent(squareOrderId)}&shipped_at=is.null`,
+    {
+      method: "PATCH",
+      headers: serviceHeaders(env),
+      body: JSON.stringify({ shipped_at: new Date().toISOString() }),
+    },
+  )
+  if (!res.ok) {
+    console.error("Supabase shipped_at stamp failed:", res.status, await res.text())
+  }
+}
+
+/** True when Square says it shipped but gave us no date to show for it. */
+function needsShippedAt(fulfillment: FulfillmentPatch | null): boolean {
+  return fulfillment?.fulfillment_state === "COMPLETED" && !fulfillment.shipped_at
 }
 
 /**
@@ -171,12 +257,7 @@ async function patchOrderBySquareId(env: Env, squareOrderId: string, patch: Reco
     `${env.SUPABASE_URL}/rest/v1/orders?square_order_id=eq.${encodeURIComponent(squareOrderId)}`,
     {
       method: "PATCH",
-      headers: {
-        apikey: env.SUPABASE_SERVICE_ROLE_KEY,
-        Authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
-        "Content-Type": "application/json",
-        Prefer: "return=representation",
-      },
+      headers: { ...serviceHeaders(env), Prefer: "return=representation" },
       body: JSON.stringify(patch),
     },
   )
@@ -306,6 +387,7 @@ export function registerOrderRoutes(app: Hono) {
 
       const patched = await patchOrderBySquareId(env, orderId, fulfillment)
       // No row means this order was never paid for through our checkout.
+      if (patched && needsShippedAt(fulfillment)) await stampShippedAt(env, orderId)
       return c.json({ ok: true, orderId, fulfillment: patched ? fulfillment.fulfillment_state : "unknown order" })
     }
 
@@ -340,12 +422,33 @@ export function registerOrderRoutes(app: Hono) {
     // Set when the payment link was created — the only way our own user id and the
     // referral code survive a round trip through a Square-hosted checkout.
     const metadata = (order.metadata ?? {}) as Record<string, string>
+
+    /**
+     * A grant application fee is not a purchase.
+     *
+     * It arrives here because it is a Square payment like any other, and it used
+     * to be written to `orders` and answered with an "Order Confirmed — here is
+     * what you bought" email, complete with a shipping line and a View Your
+     * Orders button, for a $15 form submission. The application has its own
+     * confirmation, sent by /api/grant/complete; Square and `grant_emails` are
+     * the record of the payment.
+     *
+     * Ignored rather than 500'd so Square stops redelivering it.
+     */
+    if (metadata.type === "grant") {
+      return c.json({ ignored: "grant application payment", orderId })
+    }
+
     const totals = (order.total_money ?? {}) as { amount?: number; currency?: string }
 
     const email =
       (payment.buyer_email_address as string | undefined) ??
       (payment.receipt_email as string | undefined) ??
       null
+
+    /* Square usually attaches the fulfilment at checkout, so the timeline can
+       start at "Preparing" rather than waiting for the first order event. */
+    const fulfillment = fulfillmentFrom(order)
 
     const saved = await saveOrder(env, {
       square_order_id: orderId,
@@ -357,22 +460,26 @@ export function registerOrderRoutes(app: Hono) {
       currency: totals.currency ?? "USD",
       items: order.line_items ?? [],
       referral_code: metadata.referral_code || null,
-      /* Square usually attaches the fulfilment at checkout, so the timeline can
-         start at "Preparing" rather than waiting for the first order event. */
-      ...(fulfillmentFrom(order) ?? {}),
+      ...(fulfillment ?? {}),
     })
     if (!saved) return c.json({ error: "Could not save order" }, 500)
 
-    // Commission only on a completed payment, and only once. referral_reported_at
-    // is what stops a redelivery paying the affiliate twice.
+    if (needsShippedAt(fulfillment)) await stampShippedAt(env, orderId)
+
+    // Commission only on a completed payment, and only once. The null check is a
+    // cheap skip for the common redelivery; the claim is what actually guarantees
+    // a single report when two deliveries land at the same moment.
     if (paymentStatus === "COMPLETED" && saved.referral_code && !saved.referral_reported_at) {
-      const reported = await reportReferral(env, {
-        id: String(saved.id),
-        totalCents: Number(saved.total_cents),
-        email: (saved.email as string | null) ?? null,
-        referralCode: String(saved.referral_code),
-      })
-      if (reported) await markOrder(env, String(saved.id), { referral_reported_at: new Date().toISOString() })
+      if (await claimOrderJob(env, String(saved.id), "referral_reported_at")) {
+        const reported = await reportReferral(env, {
+          id: String(saved.id),
+          totalCents: Number(saved.total_cents),
+          email: (saved.email as string | null) ?? null,
+          referralCode: String(saved.referral_code),
+        })
+        // Nothing was credited, so let a retry try again rather than marking it done.
+        if (!reported) await releaseOrderJob(env, String(saved.id), "referral_reported_at")
+      }
     }
 
     /* Branded confirmation, on the same once-only footing as the commission —
@@ -389,29 +496,34 @@ export function registerOrderRoutes(app: Hono) {
     }
 
     if (canTrackEmail && paymentStatus === "COMPLETED" && saved.email && !saved.confirmation_emailed_at) {
-      const netAmounts = (order.net_amounts ?? {}) as {
-        service_charge_money?: { amount?: number }
-        tax_money?: { amount?: number }
+      if (await claimOrderJob(env, String(saved.id), "confirmation_emailed_at")) {
+        const netAmounts = (order.net_amounts ?? {}) as {
+          service_charge_money?: { amount?: number }
+          tax_money?: { amount?: number }
+        }
+        const lines = (order.line_items ?? []) as OrderEmailLine[]
+        const downloads = downloadsForLineItems(lines)
+        const shippingCents = netAmounts.service_charge_money?.amount ?? 0
+        const sent = await sendOrderConfirmationEmail(env, {
+          email: String(saved.email),
+          reference: orderId,
+          currency: String(saved.currency ?? "USD"),
+          totalCents: Number(saved.total_cents ?? 0),
+          lines,
+          // shipping_fee reaches the order as a service charge.
+          shippingCents,
+          taxCents: netAmounts.tax_money?.amount ?? 0,
+          // This email is the delivery for anything digital in the order.
+          downloads,
+          /* A SHIPMENT fulfilment is the tell that something is actually being
+             posted. Testing for *any* fulfilment was wrong: Square attaches a
+             DIGITAL one to orders with nothing to ship, which put a shipping
+             line on emails for orders that had none. */
+          hasPhysicalItems: fulfillment !== null,
+        })
+        // The customer got nothing, so do not leave the order marked as emailed.
+        if (!sent) await releaseOrderJob(env, String(saved.id), "confirmation_emailed_at")
       }
-      const lines = (order.line_items ?? []) as OrderEmailLine[]
-      const downloads = downloadsForLineItems(lines)
-      const shippingCents = netAmounts.service_charge_money?.amount ?? 0
-      const sent = await sendOrderConfirmationEmail(env, {
-        email: String(saved.email),
-        reference: orderId,
-        currency: String(saved.currency ?? "USD"),
-        totalCents: Number(saved.total_cents ?? 0),
-        lines,
-        // shipping_fee reaches the order as a service charge.
-        shippingCents,
-        taxCents: netAmounts.tax_money?.amount ?? 0,
-        // This email is the delivery for anything digital in the order.
-        downloads,
-        /* Square asks for no address on a download-only order, so a fulfilment
-           is the reliable tell that something is actually being posted. */
-        hasPhysicalItems: Array.isArray(order.fulfillments) && order.fulfillments.length > 0,
-      })
-      if (sent) await markOrder(env, String(saved.id), { confirmation_emailed_at: new Date().toISOString() })
     }
 
     return c.json({ ok: true, orderId, status: paymentStatus })

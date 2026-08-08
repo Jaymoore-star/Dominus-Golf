@@ -100,7 +100,7 @@ function downloadsHtml(downloads: { label: string; url: string }[]): string {
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#faf8f4;border:1px solid #e6e0d4;">
             <tr><td align="center" style="padding:20px 18px 8px;font-family:Arial,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#8a8375;">Your Download</td></tr>
             ${buttons}
-            <tr><td align="center" style="padding:8px 18px 20px;font-family:Arial,sans-serif;font-size:11px;color:#8a8375;">This link stays in your inbox — keep this email to download again later.</td></tr>
+            <tr><td align="center" style="padding:8px 18px 20px;font-family:Arial,sans-serif;font-size:11px;color:#8a8375;">This link stays in your inbox - keep this email to download again later.</td></tr>
           </table>
         </td></tr>`
 }
