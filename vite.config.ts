@@ -3,10 +3,10 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import fs from 'fs';
 import { products } from './src/data/products';
-import { execFileSync } from 'child_process';
 import { PAGE_SEO, SHOP_CATEGORIES, prerenderRoutes, routeSourceFiles } from './src/lib/pageSeo';
 import { renderHeadHtml } from './src/lib/headHtml';
 import { SITE } from './src/lib/seo';
+import { FILE_DATES } from './src/data/fileDates.generated';
 
 /**
  * Generates sitemap.xml from the live catalog, so a new product is listed for
@@ -19,35 +19,25 @@ function sitemapPlugin(): Plugin {
   const buildDate = new Date().toISOString().slice(0, 10);
 
   /**
-   * Last commit date of the files backing a route, as YYYY-MM-DD.
+   * Last-changed date of the files backing a route, as YYYY-MM-DD.
    *
    * Stamping every URL with the build date - which is what this did - tells
    * Google all 36 pages changed on every deploy. Identical dates that all move
    * together are exactly the pattern Google treats as noise and ignores, so the
    * signal was worth nothing. Real per-page dates make it worth something.
    *
-   * Falls back to the build date whenever git cannot answer: no git binary, a
-   * shallow CI clone with no history for the file, or a file that is new and
-   * not yet committed. A slightly-too-recent date is a much smaller problem
-   * than a failed build.
+   * Read from the committed snapshot in data/fileDates.generated.ts rather than
+   * by calling git here. Workers Builds clones shallowly, so a `git log` at
+   * build time returns nothing in CI and every URL quietly fell back to the
+   * build date - which shipped once before this was caught.
+   *
+   * Still falls back to the build date for a file with no entry yet, e.g. a
+   * page added since the last `npm run seo:dates`.
    */
-  const gitDate = (files: string[]): string => {
-    if (!files.length) return buildDate;
-
+  const lastChanged = (files: string[]): string => {
     const dates = files
-      .map((file) => {
-        try {
-          const out = execFileSync('git', ['log', '-1', '--format=%cI', '--', file], {
-            cwd: __dirname,
-            encoding: 'utf8',
-            stdio: ['ignore', 'pipe', 'ignore'],
-          }).trim();
-          return out ? out.slice(0, 10) : null;
-        } catch {
-          return null;
-        }
-      })
-      .filter((date): date is string => date !== null);
+      .map((file) => FILE_DATES[file])
+      .filter((date): date is string => Boolean(date));
 
     // A category page lists several catalog files; the newest edit is the one
     // that changed what a visitor sees.
@@ -61,7 +51,7 @@ function sitemapPlugin(): Plugin {
       urls.push({
         loc: `${SITE.url}${routePath}`,
         priority,
-        lastmod: gitDate(routeSourceFiles(routePath)),
+        lastmod: lastChanged(routeSourceFiles(routePath)),
       });
     };
 

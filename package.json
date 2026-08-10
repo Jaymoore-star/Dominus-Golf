@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run seo:reviews && vite build --mode production",
+    "build": "npm run seo:reviews && npm run seo:dates && vite build --mode production",
     "preview": "vite preview",
     "seo:reviews": "node scripts/fetch-review-summaries.mjs",
+    "seo:dates": "node scripts/generate-file-dates.mjs",
     "lint:css": "stylelint \"src/**/*.css\" --fix --quiet",
     "lint:js": "eslint . --report-unused-disable-directives",
     "lint:types": "tsc --noEmit",
