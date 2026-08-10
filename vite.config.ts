@@ -3,7 +3,8 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import fs from 'fs';
 import { products } from './src/data/products';
-import { PAGE_SEO, SHOP_CATEGORIES, prerenderRoutes } from './src/lib/pageSeo';
+import { execFileSync } from 'child_process';
+import { PAGE_SEO, SHOP_CATEGORIES, prerenderRoutes, routeSourceFiles } from './src/lib/pageSeo';
 import { renderHeadHtml } from './src/lib/headHtml';
 import { SITE } from './src/lib/seo';
 
@@ -15,30 +16,71 @@ import { SITE } from './src/lib/seo';
  * while telling robots not to index it sends Google contradictory signals.
  */
 function sitemapPlugin(): Plugin {
-  const build = () => {
-    const lastmod = new Date().toISOString().slice(0, 10);
+  const buildDate = new Date().toISOString().slice(0, 10);
 
-    const urls: Array<{ loc: string; priority: string }> = [];
+  /**
+   * Last commit date of the files backing a route, as YYYY-MM-DD.
+   *
+   * Stamping every URL with the build date - which is what this did - tells
+   * Google all 36 pages changed on every deploy. Identical dates that all move
+   * together are exactly the pattern Google treats as noise and ignores, so the
+   * signal was worth nothing. Real per-page dates make it worth something.
+   *
+   * Falls back to the build date whenever git cannot answer: no git binary, a
+   * shallow CI clone with no history for the file, or a file that is new and
+   * not yet committed. A slightly-too-recent date is a much smaller problem
+   * than a failed build.
+   */
+  const gitDate = (files: string[]): string => {
+    if (!files.length) return buildDate;
+
+    const dates = files
+      .map((file) => {
+        try {
+          const out = execFileSync('git', ['log', '-1', '--format=%cI', '--', file], {
+            cwd: __dirname,
+            encoding: 'utf8',
+            stdio: ['ignore', 'pipe', 'ignore'],
+          }).trim();
+          return out ? out.slice(0, 10) : null;
+        } catch {
+          return null;
+        }
+      })
+      .filter((date): date is string => date !== null);
+
+    // A category page lists several catalog files; the newest edit is the one
+    // that changed what a visitor sees.
+    return dates.length ? dates.sort().at(-1)! : buildDate;
+  };
+
+  const build = () => {
+    const urls: Array<{ loc: string; priority: string; lastmod: string }> = [];
+
+    const add = (routePath: string, priority: string) => {
+      urls.push({
+        loc: `${SITE.url}${routePath}`,
+        priority,
+        lastmod: gitDate(routeSourceFiles(routePath)),
+      });
+    };
 
     for (const [routePath, meta] of Object.entries(PAGE_SEO)) {
       if ('noindex' in meta && meta.noindex) continue;
-      urls.push({
-        loc: `${SITE.url}${routePath === '/' ? '/' : routePath}`,
-        priority: routePath === '/' ? '1.0' : '0.7',
-      });
+      add(routePath, routePath === '/' ? '1.0' : '0.7');
     }
 
     for (const category of Object.keys(SHOP_CATEGORIES)) {
-      urls.push({ loc: `${SITE.url}/shop/${category}`, priority: '0.8' });
+      add(`/shop/${category}`, '0.8');
     }
 
     for (const product of products) {
-      urls.push({ loc: `${SITE.url}/product/${product.id}`, priority: '0.9' });
+      add(`/product/${product.id}`, '0.9');
     }
 
     const body = urls
       .map(
-        ({ loc, priority }) =>
+        ({ loc, priority, lastmod }) =>
           `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <priority>${priority}</priority>\n  </url>`,
       )
       .join('\n');

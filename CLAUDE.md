@@ -22,13 +22,18 @@ See [Blink Migration](#blink-migration) below — **do not break the running app
 - **Reviews:** customer product reviews live in Supabase (`product_reviews`, RLS: public
   read, author-only write). Schema in `supabase/migrations/` — run it in the SQL Editor.
   The client degrades to read-only if the table is absent, so a missing migration is
-  silent rather than an error.
+  silent rather than an error. Ratings are also snapshotted into the tracked file
+  `src/data/reviewSummaries.generated.ts` at build time, to emit `aggregateRating`
+  in Product JSON-LD — never write that file by hand, and never emit a rating for a
+  product with no real reviews.
 - **Hosting:** two Cloudflare Workers — `dominus-golf-backend` (the API,
   `wrangler.backend.toml`) and `tit` (the site, assets-only, `wrangler.toml`).
   There is **no** Cloudflare Pages project; the Git connection is Workers Builds.
 - **SEO:** the build prerenders one static HTML file per route with that route's
   head baked in, so non-JS crawlers see real per-page tags. See `vite.config.ts`
-  → `prerenderPlugin`, and `docs/HANDOFF.md` §2b.
+  → `prerenderPlugin`, `docs/HANDOFF.md` §2b, and **`docs/SEO.md`** for the full
+  picture — including three fixes that can only be done in the Cloudflare and
+  Search Console dashboards.
 
 ## Commands
 
@@ -50,6 +55,8 @@ npm run lint:css   # stylelint --fix
 
 # Assets
 npm run og:images  # regenerate social share images after adding/changing a product
+npm run seo:reviews # refresh the real review ratings used for star ratings in Google
+                    # (runs automatically as part of `npm run build`)
 ```
 
 Lint state: `lint:types` and `lint:js` are clean. `lint:js` reports ~46 pre-existing

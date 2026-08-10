@@ -16,11 +16,17 @@
  * be missing from the prerendered HTML.
  */
 import { products } from '../data/products';
+import { trainingSystems } from '../data/products/trainingSystems';
+import { apparel } from '../data/products/apparel';
+import { accessories } from '../data/products/accessories';
+import { REVIEW_SUMMARIES } from '../data/reviewSummaries.generated';
 import {
   seo,
   clamp,
   productJsonLd,
   breadcrumbJsonLd,
+  organizationJsonLd,
+  websiteJsonLd,
   type SeoInput,
 } from './seo';
 
@@ -217,6 +223,73 @@ export const SHOP_CATEGORIES = {
 
 export type StaticPath = keyof typeof PAGE_SEO;
 
+// ── Sitemap lastmod ────────────────────────────────────────────────────────
+
+/**
+ * The source file whose history stands for each indexed page's content, used by
+ * the sitemap plugin to date that URL from git rather than stamping every entry
+ * with the build date.
+ *
+ * Only indexed routes appear — `noindex` pages are never listed in the sitemap.
+ *
+ * Deliberately the page component and the product data, *not* this file. Titles
+ * and descriptions live here, so including it would move all 36 dates together
+ * on any copy edit, which is the uniform-timestamp problem being fixed. What a
+ * reader would call the page's content is in the component.
+ */
+const PAGE_SOURCE: Partial<Record<StaticPath, string>> = {
+  '/': 'src/pages/HomePage.tsx',
+  '/about': 'src/pages/AboutPage.tsx',
+  '/about/team': 'src/pages/TeamPage.tsx',
+  '/about/contact': 'src/pages/ContactPage.tsx',
+  '/about/careers': 'src/pages/CareersPage.tsx',
+  '/about/sustainability': 'src/pages/SustainabilityPage.tsx',
+  '/beginners': 'src/pages/BeginnersPage.tsx',
+  '/tour-pure-guide': 'src/pages/TourPureGuidePage.tsx',
+  '/feel-right-band-guide': 'src/pages/FeelRightBandGuidePage.tsx',
+  '/grant': 'src/pages/GrantPage.tsx',
+  '/pros': 'src/pages/ProDirectoryPage.tsx',
+  '/leroy-bates': 'src/pages/LeroyBatesPage.tsx',
+  '/gabe-salvanera': 'src/pages/GabeSalvaneraPage.tsx',
+  '/affiliates': 'src/pages/AffiliatesPage.tsx',
+  '/shipping-policy': 'src/pages/ShippingPolicyPage.tsx',
+  '/terms': 'src/pages/TermsPage.tsx',
+  '/safety-disclaimer': 'src/pages/SafetyDisclaimerPage.tsx',
+};
+
+/** Catalog files, in the order products.ts concatenates them. */
+const PRODUCT_SOURCES = [
+  { file: 'src/data/products/trainingSystems.ts', ids: new Set(trainingSystems.map((p) => p.id)) },
+  { file: 'src/data/products/accessories.ts', ids: new Set(accessories.map((p) => p.id)) },
+  { file: 'src/data/products/apparel.ts', ids: new Set(apparel.map((p) => p.id)) },
+];
+
+/**
+ * Files that decide a URL's content, for `lastmod`. An empty list means "no
+ * better answer than the build date" — the sitemap plugin falls back for those.
+ *
+ * A product page is dated by its catalog entry: price, copy and stock all live
+ * there, and ProductPage.tsx is a shared template whose every edit would
+ * otherwise re-date all 13 products at once.
+ */
+export function routeSourceFiles(routePath: string): string[] {
+  const page = PAGE_SOURCE[routePath as StaticPath];
+  if (page) return [page];
+
+  if (routePath.startsWith('/product/')) {
+    const id = routePath.slice('/product/'.length);
+    const source = PRODUCT_SOURCES.find((entry) => entry.ids.has(id));
+    return source ? [source.file] : [];
+  }
+
+  // A category listing changes when the catalog it lists changes.
+  if (routePath.startsWith('/shop/')) {
+    return [...PRODUCT_SOURCES.map((entry) => entry.file), 'src/data/categories.ts'];
+  }
+
+  return [];
+}
+
 /** Build a route `head()` for a static path from the table above. */
 export function pageHead(path: StaticPath) {
   return () => seo({ path, ...PAGE_SEO[path] });
@@ -271,7 +344,9 @@ export function productHead(id: string) {
     image: `/images/og/${product.id}.jpg`,
     type: 'product',
     jsonLd: [
-      productJsonLd(product),
+      // Absent from the snapshot means nobody has reviewed it — productJsonLd
+      // then omits aggregateRating rather than inventing one.
+      productJsonLd(product, REVIEW_SUMMARIES[product.id]),
       breadcrumbJsonLd([
         { name: 'Home', path: '/' },
         { name: 'Shop', path: '/shop/all' },
@@ -300,6 +375,20 @@ export function prerenderRoutes(): Array<{ path: string; head: ReturnType<typeof
   }
   for (const product of products) {
     routes.push({ path: `/product/${product.id}`, head: productHead(product.id) });
+  }
+
+  /* Sitewide JSON-LD, which the root route emits at runtime in App.tsx.
+     The prerenderer only walks the routes above, so until this was added the
+     static HTML carried no Organization or WebSite schema at all - a crawler
+     that does not run JavaScript never saw either, which defeats the point of
+     prerendering. Applied to every page rather than just the home page because
+     the root route is an ancestor of every match, so this is what the hydrated
+     DOM contains too. */
+  const sitewide = [organizationJsonLd(), websiteJsonLd()].map((block) => ({
+    'script:ld+json': block,
+  }));
+  for (const route of routes) {
+    route.head.meta.push(...sitewide);
   }
 
   return routes;

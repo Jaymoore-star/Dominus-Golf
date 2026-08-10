@@ -129,6 +129,21 @@ export function seo(input: SeoInput): { meta: MetaEntry[]; links: LinkEntry[] } 
 
 // ── Structured data ────────────────────────────────────────────────────────
 
+/**
+ * Official social profiles, for the `sameAs` field.
+ *
+ * This is how Google ties the site, the accounts and the brand together into one
+ * entity for the knowledge panel. Must stay in sync with the icons in
+ * components/layout/Footer.tsx, and must only ever list profiles Dominus Golf
+ * actually controls — `sameAs` is an identity claim.
+ */
+const SOCIAL_PROFILES = [
+  'https://www.facebook.com/DominusGolf',
+  'https://www.instagram.com/dominus_golf/',
+  'https://www.youtube.com/@DominusGolf',
+  'https://x.com/GolfDominus',
+];
+
 export function organizationJsonLd(): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
@@ -137,6 +152,7 @@ export function organizationJsonLd(): Record<string, unknown> {
     url: SITE.url,
     logo: absoluteUrl('/images/dominus-logo.png'),
     email: 'Customersupport@dominusgolf.com',
+    sameAs: SOCIAL_PROFILES,
   };
 }
 
@@ -149,11 +165,17 @@ export function websiteJsonLd(): Record<string, unknown> {
   };
 }
 
+/** A real rating, averaged over real reviews. Never synthesised. */
+export type RatingSummary = { average: number; count: number };
+
 /**
  * Product schema — this is what puts price, availability and star ratings
  * directly into Google results.
  */
-export function productJsonLd(product: Product): Record<string, unknown> {
+export function productJsonLd(
+  product: Product,
+  rating?: RatingSummary,
+): Record<string, unknown> {
   const data: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -174,10 +196,22 @@ export function productJsonLd(product: Product): Record<string, unknown> {
     },
   };
 
-  /* No aggregateRating. It used to be emitted from hardcoded product figures,
-     which is exactly the invented review markup Google penalises. Real reviews
-     live in Supabase and are not readable at prerender time, so the safe
-     answer is to omit the field rather than fabricate it. */
+  /* aggregateRating comes only from real reviews.
+     This once emitted hardcoded product figures, which is exactly the invented
+     review markup Google penalises. The ratings now come from the Supabase
+     product_reviews table, snapshotted at build time into
+     data/reviewSummaries.generated.ts so the prerendered HTML and the hydrated
+     DOM agree. A product nobody has reviewed gets no rating at all rather than
+     a zero — there is no honest way to mark up "unrated". */
+  if (rating && rating.count > 0) {
+    data.aggregateRating = {
+      '@type': 'AggregateRating',
+      ratingValue: rating.average,
+      reviewCount: rating.count,
+      bestRating: 5,
+      worstRating: 1,
+    };
+  }
 
   return data;
 }
