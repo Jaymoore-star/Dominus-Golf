@@ -11,6 +11,7 @@
  *   { 'script:ld+json': {...} }   -> <script type="application/ld+json">
  */
 import type { Product } from '../data/types';
+import { shippingFeeFor } from './shipping';
 
 export const SITE = {
   name: 'Dominus Golf',
@@ -176,6 +177,71 @@ export function productJsonLd(
   product: Product,
   rating?: RatingSummary,
 ): Record<string, unknown> {
+  const offer: Record<string, unknown> = {
+    '@type': 'Offer',
+    url: absoluteUrl(`/product/${product.id}`),
+    price: product.price.toFixed(2),
+    priceCurrency: 'USD',
+    availability: product.inStock
+      ? 'https://schema.org/InStock'
+      : 'https://schema.org/OutOfStock',
+    seller: { '@type': 'Organization', name: SITE.name },
+  };
+
+  /* Shipping cost, delivery estimate and returns, for merchant listings.
+     Physical goods only: a download has no shipping and is not covered by a
+     policy written around "unopened products in original condition", so
+     claiming either for the eBook would be marking up something untrue.
+
+     Every value here traces to something already published. The rate comes from
+     shippingFeeFor() so the markup and the checkout cannot disagree; the times
+     and the returns terms are the shipping policy page verbatim. */
+  if (!product.digital) {
+    offer.shippingDetails = {
+      '@type': 'OfferShippingDetails',
+      shippingRate: {
+        '@type': 'MonetaryAmount',
+        // Priced for a single unit, which is what a product page offers. No
+        // product currently reaches FREE_SHIPPING_THRESHOLD on its own, so this
+        // is the flat rate today - it becomes 0 for anything listed above it.
+        value: shippingFeeFor(product.price, true).toFixed(2),
+        currency: 'USD',
+      },
+      shippingDestination: {
+        '@type': 'DefinedRegion',
+        addressCountry: 'US',
+      },
+      deliveryTime: {
+        '@type': 'ShippingDeliveryTime',
+        // "Processed within 1-3 business days", then "standard 3-7 business days".
+        handlingTime: {
+          '@type': 'QuantitativeValue',
+          minValue: 1,
+          maxValue: 3,
+          unitCode: 'DAY',
+        },
+        transitTime: {
+          '@type': 'QuantitativeValue',
+          minValue: 3,
+          maxValue: 7,
+          unitCode: 'DAY',
+        },
+      },
+    };
+
+    offer.hasMerchantReturnPolicy = {
+      '@type': 'MerchantReturnPolicy',
+      applicableCountry: 'US',
+      returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+      merchantReturnDays: 30,
+      returnMethod: 'https://schema.org/ReturnByMail',
+      // The buyer pays return postage unless the item was defective or wrong.
+      // Deliberately not ReturnShippingFees, which would require naming a fixed
+      // amount we do not charge - the customer pays the carrier directly.
+      returnFees: 'https://schema.org/ReturnFeesCustomerResponsibility',
+    };
+  }
+
   const data: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -184,16 +250,7 @@ export function productJsonLd(
     image: (product.gallery?.length ? product.gallery : [product.image]).map(absoluteUrl),
     sku: product.id,
     brand: { '@type': 'Brand', name: SITE.name },
-    offers: {
-      '@type': 'Offer',
-      url: absoluteUrl(`/product/${product.id}`),
-      price: product.price.toFixed(2),
-      priceCurrency: 'USD',
-      availability: product.inStock
-        ? 'https://schema.org/InStock'
-        : 'https://schema.org/OutOfStock',
-      seller: { '@type': 'Organization', name: SITE.name },
-    },
+    offers: offer,
   };
 
   /* aggregateRating comes only from real reviews.
