@@ -18,7 +18,9 @@ Nothing here needs doing again — it is background for the sections below.
 | `sitemap.xml`, 36 indexed URLs, real per-URL `lastmod` | `sitemapPlugin` in `vite.config.ts` |
 | `robots.txt` | `public/robots.txt` |
 | JSON-LD: Organization, WebSite, Product, AggregateRating, BreadcrumbList | `src/lib/seo.ts` |
+| Shipping cost, delivery estimate and returns in Product schema | `src/lib/seo.ts` |
 | Real star ratings from Supabase reviews | `scripts/fetch-review-summaries.mjs` |
+| `google-merchant.xml` product feed, 36 entries | `src/lib/merchantFeed.ts` |
 
 ### Star ratings in search results
 
@@ -47,6 +49,50 @@ number is snapshotted.
 > The markup is correct but thin. Google shows stars more readily with more
 > reviews, so **asking buyers for reviews is the highest-leverage SEO action
 > available right now** — it needs no code.
+
+### Shipping and returns in Product schema
+
+Google reads `shippingDetails` and `hasMerchantReturnPolicy` for merchant
+listings and shows delivery cost and timing next to a product. Every value
+traces to something already published: the rate comes from `shippingFeeFor()`,
+the same function checkout charges against, and the 1–3 day handling, 3–7 day
+transit and 30 day return window are the shipping policy page as written.
+
+Physical goods only. A download has no shipping, and a policy phrased around
+"unopened products in original condition" does not cover a PDF.
+
+> **No product will show a "free delivery" annotation.** Free shipping starts at
+> $150 and the catalogue tops out at $59.99, so a single-unit order — which is
+> what a product page offers — is always the $6.99 rate. The code already
+> handles the threshold and emits `0` for anything listed above it. This is
+> correct behaviour, not a bug to chase.
+
+### Google Merchant Center feed
+
+`https://www.dominusgolf.com/google-merchant.xml`, built from the same `products`
+array the storefront renders, so a new product is listed with no spreadsheet to
+maintain.
+
+36 entries from 12 physical products, because **apparel is one entry per size**.
+Google requires `size`, `color`, `gender`, `age_group` and an `item_group_id`
+tying the sizes together; a single entry listing five sizes gets disapproved.
+
+Three deliberate choices, each because the alternative would be a data-quality
+violation rather than merely worse:
+
+- **`identifier_exists: no`.** Own-brand goods with no barcode and no
+  manufacturer part number. The blank garment's model in `specs` is the
+  supplier's, not this product's, so it is not an MPN. Inventing a GTIN is a
+  policy breach.
+- **No `google_product_category`.** Its values must match Google's taxonomy
+  exactly, and a wrong string is worse than letting Google classify the item.
+  `product_type` carries our own path instead, which is free text.
+- **The eBook is excluded.** Merchant Center treats digital goods under
+  different rules and a shipping declaration is meaningless for a download.
+
+Sold-out items stay in the feed as `out_of_stock` rather than being removed —
+pulling a listing loses its history and it starts from scratch when stock
+returns.
 
 ---
 
@@ -154,6 +200,29 @@ exists but `VITE_GA4_ID` is unset, so nothing is running on the live pages.
    result is detected with a rating.
 3. Watch **Enhancements → Merchant listings** over the following week for
    structured-data errors.
+
+### 2.4 Connect the Merchant Center feed
+
+The feed is generated and live, but nothing consumes it until a Merchant Center
+account points at it.
+
+1. <https://merchants.google.com> → create an account for `dominusgolf.com`.
+2. Verify and claim the website. It offers the same methods as Search Console;
+   the domain is already verified there, which usually makes this one click.
+3. **Products → Data sources → Add product source → scheduled fetch**, with
+   `https://www.dominusgolf.com/google-merchant.xml`, fetched daily.
+4. Under **Growth / Manage programs**, enable **free listings**. Without it the
+   feed only serves paid Shopping ads, which is not the point here.
+5. Set the account-level **shipping** and **returns** policies to match
+   `docs`-documented terms, or Merchant Center overrides the per-item values.
+
+Expect disapprovals on the first fetch and read them rather than assuming the
+feed is wrong — the common ones are account-level policy gaps, not item data.
+
+**Check it.**
+```bash
+curl -s https://www.dominusgolf.com/google-merchant.xml | grep -c "<item>"   # 36
+```
 
 Worth doing at the same time: **Bing Webmaster Tools**
 (<https://www.bing.com/webmasters>) can import directly from Search Console, and

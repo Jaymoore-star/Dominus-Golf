@@ -7,6 +7,7 @@ import { PAGE_SEO, SHOP_CATEGORIES, prerenderRoutes, routeSourceFiles } from './
 import { renderHeadHtml } from './src/lib/headHtml';
 import { SITE } from './src/lib/seo';
 import { FILE_DATES } from './src/data/fileDates.generated';
+import { buildMerchantFeed } from './src/lib/merchantFeed';
 
 /**
  * Generates sitemap.xml from the live catalog, so a new product is listed for
@@ -99,6 +100,32 @@ function sitemapPlugin(): Plugin {
   };
 }
 
+/**
+ * Writes the Google Merchant Center feed, so the catalogue can appear in
+ * Shopping's free listings. Same reasoning as the sitemap: generated from the
+ * live product data, so there is no separate file to keep in step.
+ */
+function merchantFeedPlugin(): Plugin {
+  return {
+    name: 'dominus-merchant-feed',
+
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        if (req.url?.split('?')[0] !== '/google-merchant.xml') return next();
+        res.setHeader('Content-Type', 'application/xml');
+        res.end(buildMerchantFeed());
+      });
+    },
+
+    closeBundle() {
+      const outDir = path.resolve(__dirname, 'dist');
+      if (!fs.existsSync(outDir)) return;
+      fs.writeFileSync(path.join(outDir, 'google-merchant.xml'), buildMerchantFeed(), 'utf8');
+      console.log('  \x1b[32m✓\x1b[0m google-merchant.xml generated');
+    },
+  };
+}
+
 /** Region of index.html the prerenderer owns - see the markers in that file. */
 const SEO_BLOCK = /<!--\s*seo:start[\s\S]*?<!--\s*seo:end\s*-->/;
 
@@ -173,7 +200,7 @@ function prerenderPlugin(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [react(), sitemapPlugin(), prerenderPlugin()],
+  plugins: [react(), sitemapPlugin(), merchantFeedPlugin(), prerenderPlugin()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
