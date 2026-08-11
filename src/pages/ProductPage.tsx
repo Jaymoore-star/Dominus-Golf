@@ -76,6 +76,17 @@ export function ProductPage() {
   );
   const related = [...sameCategory, ...otherProducts].slice(0, 4);
 
+  /* The guide page for this product, if it has one. Keyed off the same ids the
+     overview blocks below are keyed off, so a product cannot end up rendering a
+     guide's content while linking nowhere. */
+  const guidePath = !product
+    ? null
+    : product.id.startsWith('tour-pure')
+      ? ('/tour-pure-guide' as const)
+      : product.id === 'feel-right-band'
+        ? ('/feel-right-band-guide' as const)
+        : null;
+
   const [isBuyingNow, setIsBuyingNow] = useState(false);
 
   if (!product) {
@@ -193,6 +204,21 @@ export function ProductPage() {
         {/* Tour Pure Overview (Conditional) */}
         {product.id.startsWith('tour-pure') && <TourPureOverview />}
         {product.id === 'feel-right-band' && <FeelRightBandOverview />}
+
+        {/* Points at the guide page that owns this method. The block above is
+            the same component the guide renders, so without a link the two URLs
+            carried identical content and nothing said which one was the source. */}
+        {guidePath && (
+          <div className="mt-10 flex justify-center">
+            <Link
+              to={guidePath}
+              className="group inline-flex items-center gap-2 border border-border px-6 py-3 rounded-lg font-sans text-[11px] font-semibold tracking-widest uppercase text-foreground hover:border-accent hover:text-accent transition-colors"
+            >
+              Read the full training guide
+              <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">→</span>
+            </Link>
+          </div>
+        )}
 
         {/* Related Products */}
         {related.length > 0 && (

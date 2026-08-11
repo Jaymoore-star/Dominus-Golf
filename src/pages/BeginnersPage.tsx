@@ -164,6 +164,21 @@ export function BeginnersPage() {
               Shop Tour Pure Women
             </Link>
           </div>
+
+          {/* This page is written for someone searching "golf training aid for
+              beginners", and the next thing they need is the method, not another
+              product. It previously linked to neither guide. */}
+          <p className="font-sans text-sm text-muted-foreground leading-relaxed mt-8">
+            Not sure how to train with it yet? Start with the{' '}
+            <Link to="/tour-pure-guide" className="text-accent hover:underline">
+              Tour Pure training guide
+            </Link>{' '}
+            or the{' '}
+            <Link to="/feel-right-band-guide" className="text-accent hover:underline">
+              Feel Rite Band guide
+            </Link>
+            .
+          </p>
         </div>
       </section>
 
