@@ -64,6 +64,50 @@ function sizesOf(product: Product): Array<string | null> {
  * One `<item>`. `size` is null for everything except apparel, where the caller
  * emits one call per size.
  */
+/**
+ * The product's opening paragraph, with promotional cross-sell removed.
+ *
+ * The physical book was rejected as **"Digital books not supported"**. Nothing
+ * about the entry says digital — the title ends "(Physical Copy)", the specs say
+ * "Physical Spiral-bound Hard Copy", and it declares a shipping rate. What did
+ * it was the last sentence of the description:
+ *
+ *     FREE (PDF Version) with the purchase of any Tour Pure trainer.
+ *
+ * That is a cross-sell for the *other* product — the separate PDF, which is
+ * `digital: true` and excluded from the feed. Google's automated check read
+ * "PDF Version" in a book's description and classified the book as an eBook.
+ *
+ * Dropping it is right on its own terms, independent of the rejection: Google's
+ * feed spec asks descriptions to describe the product and to leave out
+ * promotional text, which is exactly what a "free with purchase of" line is.
+ *
+ * Deliberately feed-only. The sentence stays on the product page, where it is
+ * true and useful — the site's copy is not Merchant Center's to dictate.
+ */
+export function feedDescription(product: Product): string {
+  const opening = product.description.split('\n\n')[0];
+
+  // Split on sentence ends, keeping the terminator, then drop the promotional
+  // ones. Matching whole sentences rather than deleting the phrase avoids
+  // leaving a dangling fragment behind.
+  const kept = (opening.match(/[^.!?]+[.!?]*/g) ?? [opening]).filter((sentence) => {
+    const text = sentence.toLowerCase();
+    const isOffer = /\bfree\b|\bbonus\b|\bdiscount\b|\bsale\b/.test(text);
+    // Both halves must match. "Includes" alone is ordinary description ("Includes
+    // three resistance bands") and must survive; it is only promotional next to
+    // "free" or "bonus".
+    const isConditional =
+      /with (the )?purchase|when you buy|\binclude[sd]?\b|\bcomes with\b/.test(text);
+    return !(isOffer && isConditional);
+  });
+
+  // If every sentence looked promotional, keep the original rather than emit an
+  // empty description — a missing description fails the feed outright.
+  const cleaned = kept.join('').trim();
+  return clamp(cleaned || opening, 500);
+}
+
 function itemXml(product: Product, size: string | null): string {
   const lines: string[] = [];
 
@@ -77,8 +121,9 @@ function itemXml(product: Product, size: string | null): string {
   }
 
   lines.push(tag('g:title', product.name));
-  // The catalogue's own opening paragraph, as on the product page.
-  lines.push(tag('g:description', clamp(product.description.split('\n\n')[0], 500)));
+  // The catalogue's own opening paragraph, as on the product page, minus the
+  // promotional sentences — see feedDescription.
+  lines.push(tag('g:description', feedDescription(product)));
   lines.push(tag('g:link', absoluteUrl(`/product/${product.id}`)));
 
   lines.push(tag('g:image_link', absoluteUrl(product.image)));
