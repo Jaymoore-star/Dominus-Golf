@@ -15,7 +15,7 @@
  * in every page component), so anything only reachable from there would silently
  * be missing from the prerendered HTML.
  */
-import { products } from '../data/products';
+import { products, productsInShopCategory } from '../data/products';
 import { trainingSystems } from '../data/products/trainingSystems';
 import { apparel } from '../data/products/apparel';
 import { accessories } from '../data/products/accessories';
@@ -27,6 +27,7 @@ import {
   breadcrumbJsonLd,
   organizationJsonLd,
   websiteJsonLd,
+  itemListJsonLd,
   type SeoInput,
 } from './seo';
 
@@ -305,6 +306,10 @@ export function shopCategoryHead(category: string) {
     category
   ];
 
+  // The same resolver the page renders from, so the ItemList and the grid
+  // cannot disagree about what this category contains.
+  const listed = productsInShopCategory(category);
+
   return seo({
     path: `/shop/${category}`,
     title: meta?.label ?? 'Shop',
@@ -315,6 +320,15 @@ export function shopCategoryHead(category: string) {
         { name: 'Home', path: '/' },
         { name: meta?.label ?? 'Shop', path: `/shop/${category}` },
       ]),
+      // Omitted rather than emitted empty: an ItemList with no items describes
+      // the page as a collection of nothing, which is worse than staying quiet.
+      ...(listed.length
+        ? [
+            itemListJsonLd(
+              listed.map((p) => ({ name: p.name, path: `/product/${p.id}` })),
+            ),
+          ]
+        : []),
     ],
   });
 }

@@ -185,6 +185,11 @@ export function productJsonLd(
     availability: product.inStock
       ? 'https://schema.org/InStock'
       : 'https://schema.org/OutOfStock',
+    // Recommended for merchant listings, and unambiguous here: everything in
+    // the catalogue is sold new, direct from the brand. Google warns on its
+    // absence rather than failing, but an explicit value is one less reason for
+    // an item to be held back from free listings.
+    itemCondition: 'https://schema.org/NewCondition',
     seller: { '@type': 'Organization', name: SITE.name },
   };
 
@@ -271,6 +276,36 @@ export function productJsonLd(
   }
 
   return data;
+}
+
+/**
+ * ItemList for a `/shop/$category` page — the products it lists, in the order a
+ * visitor sees them.
+ *
+ * A category page previously carried only a BreadcrumbList, which says where the
+ * page sits but nothing about what is on it. This tells Google the page is a
+ * collection and which products it collects, so the listing is understood as a
+ * category rather than as a thin page of links.
+ *
+ * Deliberately a *summary* list — position and `url` per entry, no nested
+ * Product objects. The full Product schema, with price, availability and
+ * rating, lives on each product page, and repeating a partial copy here would
+ * give Google two descriptions of the same item to reconcile.
+ */
+export function itemListJsonLd(
+  items: Array<{ name: string; path: string }>,
+): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    numberOfItems: items.length,
+    itemListElement: items.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: item.name,
+      url: absoluteUrl(item.path),
+    })),
+  };
 }
 
 export function breadcrumbJsonLd(

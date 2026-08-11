@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useNavigate, useParams, Link } from '@tanstack/react-router';
 import { SlidersHorizontal, ChevronDown, X } from 'lucide-react';
-import { products, type Category } from '../data/products';
+import { productsInShopCategory } from '../data/products';
 import { ProductCard } from '../components/ui/ProductCard';
 import { ApparelProductCard } from '../components/ui/ApparelProductCard';
 import { Navbar } from '../components/layout/Navbar';
@@ -27,7 +27,9 @@ const categoryLabels: Record<string, string> = {
  * item. Counted off the raw catalogue, not the filtered list, so moving the price
  * slider doesn't make categories disappear mid-browse.
  */
-const stockedCategories = new Set(products.map((p) => p.category));
+const stockedCategories = new Set(
+  Object.keys(categoryLabels).filter((key) => productsInShopCategory(key).length > 0),
+);
 
 type FilterValues = { category: string; maxPrice: number; inStockOnly: boolean };
 
@@ -36,7 +38,6 @@ export function ShopPage() {
   const [sort, setSort] = useState<SortKey>('featured');
   const [inStockOnly, setInStockOnly] = useState(false);
   const [maxPrice, setMaxPrice] = useState(200);
-  const [displayPrice, setDisplayPrice] = useState(200);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
   const navigate = useNavigate();
@@ -65,12 +66,12 @@ export function ShopPage() {
 
   const categoryLabel = categoryLabels[category] ?? category;
 
-  const categoryIsEmpty = !stockedCategories.has(category as Category);
+  const categoryIsEmpty = !stockedCategories.has(category);
 
   const visibleCategories = useMemo(
     () =>
       Object.entries(categoryLabels).filter(
-        ([key]) => stockedCategories.has(key as Category) || key === category,
+        ([key]) => stockedCategories.has(key) || key === category,
       ),
     [category],
   );
@@ -82,9 +83,7 @@ export function ShopPage() {
       'dominus-tee-performance-white',
     ]);
 
-    let list = products.filter(
-      (p) => !category || category === 'all' || p.category === (category as Category),
-    );
+    let list = productsInShopCategory(category);
 
     if (category === 'apparel') {
       list = list.filter((p) => !APPAREL_SECONDARY_IDS.has(p.id));
