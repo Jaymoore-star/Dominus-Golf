@@ -18,6 +18,7 @@ import { useWishlist } from '../../store/wishlistStore';
 import { useAuth } from '../../hooks/useAuth';
 import { useScrollLock } from '../../hooks/useScrollLock';
 import { products } from '../../data/products';
+import { href } from '../../lib/routerLinks';
 
 type MegaMenuKey = 'training' | 'guide' | 'apparel' | 'accessories' | 'pros' | 'company' | null;
 
@@ -615,7 +616,7 @@ export function Navbar() {
                                 </a>
                               ) : (
                                 <Link
-                                  to={link.href as any}
+                                  to={href(link.href)}
                                   onClick={() => setActiveMega(null)}
                                   className="font-sans text-sm text-foreground hover:text-accent transition-colors duration-150 gold-underline-hover inline-block"
                                 >
@@ -634,7 +635,7 @@ export function Navbar() {
                       out of the menu rather than one more product. */}
                   {mega.shopAll && (
                     <Link
-                      to={mega.shopAll.href as any}
+                      to={href(mega.shopAll.href)}
                       onClick={() => setActiveMega(null)}
                       className="group inline-flex items-center gap-2 mt-8 pt-5 border-t border-border font-sans text-[11px] font-semibold tracking-widest uppercase text-foreground hover:text-accent transition-colors"
                     >
@@ -730,7 +731,7 @@ export function Navbar() {
                                 ) : (
                                   <Link
                                     key={l.label}
-                                    to={l.href as any}
+                                    to={href(l.href)}
                                     onClick={() => setMobileOpen(false)}
                                     className="block py-1.5 font-sans text-sm text-foreground hover:text-accent transition-colors"
                                   >
@@ -745,7 +746,7 @@ export function Navbar() {
                               it no longer lives inside a column. */}
                           {megaMenuData[link.key]?.shopAll && (
                             <Link
-                              to={megaMenuData[link.key]!.shopAll!.href as any}
+                              to={href(megaMenuData[link.key]!.shopAll!.href)}
                               onClick={() => setMobileOpen(false)}
                               className="flex items-center gap-2 mt-4 pt-4 border-t border-border font-sans text-[11px] font-semibold tracking-widest uppercase text-foreground"
                             >

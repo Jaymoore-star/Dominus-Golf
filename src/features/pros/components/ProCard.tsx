@@ -55,9 +55,13 @@ export function ProCard({ pro, onClick }: ProCardProps) {
           >
             Quick View
           </button>
+          {/* rounded-lg is explicit because the global "links styled as buttons"
+              rule in index.css keys off an anchor carrying BOTH px- and py-, and
+              this one is a grid cell that needs no horizontal padding. Without
+              it this sat square next to the rounded <button> beside it. */}
           <Link
             to={profileTo}
-            className="font-sans font-semibold text-[10px] tracking-widest uppercase py-2.5 bg-accent text-accent-foreground group-hover:bg-accent/90 transition-colors duration-200 text-center"
+            className="font-sans font-semibold text-[10px] tracking-widest uppercase py-2.5 rounded-lg bg-accent text-accent-foreground group-hover:bg-accent/90 transition-colors duration-200 text-center"
           >
             View Profile
           </Link>

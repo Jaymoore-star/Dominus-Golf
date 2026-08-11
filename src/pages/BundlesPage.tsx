@@ -2,20 +2,27 @@ import { useState } from 'react';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { CartDrawer } from '../components/cart/CartDrawer';
-import { Check, Info, ArrowRight, ShieldCheck, Truck, Zap } from 'lucide-react';
+import { Check, Info, ArrowRight, Truck, Zap } from 'lucide-react';
 import { useCart } from '../store/cartStore';
 import { toast } from 'sonner';
 import type { Product } from '../data/products';
 
+/**
+ * One entry in `bundlesData`. Previously declared but never referenced, while
+ * the only consumer took `any` — so it described a shape nothing checked. It now
+ * types that consumer, and the fields match the data as actually written:
+ * `badge` is optional because only some tiers carry one.
+ */
 type BundleTier = {
   id: string;
   name: string;
   price: number;
+  category: string;
   description: string;
   badge?: string;
   features: string[];
   image: string;
-  stripeUrl?: string;
+  inStock: boolean;
 };
 
 const bundlesData = {
@@ -99,7 +106,7 @@ export function BundlesPage() {
   const [gender, setGender] = useState<'men' | 'women'>('men');
   const { addItem, openCart } = useCart();
 
-  const handleAddToCart = (bundle: any) => {
+  const handleAddToCart = (bundle: BundleTier) => {
     addItem({
       ...bundle,
       name: bundle.name + (gender === 'men' ? " (Men's)" : " (Women's)"),

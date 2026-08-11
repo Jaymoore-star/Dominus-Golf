@@ -9,6 +9,7 @@ import {
 } from '../../lib/accountProfile';
 import { FieldError } from '../../components/auth/FieldError';
 import { AccountCard, AccountLayout } from './AccountLayout';
+import { errorMessage } from '../../lib/errors';
 
 const TOGGLES: { key: keyof AccountPreferences; label: string; description: string }[] = [
   {
@@ -59,8 +60,8 @@ export function AccountPreferencesPage() {
       });
       if (updateError) throw updateError;
       setNotice('Preferences saved.');
-    } catch (err: any) {
-      setError(err?.message || 'Could not save your preferences. Please try again.');
+    } catch (err: unknown) {
+      setError(errorMessage(err, 'Could not save your preferences. Please try again.'));
     } finally {
       setSaving(false);
     }

@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
-import { ChevronDown, BookOpen, Target, Zap, Activity } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 export function HeroSection() {
   const [systemsOpen, setSystemsOpen] = useState(false);

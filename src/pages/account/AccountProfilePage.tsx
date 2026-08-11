@@ -3,8 +3,10 @@ import { AlertCircle, CheckCircle2, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../hooks/useAuth';
 import { passwordChecksFor, validatePassword } from '../../lib/passwordRules';
-import { FieldError, fieldClass } from '../../components/auth/FieldError';
+import { FieldError } from '../../components/auth/FieldError';
+import { fieldClass } from '../../components/auth/fieldClass';
 import { AccountCard, AccountLayout } from './AccountLayout';
+import { errorMessage } from '../../lib/errors';
 
 const labelClass =
   'block font-sans text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-2';
@@ -55,8 +57,8 @@ export function AccountProfilePage() {
       const { error } = await supabase.auth.updateUser({ data: { displayName: trimmed } });
       if (error) throw error;
       setNameNotice('Name updated.');
-    } catch (err: any) {
-      setNameError(err?.message || 'Could not update your name. Please try again.');
+    } catch (err: unknown) {
+      setNameError(errorMessage(err, 'Could not update your name. Please try again.'));
     } finally {
       setSavingName(false);
     }
@@ -85,12 +87,12 @@ export function AccountProfilePage() {
       setNewPassword('');
       setConfirmPassword('');
       setPasswordNotice('Password changed. Use it next time you sign in.');
-    } catch (err: any) {
-      const msg = (err?.message || '').toLowerCase();
+    } catch (err: unknown) {
+      const msg = errorMessage(err).toLowerCase();
       if (msg.includes('password')) {
         setPasswordError('That password does not meet the requirements above.');
       } else {
-        setPasswordError(err?.message || 'Could not change your password. Please try again.');
+        setPasswordError(errorMessage(err, 'Could not change your password. Please try again.'));
       }
     } finally {
       setSavingPassword(false);

@@ -4,13 +4,16 @@ import { cn } from "@/lib/utils"
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react"
 
 function Accordion({ className, ...props }: AccordionPrimitive.Root.Props) {
-  const { collapsible, ...rest } = props as any
+  /* This previously read `const { collapsible, ...rest } = props as any` and
+     then passed `collapsible={collapsible} {...rest}` — which destructured one
+     key out and put it straight back, so it was a no-op that cost the type of
+     every other prop on the way through. `collapsible` is not in Root.Props in
+     the base-ui release this vendors, and nothing in the app passes it. */
   return (
     <AccordionPrimitive.Root
       data-slot="accordion"
       className={cn("flex w-full flex-col", className)}
-      collapsible={collapsible}
-      {...rest}
+      {...props}
     />
   )
 }

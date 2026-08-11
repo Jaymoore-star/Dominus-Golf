@@ -5,8 +5,10 @@ import { supabase } from '@/lib/supabase'
 import { peekPostLoginRedirect } from '@/hooks/useRequireAuth'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
-import { FieldError, fieldClass } from '@/components/auth/FieldError'
+import { FieldError } from '@/components/auth/FieldError'
+import { fieldClass } from '@/components/auth/fieldClass'
 import { passwordChecksFor, validatePassword } from '@/lib/passwordRules'
+import { errorMessage } from '../lib/errors'
 
 type FieldErrors = { email?: string; password?: string; confirmPassword?: string }
 
@@ -94,8 +96,8 @@ export function SignupPage() {
       }
 
       setSuccess(true)
-    } catch (err: any) {
-      const msg = (err?.message || '').toLowerCase()
+    } catch (err: unknown) {
+      const msg = errorMessage(err).toLowerCase()
       if (msg.includes('already registered') || msg.includes('already exists')) {
         setError('An account with this email already exists.')
       } else if (msg.includes('password')) {
@@ -104,7 +106,7 @@ export function SignupPage() {
         // not presentable. Point at the live checklist instead.
         setFieldErrors({ password: 'That password does not meet the requirements above.' })
       } else {
-        setError(err?.message || 'Something went wrong. Please try again.')
+        setError(errorMessage(err, 'Something went wrong. Please try again.'))
       }
     } finally {
       setLoading(false)
@@ -118,8 +120,8 @@ export function SignupPage() {
         options: { redirectTo: `${window.location.origin}${peekPostLoginRedirect()}` },
       })
       if (oauthError) throw oauthError
-    } catch (err: any) {
-      setError(err?.message || 'Google sign-up failed.')
+    } catch (err: unknown) {
+      setError(errorMessage(err, 'Google sign-up failed.'))
     }
   }
 

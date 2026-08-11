@@ -60,6 +60,34 @@ export default tseslint.config(
     },
   },
 
+  /**
+   * react-refresh/only-export-components, switched off for two deliberate
+   * patterns. The rule is a hot-reload hint, not a correctness check: a file
+   * exporting both a component and something else still builds and still runs,
+   * it just costs a full page reload instead of a component swap when edited.
+   *
+   * `components/ui/**` is vendored shadcn/ui. Every one of these files exports
+   * its `cva` variants alongside the component, because that is how the
+   * generator emits them. Splitting them would have to be redone by hand every
+   * time a component is re-added or updated from upstream, in exchange for
+   * faster refresh in files nobody edits.
+   *
+   * `store/*.tsx` are React contexts, where a Provider component and its
+   * `useCart` / `useWishlist` hook live in one file. That is the idiomatic
+   * shape — the hook exists to read the context the Provider supplies, and
+   * separating them means every consumer imports from two modules to use one
+   * feature. Around twenty call sites would change to silence a DX warning.
+   *
+   * Anywhere else the rule stays on, and the fix is to move the non-component
+   * export out — as `fieldClass` was moved out of `components/auth/FieldError`.
+   */
+  {
+    files: ['src/components/ui/**/*.{ts,tsx}', 'src/store/*.tsx'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
+
   // Node-side files: build config, scripts, and the Worker backend.
   {
     files: [

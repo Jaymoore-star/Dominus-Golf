@@ -208,10 +208,19 @@ export function GrantPage() {
   // When moving between form steps, scroll back to the top of the form
   // (skip the initial mount so the page doesn't auto-scroll on load).
   const didMountRef = useRef(false);
+
+  /* Read through a ref so the effect below depends on `step` alone.
+     `resumedFromDraft` describes how the applicant arrived and is only ever
+     consulted on the mount pass; listing it as a dependency would re-run the
+     effect if it changed, and the re-run takes the *other* branch — scrolling a
+     settled form to the top under someone mid-application. A ref keeps the
+     value out of the dependency array without switching the rule off. */
+  const resumedFromDraftRef = useRef(resumedFromDraft);
+
   useEffect(() => {
     if (!didMountRef.current) {
       didMountRef.current = true;
-      if (!resumedFromDraft) return;
+      if (!resumedFromDraftRef.current) return;
 
       // Resuming after login: land on the form, not the top of the page.
       //

@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import { Link } from '@tanstack/react-router';
+import { href } from '../../lib/routerLinks';
 
 const footerLinks = {
   'Training Systems': [
@@ -87,7 +87,7 @@ export function Footer() {
                 {links.map((link) => (
                   <li key={link.label}>
                     <Link
-                      to={link.href as any}
+                      to={href(link.href)}
                       className="font-sans text-sm text-white/60 hover:text-white transition-colors duration-150"
                     >
                       {link.label}

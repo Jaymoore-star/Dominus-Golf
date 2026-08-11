@@ -1,5 +1,4 @@
 import { Check, Info, Target, Zap, Waves, Activity, ArrowRight } from 'lucide-react';
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '../../../components/ui/accordion';
 
 export function TourPureOverview() {
   const steps = [

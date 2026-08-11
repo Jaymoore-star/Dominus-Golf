@@ -3,7 +3,9 @@ import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { CartDrawer } from '../components/cart/CartDrawer';
 
-const stats = [
+// Retained alongside the page copy it belongs to, but nothing renders it yet.
+// The leading underscore is what marks it intentionally unused to eslint.
+const _stats = [
   { label: 'Network', value: 'National' },
   { label: 'Focus', value: 'Technical Proficiency' },
   { label: 'System', value: 'Tour Pure Integration' },

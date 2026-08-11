@@ -5,7 +5,9 @@ import { supabase } from '@/lib/supabase'
 import { peekPostLoginRedirect, takePostLoginRedirect } from '@/hooks/useRequireAuth'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
-import { FieldError, fieldClass } from '@/components/auth/FieldError'
+import { FieldError } from '@/components/auth/FieldError'
+import { fieldClass } from '@/components/auth/fieldClass'
+import { errorMessage } from '../lib/errors'
 
 type FieldErrors = { email?: string; password?: string }
 
@@ -49,8 +51,8 @@ export function LoginPage() {
       const dest = takePostLoginRedirect()
       if (dest) window.location.assign(dest)
       else navigate({ to: '/' })
-    } catch (err: any) {
-      const msg = (err?.message || '').toLowerCase()
+    } catch (err: unknown) {
+      const msg = errorMessage(err).toLowerCase()
       if (msg.includes('invalid login credentials')) {
         setError('Invalid email or password. Please try again.')
       } else if (msg.includes('email not confirmed') || msg.includes('not confirmed')) {
@@ -65,7 +67,7 @@ export function LoginPage() {
           })
         } catch { /* ignored */ }
       } else {
-        setError(err?.message || 'Something went wrong. Please try again.')
+        setError(errorMessage(err, 'Something went wrong. Please try again.'))
       }
     } finally {
       setLoading(false)
@@ -79,8 +81,8 @@ export function LoginPage() {
         options: { redirectTo: `${window.location.origin}${peekPostLoginRedirect()}` },
       })
       if (oauthError) throw oauthError
-    } catch (err: any) {
-      setError(err?.message || 'Google sign-in failed.')
+    } catch (err: unknown) {
+      setError(errorMessage(err, 'Google sign-in failed.'))
     }
   }
 
@@ -189,8 +191,8 @@ export function LoginPage() {
                         })
                         if (resetError) throw resetError
                         setNotice('Password reset link sent. Check your inbox for the next step.')
-                      } catch (err: any) {
-                        setError(err?.message || 'Could not send the reset email. Please try again.')
+                      } catch (err: unknown) {
+                        setError(errorMessage(err, 'Could not send the reset email. Please try again.'))
                       }
                     }}
                   >

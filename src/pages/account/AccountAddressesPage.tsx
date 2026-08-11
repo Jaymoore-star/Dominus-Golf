@@ -8,10 +8,12 @@ import {
   readAddress,
   type SavedAddress,
 } from '../../lib/accountProfile';
-import { FieldError, fieldClass } from '../../components/auth/FieldError';
+import { FieldError } from '../../components/auth/FieldError';
+import { fieldClass } from '../../components/auth/fieldClass';
 import { US_STATES } from '../../lib/usStates';
 import { StyledSelect } from '../../components/ui/StyledSelect';
 import { AccountCard, AccountLayout } from './AccountLayout';
+import { errorMessage } from '../../lib/errors';
 
 const labelClass =
   'block font-sans text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-2';
@@ -56,8 +58,8 @@ export function AccountAddressesPage() {
       const { error: updateError } = await supabase.auth.updateUser({ data: { address: payload } });
       if (updateError) throw updateError;
       setNotice('Address saved.');
-    } catch (err: any) {
-      setError(err?.message || 'Could not save your address. Please try again.');
+    } catch (err: unknown) {
+      setError(errorMessage(err, 'Could not save your address. Please try again.'));
     } finally {
       setSaving(false);
     }
