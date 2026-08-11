@@ -1,18 +1,19 @@
 /**
  * Snapshots the last-commit date of every file that dates a sitemap URL.
  *
- *   npm run seo:dates
+ *   npm run seo:dates      # after editing page or product content, then commit
  *
  * Why this is not just `git log` at build time, which is what it used to be:
  *
- * Cloudflare Workers Builds clones shallowly. `git log -1 -- <file>` returns
- * nothing there, so every URL fell back to the build date and sitemap.xml went
- * out with all 36 entries stamped the same day - the exact uniform-timestamp
- * problem the per-URL dates were added to fix, failing silently because the
- * fallback is deliberately quiet.
+ * Cloudflare Workers Builds clones shallowly, and a shallow clone does not say
+ * "I don't know" - `git log -1 -- <file>` returns the tip commit's date for
+ * every file, because with no parent to diff against git treats the entire tree
+ * as introduced by that commit. Dating at build time therefore stamped all 36
+ * sitemap URLs with the day of the deploy, which is the uniform-timestamp
+ * problem the per-URL dates were added to fix.
  *
  * So the dates are resolved here, where the full history exists, and committed.
- * The build then reads the snapshot instead of asking git.
+ * The build only reads the snapshot; it never regenerates it.
  *
  * Keyed by repo-relative file path rather than by route: this script needs no
  * knowledge of routing, and routeSourceFiles() in src/lib/pageSeo.ts stays the
@@ -74,6 +75,40 @@ function readExisting() {
   return existing
 }
 
+/**
+ * A shallow clone must never regenerate this file.
+ *
+ * `git log -1 -- <file>` in a depth-1 clone does not fail and does not return
+ * nothing - it returns the *tip commit's* date for every file, because with no
+ * parent to diff against git treats the whole tree as introduced by that one
+ * commit. So it looks like 42 confident answers that are all today, and a guard
+ * on "did git answer" sails straight past it and overwrites every real date.
+ *
+ * That is exactly what shipped once: the snapshot was rebuilt during the
+ * Cloudflare build and the sitemap went out uniform again.
+ */
+function isShallow() {
+  try {
+    return (
+      execFileSync("git", ["rev-parse", "--is-shallow-repository"], {
+        cwd: root,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "ignore"],
+      }).trim() === "true"
+    )
+  } catch {
+    // No git at all: treat as unusable rather than guess.
+    return true
+  }
+}
+
+if (isShallow()) {
+  console.log(
+    "  \x1b[33m-\x1b[0m file dates: shallow clone or no git, keeping the committed snapshot",
+  )
+  process.exit(0)
+}
+
 const dates = readExisting()
 let resolved = 0
 
@@ -98,8 +133,11 @@ const body = Object.entries(dates)
 const contents = `/**
  * GENERATED FILE - do not edit by hand.
  *
- * Written by scripts/generate-file-dates.mjs, which runs as part of
- * \`npm run build\`. Regenerate with \`npm run seo:dates\`.
+ * Written by scripts/generate-file-dates.mjs. Run \`npm run seo:dates\` after
+ * editing page or product content, and commit the result.
+ *
+ * Deliberately NOT part of \`npm run build\`: the Cloudflare build has only a
+ * shallow clone, where git reports every file as changed in the tip commit.
  *
  * Last-commit date per source file, used for sitemap.xml <lastmod>. Committed
  * because Cloudflare Workers Builds clones shallowly and cannot work these out

@@ -1,8 +1,11 @@
 /**
  * GENERATED FILE - do not edit by hand.
  *
- * Written by scripts/generate-file-dates.mjs, which runs as part of
- * `npm run build`. Regenerate with `npm run seo:dates`.
+ * Written by scripts/generate-file-dates.mjs. Run `npm run seo:dates` after
+ * editing page or product content, and commit the result.
+ *
+ * Deliberately NOT part of `npm run build`: the Cloudflare build has only a
+ * shallow clone, where git reports every file as changed in the tip commit.
  *
  * Last-commit date per source file, used for sitemap.xml <lastmod>. Committed
  * because Cloudflare Workers Builds clones shallowly and cannot work these out

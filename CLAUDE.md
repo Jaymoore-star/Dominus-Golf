@@ -57,6 +57,10 @@ npm run lint:css   # stylelint --fix
 npm run og:images  # regenerate social share images after adding/changing a product
 npm run seo:reviews # refresh the real review ratings used for star ratings in Google
                     # (runs automatically as part of `npm run build`)
+npm run seo:dates   # refresh sitemap <lastmod> after editing page/product content,
+                    # then COMMIT the result. Deliberately not part of the build:
+                    # the Cloudflare build only has a shallow clone, where git
+                    # reports every file as changed in the tip commit.
 ```
 
 Lint state: `lint:types` and `lint:js` are clean. `lint:js` reports ~46 pre-existing

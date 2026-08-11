@@ -213,7 +213,19 @@ sees long-tail movement in 3–6 months, not weeks.
   for its share image.
 - **After changing route copy** in `pageSeo.ts`, keep titles under ~60
   characters and descriptions 120–155, or Google truncates them.
-- **`lastmod`** comes from the git commit date of the file backing each URL
-  (`routeSourceFiles()` in `pageSeo.ts`). A new page needs an entry in
+- **`lastmod`** comes from `src/data/fileDates.generated.ts`, a committed
+  snapshot of each source file's last commit date, mapped to URLs by
+  `routeSourceFiles()` in `pageSeo.ts`. A new page needs an entry in
   `PAGE_SOURCE` or it falls back to the build date.
+
+  **Run `npm run seo:dates` and commit the result after editing page or product
+  content**, or the sitemap keeps advertising the old date.
+
+  It is deliberately *not* part of `npm run build`. Cloudflare builds from a
+  shallow clone, and a shallow clone does not report "unknown" — `git log -1 --
+  <file>` returns the **tip commit's** date for every file, because with no
+  parent to diff against git treats the whole tree as introduced by that commit.
+  Regenerating during the build therefore rewrote all 42 dates to the day of the
+  deploy and shipped a uniform sitemap, which is the exact thing per-URL dates
+  exist to avoid. The script now refuses to write in a shallow clone.
 - **Never** add `aggregateRating` from anything but the generated snapshot.
