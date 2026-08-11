@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(node scripts/fetch-review-summaries.mjs)"
+      "Bash(node scripts/fetch-review-summaries.mjs)",
+      "Bash(grep -n \"orderId\\\\|'/\\\\$'\\\\|NotFound\\\\|Bundles\\\\|PracticeWithPros\" src/App.tsx)"
     ]
   }
 }

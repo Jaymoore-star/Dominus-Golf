@@ -17,7 +17,7 @@ Nothing here needs doing again — it is background for the sections below.
 | 48 prerendered HTML files, one per route, head baked in | `prerenderPlugin` in `vite.config.ts` |
 | `sitemap.xml`, 36 indexed URLs, real per-URL `lastmod` | `sitemapPlugin` in `vite.config.ts` |
 | `robots.txt` | `public/robots.txt` |
-| JSON-LD: Organization, WebSite, Product, AggregateRating, BreadcrumbList | `src/lib/seo.ts` |
+| JSON-LD: Organization, WebSite, Product, AggregateRating, BreadcrumbList, ItemList | `src/lib/seo.ts` |
 | Shipping cost, delivery estimate and returns in Product schema | `src/lib/seo.ts` |
 | Real star ratings from Supabase reviews | `scripts/fetch-review-summaries.mjs` |
 | `google-merchant.xml` product feed, 36 entries | `src/lib/merchantFeed.ts` |
@@ -66,6 +66,62 @@ Physical goods only. A download has no shipping, and a policy phrased around
 > what a product page offers — is always the $6.99 rate. The code already
 > handles the threshold and emits `0` for anything listed above it. This is
 > correct behaviour, not a bug to chase.
+
+### Category pages — 11 August 2026
+
+`/shop/mens-gear` and `/shop/womens-gear` **rendered an empty grid** while being
+prerendered and listed in `sitemap.xml`. Neither is a value of the `Category`
+union and no product carries one, so the old filter — `p.category === category`
+— was never true. Two of the site's 36 indexed URLs were empty pages promising
+men's and women's gear.
+
+Both now resolve from `subcategory`, which is where the gender split is actually
+recorded, and list three products each. One resolver,
+`productsInShopCategory()` in `src/data/products.ts`, is shared by the grid and
+by the head builder, so the schema and the page cannot disagree about what the
+category contains.
+
+> Gender pages list **that gender's apparel only**. Training systems and
+> accessories are unisex; putting them on both would leave the two URLs ~70%
+> identical to each other and to `/shop/all`, which is the near-duplicate
+> listing thin-content demotion exists to catch. Widen this only with a reason.
+
+Every category page also carries **`ItemList`** now — deliberately a summary
+list of position and `url`, not nested `Product` objects. The full Product
+schema lives on the product page, and a partial second copy here would give
+Google two descriptions of the same item to reconcile. An empty category emits
+no `ItemList` at all rather than one describing a collection of nothing.
+
+Product offers now declare **`itemCondition: NewCondition`**, a recommended
+merchant-listing field and unambiguous here — everything is sold new, direct.
+
+### Internal linking — 11 August 2026
+
+The guide pages are the assets aimed at winnable informational searches (§3), but
+nothing connected them to the catalogue:
+
+- `/tour-pure-guide` linked to **nothing at all** — it named the Tour Pure
+  throughout and offered no way to reach it. It now ends with the Tour Pure
+  products, derived from the catalogue rather than hand-listed.
+- Product pages linked to **no guide**. Tour Pure and Feel Rite products now
+  carry a "Read the full training guide" link, keyed off the same ids that
+  decide which overview block renders, so a product cannot show a guide's
+  content while linking nowhere.
+- `/beginners` linked to two products and the safety page, but neither guide.
+  It now links to both.
+
+> **Open decision — duplicated guide content.** `ProductPage` renders the whole
+> of `TourPureOverview` and `FeelRightBandOverview` inline. The identical block
+> is therefore the substance of `/tour-pure-guide` *and* of the three
+> `/product/tour-pure-*` pages — four URLs, one body of content, with the same
+> again across the two Feel Rite URLs. It is in the rendered DOM rather than the
+> prerendered HTML, but Google renders JavaScript, so it reads it.
+>
+> This is not a penalty; it splits relevance between the URLs and lets Google
+> pick which one ranks for a how-to query. Left alone deliberately — the block
+> is substantial product-page content and probably earns its place for
+> conversion. The fix, if wanted, is a condensed version on the product page and
+> the full method only on the guide.
 
 ### Google Merchant Center feed
 
