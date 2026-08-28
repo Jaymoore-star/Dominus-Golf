@@ -40,7 +40,7 @@ See [Blink Migration](#blink-migration) below — **do not break the running app
 ```bash
 npm install        # install dependencies
 npm run dev        # start dev server → http://localhost:3000 (strict port)
-npm run build      # production build (vite build) + prerenders 45 route HTML files
+npm run build      # production build (vite build) + prerenders 49 route HTML files
 npm run preview    # preview the production build — see the caveat below
 
 npm run dev:backend     # backend Worker locally on 127.0.0.1:8787 (reads .dev.vars)
@@ -100,6 +100,24 @@ src/
 - Product/category/pro images are currently remote URLs stored in `src/data/*.ts`.
 - Keep the dev server running while making changes; verify http://localhost:3000 still
   responds after edits to `index.html`, routing, or the entry point.
+
+### Dominus HER (`/dominus-her`)
+
+The women's golf and leadership initiative page, and the home of the women's
+range. The product grid comes from `womensProducts` in `src/data/products.ts`,
+which reads the new `audience: 'men' | 'women' | 'junior'` field on `Product`
+— so a new women's item shows up there with no edit to the page. `audience` is
+also what `/shop/mens-gear` and `/shop/womens-gear` now resolve from; those two
+stay apparel-only on purpose (see the comment on `productsInShopCategory`).
+
+Two things on the page are placeholders, both commented at their use site:
+there is no Founding 500 application form and no partnership deck, so those
+CTAs open a prefilled email; and there is no photograph of a woman golfer in
+`public/images`, so the hero is typographic until `HERO_IMAGE` is set.
+
+The top nav fits six items at 1024px and clips rather than wraps, so adding
+Dominus HER meant taking Affiliates off the top bar — it is still under
+Company > Get Involved, in the footer, and in the announcement rotation.
 
 ### Mobile invariants — each of these was a real bug, do not undo them
 

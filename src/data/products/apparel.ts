@@ -7,6 +7,7 @@ export const apparel: Product[] = [
     name: "Icon Tee (Men's)",
     category: 'apparel',
     subcategory: "Men's Apparel",
+    audience: 'men',
     price: 19.99,
     image: '/images/Gemini_Generated_Image_a1fmgba1fmgba1fm__03713416.webp',
     hoverImage: '/images/Gemini_Generated_Image_j0e7ykj0e7ykj0e7__7f763146.webp',
@@ -39,6 +40,7 @@ export const apparel: Product[] = [
     name: "Wordmark Tee (Men's)",
     category: 'apparel',
     subcategory: "Men's Apparel",
+    audience: 'men',
     price: 19.99,
     image: '/images/ninjapod_11843683_f_4980_00_f__c9a61eee.webp',
     colorVariants: {
@@ -69,6 +71,7 @@ export const apparel: Product[] = [
     name: "Performance Tee (Men's)",
     category: 'apparel',
     subcategory: "Men's Apparel",
+    audience: 'men',
     price: 19.99,
     image: '/images/unnamed-18__5cee2081.webp',
     colorVariants: {
@@ -100,6 +103,7 @@ export const apparel: Product[] = [
     name: "Icon Tee - Black (Women's)",
     category: 'apparel',
     subcategory: "Women's Apparel",
+    audience: 'women',
     price: 19.99,
     image: '/images/unnamed-11__fc5a40f7.webp',
     hoverImage: '/images/unnamed-16__4cc41a28.webp',
@@ -134,6 +138,7 @@ export const apparel: Product[] = [
     name: "Icon Tee - White (Women's)",
     category: 'apparel',
     subcategory: "Women's Apparel",
+    audience: 'women',
     price: 19.99,
     image: '/images/unnamed-12__3c0a4238.webp',
     hoverImage: '/images/unnamed-13__94ffe0c4.webp',
@@ -168,6 +173,7 @@ export const apparel: Product[] = [
     name: "Performance Tee (Women's)",
     category: 'apparel',
     subcategory: "Women's Apparel",
+    audience: 'women',
     price: 19.99,
     image: '/images/a2d1da0a-6213-4a84-8dca-5122fd81823a__3ed0e102.webp',
     // Black only.

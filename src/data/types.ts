@@ -16,6 +16,17 @@ export type Product = {
   name: string;
   category: Category;
   subcategory?: string;
+  /**
+   * Who the product is built for, where that is a real distinction. Unisex
+   * items - training aids, the towel, the guides - leave it unset.
+   *
+   * The men's / women's split used to be readable only from `subcategory`
+   * ("Women's Apparel"), which is true of the tees and misses the women's Tour
+   * Pure completely, because that is a training system. /dominus-her lists
+   * every female item, so it needs a field that holds for all of them rather
+   * than a prefix match on a display string.
+   */
+  audience?: 'men' | 'women' | 'junior';
   price: Money;
   compareAtPrice?: Money;
   image: string;

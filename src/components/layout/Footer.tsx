@@ -9,8 +9,10 @@ const footerLinks = {
     { label: 'Shop All Systems', href: '/shop/training-system' },
   ],
   'Apparel': [
-    { label: "Men's Tees", href: '/shop/apparel' },
-    { label: "Women's Tees", href: '/shop/apparel' },
+    { label: "Men's Tees", href: '/shop/mens-gear' },
+    // The women's range lives on the DOMINUS HER page now, so this points there
+    // rather than at the mixed apparel listing.
+    { label: "Women's Tees", href: '/dominus-her' },
     { label: 'Shop All Apparel', href: '/shop/apparel' },
   ],
   'Accessories': [
@@ -25,6 +27,7 @@ const footerLinks = {
     { label: 'Contact Us', href: '/about/contact' },
     { label: 'Careers', href: '/about/careers' },
     { label: 'Development Grant', href: '/grant' },
+    { label: 'DOMINUS HER', href: '/dominus-her' },
     { label: 'Affiliate Program', href: '/affiliates' },
     { label: 'Sustainability', href: '/about/sustainability' },
   ],

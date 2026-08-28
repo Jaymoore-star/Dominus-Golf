@@ -87,12 +87,16 @@ const megaMenuData: Partial<Record<NonNullable<MegaMenuKey>, MegaMenuEntry>> = {
           { label: 'Performance Tee - White', href: '/product/dominus-tee-performance-black' },
         ],
       },
+      // Headed by the programme rather than by "Women's Tees": DOMINUS HER is
+      // where the women's range lives now, and the heading is the only place in
+      // this menu that can say so.
       {
-        heading: "Women's Tees",
+        heading: 'DOMINUS HER',
         links: [
           { label: 'Icon Tee - Black', href: '/product/dominus-womens-tee-black-icon' },
           { label: 'Icon Tee - White', href: '/product/dominus-womens-tee-white-icon' },
           { label: 'Performance Tee - Black', href: '/product/dominus-womens-tee-black-performance' },
+          { label: "Shop the Women's Range", href: '/dominus-her' },
         ],
       },
     ],
@@ -136,6 +140,7 @@ const megaMenuData: Partial<Record<NonNullable<MegaMenuKey>, MegaMenuEntry>> = {
         heading: 'Get Involved',
         links: [
           { label: 'Development Grant', href: '/grant' },
+          { label: 'DOMINUS HER', href: '/dominus-her' },
           { label: 'Affiliate Program', href: '/affiliates' },
           { label: 'Contact Us', href: '/about/contact' },
         ],
@@ -238,16 +243,22 @@ export function Navbar() {
   // Lock body scroll when mobile menu open
   useScrollLock(mobileOpen);
 
+  // Six items is the most this row fits. It is measured at 1024px against the
+  // wordmark and the four icons, and the container clips rather than wraps, so a
+  // seventh entry silently cuts the last one in half — which is why "Affiliate
+  // Program" was shortened to "Affiliates" before, and why adding DOMINUS HER
+  // meant giving up a slot rather than appending one.
+  //
+  // Affiliates gave up the slot: it is still one hover away under
+  // Company > Get Involved (desktop and mobile), in the footer's Company column,
+  // and in the rotating announcement bar above. DOMINUS HER had none of those.
   const navLinks: { label: string; key: MegaMenuKey; href?: string }[] = [
     { label: 'Training Systems', key: 'training' },
     { label: 'Apparel', key: 'apparel' },
     { label: 'Accessories', key: 'accessories' },
+    { label: 'DOMINUS HER', key: null, href: '/dominus-her' },
     { label: 'Company', key: 'company' },
     { label: 'Development Grant', key: null, href: '/grant' },
-    // Short label on purpose: the row is 6 items plus the wordmark and four icons,
-    // and the nav container clips rather than wraps. "Affiliate Program" pushed it
-    // over on a 1024px viewport.
-    { label: 'Affiliates', key: null, href: '/affiliates' },
   ];
 
   // Not every nav key has a panel (Grant and Affiliates go straight to a route),

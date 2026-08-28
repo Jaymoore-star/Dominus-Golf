@@ -61,6 +61,10 @@ const FeelRightBandGuidePage = lazyRouteComponent(
   () => import('./pages/FeelRightBandGuidePage'),
   'FeelRightBandGuidePage',
 );
+const DominusHerPage = lazyRouteComponent(
+  () => import('./pages/DominusHerPage'),
+  'DominusHerPage',
+);
 const GrantPage = lazyRouteComponent(() => import('./pages/GrantPage'), 'GrantPage');
 const OrderConfirmedPage = lazyRouteComponent(
   () => import('./pages/OrderConfirmedPage'),
@@ -221,6 +225,7 @@ const termsRoute = createRoute({ getParentRoute: () => rootRoute, path: '/terms'
 const beginnersRoute = createRoute({ getParentRoute: () => rootRoute, path: '/beginners', head: pageHead('/beginners'), component: BeginnersPage });
 const tourPureGuideRoute = createRoute({ getParentRoute: () => rootRoute, path: '/tour-pure-guide', head: pageHead('/tour-pure-guide'), component: TourPureGuidePage });
 const feelRightBandGuideRoute = createRoute({ getParentRoute: () => rootRoute, path: '/feel-right-band-guide', head: pageHead('/feel-right-band-guide'), component: FeelRightBandGuidePage });
+const dominusHerRoute = createRoute({ getParentRoute: () => rootRoute, path: '/dominus-her', head: pageHead('/dominus-her'), component: DominusHerPage });
 const grantRoute = createRoute({ getParentRoute: () => rootRoute, path: '/grant', head: pageHead('/grant'), component: GrantPage });
 const grantSuccessRoute = createRoute({ getParentRoute: () => rootRoute, path: '/grant/success', head: pageHead('/grant/success'), component: GrantSuccessPage });
 const checkoutSuccessRoute = createRoute({ getParentRoute: () => rootRoute, path: '/checkout/success', head: pageHead('/checkout/success'), component: OrderConfirmedPage });
@@ -277,6 +282,7 @@ const routeTree = rootRoute.addChildren([
   beginnersRoute,
   tourPureGuideRoute,
   feelRightBandGuideRoute,
+  dominusHerRoute,
   grantRoute,
   grantSuccessRoute,
   checkoutSuccessRoute,

@@ -20,12 +20,24 @@ export const products: Product[] = [
 export const categories = categoryCards;
 
 /**
+ * Every product built for women, in catalogue order - the women's tees and the
+ * women's Tour Pure. This is what /dominus-her lists, and it is deliberately
+ * driven by `audience` rather than by `subcategory`, so a new women's item is
+ * on the Dominus HER page the moment it is added to the catalogue.
+ *
+ * Wider than the `womens-gear` shop view below, which is apparel only. That
+ * page is one listing among many and has to stay distinct from /shop/apparel;
+ * Dominus HER is the home for the whole women's range.
+ */
+export const womensProducts: Product[] = products.filter((p) => p.audience === 'women');
+
+/**
  * The products a `/shop/$category` page lists.
  *
  * `mens-gear` and `womens-gear` are not values of `Category` — no product
  * carries them, and they are not in the `Category` union. They are gender views
- * over the catalogue, resolved from `subcategory`, which is where the men's /
- * women's split is actually recorded.
+ * over the catalogue, resolved from `audience`, which is where the men's /
+ * women's split is recorded.
  *
  * Before this existed, both routes were matched with `p.category === category`,
  * which is never true for either, so each rendered an empty grid — while still
@@ -44,8 +56,8 @@ export function productsInShopCategory(category: string): Product[] {
   if (!category || category === 'all') return products;
 
   if (category === 'mens-gear' || category === 'womens-gear') {
-    const prefix = category === 'mens-gear' ? "Men's" : "Women's";
-    return products.filter((p) => p.subcategory?.startsWith(prefix));
+    const audience = category === 'mens-gear' ? 'men' : 'women';
+    return products.filter((p) => p.audience === audience && p.category === 'apparel');
   }
 
   return products.filter((p) => p.category === (category as Category));
