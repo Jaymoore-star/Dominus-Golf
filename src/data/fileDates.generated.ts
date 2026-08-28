@@ -14,11 +14,11 @@
 
 export const FILE_DATES: Record<string, string> = {
   "src/data/categories.ts": "2026-07-22",
-  "src/data/products.ts": "2026-08-11",
+  "src/data/products.ts": "2026-08-27",
   "src/data/products/accessories.ts": "2026-08-04",
-  "src/data/products/apparel.ts": "2026-08-02",
-  "src/data/products/trainingSystems.ts": "2026-08-02",
-  "src/data/types.ts": "2026-08-04",
+  "src/data/products/apparel.ts": "2026-08-27",
+  "src/data/products/trainingSystems.ts": "2026-08-27",
+  "src/data/types.ts": "2026-08-27",
   "src/pages/AboutPage.tsx": "2026-08-03",
   "src/pages/account/AccountAddressesPage.tsx": "2026-08-11",
   "src/pages/account/AccountLayout.tsx": "2026-07-30",
@@ -34,6 +34,7 @@ export const FILE_DATES: Record<string, string> = {
   "src/pages/BundlesPage.tsx": "2026-08-11",
   "src/pages/CareersPage.tsx": "2026-08-03",
   "src/pages/ContactPage.tsx": "2026-08-03",
+  "src/pages/DominusHerPage.tsx": "2026-08-27",
   "src/pages/FeelRightBandGuidePage.tsx": "2026-06-10",
   "src/pages/GabeSalvaneraPage.tsx": "2026-08-02",
   "src/pages/GrantPage.tsx": "2026-08-11",
