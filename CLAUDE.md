@@ -101,7 +101,18 @@ src/
 - Keep the dev server running while making changes; verify http://localhost:3000 still
   responds after edits to `index.html`, routing, or the entry point.
 
-### Dominus HER (`/dominus-her`)
+### Dominus HER (`/dominus-her`) — UNPUBLISHED
+
+⚠️ **Withdrawn from the live site on 2026-08-31 pending legal review.** The page
+component is untouched; what came out is the route in `src/App.tsx`, the
+`PAGE_SEO` entry in `src/lib/pageSeo.ts` (which is what removes it from
+`sitemap.xml` and from the prerendered HTML), and the nav/footer links. The URL
+302s to `/shop/womens-gear` via `public/_redirects`. Everything is commented
+rather than deleted and marked "unpublished pending legal review" — grep that
+phrase to restore it. The women's **products** were not touched: they stay in
+the shop, in `/shop/womens-gear`, and in the Merchant Center feed.
+
+The description below is of the page as built, for when it goes back up.
 
 The women's golf and leadership initiative page, and the home of the women's
 range. The product grid comes from `womensProducts` in `src/data/products.ts`,
@@ -118,6 +129,8 @@ CTAs open a prefilled email; and there is no photograph of a woman golfer in
 The top nav fits six items at 1024px and clips rather than wraps, so adding
 Dominus HER meant taking Affiliates off the top bar — it is still under
 Company > Get Involved, in the footer, and in the announcement rotation.
+While Dominus HER is unpublished, Affiliates has that slot back; restoring the
+page means dropping it from the top bar again.
 
 ### Mobile invariants — each of these was a real bug, do not undo them
 

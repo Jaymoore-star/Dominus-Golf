@@ -80,11 +80,15 @@ export const PAGE_SEO = {
       'How to use the Feel Rite Band to build tempo, sequencing, and connection through the golf swing.',
   },
 
+  /* Unpublished pending legal review (2026-08-31). Removing the entry is what
+     takes the URL out of sitemap.xml and out of the prerendered HTML, since
+     both are generated from this table.
   '/dominus-her': {
     title: 'DOMINUS HER',
     description:
       "DOMINUS HER is the national women's golf and leadership initiative - a six-stage pathway from her first swing to the boardroom, plus the women's range.",
   },
+  */
 
   '/grant': {
     title: 'Development Grant Application',
@@ -254,7 +258,7 @@ const PAGE_SOURCE: Partial<Record<StaticPath, string>> = {
   '/beginners': 'src/pages/BeginnersPage.tsx',
   '/tour-pure-guide': 'src/pages/TourPureGuidePage.tsx',
   '/feel-right-band-guide': 'src/pages/FeelRightBandGuidePage.tsx',
-  '/dominus-her': 'src/pages/DominusHerPage.tsx',
+  // '/dominus-her': 'src/pages/DominusHerPage.tsx',  // unpublished, see above
   '/grant': 'src/pages/GrantPage.tsx',
   '/pros': 'src/pages/ProDirectoryPage.tsx',
   '/leroy-bates': 'src/pages/LeroyBatesPage.tsx',

@@ -331,9 +331,16 @@ and only helped the grant pages. All three now import the one constant.
 held `/* /index.html 200`. Cloudflare's docs are explicit that "redirects are
 always followed, regardless of whether or not an asset matches the incoming
 request" — so that one line would have shadowed all 45 prerendered files and
-served the homepage's head for every URL, with nothing failing. The file is
-deleted; the SPA fallback is now `not_found_handling` in `wrangler.toml`, which
+served the homepage's head for every URL, with nothing failing. The catch-all is
+gone; the SPA fallback is now `not_found_handling` in `wrangler.toml`, which
 applies only after asset matching.
+
+`public/_redirects` exists again as of 2026-08-31, holding **exact paths only** -
+the two rules that 302 `/dominus-her` to `/shop/womens-gear` while that page is
+unpublished. Exact paths are safe for the reason above: a rule that names one URL
+can only shadow that URL. Verified with `wrangler dev` that `/grant` and
+`/product/tour-pure-men` still serve their own prerendered heads. Never add a
+wildcard to that file.
 
 **Workers' default `html_handling` fights our canonical URLs.** The default,
 `auto-trailing-slash`, answers `/product/tour-pure-men` with

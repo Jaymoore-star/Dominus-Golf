@@ -1,0 +1,22 @@
+# Cloudflare static-asset redirects. Copied to dist/ by Vite.
+#
+# Deliberately NOT a catch-all. This file previously held `/* /index.html 200`
+# and was deleted for it: Cloudflare's docs are explicit that redirects are
+# always followed "regardless of whether or not an asset matches the incoming
+# request", so a wildcard rule shadows every per-route HTML file the prerender
+# step writes and silently undoes the site's SEO. The SPA fallback is handled by
+# `not_found_handling` in wrangler.toml instead. Only ever list exact paths here.
+
+# DOMINUS HER is unpublished pending legal review (2026-08-31). The page is
+# still in the codebase, just unrouted - see the note in src/App.tsx. Without a
+# rule here the URL would fall through to the SPA shell and render the
+# not-found page, which is a soft 404 that Google leaves indexed for weeks; this
+# sends anyone holding the link to the women's range instead.
+#
+# 302, not 301: the page is expected back. A 301 is cached hard by browsers, so
+# visitors who hit the URL while it is down would keep being bounced away long
+# after it returns.
+/dominus-her /shop/womens-gear 302
+# The slash form has no prerendered file to drop the slash from, so it would
+# otherwise fall through to the SPA shell and render the not-found page.
+/dominus-her/ /shop/womens-gear 302

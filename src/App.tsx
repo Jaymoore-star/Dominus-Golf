@@ -61,10 +61,17 @@ const FeelRightBandGuidePage = lazyRouteComponent(
   () => import('./pages/FeelRightBandGuidePage'),
   'FeelRightBandGuidePage',
 );
+/* DOMINUS HER is unpublished pending legal review (2026-08-31). The page
+   component is intact in src/pages/DominusHerPage.tsx; only its route, its
+   PAGE_SEO entry and the links to it are withdrawn, so /dominus-her falls to
+   the not-found route and the URL leaves the sitemap and the prerendered
+   output. To put it back, uncomment this, the route below, its entry in the
+   route tree, and the navigation links marked with the same note.
 const DominusHerPage = lazyRouteComponent(
   () => import('./pages/DominusHerPage'),
   'DominusHerPage',
 );
+*/
 const GrantPage = lazyRouteComponent(() => import('./pages/GrantPage'), 'GrantPage');
 const OrderConfirmedPage = lazyRouteComponent(
   () => import('./pages/OrderConfirmedPage'),
@@ -225,7 +232,8 @@ const termsRoute = createRoute({ getParentRoute: () => rootRoute, path: '/terms'
 const beginnersRoute = createRoute({ getParentRoute: () => rootRoute, path: '/beginners', head: pageHead('/beginners'), component: BeginnersPage });
 const tourPureGuideRoute = createRoute({ getParentRoute: () => rootRoute, path: '/tour-pure-guide', head: pageHead('/tour-pure-guide'), component: TourPureGuidePage });
 const feelRightBandGuideRoute = createRoute({ getParentRoute: () => rootRoute, path: '/feel-right-band-guide', head: pageHead('/feel-right-band-guide'), component: FeelRightBandGuidePage });
-const dominusHerRoute = createRoute({ getParentRoute: () => rootRoute, path: '/dominus-her', head: pageHead('/dominus-her'), component: DominusHerPage });
+// Unpublished pending legal review - see the note above DominusHerPage.
+// const dominusHerRoute = createRoute({ getParentRoute: () => rootRoute, path: '/dominus-her', head: pageHead('/dominus-her'), component: DominusHerPage });
 const grantRoute = createRoute({ getParentRoute: () => rootRoute, path: '/grant', head: pageHead('/grant'), component: GrantPage });
 const grantSuccessRoute = createRoute({ getParentRoute: () => rootRoute, path: '/grant/success', head: pageHead('/grant/success'), component: GrantSuccessPage });
 const checkoutSuccessRoute = createRoute({ getParentRoute: () => rootRoute, path: '/checkout/success', head: pageHead('/checkout/success'), component: OrderConfirmedPage });
@@ -282,7 +290,7 @@ const routeTree = rootRoute.addChildren([
   beginnersRoute,
   tourPureGuideRoute,
   feelRightBandGuideRoute,
-  dominusHerRoute,
+  // dominusHerRoute,  // unpublished pending legal review
   grantRoute,
   grantSuccessRoute,
   checkoutSuccessRoute,
