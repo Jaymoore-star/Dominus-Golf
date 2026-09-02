@@ -20,3 +20,14 @@
 # The slash form has no prerendered file to drop the slash from, so it would
 # otherwise fall through to the SPA shell and render the not-found page.
 /dominus-her/ /shop/womens-gear 302
+
+# The Development Grant is unpublished (2026-09-02) - hidden from customers, not
+# removed. Same reasoning as above: without a rule the URL renders the not-found
+# page, which is a soft 404 Google leaves indexed, and anyone holding the link
+# hits a dead end. 302 for the same reason too - the page is expected back.
+#
+# These are exact paths, so they do NOT catch /grant/success. That route is
+# still live and still needed: it is where Square returns a payer, and it is
+# what records the application and sends the confirmation email.
+/grant /  302
+/grant/ /  302

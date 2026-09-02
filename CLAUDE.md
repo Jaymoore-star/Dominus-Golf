@@ -132,6 +132,29 @@ Company > Get Involved, in the footer, and in the announcement rotation.
 While Dominus HER is unpublished, Affiliates has that slot back; restoring the
 page means dropping it from the top bar again.
 
+### Development Grant (`/grant`) — UNPUBLISHED
+
+⚠️ **Hidden from customers on 2026-09-02.** Hidden, not removed: `GrantPage.tsx`
+is untouched, and what came out is the route in `src/App.tsx`, the `PAGE_SEO`
+entry in `src/lib/pageSeo.ts` (which removes it from `sitemap.xml` and the
+prerendered HTML), the nav/footer links, and the announcement-bar item (which
+advertised a deadline that had already passed). The URL 302s to `/` via
+`public/_redirects`. Grep "unpublished - hidden from customers" to restore it.
+
+Three things deliberately stayed:
+
+- **`/grant/success` is still routed and still prerendered.** It is the return
+  URL Square sends a payer to, and it is what calls `/api/grant/complete` to
+  store the application and send the confirmation email. Unrouting it would
+  drop an in-flight application. It is `noindex` and unreachable except by
+  paying, so it is not customer-visible. Its "Back to Grant" button now says
+  "Contact Support" and points at `/about/contact` — the old link no longer
+  resolves, and it was a dead end for exactly the person who needs help.
+- **`/api/grant/checkout` and `/api/grant/complete` are still live** on the
+  backend Worker. The page was the only way in, so no new application can
+  start; closing the endpoints would instead break a payment already in flight.
+- **Applications already stored in `grant_applications` are untouched.**
+
 ### Mobile invariants — each of these was a real bug, do not undo them
 
 - **Form controls must be ≥16px on phones.** Use `text-base sm:text-sm`, never a

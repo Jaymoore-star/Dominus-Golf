@@ -27,7 +27,7 @@ const footerLinks = {
     { label: 'Team Dominus Golf', href: '/about/team' },
     { label: 'Contact Us', href: '/about/contact' },
     { label: 'Careers', href: '/about/careers' },
-    { label: 'Development Grant', href: '/grant' },
+    // { label: 'Development Grant', href: '/grant' },  // unpublished - hidden from customers
     // { label: 'DOMINUS HER', href: '/dominus-her' },  // unpublished pending legal review
     { label: 'Affiliate Program', href: '/affiliates' },
     { label: 'Sustainability', href: '/about/sustainability' },

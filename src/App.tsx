@@ -72,7 +72,17 @@ const DominusHerPage = lazyRouteComponent(
   'DominusHerPage',
 );
 */
+/* The Development Grant is unpublished (2026-09-02) - hidden from customers, not
+   removed. GrantPage.tsx is untouched; only its route, its PAGE_SEO entry and
+   the links to it are withdrawn, so /grant leaves the sitemap and the
+   prerendered output and 302s to the home page via public/_redirects.
+   /grant/success deliberately STAYS routed: it is the return URL Square sends a
+   payer back to, and it is what calls /api/grant/complete to record the
+   application and send the confirmation email. Unrouting it would drop an
+   in-flight application on the floor. It is noindex and unreachable except by
+   paying, so it is not customer-visible.
 const GrantPage = lazyRouteComponent(() => import('./pages/GrantPage'), 'GrantPage');
+*/
 const OrderConfirmedPage = lazyRouteComponent(
   () => import('./pages/OrderConfirmedPage'),
   'OrderConfirmedPage',
@@ -234,7 +244,8 @@ const tourPureGuideRoute = createRoute({ getParentRoute: () => rootRoute, path: 
 const feelRightBandGuideRoute = createRoute({ getParentRoute: () => rootRoute, path: '/feel-right-band-guide', head: pageHead('/feel-right-band-guide'), component: FeelRightBandGuidePage });
 // Unpublished pending legal review - see the note above DominusHerPage.
 // const dominusHerRoute = createRoute({ getParentRoute: () => rootRoute, path: '/dominus-her', head: pageHead('/dominus-her'), component: DominusHerPage });
-const grantRoute = createRoute({ getParentRoute: () => rootRoute, path: '/grant', head: pageHead('/grant'), component: GrantPage });
+// Unpublished - see the note above GrantPage. The success route below stays.
+// const grantRoute = createRoute({ getParentRoute: () => rootRoute, path: '/grant', head: pageHead('/grant'), component: GrantPage });
 const grantSuccessRoute = createRoute({ getParentRoute: () => rootRoute, path: '/grant/success', head: pageHead('/grant/success'), component: GrantSuccessPage });
 const checkoutSuccessRoute = createRoute({ getParentRoute: () => rootRoute, path: '/checkout/success', head: pageHead('/checkout/success'), component: OrderConfirmedPage });
 const loginRoute = createRoute({ getParentRoute: () => rootRoute, path: '/login', head: pageHead('/login'), component: LoginPage });
@@ -291,7 +302,7 @@ const routeTree = rootRoute.addChildren([
   tourPureGuideRoute,
   feelRightBandGuideRoute,
   // dominusHerRoute,  // unpublished pending legal review
-  grantRoute,
+  // grantRoute,  // unpublished - hidden from customers
   grantSuccessRoute,
   checkoutSuccessRoute,
   loginRoute,

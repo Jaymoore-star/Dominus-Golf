@@ -149,11 +149,14 @@ export function GrantSuccessPage() {
                 >
                   Refresh
                 </button>
+                {/* Was "Back to Grant". The grant page is unpublished, so that
+                    link no longer resolves and would be a dead end for someone
+                    whose payment did not confirm - support is what they need. */}
                 <Link
-                  to="/grant"
+                  to="/about/contact"
                   className="inline-flex items-center justify-center gap-2 border border-border text-foreground px-6 py-3 text-sm font-sans font-medium hover:bg-secondary transition-colors"
                 >
-                  Back to Grant
+                  Contact Support
                 </Link>
               </div>
             </>

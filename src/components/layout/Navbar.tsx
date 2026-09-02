@@ -139,7 +139,7 @@ const megaMenuData: Partial<Record<NonNullable<MegaMenuKey>, MegaMenuEntry>> = {
       {
         heading: 'Get Involved',
         links: [
-          { label: 'Development Grant', href: '/grant' },
+          // { label: 'Development Grant', href: '/grant' },  // unpublished - hidden from customers
           // { label: 'DOMINUS HER', href: '/dominus-her' },  // unpublished pending legal review
           { label: 'Affiliate Program', href: '/affiliates' },
           { label: 'Contact Us', href: '/about/contact' },
@@ -176,7 +176,9 @@ export function Navbar() {
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const announcements = [
-    { text: 'The Dominus Golf Development Grant is Now Open - $5,000 Awarded to One Golfer Nationwide. Apply by August 15.', link: '/grant', linkLabel: 'Apply Now' },
+    // Pulled with the grant page: it advertised a closed deadline and linked to
+    // a page customers can no longer reach.
+    // { text: 'The Dominus Golf Development Grant is Now Open - $5,000 Awarded to One Golfer Nationwide. Apply by August 15.', link: '/grant', linkLabel: 'Apply Now' },
     { text: 'Free Shipping on Orders Over $150', link: null, linkLabel: null },
     { text: 'Earn Commission Promoting Dominus Golf.', link: '/affiliates', linkLabel: 'Become an Affiliate' },
     { text: 'Shop New Training Systems - Build Your Best Swing', link: null, linkLabel: null },
@@ -257,7 +259,7 @@ export function Navbar() {
     { label: 'Apparel', key: 'apparel' },
     { label: 'Accessories', key: 'accessories' },
     { label: 'Company', key: 'company' },
-    { label: 'Development Grant', key: null, href: '/grant' },
+    // { label: 'Development Grant', key: null, href: '/grant' },  // unpublished - hidden from customers
     // Short label on purpose: the row is 6 items plus the wordmark and four icons,
     // and the nav container clips rather than wraps. "Affiliate Program" pushed it
     // over on a 1024px viewport.

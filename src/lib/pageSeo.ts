@@ -90,11 +90,16 @@ export const PAGE_SEO = {
   },
   */
 
+  /* Unpublished (2026-09-02). Removing the entry is what takes the URL out of
+     sitemap.xml and out of the prerendered HTML, since both are generated from
+     this table. The '/grant/success' entry below stays: that route is still
+     live for anyone returning from a Square payment, and it is noindex.
   '/grant': {
     title: 'Development Grant Application',
     description:
       'Apply for the Dominus Golf Development Grant. Every applicant receives The Ultimate Guide to Master the Game.',
   },
+  */
   '/grant/success': {
     title: 'Application Received',
     description: 'Your Dominus Golf Development Grant application has been received.',
@@ -259,7 +264,7 @@ const PAGE_SOURCE: Partial<Record<StaticPath, string>> = {
   '/tour-pure-guide': 'src/pages/TourPureGuidePage.tsx',
   '/feel-right-band-guide': 'src/pages/FeelRightBandGuidePage.tsx',
   // '/dominus-her': 'src/pages/DominusHerPage.tsx',  // unpublished, see above
-  '/grant': 'src/pages/GrantPage.tsx',
+  // '/grant': 'src/pages/GrantPage.tsx',  // unpublished, see above
   '/pros': 'src/pages/ProDirectoryPage.tsx',
   '/leroy-bates': 'src/pages/LeroyBatesPage.tsx',
   '/gabe-salvanera': 'src/pages/GabeSalvaneraPage.tsx',
