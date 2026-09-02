@@ -38,7 +38,7 @@ export const FILE_DATES: Record<string, string> = {
   "src/pages/FeelRightBandGuidePage.tsx": "2026-06-10",
   "src/pages/GabeSalvaneraPage.tsx": "2026-08-02",
   "src/pages/GrantPage.tsx": "2026-08-11",
-  "src/pages/GrantSuccessPage.tsx": "2026-08-03",
+  "src/pages/GrantSuccessPage.tsx": "2026-09-02",
   "src/pages/HomePage.tsx": "2026-07-31",
   "src/pages/LeroyBatesPage.tsx": "2026-08-02",
   "src/pages/LoginPage.tsx": "2026-08-11",
