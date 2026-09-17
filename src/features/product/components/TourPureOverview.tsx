@@ -1,6 +1,27 @@
 import { Check, Info, Target, Zap, Waves, Activity, ArrowRight } from 'lucide-react';
 
-export function TourPureOverview() {
+/**
+ * `variant` exists to stop this block cannibalising its own guide page.
+ *
+ * It renders in full on /tour-pure-guide AND on all three /product/tour-pure-*
+ * pages. Once bodies started being server-rendered (scripts/prerender.mjs),
+ * that became measurable: after stripping nav and footer boilerplate, the guide
+ * and each product page shared ~90% of their unique text, and the three product
+ * pages shared 86-88% with each other. One ~540-word block was 60%+ of the
+ * content on four URLs, which is what near-duplicate demotion exists to catch -
+ * and it left Google choosing which of four pages answers "swing path drills".
+ *
+ *   'full'    - every section. The guide page, which should own the method.
+ *   'summary' - the overview only: What it is / Who it's for / The Promise.
+ *               The product page keeps the persuasive material and its own
+ *               description, features, specs and reviews, and already links to
+ *               the full guide.
+ *
+ * No copy was rewritten for this: the sections are the existing ones, rendered
+ * in one place instead of four. To put the whole block back on product pages,
+ * drop the `variant` prop at the ProductPage call site.
+ */
+export function TourPureOverview({ variant = 'full' }: { variant?: 'full' | 'summary' } = {}) {
   const steps = [
     {
       number: 'P1',
@@ -175,6 +196,8 @@ export function TourPureOverview() {
         </div>
       </section>
 
+      {variant === 'full' && (
+        <>
       {/* Usage Guide */}
       <section id="methodology" className="max-w-5xl mx-auto px-4">
         <div className="flex flex-col items-center text-center mb-16">
@@ -242,6 +265,8 @@ export function TourPureOverview() {
           </div>
         </div>
       </section>
+        </>
+      )}
     </div>
   );
 }

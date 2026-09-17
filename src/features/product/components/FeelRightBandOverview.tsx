@@ -1,7 +1,23 @@
 import { Info, Target, Zap, Activity, ArrowRight } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 
-export function FeelRightBandOverview() {
+/**
+ * `variant` - see the long note on TourPureOverview, which has the measurements.
+ * Short version: this block rendered in full on /feel-right-band-guide AND on
+ * /product/feel-right-band, and after boilerplate was stripped those two URLs
+ * shared 92% of their unique text.
+ *
+ *   'full'    - everything. The guide page owns the method.
+ *   'summary' - the overview and the Connection callout: what it is and why the
+ *               floatie drill works. The persuasive half stays on the product.
+ *
+ * The closing "Ready to train?" CTA is gated with the methodology on purpose -
+ * it links to /product/feel-right-band, which is a self-link when this renders
+ * on that very page.
+ *
+ * No copy rewritten; sections rendered in one place instead of two.
+ */
+export function FeelRightBandOverview({ variant = 'full' }: { variant?: 'full' | 'summary' } = {}) {
   const steps = [
     {
       number: '01',
@@ -112,6 +128,8 @@ export function FeelRightBandOverview() {
         </div>
       </section>
 
+      {variant === 'full' && (
+        <>
       {/* Methodology Section */}
       <section id="methodology" className="max-w-5xl mx-auto px-4">
         <div className="flex flex-col items-center text-center mb-16">
@@ -160,6 +178,8 @@ export function FeelRightBandOverview() {
           <ArrowRight className="w-4 h-4" />
         </Link>
       </section>
+        </>
+      )}
     </div>
   );
 }

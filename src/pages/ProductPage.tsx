@@ -202,8 +202,12 @@ export function ProductPage() {
         </div>
 
         {/* Tour Pure Overview (Conditional) */}
-        {product.id.startsWith('tour-pure') && <TourPureOverview />}
-        {product.id === 'feel-right-band' && <FeelRightBandOverview />}
+        {/* summary, not the full block: the method sections live on the guide
+            page, which is the URL that should rank for "swing path drills".
+            Rendering them here too put the same ~540 words on four URLs - see
+            the note on TourPureOverview. Drop `variant` to restore. */}
+        {product.id.startsWith('tour-pure') && <TourPureOverview variant="summary" />}
+        {product.id === 'feel-right-band' && <FeelRightBandOverview variant="summary" />}
 
         {/* Points at the guide page that owns this method. The block above is
             the same component the guide renders, so without a link the two URLs
