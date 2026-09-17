@@ -434,15 +434,27 @@ Worth doing at the same time: **Bing Webmaster Tools**
 (<https://www.bing.com/webmasters>) can import directly from Search Console, and
 Bing feeds ChatGPT's web results.
 
-### 2.5 Turn on analytics — ✅ GA4 LIVE 16 Sep 2026, one step outstanding
+### 2.5 Turn on analytics — ✅ DONE 16 Sep 2026
 
-**Live and verified.** GA4 `G-352Q7S19Z0` is in the deployed bundle
-(`index-BXnJmBXr.js`) with `gtag/js`, `dataLayer` and `send_page_view` all
-present. Deployed with `npm run deploy:site` from a local build.
+**Live and verified.** The GA4 measurement ID is in the deployed bundle with
+`gtag/js`, `dataLayer` and `send_page_view` all present. Confirmed again on
+16 Sep 2026 after a push to `main`, which proves the Cloudflare variable is a
+**build** variable and that a push will not silently strip analytics.
 
-⚠️ **Outstanding: the Cloudflare build variable is still not set**, so the next
-push to `main` will silently remove analytics again. See the warning at the end
-of this section — this is the one step left.
+The ID itself is deliberately not written down here: it is not a secret (it
+ships in the public bundle), but the repo rule is no env values in tracked
+files. It lives in the Cloudflare build variables and in local
+`.env.production`. To read it back:
+
+```bash
+js=$(curl -s https://www.dominusgolf.com/ | grep -o '/assets/index-[^"]*\.js' | head -1)
+curl -s "https://www.dominusgolf.com$js" | grep -o 'G-[A-Z0-9]\{10\}' | head -1
+```
+
+Both places that need the variable have it: the Cloudflare build variables (for
+Workers Builds, i.e. a push to `main`) and local `.env.production` (for
+`npm run deploy:site`). See the note at the end of this section for why both are
+required and why they are different files.
 
 The Meta Pixel is deliberately still unset; `fbevents` is absent from the bundle
 and should stay that way unless paid social is actually planned.

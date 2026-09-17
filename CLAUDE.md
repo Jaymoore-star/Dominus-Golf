@@ -27,20 +27,35 @@ See [Blink Migration](#blink-migration) below — **do not break the running app
   in Product JSON-LD — never write that file by hand, and never emit a rating for a
   product with no real reviews.
 - **Hosting:** two Cloudflare Workers — `dominus-golf-backend` (the API,
-  `wrangler.backend.toml`) and `tit` (the site, assets-only, `wrangler.toml`).
+  `wrangler.backend.toml`) and `tit` (the site, `wrangler.toml`). `tit` serves
+  prerendered static assets; its only script is `worker/index.ts`, a fallback
+  that runs *just* on an asset miss (see Structure below).
   There is **no** Cloudflare Pages project; the Git connection is Workers Builds.
 - **SEO:** the build prerenders one static HTML file per route with that route's
-  head baked in, so non-JS crawlers see real per-page tags. See `vite.config.ts`
-  → `prerenderPlugin`, `docs/HANDOFF.md` §2b, and **`docs/SEO.md`** for the full
-  picture — including three fixes that can only be done in the Cloudflare and
-  Search Console dashboards.
+  head baked in, so non-JS crawlers see real per-page tags. **`docs/SEO.md` is
+  the runbook — read it before any SEO work**; also `vite.config.ts` →
+  `prerenderPlugin` and `docs/HANDOFF.md` §2b.
+  As of 16 Sep 2026 Search Console, Bing Webmaster Tools, Merchant Center and
+  GA4 are all connected and the dashboard fixes in §2 are done. What is left is
+  off-page (backlinks, reviews) plus §3b — the prerendered HTML carries a head
+  but an empty `<body>`.
+- **Analytics:** GA4 is live (measurement ID is in the Cloudflare build
+  variables and in local `.env.production`, not in any tracked file — it is not
+  a secret, but the rule below is "no env values in the repo").
+  `src/lib/analytics.ts` already
+  wires page_view, view_item, add_to_cart, begin_checkout, purchase and sign_up
+  for both GA4 and Meta Pixel; the Meta Pixel is deliberately unset. The ID is a
+  **build** variable in Cloudflare (Workers Builds) *and* in local
+  `.env.production` — Vite inlines `import.meta.env.*` at build time, so a
+  runtime binding would never be read, and a local `npm run deploy:site` never
+  sees the Cloudflare one.
 
 ## Commands
 
 ```bash
 npm install        # install dependencies
 npm run dev        # start dev server → http://localhost:3000 (strict port)
-npm run build      # production build (vite build) + prerenders 49 route HTML files
+npm run build      # production build (vite build) + prerenders 47 route HTML files + 404.html
 npm run preview    # preview the production build — see the caveat below
 
 npm run dev:backend     # backend Worker locally on 127.0.0.1:8787 (reads .dev.vars)
@@ -63,8 +78,9 @@ npm run seo:dates   # refresh sitemap <lastmod> after editing page/product conte
                     # reports every file as changed in the tip commit.
 ```
 
-Lint state: `lint:types` and `lint:js` are clean. `lint:js` reports ~46 pre-existing
-warnings (unused vars, `any`, react-refresh) — warnings do not fail the run.
+Lint state (16 Sep 2026): `lint:types` is clean, and `lint:js` is down to **2**
+pre-existing warnings, both `cancelUrl` unused vars in `backend/index.ts`.
+Warnings do not fail the run. If a run reports more than 2, they are yours.
 
 Careful with `lint:css`: it runs with `--fix`, so it rewrites source. Several
 stylelint rules are disabled in `stylelint.config.js` specifically because their
@@ -77,8 +93,15 @@ re-enabling anything.
 ```
 index.html            App entry (loads /src/main.tsx). Keep the seo:start/seo:end
                       markers — the prerenderer replaces that region per route.
-wrangler.toml         Frontend Worker (static assets). Read automatically by
-                      Workers Builds on every push, so a push deploys the site.
+wrangler.toml         Frontend Worker. Read automatically by Workers Builds on
+                      every push, so a push deploys the site.
+worker/index.ts       Fallback handler for the site Worker. Static assets match
+                      FIRST and are served without invoking it, so every real
+                      page still has no JS in its request path - it runs only
+                      when nothing matched, and returns a real 404 (or the SPA
+                      shell for /account/*). Added because an unmatched URL used
+                      to serve the home page with a 200, which Google reported
+                      as Soft 404.
 wrangler.backend.toml Backend Worker. Nothing reads it implicitly — pass -c.
 backend/index.ts      Hono API: /api/square/checkout, /api/grant/checkout, /api/grant/complete
 src/
@@ -89,7 +112,6 @@ src/
   data/               Static product/category/pro data (product image URLs live here)
   store/              Cart context
   hooks/              e.g. useAuth
-  blink/client.ts     Blink SDK client (auth) — slated for replacement
   lib/, features/, layouts/, assets/
 ```
 
@@ -98,6 +120,16 @@ src/
 - Components are named exports in PascalCase files (e.g. `export function ShopPage()`).
 - Path alias `@/` → `src/` (configured in `vite.config.ts` and `tsconfig.json`).
 - Product/category/pro images are currently remote URLs stored in `src/data/*.ts`.
+- **`product.name` is canonical; `product.seoTitle` is for search.** `name` runs
+  the cart, the Square checkout line item and the Merchant Center feed, so
+  changing it alters real receipts and makes Google re-review all 36 feed
+  entries. `seoTitle` / `seoDescription` drive only the `<title>` and the on-page
+  `<h1>`. Rename for search there, not in `name`. `SHOP_CATEGORIES` has the same
+  `label` (short: sidebar, breadcrumb) / `seoTitle` (search: title, h1) split.
+- **Category naming lives only in `SHOP_CATEGORIES`** in `src/lib/pageSeo.ts`.
+  `ShopPage.tsx` used to keep a second table and the two silently drifted apart.
+  Derive from that one, the way `productsInShopCategory()` is the one resolver
+  for what a category *contains*.
 - Keep the dev server running while making changes; verify http://localhost:3000 still
   responds after edits to `index.html`, routing, or the entry point.
 
