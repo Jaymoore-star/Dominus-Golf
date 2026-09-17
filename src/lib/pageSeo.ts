@@ -47,37 +47,39 @@ export const PAGE_SEO = {
   },
   '/about/team': {
     title: 'Our Team',
-    description: 'Meet the team behind Dominus Golf training systems.',
+    description:
+      'The coaches, players and builders behind Dominus Golf training systems, and why the company builds practice equipment rather than clubs.',
   },
   '/about/contact': {
     title: 'Contact Us',
     description:
-      'Get in touch with the Dominus Golf team about orders, products, or the Development Grant.',
+      'Contact the Dominus Golf team about an order, a product question, shipping, returns or a partnership enquiry. Send a message and we will reply.',
   },
   '/about/careers': {
     title: 'Careers',
-    description: 'Open roles and opportunities to work with Dominus Golf.',
+    description:
+      'Open roles at Dominus Golf. We hire for product, content and community across golf training and direct-to-consumer retail.',
   },
   '/about/sustainability': {
     title: 'Sustainability',
     description:
-      "Our approach to materials, manufacturing, and packaging across the Dominus Golf range.",
+      'How Dominus Golf approaches materials, manufacturing and packaging across the range, and what we are still working to improve.',
   },
 
   '/beginners': {
-    title: 'Golf Training for Beginners',
+    title: 'Golf Training Aids for Beginners',
     description:
-      'New to golf? Where to start with swing path, plane, and tempo - and which Dominus Golf training system fits a beginner.',
+      'New to golf? What to practise first, how to build a swing that repeats, and which training aid actually helps a beginner improve.',
   },
   '/tour-pure-guide': {
-    title: 'Tour Pure Training Guide',
+    title: 'Golf Swing Path Drills - Tour Pure Guide',
     description:
-      'How to train with the Tour Pure system: drills, rep counts, and building a repeatable swing path.',
+      'How to fix an over-the-top swing and train a repeatable path. Drills, rep counts and a practice structure using the Tour Pure trainer.',
   },
   '/feel-right-band-guide': {
-    title: 'Feel Rite Band Guide',
+    title: 'Golf Tempo and Connection Drills - Band Guide',
     description:
-      'How to use the Feel Rite Band to build tempo, sequencing, and connection through the golf swing.',
+      'Drills for golf tempo, sequencing and arm connection through the swing, using a connection band. Includes the tour floatie drill.',
   },
 
   /* Unpublished pending legal review (2026-08-31). Removing the entry is what
@@ -117,37 +119,41 @@ export const PAGE_SEO = {
   },
 
   '/pros': {
-    title: 'Practice With Pros',
+    title: 'Practice With Golf Professionals',
     description:
-      'Train alongside the golf professionals who partner with Dominus Golf.',
+      'Train alongside the golf professionals who partner with Dominus Golf. Browse coach profiles and book a session with one near you.',
   },
   '/leroy-bates': {
-    title: 'Leroy Bates',
-    description: 'Golf professional Leroy Bates - profile and training background.',
+    title: 'Leroy Bates - Golf Professional',
+    description:
+      'Golf professional Leroy Bates: credentials, technical expertise and instructional philosophy. Book a coaching appointment through Dominus Golf.',
   },
   '/gabe-salvanera': {
-    title: 'Gabe Salvanera',
-    description: 'Golf professional Gabe Salvanera - profile and training background.',
+    title: 'Gabe Salvanera - Golf Professional',
+    description:
+      'Golf professional Gabe Salvanera: credentials, tour experience and instructional philosophy. Book a session through Dominus Golf.',
   },
 
   '/affiliates': {
     title: 'Affiliate Program',
     description:
-      'Earn commission promoting Dominus Golf. For coaches, content creators, clubs and academies.',
+      'Earn commission promoting Dominus Golf training systems. Built for coaches, content creators, clubs and academies with a golf audience.',
   },
 
   '/shipping-policy': {
     title: 'Shipping Policy',
-    description: 'Shipping timelines, rates, and delivery information for Dominus Golf orders.',
+    description:
+      'Shipping rates, handling and delivery times for Dominus Golf orders. Free US shipping over $150, a flat $6.99 below it, 30-day returns.',
   },
   '/terms': {
     title: 'Terms & Conditions',
-    description: 'Terms and conditions for purchases and use of the Dominus Golf website.',
+    description:
+      'Terms and conditions for purchases from Dominus Golf and use of this website, covering orders, payment, delivery, returns and liability.',
   },
   '/safety-disclaimer': {
     title: 'Safety Disclaimer',
     description:
-      'Important safety information for training with Dominus Golf equipment.',
+      'Safety guidance for training with Dominus Golf equipment. Read this before using a weighted swing trainer or a resistance band.',
   },
 
   // ── Private / utility pages: valid meta, but kept out of the index ────────
@@ -204,38 +210,67 @@ export const PAGE_SEO = {
 } satisfies Record<string, PageSeo>;
 
 /**
- * Titles and descriptions for the /shop/$category routes. Kept here (rather
- * than in App.tsx) so the sitemap generator in vite.config.ts can enumerate the
- * category pages without importing the router.
+ * The /shop/$category routes. Kept here (rather than in App.tsx) so the sitemap
+ * generator in vite.config.ts can enumerate the category pages without
+ * importing the router.
+ *
+ * **This is the single source of truth for category naming.** ShopPage.tsx used
+ * to keep its own `categoryLabels` table for the sidebar and the on-page
+ * heading, and the two had already drifted: this file said "Golf Training
+ * Systems" while the page heading said "Training Systems", and "Golf Apparel"
+ * against "Dominus Golf Apparel". The same mistake `productsInShopCategory()`
+ * exists to prevent — the page and its own schema disagreeing about itself.
+ *
+ * Two names per category, because the three places one is read want different
+ * lengths:
+ *
+ * - `label` — short. The sidebar nav and the breadcrumb, where a long string
+ *   wraps and reads badly.
+ * - `seoTitle` — the <title> tag and the on-page <h1>. Carries the search term,
+ *   because "Training Systems" is not what anyone types. Falls back to `label`.
  */
 export const SHOP_CATEGORIES = {
   all: {
     label: 'Shop All',
+    seoTitle: 'Shop All Golf Training Gear',
     description:
-      'Browse every Dominus Golf product - training systems, apparel, and accessories.',
+      'Every Dominus Golf product in one place: swing trainers, training bands, golf apparel and accessories. Free shipping over $150.',
   },
   'training-system': {
-    label: 'Golf Training Systems',
+    label: 'Training Systems',
+    seoTitle: 'Golf Swing Trainers and Training Aids',
     description:
-      'Swing training systems from Dominus Golf, built to develop swing path, plane, and tempo.',
+      'Swing path and swing plane training aids built for repeatable mechanics. Weighted trainers and tempo bands for indoor or outdoor practice.',
   },
   apparel: {
-    label: 'Golf Apparel',
-    description: 'Dominus Golf apparel - on and off the course.',
+    label: 'Dominus Golf Apparel',
+    seoTitle: 'Golf T-Shirts and Apparel',
+    description:
+      'Dominus Golf t-shirts and apparel for men and women. Premium cotton and moisture-wicking triblend, built for the course and beyond.',
   },
   accessories: {
-    label: 'Golf Accessories',
-    description: 'Golf accessories and training add-ons from Dominus Golf.',
+    label: 'Accessories',
+    seoTitle: 'Golf Accessories and Training Add-Ons',
+    description:
+      'Golf towels, training manuals and practice add-ons from Dominus Golf. The small gear that makes a practice session work.',
   },
+  /* "Apparel", not "Gear". These two pages are apparel-only on purpose (see the
+     comment on productsInShopCategory), and a visitor who arrives on "men's
+     golf gear" expecting trainers and finds three t-shirts bounces — which is
+     itself a ranking signal. */
   'mens-gear': {
-    label: "Men's Golf Gear",
-    description: "Men's golf training gear and apparel from Dominus Golf.",
+    label: "Men's Gear",
+    seoTitle: "Men's Golf Apparel",
+    description:
+      "Men's golf t-shirts and apparel from Dominus Golf. Premium cotton and moisture-wicking triblend in icon, wordmark and performance cuts.",
   },
   'womens-gear': {
-    label: "Women's Golf Gear",
-    description: "Women's golf training gear and apparel from Dominus Golf.",
+    label: "Women's Gear",
+    seoTitle: "Women's Golf Apparel",
+    description:
+      "Women's golf t-shirts and apparel from Dominus Golf. Premium cotton and moisture-wicking triblend in icon and performance cuts.",
   },
-} satisfies Record<string, { label: string; description: string }>;
+} satisfies Record<string, { label: string; seoTitle: string; description: string }>;
 
 export type StaticPath = keyof typeof PAGE_SEO;
 
@@ -316,11 +351,21 @@ export function pageHead(path: StaticPath) {
 // These take the route param rather than a router context, so the prerender
 // plugin can call them with a plain string.
 
+type ShopCategoryMeta = { label: string; seoTitle: string; description: string };
+
+/**
+ * A category's naming, or undefined for an unknown slug.
+ *
+ * Exported so ShopPage renders its heading, sidebar and breadcrumb from this
+ * table rather than keeping a second copy that drifts out of step with it.
+ */
+export function shopCategoryMeta(category: string): ShopCategoryMeta | undefined {
+  return (SHOP_CATEGORIES as Record<string, ShopCategoryMeta>)[category];
+}
+
 /** Head for `/shop/$category`. Unknown categories get generic but valid meta. */
 export function shopCategoryHead(category: string) {
-  const meta = (SHOP_CATEGORIES as Record<string, { label: string; description: string }>)[
-    category
-  ];
+  const meta = shopCategoryMeta(category);
 
   // The same resolver the page renders from, so the ItemList and the grid
   // cannot disagree about what this category contains.
@@ -328,7 +373,9 @@ export function shopCategoryHead(category: string) {
 
   return seo({
     path: `/shop/${category}`,
-    title: meta?.label ?? 'Shop',
+    // seoTitle for the title tag — it carries the search term. The breadcrumb
+    // below keeps the short `label`, matching the one drawn on the page.
+    title: meta?.seoTitle ?? meta?.label ?? 'Shop',
     description:
       meta?.description ?? 'Browse golf training systems, apparel, and accessories.',
     jsonLd: [
@@ -366,10 +413,16 @@ export function productHead(id: string) {
 
   return seo({
     path: `/product/${product.id}`,
-    title: product.name,
-    // The product's own opening paragraph, clipped — better than a generic
-    // template line, and it is copy that was already written deliberately.
-    description: clamp(product.description.split('\n\n')[0]),
+    // `seoTitle` where it exists, because `name` is a product name rather than
+    // a search term — "Tour Pure Men" is only typed by someone who already
+    // knows the brand. `name` still runs the cart, the Square line item and the
+    // Merchant feed; see the field's note in data/types.ts.
+    title: product.seoTitle ?? product.name,
+    // A written description where there is one. The fallback clips the opening
+    // paragraph, which is real copy but not written to be a search snippet —
+    // it left the flagship product advertising itself as "Most golfers spend
+    // hundreds on new equipment hoping something changes."
+    description: product.seoDescription ?? clamp(product.description.split('\n\n')[0]),
     // JPEG twin, not the .webp catalog image — see SITE.ogImage.
     image: `/images/og/${product.id}.jpg`,
     type: 'product',
@@ -383,6 +436,38 @@ export function productHead(id: string) {
         { name: product.name, path: `/product/${product.id}` },
       ]),
     ],
+  });
+}
+
+/**
+ * Head for the static `404.html` shell.
+ *
+ * This is NOT a route. It is the file Cloudflare serves, with a real 404 status,
+ * for any URL that has no prerendered file — see the fallback Worker in
+ * `worker/index.ts`.
+ *
+ * Until this existed, `not_found_handling = "single-page-application"` served
+ * `dist/index.html` for every unknown URL: a byte-identical copy of the home
+ * page, with a `200` status and a canonical pointing at `/`. Google reported
+ * those as **Soft 404** — it asked for a page, got `200 OK`, and found the home
+ * page. Verified 16 Sep 2026: `curl /no-such-page-xyz` returned the home page's
+ * exact md5.
+ *
+ * Two things here are deliberate:
+ *
+ * - **`noindex`**, so that even if this shell is served somewhere unexpected it
+ *   can never enter the index.
+ * - **No canonical.** `seo()` would otherwise emit one pointing at this page's
+ *   own URL. A canonical on an error page tells Google the URL is a real,
+ *   indexable destination, which is the opposite of what a 404 means.
+ */
+export function notFoundHead() {
+  return seo({
+    path: '/404',
+    title: 'Page Not Found',
+    description: 'This page could not be found. Browse Dominus Golf training systems, apparel, and accessories.',
+    noindex: true,
+    canonical: false,
   });
 }
 

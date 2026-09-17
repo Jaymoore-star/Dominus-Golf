@@ -4,6 +4,9 @@ export const trainingSystems: Product[] = [
   {
     id: 'tour-pure-men',
     name: 'Tour Pure Men',
+    seoTitle: "Tour Pure Swing Path Trainer - Men's",
+    seoDescription:
+      'Weighted swing trainer that teaches swing path and plane with immediate feedback on every rep. Built for full swing, chipping and putting.',
     category: 'training-system',
     audience: 'men',
     subcategory: 'Performance',
@@ -40,6 +43,9 @@ export const trainingSystems: Product[] = [
   {
     id: 'tour-pure-women',
     name: 'Tour Pure Women',
+    seoTitle: "Tour Pure Swing Path Trainer - Women's",
+    seoDescription:
+      "Women's weighted swing trainer for tempo, sequencing and a repeatable swing path. Includes the free Ultimate Guide to Mastering the Game.",
     category: 'training-system',
     audience: 'women',
     subcategory: 'Performance',
@@ -74,6 +80,9 @@ export const trainingSystems: Product[] = [
   {
     id: 'tour-pure-jr',
     name: 'Tour Pure Jr',
+    seoTitle: 'Tour Pure Junior Golf Swing Trainer',
+    seoDescription:
+      'Junior swing trainer that builds balance, sequencing and mechanics early, without overwhelming weight. Includes the free 90-day manual.',
     category: 'training-system',
     audience: 'junior',
     subcategory: 'Junior Performance',

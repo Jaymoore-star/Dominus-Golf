@@ -3,7 +3,13 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import fs from 'fs';
 import { products } from './src/data/products';
-import { PAGE_SEO, SHOP_CATEGORIES, prerenderRoutes, routeSourceFiles } from './src/lib/pageSeo';
+import {
+  PAGE_SEO,
+  SHOP_CATEGORIES,
+  prerenderRoutes,
+  routeSourceFiles,
+  notFoundHead,
+} from './src/lib/pageSeo';
 import { renderHeadHtml } from './src/lib/headHtml';
 import { SITE } from './src/lib/seo';
 import { FILE_DATES } from './src/data/fileDates.generated';
@@ -194,7 +200,22 @@ function prerenderPlugin(): Plugin {
         count++;
       }
 
-      console.log(`  \x1b[32m✓\x1b[0m prerendered ${count} routes`);
+      /* The 404 shell. Written to dist/404.html rather than 404/index.html,
+         because the fallback Worker fetches it by that exact path.
+
+         It carries the not-found head (noindex, no canonical) instead of the
+         home page's, which is what dist/index.html would have given it. See
+         notFoundHead() for the soft-404 this fixes. */
+      fs.writeFileSync(
+        path.join(outDir, '404.html'),
+        template.replace(
+          SEO_BLOCK,
+          `<!-- prerendered 404 shell - served with a real 404 status by worker/index.ts -->\n${renderHeadHtml(notFoundHead())}`,
+        ),
+        'utf8',
+      );
+
+      console.log(`  \x1b[32m✓\x1b[0m prerendered ${count} routes + 404.html`);
     },
   };
 }

@@ -5,6 +5,9 @@ export const apparel: Product[] = [
   {
     id: 'dominus-tee-icon-white',
     name: "Icon Tee (Men's)",
+    seoTitle: "Icon Golf T-Shirt - White (Men's)",
+    seoDescription:
+      "Men's golf t-shirt with the Dominus icon. Minimalist design in a premium cotton feel, built for the course and beyond.",
     category: 'apparel',
     subcategory: "Men's Apparel",
     audience: 'men',
@@ -38,6 +41,9 @@ export const apparel: Product[] = [
   {
     id: 'dominus-tee-wordmark-white',
     name: "Wordmark Tee (Men's)",
+    seoTitle: "Wordmark Golf T-Shirt - White (Men's)",
+    seoDescription:
+      "Men's golf t-shirt with the arched Dominus wordmark and D logo. Premium cotton feel for the course and beyond.",
     category: 'apparel',
     subcategory: "Men's Apparel",
     audience: 'men',
@@ -69,6 +75,9 @@ export const apparel: Product[] = [
   {
     id: 'dominus-tee-performance-black',
     name: "Performance Tee (Men's)",
+    seoTitle: "Performance Golf T-Shirt - Black (Men's)",
+    seoDescription:
+      "Men's moisture-wicking golf t-shirt in triblend fabric. Back logo with sleeve branding, built to train and play in.",
     category: 'apparel',
     subcategory: "Men's Apparel",
     audience: 'men',
@@ -101,6 +110,9 @@ export const apparel: Product[] = [
   {
     id: 'dominus-womens-tee-black-icon',
     name: "Icon Tee - Black (Women's)",
+    seoTitle: "Icon Golf T-Shirt - Black (Women's)",
+    seoDescription:
+      "Women's golf t-shirt with the Dominus icon in black. Bold logo and a premium feel, built for the course and beyond.",
     category: 'apparel',
     subcategory: "Women's Apparel",
     audience: 'women',
@@ -136,6 +148,9 @@ export const apparel: Product[] = [
   {
     id: 'dominus-womens-tee-white-icon',
     name: "Icon Tee - White (Women's)",
+    seoTitle: "Icon Golf T-Shirt - White (Women's)",
+    seoDescription:
+      "Women's golf t-shirt with the Dominus icon in white. Clean minimalist design, built for the course and beyond.",
     category: 'apparel',
     subcategory: "Women's Apparel",
     audience: 'women',
@@ -171,6 +186,9 @@ export const apparel: Product[] = [
   {
     id: 'dominus-womens-tee-black-performance',
     name: "Performance Tee (Women's)",
+    seoTitle: "Performance Golf T-Shirt - Black (Women's)",
+    seoDescription:
+      "Women's moisture-wicking golf t-shirt in triblend fabric with the Dominus D logo. Built to train in and to play a full round in.",
     category: 'apparel',
     subcategory: "Women's Apparel",
     audience: 'women',

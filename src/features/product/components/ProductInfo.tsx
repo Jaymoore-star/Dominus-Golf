@@ -59,8 +59,15 @@ export function ProductInfo({
         </p>
       )}
 
+      {/* The h1 uses `seoTitle` where a product has one — it is the heading
+          Google weights most, and `name` alone carries none of the terms anyone
+          searches for. Still run through displayProductName(), which strips the
+          trailing "(Men's)" / "(Women's)": `subcategory` renders directly above
+          this line, so the suffix would only repeat what is already on screen.
+          The <title> tag keeps it, since there it is the only thing separating
+          the two versions of the same shirt at the same price. */}
       <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground leading-tight mb-4">
-        {displayProductName(product.name)}
+        {displayProductName(product.seoTitle ?? product.name)}
       </h1>
 
       {/* Rating, from real customer reviews only — nothing shows until someone

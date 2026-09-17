@@ -4,10 +4,16 @@
 # must describe the WEBSITE. The backend API lives in wrangler.backend.toml; see
 # the note there for why they are separate.
 #
-# There is no `main`, so this is an assets-only Worker: Cloudflare serves the
-# files directly with no JavaScript in the request path.
+# `main` points at a fallback handler that runs ONLY when no static asset
+# matches the request. Cloudflare serves matching assets directly and does not
+# invoke the Worker for them (`run_worker_first` defaults to false), so every
+# real page still has no JavaScript in its request path — the property this
+# Worker had when it was assets-only. See worker/index.ts for why it was added:
+# without it, every unknown URL returned the home page under a 200, which Google
+# reported as Soft 404.
 
 name = "tit"
+main = "worker/index.ts"
 compatibility_date = "2024-11-01"
 account_id = "d52c80b6632554c75458cf115c6d74b0"
 
@@ -20,6 +26,9 @@ command = "npm run build"
 [assets]
 directory = "./dist"
 
+# Binding the fallback Worker reads /index.html and /404.html through.
+binding = "ASSETS"
+
 # Serve /product/tour-pure-men directly from product/tour-pure-men/index.html,
 # and redirect the trailing-slash form to it.
 #
@@ -31,17 +40,24 @@ directory = "./dist"
 # "307 Location: /product/tour-pure-men/", this setting gives a direct 200.
 html_handling = "drop-trailing-slash"
 
-# The site is a single-page app, so a URL with no matching file must still return
-# the app shell rather than a 404 — otherwise every deep link breaks on refresh.
+# "none" hands unmatched requests to the Worker in worker/index.ts, which decides
+# between the SPA shell and a real 404. It does NOT mean the site stops serving
+# deep links: every route is prerendered to its own HTML file by vite.config.ts,
+# and asset matching happens before any of this.
 #
-# This replaces public/_redirects, which was deleted. That file held
+# It was "single-page-application", which returns dist/index.html with a 200 for
+# anything unmatched. Because dist/index.html IS the prerendered home page, every
+# unknown URL served the home page under a 200 with the home page's canonical —
+# reported by Search Console on 16 Sep 2026 as Soft 404. worker/index.ts has the
+# full diagnosis and why "404-page" was not the answer either.
+#
+# Deliberately still NOT public/_redirects. That file once held
 # `/* /index.html 200`, and Cloudflare's docs are explicit that "redirects are
 # always followed, regardless of whether or not an asset matches the incoming
 # request" — so a catch-all rewrite would have shadowed the per-route HTML that
-# the prerender step in vite.config.ts writes, silently undoing all of it.
+# the prerender step writes, silently undoing all of it.
 #
-# Asset matching still wins over this fallback, and the default html_handling
-# ("auto-trailing-slash") resolves /product/tour-pure-men to that route's
-# prerendered product/tour-pure-men/index.html. The fallback only applies to URLs
-# with no prerendered file at all.
-not_found_handling = "single-page-application"
+# Asset matching still wins over the fallback, and html_handling below resolves
+# /product/tour-pure-men to that route's prerendered index.html. The Worker only
+# sees URLs with no prerendered file at all.
+not_found_handling = "none"

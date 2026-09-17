@@ -4,6 +4,9 @@ export const accessories: Product[] = [
   {
     id: 'feel-right-band',
     name: 'Feel Right Band',
+    seoTitle: 'Feel Right Golf Tempo and Connection Band',
+    seoDescription:
+      'Training band for arm structure and connection through the swing. Inspired by the floatie drill used on tour. Builds tempo and sequencing.',
     category: 'accessories',
     subcategory: 'Training Aid',
     price: 12.99,
@@ -25,6 +28,9 @@ export const accessories: Product[] = [
   {
     id: 'dominus-towel',
     name: 'Dominus Golf Towel',
+    seoTitle: 'Premium Microfiber Golf Towel',
+    seoDescription:
+      'Microfiber golf towel built for the bag. Durable, quick-drying and sized to clip on and stay put through a full round.',
     category: 'accessories',
     subcategory: 'Accessories',
     price: 19.99,
@@ -43,6 +49,9 @@ export const accessories: Product[] = [
   {
     id: 'mastering-the-game-book',
     name: 'The Ultimate Guide to Mastering the Game (Physical Copy)',
+    seoTitle: '90-Day Golf Training Program - Paperback',
+    seoDescription:
+      'A structured day-by-day golf training curriculum. Ninety days of drills, rep counts and practice plans in a printed paperback.',
     category: 'accessories',
     subcategory: 'Education',
     price: 14.99,
@@ -69,6 +78,9 @@ export const accessories: Product[] = [
   {
     id: 'training-manual-pdf',
     name: 'Ultimate Guide to Mastering the Game (PDF)',
+    seoTitle: '90-Day Golf Training Program - PDF',
+    seoDescription:
+      'The full 90-day golf training curriculum as an instant PDF download. Free with any Tour Pure swing trainer. Drills, reps and practice plans.',
     category: 'accessories',
     subcategory: 'Education',
     price: 9.99,

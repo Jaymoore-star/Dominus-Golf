@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { useNavigate, useParams, Link } from '@tanstack/react-router';
 import { SlidersHorizontal, ChevronDown, X } from 'lucide-react';
 import { productsInShopCategory } from '../data/products';
+import { SHOP_CATEGORIES, shopCategoryMeta } from '../lib/pageSeo';
 import { ProductCard } from '../components/ui/ProductCard';
 import { ApparelProductCard } from '../components/ui/ApparelProductCard';
 import { Navbar } from '../components/layout/Navbar';
@@ -11,13 +12,21 @@ import { Slider } from '../components/ui/slider';
 
 type SortKey = 'featured' | 'price-asc' | 'price-desc' | 'newest';
 
-const categoryLabels: Record<string, string> = {
-  'training-system': 'Training Systems',
-  'apparel': 'Dominus Golf Apparel',
-  'accessories': 'Accessories',
-  'mens-gear': "Men's Gear",
-  'womens-gear': "Women's Gear",
-};
+/**
+ * Sidebar labels, derived from SHOP_CATEGORIES so this page and its own <title>
+ * and breadcrumb schema cannot disagree about what a category is called. This
+ * was a second hand-maintained table, and it had already drifted — pageSeo said
+ * "Golf Training Systems" where the heading here said "Training Systems".
+ *
+ * 'all' is excluded on purpose: it is a real route with a prerendered page, but
+ * the sidebar lists the categories you can narrow to, and "Shop All" is the
+ * state you are narrowing *from*.
+ */
+const categoryLabels: Record<string, string> = Object.fromEntries(
+  Object.entries(SHOP_CATEGORIES)
+    .filter(([key]) => key !== 'all')
+    .map(([key, meta]) => [key, meta.label]),
+);
 
 /**
  * Categories with nothing in them are dropped from the sidebar, so a shopper is
@@ -64,7 +73,13 @@ export function ShopPage() {
     }
   };
 
-  const categoryLabel = categoryLabels[category] ?? category;
+  /* Two names, from the one table in pageSeo.ts. `label` is the short form the
+     breadcrumb and sidebar use; `seoTitle` carries the search term and is what
+     the <title> tag uses, so the h1 uses it too — the h1 is the heading Google
+     weights most, and "Accessories" alone is not a term anyone searches. */
+  const categoryMeta = shopCategoryMeta(category);
+  const categoryLabel = categoryMeta?.label ?? categoryLabels[category] ?? category;
+  const categoryHeading = categoryMeta?.seoTitle ?? categoryLabel;
 
   const categoryIsEmpty = !stockedCategories.has(category);
 
@@ -251,7 +266,7 @@ export function ShopPage() {
           <span className="text-foreground">{categoryLabel}</span>
         </nav>
         <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground">
-          {categoryLabel}
+          {categoryHeading}
         </h1>
         <p className="font-sans text-muted-foreground text-sm mt-2">
           {filtered.length} {filtered.length === 1 ? 'product' : 'products'}

@@ -175,7 +175,7 @@ export function BeginnersPage() {
             </Link>{' '}
             or the{' '}
             <Link to="/feel-right-band-guide" className="text-accent hover:underline">
-              Feel Rite Band guide
+              Feel Right Band guide
             </Link>
             .
           </p>
