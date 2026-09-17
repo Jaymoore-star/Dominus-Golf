@@ -1,6 +1,15 @@
-/* Fonts moved to index.html as a <link> with preconnects — an @import here made
-   the browser fetch index.css first and only then start on the fonts. See the
-   comment in index.html. */
+/* Self-hosted fonts, 17 Sep 2026. Replaces the Google Fonts <link> that used to
+   sit in index.html.
+
+   An @import is safe here now, where it was not before. The old warning - that
+   @import made the browser fetch index.css and only THEN start on the fonts -
+   applied to a remote stylesheet on fonts.googleapis.com. This one is a local
+   file, so Vite inlines it into the CSS bundle at build time: the @font-face
+   rules ship inside index-*.css and there is no second request at all.
+
+   Must stay above the @tailwind directives - CSS requires @import before any
+   other rule. See src/fonts.css for the licensing and refresh notes. */
+@import './fonts.css';
 
 @tailwind base;
 @tailwind components;

@@ -1,0 +1,141 @@
+/**
+ * Self-hosted webfonts. Replaces the Google Fonts <link> that used to sit in
+ * index.html.
+ *
+ * ── Why ───────────────────────────────────────────────────────────────────
+ *
+ * That link cost a serialised, three-origin chain before a single glyph could
+ * paint: document -> fonts.googleapis.com (CSS) -> fonts.gstatic.com (woff2).
+ * Two extra DNS lookups and TLS handshakes, and the stylesheet was
+ * render-blocking. `preconnect` shaved the handshakes but could not remove the
+ * round trip, because the browser cannot know which font files it needs until
+ * the CSS arrives. Served from our own origin the files are already on a warm
+ * connection, and the two preloads in index.html start them in parallel with
+ * the CSS instead of after it.
+ *
+ * ── These are VARIABLE fonts ──────────────────────────────────────────────
+ *
+ * Google served the same woff2 URL for weights 300, 400, 500, 600 and 700 of
+ * DM Sans — one file spanning the whole axis. So this declares a weight RANGE
+ * per face rather than one @font-face per weight: 8 files instead of 32 faces,
+ * and the browser interpolates any weight in between.
+ *
+ * A useful side effect: `font-black` (900) is used three times in the markup
+ * and was being synthesised even after 700 was added to the old request. DM
+ * Sans's axis runs to 1000, so it is now a real weight.
+ *
+ * ── Subsetting ────────────────────────────────────────────────────────────
+ *
+ * `latin` and `latin-ext` are separate faces with the unicode-range Google
+ * publishes, copied verbatim. That is what makes this cheap: an English page
+ * downloads only the `latin` files (DM Sans 62 KB + Playfair 38 KB) and never
+ * touches latin-ext unless a page actually uses one of those codepoints.
+ * Italic likewise only loads where italic text renders.
+ *
+ * ── Licensing ─────────────────────────────────────────────────────────────
+ *
+ * DM Sans and Playfair Display are both SIL Open Font License 1.1, which
+ * permits self-hosting and redistribution. Files fetched from Google's own CDN
+ * 17 Sep 2026 (dmsans v17, playfairdisplay v40).
+ *
+ * To refresh: request the css2 URL with a modern browser User-Agent, take the
+ * woff2 URLs for the latin and latin-ext subsets, and replace the files in
+ * public/fonts/ keeping these names.
+ *
+ * `font-display: swap` is kept from the old request: text paints immediately in
+ * the fallback and re-renders when the face arrives, rather than being
+ * invisible. See also the metric note in index.html about why these were never
+ * loaded via @import.
+ */
+
+/* ── DM Sans — body copy (--font-sans) ─────────────────────────────────── */
+
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 100 1000;
+  font-display: swap;
+  src: url('/fonts/dm-sans-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 100 1000;
+  font-display: swap;
+  src: url('/fonts/dm-sans-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'DM Sans';
+  font-style: italic;
+  font-weight: 100 1000;
+  font-display: swap;
+  src: url('/fonts/dm-sans-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'DM Sans';
+  font-style: italic;
+  font-weight: 100 1000;
+  font-display: swap;
+  src: url('/fonts/dm-sans-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* ── Playfair Display — headings (--font-serif) ────────────────────────── */
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('/fonts/playfair-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('/fonts/playfair-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('/fonts/playfair-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('/fonts/playfair-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
