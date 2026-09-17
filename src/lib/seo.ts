@@ -191,6 +191,44 @@ export function organizationJsonLd(): Record<string, unknown> {
   };
 }
 
+/**
+ * A golf professional with a profile page.
+ *
+ * `/leroy-bates` and `/gabe-salvanera` are two of the site's more substantial
+ * pages — credentials, playing background, coaching philosophy — and carried no
+ * entity markup at all, so Google had no way to know they were about a person.
+ * `worksFor` ties them to the brand, which is the same knowledge-graph link
+ * `sameAs` does for the organisation.
+ *
+ * Every field traces to something the page already states. Optional fields are
+ * omitted rather than guessed: a `Person` with an invented `jobTitle` or a
+ * `homeLocation` nobody published is exactly the invented markup that got the
+ * product ratings into trouble.
+ */
+export function personJsonLd(person: {
+  name: string;
+  path: string;
+  description: string;
+  image?: string;
+  jobTitle?: string;
+  affiliation?: string;
+}): Record<string, unknown> {
+  const data: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: person.name,
+    url: absoluteUrl(person.path),
+    description: clamp(person.description, 500),
+    worksFor: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+  };
+  if (person.image) data.image = absoluteUrl(person.image);
+  if (person.jobTitle) data.jobTitle = person.jobTitle;
+  if (person.affiliation) {
+    data.affiliation = { '@type': 'Organization', name: person.affiliation };
+  }
+  return data;
+}
+
 export function websiteJsonLd(): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',

@@ -1,12 +1,34 @@
 import { Link } from '@tanstack/react-router';
 import { href } from '../../lib/routerLinks';
 
+/*
+ * The guide and directory links below are here for a concrete reason, not to
+ * pad the footer.
+ *
+ * A crawl of the rendered site on 17 Sep 2026 found `/beginners` and `/pros`
+ * with **zero** inbound internal links anywhere — orphan pages. Both are in
+ * `sitemap.xml` and both are indexable, and `/beginners` is one of the pages
+ * docs/SEO.md §3 names as winnable. An orphan gets almost no crawl priority and
+ * inherits no internal authority, which is very likely part of the 8 URLs
+ * sitting in Search Console's "currently not indexed".
+ *
+ * They were not missing from the nav — the Navbar has them under a mega-menu.
+ * But that menu only renders once it is opened, so the links exist in no
+ * rendered HTML and a crawler never sees them. The footer renders on every
+ * page, which is what makes it the right home for them.
+ *
+ * Deliberately folded into the existing groups rather than added as a sixth
+ * "Learn" column: the grid below is sized for exactly five, and a sixth would
+ * orphan one group on its own row at lg.
+ */
 const footerLinks = {
   'Training Systems': [
     { label: 'Tour Pure Men', href: '/product/tour-pure-men' },
     { label: 'Tour Pure Women', href: '/product/tour-pure-women' },
     { label: 'Tour Pure Jr', href: '/product/tour-pure-jr' },
     { label: 'Shop All Systems', href: '/shop/training-system' },
+    { label: 'Tour Pure Training Guide', href: '/tour-pure-guide' },
+    { label: 'Training for Beginners', href: '/beginners' },
   ],
   'Apparel': [
     { label: "Men's Tees", href: '/shop/mens-gear' },
@@ -21,6 +43,7 @@ const footerLinks = {
     { label: 'Dominus Golf Towel', href: '/product/dominus-towel' },
     { label: 'The Ultimate Guide (Book)', href: '/product/mastering-the-game-book' },
     { label: 'Shop All Accessories', href: '/shop/accessories' },
+    { label: 'Feel Right Band Guide', href: '/feel-right-band-guide' },
   ],
   Company: [
     { label: 'About Dominus Golf', href: '/about' },
@@ -31,6 +54,7 @@ const footerLinks = {
     // { label: 'DOMINUS HER', href: '/dominus-her' },  // unpublished pending legal review
     { label: 'Affiliate Program', href: '/affiliates' },
     { label: 'Sustainability', href: '/about/sustainability' },
+    { label: 'Practice With Pros', href: '/pros' },
   ],
   Legal: [
     { label: 'Safety Disclaimer', href: '/safety-disclaimer' },

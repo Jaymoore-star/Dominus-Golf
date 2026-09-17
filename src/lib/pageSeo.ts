@@ -28,6 +28,7 @@ import {
   organizationJsonLd,
   websiteJsonLd,
   itemListJsonLd,
+  personJsonLd,
   type SeoInput,
 } from './seo';
 
@@ -127,11 +128,34 @@ export const PAGE_SEO = {
     title: 'Leroy Bates - Golf Professional',
     description:
       'Golf professional Leroy Bates: credentials, technical expertise and instructional philosophy. Book a coaching appointment through Dominus Golf.',
+    /* Person schema, from what the page itself states. See personJsonLd. */
+    jsonLd: [
+      personJsonLd({
+        name: 'Leroy Bates',
+        path: '/leroy-bates',
+        description:
+          'Golf Junkyz Foundation professional and First Tee instructor whose career is built around consistency, giving everyday golfers a structured, repeatable path to lower scores through elite technical range sessions.',
+        image: '/images/1000010452__3764dc88.webp',
+        jobTitle: 'Golf Professional',
+        affiliation: 'Golf Junkyz Foundation',
+      }),
+    ],
   },
   '/gabe-salvanera': {
     title: 'Gabe Salvanera - Golf Professional',
     description:
       'Golf professional Gabe Salvanera: credentials, tour experience and instructional philosophy. Book a session through Dominus Golf.',
+    jsonLd: [
+      personJsonLd({
+        name: 'Gabe Salvanera',
+        path: '/gabe-salvanera',
+        description:
+          'PGA Tour Americas and Grass League professional who has built his reputation on elite swing mechanics and performance optimization, with sessions focused on building tour-level habits on the range.',
+        image: '/images/GabeSand__d54af4a2.webp',
+        jobTitle: 'Golf Professional',
+        affiliation: 'PGA Tour Americas',
+      }),
+    ],
   },
 
   '/affiliates': {
