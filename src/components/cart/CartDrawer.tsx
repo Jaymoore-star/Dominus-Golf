@@ -192,6 +192,8 @@ export function CartDrawer() {
                     className="shrink-0 w-20 h-20 bg-white border border-border overflow-hidden"
                   >
                     <img
+                      loading="lazy"
+                      decoding="async"
                       src={item.product.image}
                       alt={item.product.name}
                       className="w-full h-full object-cover"

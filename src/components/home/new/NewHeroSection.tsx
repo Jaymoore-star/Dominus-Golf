@@ -100,17 +100,30 @@ export const NewHeroSection = () => {
           className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto"
         >
           <div className="aspect-[4/3] overflow-hidden bg-gray-100 border border-black/5 group relative rounded-sm shadow-2xl">
+            {/* fetchPriority high, and deliberately NOT lazy: this is the LCP
+                element on mobile. Lighthouse measured LCP 6.2s against a TBT of
+                only 90ms - the main thread was idle and the page was simply
+                waiting on this image, because all seven images on the page were
+                loading eagerly and competing for bandwidth. The other six are
+                now lazy; this one is told to jump the queue. */}
             <img 
               src={IMAGES.redShirt1} 
               alt="Professional golfer training with Tour Pure System" 
+              fetchPriority="high"
+              decoding="async"
               className="w-full h-full object-cover brightness-90 group-hover:brightness-100 transition-all duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
           </div>
           <div className="aspect-[4/3] overflow-hidden bg-gray-100 border border-black/5 group relative rounded-sm shadow-2xl">
+            {/* Side by side with the above on desktop, stacked below it on
+                mobile, so it is never the LCP element. Lazy so it stops
+                competing with the one that is. */}
             <img 
               src={IMAGES.redShirt2} 
               alt="Elite player feedback loop training" 
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover brightness-90 group-hover:brightness-100 transition-all duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />

@@ -18,9 +18,13 @@ export function ProductGallery({
       {/* Main image - constrained, centered, premium presentation */}
       <div className="w-full flex justify-center items-center bg-white py-8 px-4 border border-border">
         <div className="w-full max-w-[85vw] md:max-w-[520px] lg:max-w-[560px]">
+          {/* The LCP element on a product page, so it is told to jump the
+              queue and is never lazy. The thumbnails below are. */}
           <img
             src={galleryImages[activeImage]}
             alt={productName}
+            fetchPriority="high"
+            decoding="async"
             className="w-full h-auto object-contain transition-opacity duration-300"
             style={{ maxHeight: '520px' }}
           />
@@ -39,6 +43,8 @@ export function ProductGallery({
               <img
                 src={img}
                 alt={`${productName} view ${i + 1}`}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-contain p-1"
               />
             </button>

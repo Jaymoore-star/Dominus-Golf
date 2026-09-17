@@ -37,6 +37,8 @@ export const ConnectionSection = () => {
               <img 
                 src="/images/FeelRiteGolfBand__cc34ac6f.webp" 
                 alt="Feel Right Band" 
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110 drop-shadow-[0_0_50px_rgba(255,255,255,0.1)]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-transparent to-transparent opacity-60" />

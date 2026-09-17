@@ -28,6 +28,8 @@ export function CategoryGrid() {
             >
               <div className="relative aspect-[3/4] overflow-hidden bg-muted img-hover-scale">
                 <img
+                  loading="lazy"
+                  decoding="async"
                   src={cat.image}
                   alt={cat.label}
                   className="w-full h-full object-cover"

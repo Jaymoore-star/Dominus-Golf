@@ -9,6 +9,8 @@ export const WhySection = () => {
         <img 
           src="/images/2021-03-09__196c2c33.webp" 
           alt="Technical close-up" 
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover"
         />
       </div>

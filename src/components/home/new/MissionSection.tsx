@@ -17,6 +17,8 @@ export const MissionSection = () => {
               <img 
                 src="/images/455040396_8098531156901972_191203825751922657_n__0cf04f01.webp" 
                 alt="Dominus Golf Community" 
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover brightness-100"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />

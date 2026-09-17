@@ -22,6 +22,8 @@ export function BundleProductCard({ product }: BundleProductCardProps) {
       {/* Main product image */}
       <div className="relative aspect-square overflow-hidden bg-white border border-border">
         <img
+          loading="lazy"
+          decoding="async"
           src={product.image}
           alt={product.name}
           className="product-image w-full h-full object-contain p-3 transition-transform duration-300"

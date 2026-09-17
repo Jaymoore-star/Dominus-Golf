@@ -266,6 +266,8 @@ export function DominusHerPage() {
         {HERO_IMAGE && (
           <>
             <img
+              loading="lazy"
+              decoding="async"
               src={HERO_IMAGE}
               alt=""
               aria-hidden="true"

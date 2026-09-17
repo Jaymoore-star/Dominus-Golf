@@ -14,9 +14,20 @@ import { trackBeginCheckout } from '../../lib/analytics';
 interface ProductCardProps {
   product: Product;
   aspectRatio?: 'square' | 'portrait';
+  /**
+   * Opt this card's image out of lazy loading and give it a high fetch
+   * priority. Pass it for the FIRST card or two in a grid only.
+   *
+   * Every card image became lazy on 17 Sep 2026 to stop 13 of them competing
+   * for bandwidth on /shop/all. But Chrome loads even an in-viewport lazy
+   * image at low priority, and on a listing page the first card image is
+   * usually the LCP element - so lazy-everything trades one LCP problem for
+   * another. This is the escape hatch.
+   */
+  priority?: boolean;
 }
 
-export function ProductCard({ product, aspectRatio = 'square' }: ProductCardProps) {
+export function ProductCard({ product, aspectRatio = 'square', priority = false }: ProductCardProps) {
   const { addItem } = useCart();
   const { isWishlisted, toggle } = useWishlist();
   const { ensureAuth } = useRequireAuth();
@@ -89,6 +100,10 @@ export function ProductCard({ product, aspectRatio = 'square' }: ProductCardProp
     <Link to="/product/$id" params={{ id: product.id }} className="flex h-full flex-col group product-card">
       <div className={`relative ${aspectClass} shrink-0 overflow-hidden bg-white border border-border`}>
         <img
+          {...(priority
+            ? { fetchPriority: 'high' as const }
+            : { loading: 'lazy' as const })}
+          decoding="async"
           src={product.image}
           alt={product.name}
           className="product-image w-full h-full object-contain p-3 transition-transform duration-300"

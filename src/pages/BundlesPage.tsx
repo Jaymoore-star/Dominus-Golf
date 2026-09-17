@@ -189,7 +189,9 @@ export function BundlesPage() {
                   </div>
 
                   <div className="px-8 aspect-square overflow-hidden bg-white flex items-center justify-center p-4">
-                    <img 
+                    <img
+                      loading="lazy"
+                      decoding="async" 
                       src={bundle.image} 
                       alt={bundle.name} 
                       className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700"

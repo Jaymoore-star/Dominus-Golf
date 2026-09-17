@@ -108,9 +108,16 @@ export function Footer() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-10">
           {Object.entries(footerLinks).map(([category, links]) => (
             <div key={category}>
-              <h4 className="font-sans text-[10px] font-semibold tracking-[0.3em] uppercase text-white mb-5">
+              {/* h3, not h4. The page outline ran h1 -> h2 -> ... -> h4 here,
+                  skipping a level, which an SEO audit flagged on 17 Sep 2026:
+                  a broken outline is what Google reads to understand structure
+                  and to pick featured-snippet content. The preceding heading is
+                  always an h2 from the page body, so h3 is the correct rung.
+                  Purely semantic - the size comes from the classes, so nothing
+                  moves visually. */}
+              <h3 className="font-sans text-[10px] font-semibold tracking-[0.3em] uppercase text-white mb-5">
                 {category}
-              </h4>
+              </h3>
               <ul className="space-y-2.5">
                 {links.map((link) => (
                   <li key={link.label}>

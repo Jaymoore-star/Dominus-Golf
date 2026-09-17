@@ -460,6 +460,8 @@ export function Navbar() {
                               >
                                 <div className="w-11 h-11 shrink-0 bg-white border border-border overflow-hidden">
                                   <img
+                                    loading="lazy"
+                                    decoding="async"
                                     src={p.image}
                                     alt={p.name}
                                     className="w-full h-full object-cover"
@@ -667,6 +669,8 @@ export function Navbar() {
                 <div className="w-52 shrink-0">
                   <div className="aspect-[3/4] overflow-hidden bg-muted">
                     <img
+                      loading="lazy"
+                      decoding="async"
                       src={mega.image}
                       alt={mega.imageCaption}
                       className="w-full h-full object-cover"

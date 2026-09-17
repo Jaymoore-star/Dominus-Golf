@@ -388,11 +388,15 @@ export function ShopPage() {
               )
             ) : (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-5 gap-y-8">
-                {filtered.map((product) =>
+                {/* Only the first card is eager. On /shop/all that is 1 of 13
+                    images; the rest load as they scroll in. The first one is
+                    the LCP element on a listing page, so it is the one that
+                    must not be deprioritised - see the `priority` prop. */}
+                {filtered.map((product, i) =>
                   category === 'apparel' ? (
-                    <ApparelProductCard key={product.id} product={product} />
+                    <ApparelProductCard key={product.id} product={product} priority={i === 0} />
                   ) : (
-                    <ProductCard key={product.id} product={product} />
+                    <ProductCard key={product.id} product={product} priority={i === 0} />
                   )
                 )}
               </div>

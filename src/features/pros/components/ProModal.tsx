@@ -62,7 +62,9 @@ export function ProModal({ pro, onClose }: ProModalProps) {
           <div className="flex gap-5 items-start">
             <div className="w-16 h-16 shrink-0 bg-muted border border-border flex items-center justify-center">
               {pro.photo ? (
-                <img src={pro.photo} alt={pro.name} className="w-full h-full object-cover" />
+                <img
+                  loading="lazy"
+                  decoding="async" src={pro.photo} alt={pro.name} className="w-full h-full object-cover" />
               ) : (
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-muted-foreground">
                   <circle cx="12" cy="8" r="4" />

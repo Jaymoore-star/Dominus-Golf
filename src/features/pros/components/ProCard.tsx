@@ -19,6 +19,8 @@ export function ProCard({ pro, onClick }: ProCardProps) {
       >
         {pro.photo ? (
           <img
+            loading="lazy"
+            decoding="async"
             src={pro.photo}
             alt={pro.name}
             className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"

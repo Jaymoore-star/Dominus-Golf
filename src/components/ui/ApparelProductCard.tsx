@@ -14,11 +14,22 @@ import { displayProductName } from '../../lib/productName';
 
 interface ApparelProductCardProps {
   product: Product;
+  /**
+   * Opt this card's image out of lazy loading and give it a high fetch
+   * priority. Pass it for the FIRST card or two in a grid only.
+   *
+   * Every card image became lazy on 17 Sep 2026 to stop 13 of them competing
+   * for bandwidth on /shop/all. But Chrome loads even an in-viewport lazy
+   * image at low priority, and on a listing page the first card image is
+   * usually the LCP element - so lazy-everything trades one LCP problem for
+   * another. This is the escape hatch.
+   */
+  priority?: boolean;
 }
 
 const COLOR_ORDER = ['Black', 'White'] as const;
 
-export function ApparelProductCard({ product }: ApparelProductCardProps) {
+export function ApparelProductCard({ product, priority = false }: ApparelProductCardProps) {
   const { addItem } = useCart();
   const { isWishlisted, toggle } = useWishlist();
   const { ensureAuth } = useRequireAuth();
@@ -104,6 +115,10 @@ export function ApparelProductCard({ product }: ApparelProductCardProps) {
       {/* Image */}
       <div className="relative aspect-square shrink-0 overflow-hidden bg-white border border-border">
         <img
+          {...(priority
+            ? { fetchPriority: 'high' as const }
+            : { loading: 'lazy' as const })}
+          decoding="async"
           src={displayImage}
           alt={`${product.name}${selectedColor ? ` - ${selectedColor}` : ''}`}
           className="w-full h-full object-contain p-3 transition-all duration-300 group-hover:scale-105"
