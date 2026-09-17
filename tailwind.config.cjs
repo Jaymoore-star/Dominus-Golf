@@ -77,9 +77,6 @@ module.exports = {
   			sans: [
   				'var(--font-sans)'
   			],
-  			inter: [
-  				'var(--font-inter)'
-  			],
   			serif: [
   				'var(--font-serif)'
   			],

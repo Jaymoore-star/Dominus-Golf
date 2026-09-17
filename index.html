@@ -17,10 +17,23 @@
        window is imperceptible; on a phone it is long enough to see.
        Declaring them here lets the fetch start immediately, in parallel with the
        CSS, and the preconnects remove two round trips of DNS/TLS setup. -->
+  <!-- Audited 17 Sep 2026, and two things were wrong with the old request.
+
+       INTER was being downloaded on every page load and never used. It is
+       declared as `--font-inter` in index.css and wired to Tailwind's
+       `font-inter`, and `font-inter` appears ZERO times in the markup. That was
+       6 weights and 42 @font-face blocks for nothing.
+
+       DM SANS stopped at weight 600, but `font-bold` (700) is used 241 times in
+       the markup. Every one of those was being FAUX-bolded by the browser -
+       synthesised, and visibly worse than the real cut. 700 is now requested.
+
+       Net effect: the stylesheet went from 26.7 KB / 72 faces to 13.3 KB / 32,
+       and the bold body text is real. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" />
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" />
 
   <!-- seo:start
       Sitewide fallback tags for crawlers that do not execute JavaScript -

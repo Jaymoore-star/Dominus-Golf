@@ -56,7 +56,10 @@
     --sidebar-ring: 0 0% 10%;
 
     --font-sans: 'DM Sans', sans-serif;
-    --font-inter: 'Inter', sans-serif;
+    /* --font-inter removed 17 Sep 2026. Inter was fetched on every page load
+       and applied nowhere: the only consumer was Tailwind's `font-inter`
+       utility, used zero times in the markup. Removed from the Google Fonts
+       request at the same time - see the note in index.html. */
     --font-serif: 'Playfair Display', serif;
     --font-mono: 'IBM Plex Mono', monospace;
 
