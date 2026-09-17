@@ -286,7 +286,16 @@ const notFoundRoute = createRoute({
   component: NotFoundPage,
 });
 
-const routeTree = rootRoute.addChildren([
+/* Exported for src/entry-ssr.tsx, which builds a second router on a memory
+   history to render each route to HTML at build time. It cannot import the
+   `router` singleton below, because a router holds the current location and
+   reusing one would render every page as whichever was rendered first.
+
+   eslint-disable-next-line is for react-refresh/only-export-components: this
+   file legitimately exports a non-component, and splitting the route tree into
+   its own module would mean moving all 30-odd route definitions with it. */
+// eslint-disable-next-line react-refresh/only-export-components
+export const routeTree = rootRoute.addChildren([
   indexRoute,
   shopRoute,
   productRoute,

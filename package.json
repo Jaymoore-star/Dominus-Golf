@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run seo:reviews && vite build --mode production",
+    "build": "npm run seo:reviews && vite build --mode production && vite build --ssr src/entry-ssr.tsx --outDir .ssr-build --emptyOutDir --mode production && node scripts/prerender.mjs",
     "preview": "vite preview",
     "seo:reviews": "node scripts/fetch-review-summaries.mjs",
     "seo:dates": "node scripts/generate-file-dates.mjs",

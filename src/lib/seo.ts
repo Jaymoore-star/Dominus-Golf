@@ -145,6 +145,39 @@ const SOCIAL_PROFILES = [
   'https://x.com/GolfDominus',
 ];
 
+/**
+ * Registered business address, confirmed by Jeet 17 Sep 2026.
+ *
+ * Consistent with what the site already states publicly — `/about/team` says
+ * "Headquartered in Florence, Arizona", `/about/contact` lists the location and
+ * `/shipping-policy` says orders ship from there.
+ */
+const BUSINESS_ADDRESS = {
+  '@type': 'PostalAddress',
+  streetAddress: '6619 W Desert Blossom Way',
+  addressLocality: 'Florence',
+  addressRegion: 'AZ',
+  postalCode: '85132',
+  addressCountry: 'US',
+} as const;
+
+/**
+ * Organization, with the postal address.
+ *
+ * **Deliberately `Organization`, not `LocalBusiness`.** An SEO audit on
+ * 17 Sep 2026 flagged the missing `LocalBusiness`, and it is tempting because a
+ * checker turns green. `LocalBusiness` asserts premises a customer can visit
+ * during opening hours. This is a headquarters and fulfilment address: nothing
+ * on the site offers a walk-in, and there are no opening hours to declare.
+ * Emitting it would be marking up something the page does not say.
+ *
+ * `address` on `Organization` is the honest version of the same signal, and it
+ * is what feeds the brand's knowledge panel. If a storefront ever opens, switch
+ * the `@type` and add `openingHoursSpecification` and `telephone`.
+ *
+ * Real local-search presence is a **Google Business Profile**, not schema —
+ * that is a dashboard task and it requires a verifiable location.
+ */
 export function organizationJsonLd(): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
@@ -153,6 +186,7 @@ export function organizationJsonLd(): Record<string, unknown> {
     url: SITE.url,
     logo: absoluteUrl('/images/dominus-logo.png'),
     email: 'Customersupport@dominusgolf.com',
+    address: BUSINESS_ADDRESS,
     sameAs: SOCIAL_PROFILES,
   };
 }

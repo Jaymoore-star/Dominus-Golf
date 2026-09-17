@@ -31,10 +31,12 @@ See [Blink Migration](#blink-migration) below — **do not break the running app
   prerendered static assets; its only script is `worker/index.ts`, a fallback
   that runs *just* on an asset miss (see Structure below).
   There is **no** Cloudflare Pages project; the Git connection is Workers Builds.
-- **SEO:** the build prerenders one static HTML file per route with that route's
-  head baked in, so non-JS crawlers see real per-page tags. **`docs/SEO.md` is
-  the runbook — read it before any SEO work**; also `vite.config.ts` →
-  `prerenderPlugin` and `docs/HANDOFF.md` §2b.
+- **SEO:** the build renders one static HTML file per route — **head and body**,
+  via `scripts/prerender.mjs` — so a crawler that does not run JavaScript gets
+  the real page, not an empty shell. **`docs/SEO.md` is the runbook — read it
+  before any SEO work**; also `docs/HANDOFF.md` §2b.
+  `main.tsx` uses `createRoot`, not `hydrateRoot`, on purpose: see the header of
+  `scripts/prerender.mjs` before changing it.
   As of 16 Sep 2026 Search Console, Bing Webmaster Tools, Merchant Center and
   GA4 are all connected and the dashboard fixes in §2 are done. What is left is
   off-page (backlinks, reviews) plus §3b — the prerendered HTML carries a head
@@ -55,7 +57,13 @@ See [Blink Migration](#blink-migration) below — **do not break the running app
 ```bash
 npm install        # install dependencies
 npm run dev        # start dev server → http://localhost:3000 (strict port)
-npm run build      # production build (vite build) + prerenders 47 route HTML files + 404.html
+npm run build      # TWO Vite passes + a script, in this order:
+                   #   1. vite build                     -> dist/
+                   #   2. vite build --ssr entry-ssr.tsx -> .ssr-build/ (gitignored)
+                   #   3. node scripts/prerender.mjs     -> renders each route's
+                   #      HEAD AND BODY into dist/**/index.html, + 404.html
+                   # 47 routes. Pass 2/3 exist because crawlers were being served
+                   # an empty <div id="root">; see docs/SEO.md §3b.
 npm run preview    # preview the production build — see the caveat below
 
 npm run dev:backend     # backend Worker locally on 127.0.0.1:8787 (reads .dev.vars)
@@ -95,6 +103,11 @@ index.html            App entry (loads /src/main.tsx). Keep the seo:start/seo:en
                       markers — the prerenderer replaces that region per route.
 wrangler.toml         Frontend Worker. Read automatically by Workers Builds on
                       every push, so a push deploys the site.
+src/entry-ssr.tsx     Build-time server renderer, never shipped to the browser.
+                      Compiled by pass 2 of the build and imported by
+                      scripts/prerender.mjs.
+scripts/prerender.mjs Writes the 47 rendered route files into dist/. Read its
+                      header before touching the build or main.tsx.
 worker/index.ts       Fallback handler for the site Worker. Static assets match
                       FIRST and are served without invoking it, so every real
                       page still has no JS in its request path - it runs only

@@ -3,11 +3,17 @@
 What is already built, what still has to be done by hand in a dashboard, and
 what actually moves rankings for this site.
 
-Written 10 August 2026. Re-audited against the live site 16 September 2026 —
-that pass added §2.2a (an edge block on two AI crawlers that §2.2 thought it had
-lifted), §2.5 (nothing is measuring the site), §3a (the titles carry none of the
-target keywords) and §3b (the prerendered HTML has no body), and reordered the
-effort list in §3.
+Written 10 August 2026.
+
+**16 September 2026** — re-audited against the live site. Added §2.2a (an edge
+block on two AI crawlers that §2.2 thought it had lifted), §2.5 (nothing was
+measuring the site), §3a (the titles carried none of the target keywords) and
+§3b, and reordered the effort list in §3. All now fixed.
+
+**17 September 2026** — an external SEO audit reported eight failures on the
+home page. Six were one bug, §3b, now fixed: the build renders each route's
+body at build time. Two were false alarms worth not re-chasing, recorded in
+§3d.
 
 ---
 
@@ -18,7 +24,7 @@ Nothing here needs doing again — it is background for the sections below.
 | Piece | Where |
 |---|---|
 | Per-route title, description, canonical, Open Graph, Twitter | `src/lib/pageSeo.ts` (copy) + `src/lib/seo.ts` (assembly) |
-| 48 prerendered HTML files, one per route, head baked in | `prerenderPlugin` in `vite.config.ts` |
+| 47 fully-rendered HTML files + `404.html`, one per route, **head and body** | `scripts/prerender.mjs` (see §3b) |
 | `sitemap.xml`, 36 indexed URLs, real per-URL `lastmod` | `sitemapPlugin` in `vite.config.ts` |
 | `robots.txt` | `public/robots.txt` |
 | JSON-LD: Organization, WebSite, Product, AggregateRating, BreadcrumbList, ItemList | `src/lib/seo.ts` |
@@ -639,20 +645,60 @@ than wording:
   still named `FeelRiteGolfBand__cc34ac6f.webp`: a filename is not user-facing
   copy, and renaming it would invalidate a cached asset for no gain.
 
-### 3b. The prerendered HTML has a head but no body — 16 Sep 2026
+### 3b. The prerendered HTML had a head but no body — FIXED 17 Sep 2026
 
-Every prerendered file is ~6 KB of correct metadata wrapped around an empty
-`<div id="root"></div>`. §1 is right that this solves the head; it does not put
-any *content* in the static HTML.
+Every prerendered file was ~4 KB of correct metadata wrapped around an empty
+`<div id="root"></div>`. An external SEO audit on 17 Sep reported it as eight
+separate failures; they were all this one bug:
 
-Googlebot renders JavaScript, so it does read the page — just on a second pass,
-which delays indexing and re-indexing after an edit. The sharper cost is that
-every crawler which does not render JS sees a page about nothing, which
-undercuts the whole point of the §2.2 decision to let AI crawlers in.
+```
+curl -s https://www.dominusgolf.com/   ->   h1:0   a:0   img:0   words:0
+```
 
-Not urgent, and a real piece of work rather than a setting: the prerenderer
-would need to render each route's component tree to HTML, which means the data
-layer has to be reachable outside the router. Worth doing after the items above.
+"Missing H1 (CRITICAL)", "Thin content (0 words)", "0 internal links", "0
+external links", "Substantial Content Depth" and "Answer-First Heading
+Structure" were one finding counted six times. Mobile **LCP 6.0s / FCP 3.8s
+against CLS 0 and TBT 90ms** is the same cause — the signature of a blank page
+waiting on a bundle, not of slow code. The 8 pages sitting in Search Console's
+"crawled/discovered - currently not indexed" are very likely it too.
+
+**The build now renders each route's body at build time.** `npm run build` is
+two Vite passes plus a script:
+
+1. `vite build` → `dist/`
+2. `vite build --ssr src/entry-ssr.tsx` → `.ssr-build/` (gitignored, never
+   deployed)
+3. `node scripts/prerender.mjs` — imports the SSR bundle, renders every route,
+   and writes the head **and** the body into each `dist/**/index.html`
+
+Measured across all 47 prerendered routes afterwards: every indexed page has
+exactly one `<h1>`, 28-47 links and 119-975 words. The five `/account/*` pages
+have no `<h1>`, which is correct — they are `noindex` and `Disallow`ed.
+
+> **`main.tsx` still uses `createRoot`, not `hydrateRoot`.** React therefore
+> discards the server HTML and re-renders on the client. That is deliberate:
+> crawlers get the full document either way, which is the whole point, and
+> `createRoot` cannot produce a hydration mismatch — the failure mode where
+> React bails on a subtree and interactivity silently breaks. Ruling that out
+> on a store taking live payments needs a real browser, and the build box has
+> none.
+>
+> Switching to `hydrateRoot` would drop the client's duplicate render and
+> improve LCP further. Do it only with browser testing of add-to-cart, the cart
+> drawer, checkout, login and the mobile nav. See the header of
+> `scripts/prerender.mjs`.
+
+**Why a script rather than the old `prerenderPlugin`:** the renderer has to
+import the real component tree (JSX, the `@/` alias, CSS imports), which a
+`vite.config.ts` plugin cannot — it runs in the config's own module graph.
+
+Two traps found while building it, both already handled:
+
+- `eslint.config.js` must ignore `.ssr-build/**`, or `lint:js` reports ~151
+  errors in minified Vite output.
+- `vite.config.ts` branches on `isSsrBuild`: the sitemap and merchant-feed
+  plugins emit into `dist/` and must not run on the SSR pass, and
+  `copyPublicDir` is off there (it was duplicating 2.6 MB of images per build).
 
 ### 3c. Schema types not yet emitted — 16 Sep 2026
 
@@ -670,6 +716,25 @@ Deliberately still **not** worth adding: `FAQPage` and `HowTo`. Google
 deprecated both for sites like this one, and §3 is right to call them dead ends.
 
 ---
+
+### 3d. Audit findings that are NOT defects — 17 Sep 2026
+
+An external SEO tool flagged these. Each is either correct behaviour or a tool
+limitation; do not spend time on them.
+
+| Flagged | Why it is not a defect |
+|---|---|
+| `BreadcrumbList` missing | It scanned the **home page**, which is the root and has no breadcrumb trail. Product and category pages emit it. |
+| `FAQPage` schema missing | Google restricted FAQ rich results to government and health sites in Aug 2023. It will not render for a golf retailer — see §3. |
+| `HowTo` schema missing | Retired by Google outright. |
+| `Article / Blog` schema missing | There is no blog. Not a defect; see §3 if one is ever added. |
+| LinkedIn / TikTok not in `sameAs` | Those accounts do not exist. `sameAs` is an identity claim and must only list profiles Dominus Golf controls. |
+| "Missing H1", "Thin content (0 words)", "0 internal links" | All §3b, now fixed. |
+
+**`LocalBusiness` schema is genuinely open**, and only Jeet can settle it: it
+requires a real, verifiable street address. If the business has one, adding it
+is worthwhile for local search. Inventing an address to satisfy a checker is a
+policy violation, so this stays unbuilt until there is a real one to use.
 
 ## 4. Routine upkeep
 

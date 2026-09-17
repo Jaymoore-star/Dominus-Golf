@@ -33,3 +33,7 @@ secrets.json
 *.njsproj
 *.sln
 *.sw?
+
+# SSR bundle used by scripts/prerender.mjs at build time. Never deployed.
+.ssr-build/
+.ssr-try.mjs

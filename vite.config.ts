@@ -3,14 +3,7 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import fs from 'fs';
 import { products } from './src/data/products';
-import {
-  PAGE_SEO,
-  SHOP_CATEGORIES,
-  prerenderRoutes,
-  routeSourceFiles,
-  notFoundHead,
-} from './src/lib/pageSeo';
-import { renderHeadHtml } from './src/lib/headHtml';
+import { PAGE_SEO, SHOP_CATEGORIES, routeSourceFiles } from './src/lib/pageSeo';
 import { SITE } from './src/lib/seo';
 import { FILE_DATES } from './src/data/fileDates.generated';
 import { buildMerchantFeed } from './src/lib/merchantFeed';
@@ -132,8 +125,6 @@ function merchantFeedPlugin(): Plugin {
   };
 }
 
-/** Region of index.html the prerenderer owns - see the markers in that file. */
-const SEO_BLOCK = /<!--\s*seo:start[\s\S]*?<!--\s*seo:end\s*-->/;
 
 /**
  * Writes one static HTML file per route, with that route's real title, meta,
@@ -156,72 +147,24 @@ const SEO_BLOCK = /<!--\s*seo:start[\s\S]*?<!--\s*seo:end\s*-->/;
  * inherits the real hashed asset tags by copying that file rather than
  * reconstructing it.
  */
-function prerenderPlugin(): Plugin {
-  return {
-    name: 'dominus-prerender',
-    // Must run after Vite's own HTML emit.
-    enforce: 'post',
-
-    closeBundle() {
-      const outDir = path.resolve(__dirname, 'dist');
-      const shell = path.join(outDir, 'index.html');
-      if (!fs.existsSync(shell)) return;
-
-      const template = fs.readFileSync(shell, 'utf8');
-
-      if (!SEO_BLOCK.test(template)) {
-        // Failing loudly matters: silently skipping would ship a site whose
-        // every page carries the homepage's card, which is exactly the bug
-        // this plugin exists to fix and is invisible without a crawler test.
-        this.error(
-          'prerender: could not find the <!-- seo:start --> … <!-- seo:end --> markers in ' +
-            'dist/index.html. Were they removed from index.html?',
-        );
-      }
-
-      let count = 0;
-
-      for (const { path: routePath, head } of prerenderRoutes()) {
-        const html = template.replace(
-          SEO_BLOCK,
-          `<!-- prerendered for ${routePath} - see prerenderPlugin in vite.config.ts -->\n${renderHeadHtml(head)}`,
-        );
-
-        // '/' is the shell itself and doubles as the SPA fallback for any URL
-        // with no prerendered file; everything else becomes <route>/index.html
-        // so it resolves both with and without a trailing slash.
-        const target =
-          routePath === '/'
-            ? shell
-            : path.join(outDir, routePath.replace(/^\//, ''), 'index.html');
-
-        fs.mkdirSync(path.dirname(target), { recursive: true });
-        fs.writeFileSync(target, html, 'utf8');
-        count++;
-      }
-
-      /* The 404 shell. Written to dist/404.html rather than 404/index.html,
-         because the fallback Worker fetches it by that exact path.
-
-         It carries the not-found head (noindex, no canonical) instead of the
-         home page's, which is what dist/index.html would have given it. See
-         notFoundHead() for the soft-404 this fixes. */
-      fs.writeFileSync(
-        path.join(outDir, '404.html'),
-        template.replace(
-          SEO_BLOCK,
-          `<!-- prerendered 404 shell - served with a real 404 status by worker/index.ts -->\n${renderHeadHtml(notFoundHead())}`,
-        ),
-        'utf8',
-      );
-
-      console.log(`  \x1b[32m✓\x1b[0m prerendered ${count} routes + 404.html`);
-    },
-  };
-}
-
-export default defineConfig({
-  plugins: [react(), sitemapPlugin(), merchantFeedPlugin(), prerenderPlugin()],
+/**
+ * `npm run build` runs this config TWICE:
+ *
+ *   1. the client build     -> dist/
+ *   2. `--ssr src/entry-ssr.tsx` -> .ssr-build/, which scripts/prerender.mjs
+ *      then imports to render each route's <body> into dist/
+ *
+ * Hence the `isSsrBuild` branching. Both plugins below emit files into dist/
+ * and belong to pass 1 only; running them in pass 2 would either fail (no
+ * dist/index.html yet) or overwrite good output with a half-built copy.
+ */
+export default defineConfig(({ isSsrBuild }) => ({
+  plugins: isSsrBuild ? [react()] : [react(), sitemapPlugin(), merchantFeedPlugin()],
+  build: {
+    // The SSR bundle is a build-time tool, never deployed. Copying public/ into
+    // it duplicated 2.6 MB of images on every build for nothing.
+    copyPublicDir: !isSsrBuild,
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -232,5 +175,5 @@ export default defineConfig({
     strictPort: true,
     host: true,
     allowedHosts: true,
-  }
-});
+  },
+}));

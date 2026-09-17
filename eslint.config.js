@@ -20,6 +20,9 @@ export default tseslint.config(
       'public/**',
       // Wrangler's generated dev bundles — not our source.
       '.wrangler/**',
+      // The SSR bundle that scripts/prerender.mjs imports at build time. Vite
+      // output, not source, and linting it reported 151 errors in minified code.
+      '.ssr-build/**',
     ],
   },
 
