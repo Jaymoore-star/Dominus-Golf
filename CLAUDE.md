@@ -42,10 +42,14 @@ See [Blink Migration](#blink-migration) below — **do not break the running app
   way head tags are split between `<head>` and the body. **Read the header of
   `scripts/prerender.mjs` before touching `main.tsx`**; the conflict and the
   fix (a move to streaming SSR) are written up there and in `docs/SEO.md` §3e.
-  As of 16 Sep 2026 Search Console, Bing Webmaster Tools, Merchant Center and
-  GA4 are all connected and the dashboard fixes in §2 are done. What is left is
-  off-page (backlinks, reviews) plus §3b — the prerendered HTML carries a head
-  but an empty `<body>`.
+  As of 17 Sep 2026 Search Console, Bing Webmaster Tools, Merchant Center and
+  GA4 are all connected, every dashboard fix in §2 is done, and §3a-§3e are
+  closed. An external audit puts the site at **Grade A (92)** — mobile
+  Performance 80, SEO 100, Best Practices 100, Accessibility 96.
+  **Everything still open is off-page and cannot be done in this repo:**
+  backlinks, customer reviews (still 4), and depth on the two guide pages.
+  The one on-page item left is the `title_h1_mismatch` the audit reports, and
+  that is user-facing copy — see §3f.
 - **Analytics:** GA4 is live (measurement ID is in the Cloudflare build
   variables and in local `.env.production`, not in any tracked file — it is not
   a secret, but the rule below is "no env values in the repo").
@@ -91,7 +95,7 @@ npm run seo:dates   # refresh sitemap <lastmod> after editing page/product conte
                     # reports every file as changed in the tip commit.
 ```
 
-Lint state (16 Sep 2026): `lint:types` is clean, and `lint:js` is down to **2**
+Lint state (17 Sep 2026): `lint:types` is clean, and `lint:js` is down to **2**
 pre-existing warnings, both `cancelUrl` unused vars in `backend/index.ts`.
 Warnings do not fail the run. If a run reports more than 2, they are yours.
 

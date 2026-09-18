@@ -13,7 +13,14 @@ measuring the site), §3a (the titles carried none of the target keywords) and
 **17 September 2026** — an external SEO audit reported eight failures on the
 home page. Six were one bug, §3b, now fixed: the build renders each route's
 body at build time. Two were false alarms worth not re-chasing, recorded in
-§3d.
+§3d. Later the same day: §3c's `Person` and `BreadcrumbList` gaps closed, the
+duplicate-content split (§1), self-hosted fonts, an image lazy-loading pass,
+and an attempt at `hydrateRoot` that was reverted (§3e).
+
+**Where that leaves the site.** The audit went **B (88) → A (92)**: mobile
+Performance 69 → 80, FCP 3.8s → 1.5s, Speed Index 4.6s → 2.0s, Accessibility
+94 → 96, SEO and Best Practices 100. Every remaining lever is off-page —
+backlinks, reviews, guide depth — except the one item in §3f.
 
 ---
 
@@ -581,22 +588,31 @@ the product that solves it, is how a new store in this category actually earns
 traffic.
 
 **The honest ranking order of effort, highest return first** — revised
-16 Sep 2026, after the audit that added §2.2a, §2.5 and §3a:
+17 Sep 2026. Everything technical is now done; what is left is work only Jeet
+can do.
 
-1. **Turn on analytics (§2.5).** Promoted to first not because it ranks
-   anything, but because it is cheap and everything below is unmeasurable
-   without it. Half a day, once.
-2. **Put the target keywords in the titles (§3a).** The largest on-page gap on
-   the site, and the cheapest of the ranking items. Proposal drafted in
-   `docs/seo-copy-proposal.md`.
-3. **Collect product reviews.** Directly feeds §1's star ratings, and review
-   text is real content on the page. Still 4 reviews as of 16 Sep 2026.
-4. **Backlinks.** Golf coaches, club newsletters, YouTube reviewers, the pros
-   already on `/pros`. This is the single biggest lever on competitive terms and
-   the only one that cannot be done in code.
-5. **Depth on the guide pages.** Answer one swing problem per page, properly.
-   ~540 and ~470 words today, which is thin for the queries they target.
-6. **The dashboard fixes above.** Necessary hygiene, but hygiene.
+DONE and not to be re-litigated: analytics (§2.5), keyword titles (§3a),
+server-rendered bodies (§3b), the real 404, `Person` and `BreadcrumbList`
+(§3c), the guide/product duplicate-content split (§1), self-hosted fonts and
+image lazy-loading (§3e), and every dashboard fix in §2.
+
+1. **Backlinks.** Untouched, and by a distance the biggest lever on competitive
+   terms. The only one that cannot be done in code at all. Cheapest start: both
+   pros on `/pros` now have proper indexed profile pages with `Person` schema
+   and breadcrumbs — ask each for a link from their own site or YouTube bio.
+   Then golf YouTubers (send a Tour Pure), local clubs and academies.
+2. **Collect product reviews.** Still **4**, all 5.0, one each on four products.
+   Feeds §1's star ratings, and review text is real page content. Search
+   Console's "missing aggregateRating" on 3 items clears only when real buyers
+   review — see [[dominus-no-real-customers-yet]] before assuming there are
+   buyers to ask.
+3. **Depth on the guide pages.** ~730 and ~680 words after the §1 split, which
+   is still thin for "how to fix an over-the-top swing". Needs Jeet's coaching
+   knowledge as raw material; the writing itself is not the bottleneck.
+4. **The title/H1 alignment in §3f.** Small, and his copy to approve.
+5. **Streaming SSR (§3e).** The last technical item. Worth LCP ~5.4s → ~2s and
+   Performance ~80 → ~90, worth **zero** extra SEO. Do it when there is time
+   for a proper test round, not before.
 
 Set expectations on timing: a new domain that does all of this well typically
 sees long-tail movement in 3–6 months, not weeks.
@@ -810,6 +826,31 @@ Also kept from the attempt, and worth keeping regardless: `cartStore` and
 `wishlistStore` no longer seed state from `localStorage` during render. They
 start empty and restore in an effect, with a guard so the persist effect cannot
 write an empty basket over a saved one before the restore has read it.
+
+### 3f. The one on-page item left — title/H1 mismatch
+
+The audit's only remaining priority fix, and it is **user-facing copy, so it is
+Jeet's call**, not a code change to make unprompted.
+
+| | |
+|---|---|
+| `<title>` | Dominus Golf - Golf Training Systems, Apparel & Accessories |
+| `<h1>` | THE FEEDBACK YOUR SWING HAS BEEN MISSING. |
+
+They share no keywords. When a title and H1 describe different topics Google
+may rewrite the title link in results using the H1 instead — usually producing
+something worse than what you wrote.
+
+**Suggested fix, offered and not yet taken:** keep the H1 exactly as it is — it
+is a good line — and add a keyword-bearing H2 as the first heading of
+`WhySection`, e.g. *"Golf swing trainers built to teach path, plane and
+tempo."* That gives the page a heading carrying the target terms without
+touching the hero, and the audit only asks for the two to be *thematically*
+aligned, not identical.
+
+Nothing else on-page is outstanding. §3a-§3e are closed.
+
+---
 
 ## 4. Routine upkeep
 
