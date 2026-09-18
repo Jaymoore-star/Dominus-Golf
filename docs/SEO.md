@@ -736,6 +736,68 @@ requires a real, verifiable street address. If the business has one, adding it
 is worthwhile for local search. Inventing an address to satisfy a checker is a
 policy violation, so this stays unbuilt until there is a real one to use.
 
+### 3e. LCP, and why hydrateRoot was reverted — 17 Sep 2026
+
+After §3b (server-rendered bodies), the self-hosted fonts and the image
+lazy-loading pass, Lighthouse mobile went **69 → 80** and the overall grade
+**B (88) → A (92)**:
+
+| | before | after |
+|---|---|---|
+| FCP | 3.8s | **1.5s** |
+| Speed Index | 4.6s | **2.0s** |
+| LCP | 6.0s | 5.4s |
+| TBT | 90ms | 60ms |
+| Accessibility | 94 | 96 |
+
+**LCP is the one that did not move, and the cause is known.** LCP 5.4s sits
+0.1s from TTI 5.5s with a TBT of only 60ms — an idle main thread and a paint
+that lands exactly when React finishes. That is `createRoot`: it discards the
+server HTML and rebuilds the DOM, so the hero image is painted at 1.5s,
+destroyed, and painted again. Lighthouse measures the second one.
+
+`hydrateRoot` would fix it. **It was attempted on 17 Sep 2026 and reverted.**
+
+Three hydration mismatches were found, by building with `NODE_ENV=development`
+so React prints the offending element instead of a minified error code. Two
+were real bugs and **both fixes were kept**:
+
+1. **`<Toaster>` was missing from the SSR tree.** It was left out of
+   `entry-ssr.tsx` on the assumption that it renders nothing until a toast
+   fires; react-hot-toast actually mounts a wrapper `<div data-rht-toaster>`
+   immediately. Now a single shared `AppToaster.tsx` is rendered by both
+   entries, so they cannot drift.
+2. **The router's matches were unresolved on the first client render.**
+   TanStack Router renders each match inside a `<Suspense>`, which returned
+   `fallback={null}` where the server had rendered the page.
+
+The third is **structural and is why this is parked**:
+
+- `stripHeadTags` in `scripts/prerender.mjs` removes each route's `<title>`,
+  `<meta>`, `<link rel=canonical>` and JSON-LD from the body, because they are
+  injected into `<head>`. Without that strip every page ships **two titles and
+  two canonicals**.
+- The client renders those same tags inline in the body via `<HeadContent />`.
+
+The body a crawler should receive and the body React expects to hydrate are
+therefore different documents *by design*. No patch reconciles them.
+
+**The fix, when it is worth doing:** move `scripts/prerender.mjs` from
+`renderToString` to `renderToPipeableStream`. React 19 hoists head tags into
+`<head>` itself under the streaming renderer, so both sides agree by
+construction and `stripHeadTags` can be deleted. Budget a full test round —
+all 47 routes' head tags need re-verifying, and hydration needs a browser.
+
+**Worth being clear about the value:** this is worth **zero** SEO on its own.
+Crawlers already receive the fully rendered page. The prize is LCP ~5.4s → ~2s
+and Performance ~80 → ~90, which is a real user-experience and Core Web Vitals
+gain, but not a markup one.
+
+Also kept from the attempt, and worth keeping regardless: `cartStore` and
+`wishlistStore` no longer seed state from `localStorage` during render. They
+start empty and restore in an effect, with a guard so the persist effect cannot
+write an empty basket over a saved one before the restore has read it.
+
 ## 4. Routine upkeep
 
 - **Adding a product** — nothing to do. `sitemap.xml`, the prerendered page and

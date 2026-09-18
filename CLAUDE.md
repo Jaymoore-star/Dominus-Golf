@@ -35,8 +35,13 @@ See [Blink Migration](#blink-migration) below — **do not break the running app
   via `scripts/prerender.mjs` — so a crawler that does not run JavaScript gets
   the real page, not an empty shell. **`docs/SEO.md` is the runbook — read it
   before any SEO work**; also `docs/HANDOFF.md` §2b.
-  `main.tsx` uses `createRoot`, not `hydrateRoot`, on purpose: see the header of
-  `scripts/prerender.mjs` before changing it.
+  `main.tsx` uses **`createRoot`**, so React replaces that markup rather than
+  hydrating it. Crawlers still get the real page (the HTML is correct before
+  any JS runs); the cost is a second paint, which holds mobile LCP at ~5.4s.
+  `hydrateRoot` was tried and reverted on 17 Sep 2026 - it conflicts with the
+  way head tags are split between `<head>` and the body. **Read the header of
+  `scripts/prerender.mjs` before touching `main.tsx`**; the conflict and the
+  fix (a move to streaming SSR) are written up there and in `docs/SEO.md` §3e.
   As of 16 Sep 2026 Search Console, Bing Webmaster Tools, Merchant Center and
   GA4 are all connected and the dashboard fixes in §2 are done. What is left is
   off-page (backlinks, reviews) plus §3b — the prerendered HTML carries a head

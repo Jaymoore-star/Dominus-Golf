@@ -26,20 +26,34 @@
  * runs in the config's own module graph and cannot do that. So the build is
  * now two passes — client, then SSR — and this script joins them.
  *
- * ── The hydration decision ────────────────────────────────────────────────
+ * ── This HTML is REPLACED on the client, not hydrated ─────────────────────
  *
- * `main.tsx` still uses `createRoot`, NOT `hydrateRoot`. React therefore
- * discards this server HTML and re-renders from scratch on the client.
+ * `main.tsx` uses `createRoot`, so React clears #root and renders again. The
+ * SEO value is unaffected - the HTML is already correct when it leaves the
+ * server, which is the whole point of this file. The cost is that the page is
+ * painted twice, holding mobile LCP at ~5.4s against an FCP of 1.5s.
  *
- * That is deliberate and it is the conservative choice. Crawlers get the full
- * document either way, which is the entire point of this file, and `createRoot`
- * cannot produce a hydration mismatch — the failure mode where React bails on a
- * subtree and interactivity silently breaks. On a live store taking payments
- * that risk needs a real browser to rule out, and the build box has none.
+ * `hydrateRoot` was attempted on 17 Sep 2026 and reverted, because of a
+ * conflict this script is one half of:
  *
- * Moving to `hydrateRoot` would remove the client's duplicate render and
- * further improve LCP. Do it only with browser testing of: add to cart, the
- * cart drawer, checkout, login, and the mobile nav.
+ *   - `stripHeadTags` below removes each route's <title>, <meta>, <link
+ *     rel=canonical> and JSON-LD from the body, because they also go into
+ *     <head>. Without that strip every page ships TWO titles and TWO
+ *     canonicals.
+ *   - The client renders those same tags inline in the body via <HeadContent/>.
+ *
+ * So the body a crawler should receive and the body React expects to hydrate
+ * are different documents BY DESIGN. Two other mismatches were found first and
+ * both were real - a <Toaster> missing from the SSR tree, and the router's
+ * matches being unresolved on the first client render. Both fixes were kept
+ * (see AppToaster.tsx, cartStore.tsx, wishlistStore.tsx). This third one is
+ * structural.
+ *
+ * Fixing it means moving this script off `renderToString` and onto
+ * `renderToPipeableStream`, so React 19 hoists the head tags into <head>
+ * itself and both sides agree by construction - at which point stripHeadTags
+ * goes away entirely. That is a real piece of work with its own test round.
+ * Do not just flip main.tsx.
  */
 import fs from 'node:fs';
 import path from 'node:path';

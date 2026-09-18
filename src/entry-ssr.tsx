@@ -20,6 +20,7 @@ import { routeTree } from './App';
 import { WishlistProvider } from './store/wishlistStore';
 import { CartProvider } from './store/cartStore';
 import { AuthPromptProvider } from './store/authPromptStore';
+import { AppToaster } from './components/layout/AppToaster';
 
 export { prerenderRoutes, notFoundHead } from './lib/pageSeo';
 export { renderHeadHtml } from './lib/headHtml';
@@ -31,9 +32,11 @@ export { renderHeadHtml } from './lib/headHtml';
  * location, so reusing one across routes would render every page as whichever
  * was rendered first.
  *
- * The providers mirror `main.tsx` and `App.tsx`. `<Toaster>` is deliberately
- * absent — it renders nothing until a toast fires, and it reaches for
- * `document` on mount.
+ * The providers mirror `main.tsx` and `App.tsx` EXACTLY, `<AppToaster />`
+ * included. It was left out at first on the assumption that a Toaster renders
+ * nothing until a toast fires; it does not — react-hot-toast mounts a wrapper
+ * div immediately, and omitting it here broke hydration on the first child of
+ * the tree. See the header of AppToaster.tsx.
  */
 export async function renderRoute(url: string): Promise<string> {
   const router = createRouter({
@@ -46,6 +49,7 @@ export async function renderRoute(url: string): Promise<string> {
   return renderToString(
     <StrictMode>
       <QueryClientProvider client={new QueryClient()}>
+        <AppToaster />
         <WishlistProvider>
           <CartProvider>
             <AuthPromptProvider>

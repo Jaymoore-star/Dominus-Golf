@@ -41,7 +41,15 @@ type WishlistContextValue = {
 const WishlistContext = createContext<WishlistContextValue | null>(null);
 
 export function WishlistProvider({ children }: { children: ReactNode }) {
-  const [ids, setIds] = useState<string[]>(loadPersistedIds);
+  /* Starts EMPTY and the saved list is read in an effect below - see the long
+     note in cartStore. main.tsx hydrates, so the first client render must match
+     the server markup, and the server has no localStorage. Seeding here made
+     every wishlist heart disagree with the server and cost the whole tree a
+     re-render. */
+  const [ids, setIds] = useState<string[]>([]);
+
+  /** Whether the saved list has been read. Guards the persist effect below. */
+  const restored = useRef(false);
   const { user } = useAuth();
 
   /**
@@ -62,9 +70,22 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
   /** Latest ids, so the merge below can read them without depending on `ids`. */
   const idsRef = useRef(ids);
 
+  /* Restore the saved list, once, after the first paint. Skipped when there is
+     nothing stored, so `ids` keeps its initial reference and the persist effect
+     below does not re-run. */
+  useEffect(() => {
+    const saved = loadPersistedIds();
+    if (saved.length) setIds(saved);
+    restored.current = true;
+  }, []);
+
   useEffect(() => {
     idsRef.current = ids;
 
+    /* The `restored` guard is NOT optional: both effects run in the same commit
+       on mount, and this one would otherwise write the empty initial state over
+       the customer's saved wishlist before the restore above had read it. */
+    if (!restored.current) return;
     if (typeof window === 'undefined') return;
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));

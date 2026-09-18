@@ -203,11 +203,21 @@ type CartContextValue = {
 const CartContext = createContext<CartContextValue | null>(null);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(
-    cartReducer,
-    initialState,
-    (init) => ({ ...init, items: loadPersistedItems() }),
-  );
+  /* Starts EMPTY, and the saved cart is read in an effect below rather than in
+     a lazy initialiser.
+
+     main.tsx uses hydrateRoot, so this component's first render has to produce
+     exactly what scripts/prerender.mjs rendered on the server - and on the
+     server there is no localStorage, so the cart is empty. Seeding from storage
+     here made the very first client render disagree with the server markup
+     (a cart badge showing 3 against a server-rendered 0). React then throws the
+     whole tree away and re-renders it, which is precisely the cost hydration
+     exists to avoid: it put LCP at 5.4s against an FCP of 1.5s. */
+  const [state, dispatch] = useReducer(cartReducer, initialState);
+
+  /* Whether the saved cart has been read yet. Guards the persist effect below;
+     see the note there for why that guard is load-bearing. */
+  const restored = useRef(false);
 
   const { user } = useAuth();
 
@@ -216,9 +226,23 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const syncArmed = useRef(false);
   const itemsRef = useRef(state.items);
 
-  // Save cart contents whenever they change.
+  /* Restore the saved cart, once, after the first paint. Skipped entirely when
+     there is nothing stored, so `state.items` keeps its initial reference and
+     the persist effect below does not re-run. */
+  useEffect(() => {
+    const saved = loadPersistedItems();
+    if (saved.length) dispatch({ type: 'SET_ITEMS', items: saved });
+    restored.current = true;
+  }, []);
+
+  /* Save cart contents whenever they change.
+     The `restored` guard is NOT optional. Both effects run in the same commit
+     on mount, and this one would run with the still-empty initial state and
+     write `[]` over the customer's saved cart before the restore above had a
+     chance to read it. */
   useEffect(() => {
     itemsRef.current = state.items;
+    if (!restored.current) return;
     persistItems(state.items);
   }, [state.items]);
 
