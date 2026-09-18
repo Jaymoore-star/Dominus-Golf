@@ -706,9 +706,22 @@ Two traps found while building it, both already handled:
 BreadcrumbList, ItemList, Organization and WebSite. Three types are missing that
 this site has the underlying content for.
 
+✅ **`Person` added 17 Sep 2026** to `/leroy-bates` and `/gabe-salvanera`.
+
+✅ **`BreadcrumbList` completed 17 Sep 2026.** Product and `/shop/$category`
+pages had it; the other **15 of 35 indexed URLs had none**. Static routes now
+declare a `breadcrumb` trail in `PAGE_SEO` and `staticHead()` turns it into the
+schema, so an entry never writes JSON-LD by hand. `staticHead()` is shared by
+the router and the prerenderer deliberately — if only one added the breadcrumb,
+the prerendered HTML and the hydrated DOM would carry different structured
+data. Verified: all 35 trails start at Home, end at the page itself, and have
+sequential positions. `/` has none on purpose — the home page is the root of a
+trail, not a step in one.
+
+Still outstanding:
+
 | Type | Where | Why |
 |---|---|---|
-| `Person` | `/leroy-bates`, `/gabe-salvanera` | Two pages about named golf professionals currently carry no entity markup at all. Cheap, and it feeds the same knowledge-graph tie as `sameAs`. |
 | `VideoObject` | wherever YouTube content is embedded or linked | Search Console reports `Discovered videos: 0`. Video results are a distinct SERP surface and a strong one for training content — an instructional query often returns video above text. The channel is already listed in `SOCIAL_PROFILES`. |
 | `Review` | product pages | Only the *aggregate* is emitted. Individual reviews with author and body are eligible for their own treatment, and the review text is already on the page. Gated on there being more than 4 reviews. |
 

@@ -32,7 +32,22 @@ import {
   type SeoInput,
 } from './seo';
 
-type PageSeo = Omit<SeoInput, 'path'>;
+type PageSeo = Omit<SeoInput, 'path'> & {
+  /**
+   * The trail AFTER Home, innermost last. `staticHead()` turns it into
+   * BreadcrumbList JSON-LD, so entries only declare the path, never the schema.
+   *
+   * Product and `/shop/$category` pages build their own in `productHead()` and
+   * `shopCategoryHead()`; this is for the static table. Audited 17 Sep 2026:
+   * 15 of the 35 indexed URLs had no BreadcrumbList at all. Google uses it to
+   * replace the raw URL in a result with a readable trail, and to understand
+   * where a page sits.
+   *
+   * Omit it on '/' — the home page is the root of the trail, not a step in it,
+   * and a one-item breadcrumb pointing at itself says nothing.
+   */
+  breadcrumb?: Array<{ name: string; path: string }>;
+};
 
 export const PAGE_SEO = {
   '/': {
@@ -45,42 +60,64 @@ export const PAGE_SEO = {
     title: 'About Dominus Golf',
     description:
       'How the Tour Pure system redefines practice - and why Dominus Golf builds training equipment rather than another set of clubs.',
+    breadcrumb: [{ name: 'About', path: '/about' }],
   },
   '/about/team': {
     title: 'Our Team',
     description:
       'The coaches, players and builders behind Dominus Golf training systems, and why the company builds practice equipment rather than clubs.',
+    breadcrumb: [
+      { name: 'About', path: '/about' },
+      { name: 'Our Team', path: '/about/team' },
+    ],
   },
   '/about/contact': {
     title: 'Contact Us',
     description:
       'Contact the Dominus Golf team about an order, a product question, shipping, returns or a partnership enquiry. Send a message and we will reply.',
+    breadcrumb: [
+      { name: 'About', path: '/about' },
+      { name: 'Contact Us', path: '/about/contact' },
+    ],
   },
   '/about/careers': {
     title: 'Careers',
     description:
       'Open roles at Dominus Golf. We hire for product, content and community across golf training and direct-to-consumer retail.',
+    breadcrumb: [
+      { name: 'About', path: '/about' },
+      { name: 'Careers', path: '/about/careers' },
+    ],
   },
   '/about/sustainability': {
     title: 'Sustainability',
     description:
       'How Dominus Golf approaches materials, manufacturing and packaging across the range, and what we are still working to improve.',
+    breadcrumb: [
+      { name: 'About', path: '/about' },
+      { name: 'Sustainability', path: '/about/sustainability' },
+    ],
   },
 
   '/beginners': {
     title: 'Golf Training Aids for Beginners',
     description:
       'New to golf? What to practise first, how to build a swing that repeats, and which training aid actually helps a beginner improve.',
+    /* No /guides index exists, so the guides sit directly under Home rather
+       than inventing a parent that returns a 404. */
+    breadcrumb: [{ name: 'Training for Beginners', path: '/beginners' }],
   },
   '/tour-pure-guide': {
     title: 'Golf Swing Path Drills - Tour Pure Guide',
     description:
       'How to fix an over-the-top swing and train a repeatable path. Drills, rep counts and a practice structure using the Tour Pure trainer.',
+    breadcrumb: [{ name: 'Tour Pure Training Guide', path: '/tour-pure-guide' }],
   },
   '/feel-right-band-guide': {
     title: 'Golf Tempo and Connection Drills - Band Guide',
     description:
       'Drills for golf tempo, sequencing and arm connection through the swing, using a connection band. Includes the tour floatie drill.',
+    breadcrumb: [{ name: 'Feel Right Band Guide', path: '/feel-right-band-guide' }],
   },
 
   /* Unpublished pending legal review (2026-08-31). Removing the entry is what
@@ -123,9 +160,14 @@ export const PAGE_SEO = {
     title: 'Practice With Golf Professionals',
     description:
       'Train alongside the golf professionals who partner with Dominus Golf. Browse coach profiles and book a session with one near you.',
+    breadcrumb: [{ name: 'Practice With Pros', path: '/pros' }],
   },
   '/leroy-bates': {
     title: 'Leroy Bates - Golf Professional',
+    breadcrumb: [
+      { name: 'Practice With Pros', path: '/pros' },
+      { name: 'Leroy Bates', path: '/leroy-bates' },
+    ],
     description:
       'Golf professional Leroy Bates: credentials, technical expertise and instructional philosophy. Book a coaching appointment through Dominus Golf.',
     /* Person schema, from what the page itself states. See personJsonLd. */
@@ -143,6 +185,10 @@ export const PAGE_SEO = {
   },
   '/gabe-salvanera': {
     title: 'Gabe Salvanera - Golf Professional',
+    breadcrumb: [
+      { name: 'Practice With Pros', path: '/pros' },
+      { name: 'Gabe Salvanera', path: '/gabe-salvanera' },
+    ],
     description:
       'Golf professional Gabe Salvanera: credentials, tour experience and instructional philosophy. Book a session through Dominus Golf.',
     jsonLd: [
@@ -162,22 +208,26 @@ export const PAGE_SEO = {
     title: 'Affiliate Program',
     description:
       'Earn commission promoting Dominus Golf training systems. Built for coaches, content creators, clubs and academies with a golf audience.',
+    breadcrumb: [{ name: 'Affiliate Program', path: '/affiliates' }],
   },
 
   '/shipping-policy': {
     title: 'Shipping Policy',
     description:
       'Shipping rates, handling and delivery times for Dominus Golf orders. Free US shipping over $150, a flat $6.99 below it, 30-day returns.',
+    breadcrumb: [{ name: 'Shipping Policy', path: '/shipping-policy' }],
   },
   '/terms': {
     title: 'Terms & Conditions',
     description:
       'Terms and conditions for purchases from Dominus Golf and use of this website, covering orders, payment, delivery, returns and liability.',
+    breadcrumb: [{ name: 'Terms & Conditions', path: '/terms' }],
   },
   '/safety-disclaimer': {
     title: 'Safety Disclaimer',
     description:
       'Safety guidance for training with Dominus Golf equipment. Read this before using a weighted swing trainer or a resistance band.',
+    breadcrumb: [{ name: 'Safety Disclaimer', path: '/safety-disclaimer' }],
   },
 
   // ── Private / utility pages: valid meta, but kept out of the index ────────
@@ -367,8 +417,29 @@ export function routeSourceFiles(routePath: string): string[] {
 }
 
 /** Build a route `head()` for a static path from the table above. */
+/**
+ * Build a static route's head.
+ *
+ * Shared by `pageHead()` (the router, at runtime) and `prerenderRoutes()` (the
+ * build). They MUST agree: if only one of them added the breadcrumb, the
+ * prerendered HTML and the hydrated DOM would carry different structured data.
+ */
+function staticHead(path: StaticPath) {
+  const { breadcrumb, jsonLd, ...rest } = PAGE_SEO[path] as PageSeo;
+  return seo({
+    path,
+    ...rest,
+    jsonLd: [
+      ...(jsonLd ?? []),
+      ...(breadcrumb
+        ? [breadcrumbJsonLd([{ name: 'Home', path: '/' }, ...breadcrumb])]
+        : []),
+    ],
+  });
+}
+
 export function pageHead(path: StaticPath) {
-  return () => seo({ path, ...PAGE_SEO[path] });
+  return () => staticHead(path);
 }
 
 // ── Dynamic routes ─────────────────────────────────────────────────────────
@@ -506,8 +577,8 @@ export function notFoundHead() {
 export function prerenderRoutes(): Array<{ path: string; head: ReturnType<typeof seo> }> {
   const routes: Array<{ path: string; head: ReturnType<typeof seo> }> = [];
 
-  for (const [path, meta] of Object.entries(PAGE_SEO)) {
-    routes.push({ path, head: seo({ path, ...(meta as PageSeo) }) });
+  for (const path of Object.keys(PAGE_SEO)) {
+    routes.push({ path, head: staticHead(path as StaticPath) });
   }
   for (const category of Object.keys(SHOP_CATEGORIES)) {
     routes.push({ path: `/shop/${category}`, head: shopCategoryHead(category) });
