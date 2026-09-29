@@ -55,6 +55,7 @@ const ShippingPolicyPage = lazyRouteComponent(
   'ShippingPolicyPage',
 );
 const TermsPage = lazyRouteComponent(() => import('./pages/TermsPage'), 'TermsPage');
+const PrivacyPolicyPage = lazyRouteComponent(() => import('./pages/PrivacyPolicyPage'), 'PrivacyPolicyPage');
 const BeginnersPage = lazyRouteComponent(() => import('./pages/BeginnersPage'), 'BeginnersPage');
 const TourPureGuidePage = lazyRouteComponent(
   () => import('./pages/TourPureGuidePage'),
@@ -246,6 +247,7 @@ const sustainabilityRoute = createRoute({ getParentRoute: () => rootRoute, path:
 const safetyRoute = createRoute({ getParentRoute: () => rootRoute, path: '/safety-disclaimer', head: pageHead('/safety-disclaimer'), component: SafetyDisclaimerPage });
 const shippingRoute = createRoute({ getParentRoute: () => rootRoute, path: '/shipping-policy', head: pageHead('/shipping-policy'), component: ShippingPolicyPage });
 const termsRoute = createRoute({ getParentRoute: () => rootRoute, path: '/terms', head: pageHead('/terms'), component: TermsPage });
+const privacyRoute = createRoute({ getParentRoute: () => rootRoute, path: '/privacy-policy', head: pageHead('/privacy-policy'), component: PrivacyPolicyPage });
 const beginnersRoute = createRoute({ getParentRoute: () => rootRoute, path: '/beginners', head: pageHead('/beginners'), component: BeginnersPage });
 const tourPureGuideRoute = createRoute({ getParentRoute: () => rootRoute, path: '/tour-pure-guide', head: pageHead('/tour-pure-guide'), component: TourPureGuidePage });
 const feelRightBandGuideRoute = createRoute({ getParentRoute: () => rootRoute, path: '/feel-right-band-guide', head: pageHead('/feel-right-band-guide'), component: FeelRightBandGuidePage });
@@ -314,6 +316,7 @@ export const routeTree = rootRoute.addChildren([
   safetyRoute,
   shippingRoute,
   termsRoute,
+  privacyRoute,
   beginnersRoute,
   tourPureGuideRoute,
   feelRightBandGuideRoute,

@@ -223,6 +223,12 @@ export const PAGE_SEO = {
       'Terms and conditions for purchases from Dominus Golf and use of this website, covering orders, payment, delivery, returns and liability.',
     breadcrumb: [{ name: 'Terms & Conditions', path: '/terms' }],
   },
+  '/privacy-policy': {
+    title: 'Privacy Policy',
+    description:
+      'How Dominus Golf collects, uses and shares personal information: accounts, orders, the email list, analytics and advertising, and your choices.',
+    breadcrumb: [{ name: 'Privacy Policy', path: '/privacy-policy' }],
+  },
   '/safety-disclaimer': {
     title: 'Safety Disclaimer',
     description:
@@ -380,6 +386,7 @@ const PAGE_SOURCE: Partial<Record<StaticPath, string>> = {
   '/affiliates': 'src/pages/AffiliatesPage.tsx',
   '/shipping-policy': 'src/pages/ShippingPolicyPage.tsx',
   '/terms': 'src/pages/TermsPage.tsx',
+  '/privacy-policy': 'src/pages/PrivacyPolicyPage.tsx',
   '/safety-disclaimer': 'src/pages/SafetyDisclaimerPage.tsx',
 };
 

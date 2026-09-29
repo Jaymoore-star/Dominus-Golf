@@ -61,6 +61,7 @@ const footerLinks = {
     { label: 'Safety Disclaimer', href: '/safety-disclaimer' },
     { label: 'Shipping Policy', href: '/shipping-policy' },
     { label: 'Terms & Conditions', href: '/terms' },
+    { label: 'Privacy Policy', href: '/privacy-policy' },
   ],
 };
 

@@ -37,7 +37,7 @@ const sections = [
   },
   {
     title: '9. Privacy',
-    body: `We respect your privacy. Information collected through this website is used solely to fulfill your order and improve your experience. We do not sell or share your personal information with third parties except as required to fulfill your order (e.g., shipping carriers).`,
+    body: `We respect your privacy. How we collect, use and share personal information, and the choices you have, are set out in our Privacy Policy at dominusgolf.com/privacy-policy. We do not sell your personal information.`,
   },
   {
     title: '10. Governing Law',

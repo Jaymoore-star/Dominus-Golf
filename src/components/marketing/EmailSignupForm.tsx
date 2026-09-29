@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { CheckCircle2, Loader2 } from 'lucide-react';
+import { Link } from '@tanstack/react-router';
 import { joinEmailList, type SignupSource } from '../../lib/emailList';
 
 type EmailSignupFormProps = {
@@ -85,6 +86,13 @@ export function EmailSignupForm({ source, tone, onJoined }: EmailSignupFormProps
           {error}
         </p>
       )}
+      <p className={`mt-2 font-sans text-[11px] ${dark ? 'text-white/40' : 'text-muted-foreground'}`}>
+        Unsubscribe any time. See our{' '}
+        <Link to="/privacy-policy" className="underline underline-offset-2 hover:text-accent">
+          Privacy Policy
+        </Link>
+        .
+      </p>
     </form>
   );
 }

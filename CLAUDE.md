@@ -71,7 +71,7 @@ npm run build      # TWO Vite passes + a script, in this order:
                    #   2. vite build --ssr entry-ssr.tsx -> .ssr-build/ (gitignored)
                    #   3. node scripts/prerender.mjs     -> renders each route's
                    #      HEAD AND BODY into dist/**/index.html, + 404.html
-                   # 47 routes. Pass 2/3 exist because crawlers were being served
+                   # 48 routes. Pass 2/3 exist because crawlers were being served
                    # an empty <div id="root">; see docs/SEO.md §3b.
 npm run preview    # preview the production build — see the caveat below
 
@@ -115,7 +115,7 @@ wrangler.toml         Frontend Worker. Read automatically by Workers Builds on
 src/entry-ssr.tsx     Build-time server renderer, never shipped to the browser.
                       Compiled by pass 2 of the build and imported by
                       scripts/prerender.mjs.
-scripts/prerender.mjs Writes the 47 rendered route files into dist/. Read its
+scripts/prerender.mjs Writes the 48 rendered route files into dist/. Read its
                       header before touching the build or main.tsx.
 worker/index.ts       Fallback handler for the site Worker. Static assets match
                       FIRST and are served without invoking it, so every real
@@ -209,17 +209,35 @@ Three things deliberately stayed:
   start; closing the endpoints would instead break a payment already in flight.
 - **Applications already stored in `grant_applications` are untouched.**
 
-### Email list and review requests (added 28 Sep 2026)
+### Email list and review requests (added 28 Sep 2026, LIVE and verified 29 Sep)
 
-- **Email list:** footer form + a desktop-only popup post to `/api/subscribe`
-  (`backend/subscribers.ts`). Each subscriber gets their own single-use
-  `WELCOME-XXXXXX` 10% code, checked at checkout and marked used by the Square
-  webhook. The popup is desktop-only on purpose (Google's mobile interstitial penalty).
-- **Review requests:** `backend/reviewRequests.ts`, run by the daily cron in
-  `wrangler.backend.toml`. Sends nothing unless the `REVIEW_REQUESTS_ENABLED`
-  secret is `"true"`. Preview first: `GET /api/admin/review-requests` with
-  `Authorization: Bearer <ADMIN_TOKEN>`; `POST …/run` sends what is due now.
-- Tables/columns: `supabase/migrations/0008_review_requests_and_subscribers.sql`.
+- **Email list:** signups post to `/api/subscribe` (`backend/subscribers.ts`)
+  from four places: the footer form, a desktop-only auto popup (desktop-only on
+  purpose: Google's mobile interstitial penalty), the first announcement-bar
+  item, and the bottom-left "10% OFF" button (`EmailOfferTab`). The last two open
+  the same dialog on tap, on any device, which is how phones see the offer. All
+  of it hides once a browser has joined, so **test in a private tab**.
+- **Codes:** one single-use `WELCOME-XXXXXX` 10% code per subscriber, marked used
+  by the Square webhook on a completed payment. **A code works only for the
+  account whose confirmed email it was sent to:** the frontend sends the Supabase
+  access token, and `verifiedShopper()` in `backend/email.ts` asks Supabase who
+  it is. Never decide identity from the `userId` in a request body; the browser
+  sets it.
+- **Review requests:** `backend/reviewRequests.ts`, daily cron at 16:00 UTC
+  (`wrangler.backend.toml`). **Enabled** (`REVIEW_REQUESTS_ENABLED` secret =
+  `"true"`). The past-order backfill has been sent. Preview:
+  `GET /api/admin/review-requests` with `Authorization: Bearer <ADMIN_TOKEN>`;
+  `POST …/run` sends what is due now. Testers' addresses go in the
+  `REVIEW_REQUEST_EXCLUDE` secret.
+- **Cart and wishlist** record which account they belong to (`basketStorage.ts`).
+  Only a signed-out guest's lists are merged into an account on sign-in, never
+  another account's.
+- Tables/columns: `supabase/migrations/0008_review_requests_and_subscribers.sql` (run).
+- **Not done:** Meta Pixel ID (deferred), GoAffPro token (deferred).
+- **Privacy policy** is at `/privacy-policy` (`src/pages/PrivacyPolicyPage.tsx`),
+  and every statement in it is traced to what the code does. Change it whenever a
+  feature changes what is collected or who receives it (for example, turning on
+  the Pixel is already covered, but a new vendor is not).
 
 ### Mobile invariants — each of these was a real bug, do not undo them
 

@@ -102,7 +102,7 @@ const megaMenuData: Partial<Record<NonNullable<MegaMenuKey>, MegaMenuEntry>> = {
       },
     ],
     shopAll: { label: 'Shop All Apparel', href: '/shop/apparel' },
-    image: '/images/unnamed-11__fc5a40f7.webp',
+    image: '/images/tee-womens-black-icon__72061fef.webp',
     imageCaption: 'Dominus Golf Apparel',
   },
   accessories: {
@@ -123,7 +123,7 @@ const megaMenuData: Partial<Record<NonNullable<MegaMenuKey>, MegaMenuEntry>> = {
       },
     ],
     shopAll: { label: 'Shop All Accessories', href: '/shop/accessories' },
-    image: '/images/Screenshot_20260324_042207_SamsungInternet__2f2a1710.webp',
+    image: '/images/book-ultimate-guide__3f8ec230.webp',
     imageCaption: 'Dominus Golf Accessories',
   },
   company: {
@@ -152,6 +152,7 @@ const megaMenuData: Partial<Record<NonNullable<MegaMenuKey>, MegaMenuEntry>> = {
           { label: 'Safety Disclaimer', href: '/safety-disclaimer' },
           { label: 'Shipping Policy', href: '/shipping-policy' },
           { label: 'Terms & Conditions', href: '/terms' },
+          { label: 'Privacy Policy', href: '/privacy-policy' },
         ],
       },
     ],

@@ -29,7 +29,7 @@ can reach it.** DNS was the last blocker and it is done.
 | Square checkout (store + grant) | ✅ verified reaching Square, production credentials |
 | Supabase auth | ✅ email/password + Google, redirect URLs configured |
 | GitHub → Cloudflare | ✅ Workers Builds on `Jaymoore-star/tit`; a push to `main` deploys the site |
-| Prerendering | ✅ 47 routes, per-route head baked in |
+| Prerendering | ✅ 48 routes, per-route head baked in |
 | Email (inbound + outbound) | ✅ survived the nameserver move, verified record by record |
 | Contact form | ✅ now actually delivers (it never had before, see §1b) |
 | Mobile layout | ✅ 0 overflow, 320-1440px, both engines, signed in and out |
