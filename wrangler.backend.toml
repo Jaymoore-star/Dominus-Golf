@@ -50,3 +50,28 @@ account_id = "d52c80b6632554c75458cf115c6d74b0"
 #                                 → API. Without it orders still record and the
 #                                 referral code is still stored; only the report to
 #                                 GoAffPro is skipped.
+
+# Daily at 16:00 UTC (noon US Eastern): send the review-request emails that are
+# due. See backend/reviewRequests.ts. It sends nothing until
+# REVIEW_REQUESTS_ENABLED is "true", because the first run also emails every past
+# customer - read the preview (GET /api/admin/review-requests) before switching
+# it on.
+[triggers]
+crons = ["0 16 * * *"]
+
+# No [vars] block, deliberately: a deploy replaces every plain-text var on the
+# Worker with what this file lists, so adding one here would silently delete any
+# set in the dashboard. The switch below is a secret instead, which deploys leave
+# alone.
+#
+# Three more secrets for the email list and review requests:
+#
+#   REVIEW_REQUESTS_ENABLED  "true" to let review-request emails send. Unset or
+#                            anything else = preview only, nothing sent.
+#
+#   ADMIN_TOKEN              Any long random string. Guards the review-request
+#                            preview and manual run. With none set, those routes
+#                            refuse every request.
+#   REVIEW_REQUEST_EXCLUDE   Optional, comma-separated. Addresses never asked for
+#                            a review (testers using a personal address).
+#                            @dominusgolf.com addresses are always excluded.

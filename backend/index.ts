@@ -2,6 +2,8 @@ import { Hono } from "hono"
 import { cors } from "hono/cors"
 import { registerOrderRoutes } from "./orders"
 import { resolveCart, type IncomingItem } from "./pricing"
+import { checkDiscountCode, registerSubscriberRoutes } from "./subscribers"
+import { registerReviewRequestRoutes, runReviewRequests } from "./reviewRequests"
 
 const EBOOK_URL = "https://drive.google.com/uc?export=download&id=1Ir1DaLgMH-8eVzlQA6xrb7kKO8H_N95p"
 
@@ -53,6 +55,10 @@ app.use("*", cors({ origin: ALLOWED_ORIGINS }))
 
 // Order recording + affiliate reporting. See backend/orders.ts.
 registerOrderRoutes(app)
+// Email list + welcome codes. See backend/subscribers.ts.
+registerSubscriberRoutes(app)
+// Review-request emails (admin preview / manual run). See backend/reviewRequests.ts.
+registerReviewRequestRoutes(app)
 
 app.get("/health", (c) => c.json({ ok: true }))
 
@@ -75,6 +81,8 @@ app.post("/api/square/checkout", async (c) => {
     userId?: string
     /** GoAffPro code captured from ?ref= on the landing page. */
     referralCode?: string
+    /** Welcome code from the email list. See backend/subscribers.ts. */
+    discountCode?: string
   }
 
   try {
@@ -83,7 +91,7 @@ app.post("/api/square/checkout", async (c) => {
     return c.json({ error: "Invalid request body" }, 400)
   }
 
-  const { items, successUrl, cancelUrl, userId, referralCode } = body
+  const { items, successUrl, cancelUrl, userId, referralCode, discountCode } = body
 
   if (!items || items.length === 0) {
     return c.json({ error: "No items provided" }, 400)
@@ -109,6 +117,19 @@ app.post("/api/square/checkout", async (c) => {
   }
   const { lineItems, shippingCents, hasPhysicalItems, summary: itemSummary } = resolved.cart
 
+  /* Refused rather than dropped when the code is no good: quietly charging full
+     price to someone who thinks they have 10% off is worse than saying so. The
+     `code` field is what tells the frontend to forget the stored code.
+
+     Shipping stays as priced above, from the pre-discount subtotal - a bag that
+     cleared the free-shipping threshold keeps free shipping after its discount. */
+  let discount: { code: string; percent: number; name: string } | null = null
+  if (discountCode) {
+    const check = await checkDiscountCode(env, discountCode)
+    if (!check.ok) return c.json({ error: check.error, code: "DISCOUNT_INVALID" }, 400)
+    discount = check
+  }
+
   const idempotencyKey = `checkout_${Date.now()}_${crypto.randomUUID().substring(0, 8)}`
 
   // Always use production Square — sandbox detection was incorrectly matching production tokens
@@ -119,6 +140,22 @@ app.post("/api/square/checkout", async (c) => {
     order: {
       location_id: locationId,
       line_items: lineItems,
+      /* ORDER scope spreads the percentage across the line items. The shipping
+         fee reaches Square as a service charge, which an order discount does not
+         touch - the saving is on the goods only. */
+      ...(discount
+        ? {
+            discounts: [
+              {
+                uid: "welcome-discount",
+                name: discount.name,
+                type: "FIXED_PERCENTAGE",
+                percentage: String(discount.percent),
+                scope: "ORDER",
+              },
+            ],
+          }
+        : {}),
       /* The only channel that survives a Square-hosted checkout. Square knows
          nothing about our user ids or affiliate codes, so they ride along here
          and the webhook reads them back off the order. Values are trimmed to
@@ -126,6 +163,8 @@ app.post("/api/square/checkout", async (c) => {
       metadata: {
         ...(userId ? { user_id: String(userId).slice(0, 255) } : {}),
         ...(referralCode ? { referral_code: String(referralCode).slice(0, 255) } : {}),
+        // Read back by the webhook, which marks the code used once payment completes.
+        ...(discount ? { discount_code: discount.code } : {}),
       },
     },
     checkout_options: {
@@ -865,4 +904,18 @@ app.post("/api/grant/complete", async (c) => {
 })
 
 
-export default app
+/**
+ * The Worker entry: HTTP through Hono, plus the daily cron trigger configured in
+ * wrangler.backend.toml, which sends any review-request emails that are due.
+ * Sends nothing until REVIEW_REQUESTS_ENABLED is "true" - see reviewRequests.ts.
+ */
+export default {
+  fetch: app.fetch,
+  scheduled(
+    _controller: unknown,
+    env: Record<string, string>,
+    ctx: { waitUntil(promise: Promise<unknown>): void },
+  ) {
+    ctx.waitUntil(runReviewRequests(env, { dryRun: false }))
+  },
+}

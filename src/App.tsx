@@ -13,7 +13,9 @@ import { CartProvider } from './store/cartStore';
 import { WishlistProvider } from './store/wishlistStore';
 import { AuthPromptProvider } from './store/authPromptStore';
 import { LoginPromptModal } from './components/auth/LoginPromptModal';
+import { EmailSignupPopup } from './components/marketing/EmailSignupPopup';
 import { captureReferralFromUrl } from './lib/referral';
+import { captureDiscountCodeFromUrl } from './lib/discountCode';
 
 /**
  * Page components are code-split: each becomes its own chunk, fetched when its
@@ -176,6 +178,8 @@ function AnalyticsTracker() {
   // sees, so this cannot overwrite an earlier affiliate's claim.
   useEffect(() => {
     captureReferralFromUrl();
+    // The welcome email's Shop Now link carries the shopper's code as ?code=.
+    captureDiscountCodeFromUrl();
   }, [path]);
 
   useEffect(() => {
@@ -205,6 +209,7 @@ const rootRoute = createRootRoute({
         <AnalyticsTracker />
         <Outlet />
         <LoginPromptModal />
+        <EmailSignupPopup />
       </>
     );
   },

@@ -10,6 +10,12 @@ import { createCheckoutSession } from '../../lib/checkout';
 import { FREE_SHIPPING_THRESHOLD } from '../../lib/shipping';
 import { variantLabel, variantDescriptor } from '../../lib/productVariants';
 import { displayProductName } from '../../lib/productName';
+import {
+  clearDiscountCode,
+  storeDiscountCode,
+  useDiscountCode,
+  validateDiscountCode,
+} from '../../lib/discountCode';
 
 
 export function CartDrawer() {
@@ -17,6 +23,65 @@ export function CartDrawer() {
   const { ensureAuth } = useRequireAuth();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
+
+  /* Welcome code. `storedCode` is what checkout will send; `applied` is the
+     backend's confirmation of it, which is what earns the discount line. The
+     figure shown is an estimate - Square computes the real one. */
+  const storedCode = useDiscountCode();
+  const [codeInput, setCodeInput] = useState('');
+  const [applied, setApplied] = useState<{ code: string; percent: number; name: string } | null>(null);
+  const [codeError, setCodeError] = useState<string | null>(null);
+  const [applyingCode, setApplyingCode] = useState(false);
+
+  // A code that arrived on the email link has never been checked; check it the
+  // first time the bag is opened with it.
+  useEffect(() => {
+    if (!state.isOpen || !storedCode || applied?.code === storedCode) return;
+    let cancelled = false;
+    validateDiscountCode(storedCode).then((result) => {
+      if (cancelled) return;
+      if (result.ok) {
+        setApplied(result);
+        setCodeError(null);
+      } else {
+        setApplied(null);
+        setCodeError(result.error);
+        clearDiscountCode();
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [state.isOpen, storedCode, applied?.code]);
+
+  // Removed elsewhere (checkout refused it, another tab): drop the line too.
+  useEffect(() => {
+    if (!storedCode) setApplied(null);
+  }, [storedCode]);
+
+  const applyCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!codeInput.trim()) return;
+    setApplyingCode(true);
+    setCodeError(null);
+    const result = await validateDiscountCode(codeInput);
+    setApplyingCode(false);
+    if (result.ok) {
+      storeDiscountCode(result.code);
+      setApplied(result);
+      setCodeInput('');
+    } else {
+      setCodeError(result.error);
+    }
+  };
+
+  const removeCode = () => {
+    clearDiscountCode();
+    setApplied(null);
+    setCodeError(null);
+  };
+
+  const discountAmount = applied ? Math.round(total * applied.percent) / 100 : 0;
 
   useScrollLock(state.isOpen);
 
@@ -263,13 +328,58 @@ export function CartDrawer() {
         {/* Footer */}
         {state.items.length > 0 && (
           <div className="border-t border-border px-6 py-6 space-y-4 bg-background">
+            {/* Discount code */}
+            {applied ? (
+              <div className="flex items-center justify-between gap-3">
+                <span className="min-w-0 font-sans text-xs text-foreground">
+                  <span className="text-accent font-semibold">{applied.name}</span>{' '}
+                  <span className="text-muted-foreground">({applied.code})</span>
+                </span>
+                <span className="flex items-center gap-3 shrink-0">
+                  <span className="font-sans text-sm font-semibold text-accent">
+                    -${discountAmount.toFixed(2)}
+                  </span>
+                  <button
+                    onClick={removeCode}
+                    className="font-sans text-[11px] text-muted-foreground hover:text-foreground underline underline-offset-4"
+                  >
+                    Remove
+                  </button>
+                </span>
+              </div>
+            ) : (
+              <form onSubmit={applyCode} className="flex gap-2">
+                <label htmlFor="cart-discount-code" className="sr-only">
+                  Discount code
+                </label>
+                <input
+                  id="cart-discount-code"
+                  type="text"
+                  value={codeInput}
+                  onChange={(e) => setCodeInput(e.target.value)}
+                  placeholder="Discount code"
+                  autoComplete="off"
+                  autoCapitalize="characters"
+                  className="min-w-0 flex-1 border border-border bg-background px-3 py-2.5 font-sans text-base sm:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent transition-colors"
+                />
+                <button
+                  type="submit"
+                  disabled={applyingCode || !codeInput.trim()}
+                  className="shrink-0 border border-border px-4 font-sans text-xs font-semibold tracking-widest uppercase text-foreground hover:bg-primary hover:text-primary-foreground transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {applyingCode ? <Loader2 size={14} className="animate-spin" /> : 'Apply'}
+                </button>
+              </form>
+            )}
+            {codeError && <p className="font-sans text-[11px] text-red-500 -mt-2">{codeError}</p>}
+
             {/* Subtotal */}
             <div className="flex items-center justify-between">
               <span className="font-sans text-xs tracking-widest uppercase text-muted-foreground">
                 Subtotal
               </span>
               <span className="font-sans font-semibold text-lg text-foreground">
-                ${total.toFixed(2)}
+                ${(total - discountAmount).toFixed(2)}
               </span>
             </div>
 

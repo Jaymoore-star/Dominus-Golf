@@ -258,3 +258,13 @@ export function trackSignup(method: string): void {
   if (hasGa4()) window.gtag!('event', 'sign_up', { method });
   if (hasPixel()) window.fbq!('track', 'CompleteRegistration');
 }
+
+/**
+ * Joined the email list. `generate_lead` / `Lead` are the standard names both
+ * platforms optimise ads against, so a Meta campaign can target signups
+ * directly once the Pixel ID is set.
+ */
+export function trackEmailSignup(source: string): void {
+  if (hasGa4()) window.gtag!('event', 'generate_lead', { method: 'email_list', source });
+  if (hasPixel()) window.fbq!('track', 'Lead', { content_name: 'email_list' });
+}

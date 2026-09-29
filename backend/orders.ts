@@ -1,6 +1,7 @@
 import type { Hono } from "hono"
 import { sendOrderConfirmationEmail, type OrderEmailLine } from "./orderEmail"
 import { downloadsForLineItems } from "./digitalGoods"
+import { markDiscountCodeUsed } from "./subscribers"
 
 /**
  * Order recording, driven by a Square webhook.
@@ -465,6 +466,13 @@ export function registerOrderRoutes(app: Hono) {
     if (!saved) return c.json({ error: "Could not save order" }, 500)
 
     if (needsShippedAt(fulfillment)) await stampShippedAt(env, orderId)
+
+    /* The welcome code is spent by a paid order, not by opening a checkout -
+       most checkouts are abandoned, and that must not burn the customer's code.
+       Idempotent, so every redelivery can safely repeat it. */
+    if (paymentStatus === "COMPLETED" && metadata.discount_code) {
+      await markDiscountCodeUsed(env, metadata.discount_code, orderId)
+    }
 
     // Commission only on a completed payment, and only once. The null check is a
     // cheap skip for the common redelivery; the claim is what actually guarantees

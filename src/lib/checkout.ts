@@ -1,6 +1,7 @@
 import { BACKEND_URL } from './backend';
 import { supabase } from './supabase';
 import { readReferral } from './referral';
+import { clearDiscountCode, readDiscountCode } from './discountCode';
 
 export type CheckoutLineItem = {
   /** What the backend prices the line from. Everything below is display only. */
@@ -45,6 +46,8 @@ export async function createCheckoutSession(items: CheckoutLineItem[]): Promise<
       // silently lose the order record or the affiliate's commission.
       userId,
       referralCode: readReferral() ?? undefined,
+      // Checked and applied by the backend; see src/lib/discountCode.ts.
+      discountCode: readDiscountCode() ?? undefined,
       /* Square appends orderId and transactionId to whichever of these it uses.
          successUrl used to be `/?checkout=success` — a parameter nothing in the
          app ever read, so paying dropped the customer on the home page with no
@@ -53,7 +56,14 @@ export async function createCheckoutSession(items: CheckoutLineItem[]): Promise<
       cancelUrl: `${origin}/?checkout=cancelled`,
     }),
   });
-  const data = (await res.json()) as { url?: string; error?: string };
+  const data = (await res.json()) as { url?: string; error?: string; code?: string };
+  /* A spent or unknown code is refused rather than silently charged at full
+     price. Forget it, so the next click goes through at the normal price
+     instead of failing the same way forever. */
+  if (data.code === 'DISCOUNT_INVALID') {
+    clearDiscountCode();
+    throw new Error(`${data.error ?? 'That discount code is not valid.'} It has been removed - try checkout again.`);
+  }
   if (!res.ok || !data.url) throw new Error(data.error || 'Failed to create checkout session');
   return data.url;
 }

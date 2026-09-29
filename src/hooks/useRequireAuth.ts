@@ -51,11 +51,11 @@ export function useRequireAuth() {
 
   const ensureAuth = (action?: PendingAction): boolean => {
     if (isAuthenticated) return true;
-    try {
-      sessionStorage.setItem(REDIRECT_KEY, window.location.pathname + window.location.search);
-    } catch {
-      // ignore storage errors (private mode)
-    }
+    /* Through the helper, not a raw setItem. This used to write the bare path,
+       while readStash only accepts the { path, at } entry - so the return trip
+       never matched, and every gated action (checkout, Buy Now, Write a Review)
+       landed the shopper on the home page after signing in. */
+    stashPostLoginRedirect();
     // Always overwrite: a leftover action from an earlier gate must not fire
     // after some unrelated one.
     if (action) setPendingAction(action);

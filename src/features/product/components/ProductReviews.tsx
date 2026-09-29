@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Star, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import type { Product } from '../../../data/products';
@@ -66,7 +66,7 @@ function RatingInput({
 
 export function ProductReviews({ product }: ProductReviewsProps) {
   const { user, isAuthenticated } = useAuth();
-  const { ensureAuth } = useRequireAuth();
+  const { ensureAuth, isLoading: authLoading } = useRequireAuth();
 
   const { reviews, isLoading: loading, unavailable, summary, refresh } =
     useProductReviews(product.id);
@@ -85,6 +85,20 @@ export function ProductReviews({ product }: ProductReviewsProps) {
     setBody('');
     setFormOpen(true);
   };
+
+  /* The review-request email links here with ?review=1 (backend/reviewRequests.ts),
+     so the customer lands on an open form rather than hunting for the button.
+     Waits for the session to restore - otherwise a signed-in customer would be
+     shown the login prompt for the split second before it does. Once only. */
+  const [reviewLinkHandled, setReviewLinkHandled] = useState(false);
+  useEffect(() => {
+    if (reviewLinkHandled || authLoading || unavailable) return;
+    if (new URLSearchParams(window.location.search).get('review') !== '1') return;
+    setReviewLinkHandled(true);
+    document.getElementById('reviews-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    openForm();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reviewLinkHandled, authLoading, unavailable]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

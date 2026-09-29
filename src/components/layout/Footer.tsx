@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router';
 import { href } from '../../lib/routerLinks';
+import { EmailSignupForm } from '../marketing/EmailSignupForm';
 
 /*
  * The guide and directory links below are here for a concrete reason, not to
@@ -102,6 +103,22 @@ function TwitterXIcon() {
 export function Footer() {
   return (
     <footer className="bg-primary text-primary-foreground">
+      {/* Email list. First in the footer so it is the one thing on every page
+          that asks a browsing visitor to stay in touch. */}
+      <div className="border-b border-white/10">
+        <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="min-w-0">
+            <h2 className="font-serif text-xl font-bold text-white">Get 10% off your first order</h2>
+            <p className="mt-1.5 font-sans text-sm text-white/60">
+              Join the list for new gear, training tips and members-only offers.
+            </p>
+          </div>
+          <div className="w-full lg:max-w-md">
+            <EmailSignupForm source="footer" tone="dark" />
+          </div>
+        </div>
+      </div>
+
       {/* Main Links Grid */}
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         {/* 5 groups, so 5 columns at lg — a 4-col grid orphans Legal on its own row */}
