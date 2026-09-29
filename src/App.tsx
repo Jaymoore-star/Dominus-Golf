@@ -14,6 +14,7 @@ import { WishlistProvider } from './store/wishlistStore';
 import { AuthPromptProvider } from './store/authPromptStore';
 import { LoginPromptModal } from './components/auth/LoginPromptModal';
 import { EmailSignupPopup } from './components/marketing/EmailSignupPopup';
+import { EmailOfferTab } from './components/marketing/EmailOfferTab';
 import { captureReferralFromUrl } from './lib/referral';
 import { captureDiscountCodeFromUrl } from './lib/discountCode';
 
@@ -210,6 +211,7 @@ const rootRoute = createRootRoute({
         <Outlet />
         <LoginPromptModal />
         <EmailSignupPopup />
+        <EmailOfferTab />
       </>
     );
   },
