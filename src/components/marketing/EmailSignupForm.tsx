@@ -44,7 +44,7 @@ export function EmailSignupForm({ source, tone, onJoined }: EmailSignupFormProps
       >
         <CheckCircle2 size={16} className="shrink-0 mt-0.5 text-accent" />
         {status === 'done'
-          ? 'You are in. Check your inbox for your 10% off code.'
+          ? 'You are in. Your 10% off code is on its way - check your inbox, or the Promotions tab in Gmail.'
           : 'You are already on the list - your code was emailed when you joined.'}
       </p>
     );

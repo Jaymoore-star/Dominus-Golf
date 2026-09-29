@@ -34,7 +34,16 @@ export function buttonHtml(label: string, url: string): string {
  * The branded frame. `body` is trusted HTML - callers escape anything that came
  * from a customer or from Square before putting it in.
  */
-export function emailShellHtml(p: { eyebrow: string; body: string; footer?: string }): string {
+export function emailShellHtml(p: { eyebrow: string; body: string; footer?: string; head?: string }): string {
+  const frame = shellFrameHtml(p)
+  /* Gmail reads annotation markup from the document <head> only, so an email
+     that carries some is sent as a whole document rather than a bare fragment. */
+  return p.head
+    ? `<!doctype html><html><head><meta charset="utf-8">${p.head}</head><body style="margin:0;">${frame}</body></html>`
+    : frame
+}
+
+function shellFrameHtml(p: { eyebrow: string; body: string; footer?: string }): string {
   return `<div style="background:#f4f1ea;margin:0;padding:32px 0;font-family:Georgia,'Times New Roman',serif;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f1ea;">
     <tr><td align="center">

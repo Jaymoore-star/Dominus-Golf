@@ -59,10 +59,42 @@ type SubscriberRow = {
 
 // ── Emails ─────────────────────────────────────────────────────────────────
 
+/**
+ * Gmail Promotions-tab annotation: the offer and the code shown as a deal badge
+ * in the inbox list, so the code is visible without opening the email.
+ *
+ * Gmail files a welcome-offer email under Promotions whatever we do - there is
+ * no markup that moves it to Primary. This makes it stand out once it is there.
+ * Gmail decides per sender whether to render it, so it may not appear at first;
+ * when it does not, it costs nothing.
+ *
+ * No availabilityEnds: the code does not expire. JSON is escaped for `</` so a
+ * code can never close the script tag.
+ */
+function welcomeAnnotationHtml(code: string): string {
+  const markup = [
+    {
+      "@context": "http://schema.org/",
+      "@type": "Organization",
+      name: "Dominus Golf",
+      logo: `${SITE_URL}/apple-touch-icon.png`,
+    },
+    {
+      "@context": "http://schema.org/",
+      "@type": "DiscountOffer",
+      description: `${WELCOME_DISCOUNT_PERCENT}% off your first order`,
+      discountCode: code,
+      availabilityStarts: new Date().toISOString(),
+    },
+  ]
+  return `<script type="application/ld+json">${JSON.stringify(markup).replace(/</g, "\\u003c")}</script>`
+}
+
 /** Exported so the email can be rendered for a preview. */
 export function welcomeEmailHtml(code: string, unsubscribeUrl: string): string {
   const shopUrl = `${SITE_URL}/?code=${encodeURIComponent(code)}&utm_source=email&utm_medium=welcome&utm_campaign=welcome_code`
   return emailShellHtml({
+    head: welcomeAnnotationHtml(code),
     eyebrow: "Welcome",
     body: `
         <tr><td style="padding:22px 40px 4px;font-family:Georgia,serif;color:#1a1a1a;font-size:16px;line-height:1.7;">
