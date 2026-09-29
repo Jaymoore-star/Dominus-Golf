@@ -135,3 +135,34 @@ export function isAdmin(env: Env, header: string | undefined): boolean {
   for (let i = 0; i < expected.length; i++) diff |= expected.charCodeAt(i) ^ given.charCodeAt(i)
   return diff === 0
 }
+
+export type VerifiedShopper = { id: string; email: string }
+
+/**
+ * Who is signed in, according to Supabase rather than the browser.
+ *
+ * The frontend sends its Supabase access token as `Authorization: Bearer …`, and
+ * Supabase answers for it. Anything the request body says about the user is the
+ * browser's word and can be edited, so it must never decide whose discount
+ * code applies.
+ *
+ * Null for no token, an expired or forged one, or an address that was never
+ * confirmed - an unconfirmed sign-up proves nothing about owning the inbox.
+ */
+export async function verifiedShopper(env: Env, header: string | undefined): Promise<VerifiedShopper | null> {
+  if (!header?.startsWith("Bearer ") || !env.SUPABASE_URL) return null
+  const apikey = env.SUPABASE_ANON_KEY || env.SUPABASE_SERVICE_ROLE_KEY
+  if (!apikey) return null
+  try {
+    const res = await fetch(`${env.SUPABASE_URL}/auth/v1/user`, {
+      headers: { apikey, Authorization: header },
+    })
+    if (!res.ok) return null
+    const user = (await res.json()) as { id?: string; email?: string; email_confirmed_at?: string | null }
+    if (!user.id || !user.email || !user.email_confirmed_at) return null
+    return { id: user.id, email: user.email.trim().toLowerCase() }
+  } catch (err) {
+    console.error("Shopper verification failed:", err instanceof Error ? err.message : String(err))
+    return null
+  }
+}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BACKEND_URL } from './backend';
+import { supabase } from './supabase';
 
 /**
  * The shopper's welcome code from the email list.
@@ -78,13 +79,24 @@ export function useDiscountCode(): string | null {
 
 export type DiscountCheck =
   | { ok: true; code: string; percent: number; name: string }
-  | { ok: false; error: string };
+  /* `invalid` = spent, unknown, or another email's: forget it. The others
+     (`sign_in`, `unavailable`) are fixed by signing in or trying again. */
+  | { ok: false; error: string; reason?: 'invalid' | 'sign_in' | 'unavailable' };
 
+/**
+ * Sends the session token when there is one, so a code belonging to a different
+ * email is refused in the bag rather than only at checkout.
+ */
 export async function validateDiscountCode(code: string): Promise<DiscountCheck> {
   try {
+    const { data } = await supabase.auth.getSession();
+    const accessToken = data.session?.access_token;
     const res = await fetch(`${BACKEND_URL}/api/discount/validate`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+      },
       body: JSON.stringify({ code: normalise(code) }),
     });
     return (await res.json()) as DiscountCheck;

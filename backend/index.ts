@@ -3,6 +3,7 @@ import { cors } from "hono/cors"
 import { registerOrderRoutes } from "./orders"
 import { resolveCart, type IncomingItem } from "./pricing"
 import { checkDiscountCode, registerSubscriberRoutes } from "./subscribers"
+import { verifiedShopper } from "./email"
 import { registerReviewRequestRoutes, runReviewRequests } from "./reviewRequests"
 
 const EBOOK_URL = "https://drive.google.com/uc?export=download&id=1Ir1DaLgMH-8eVzlQA6xrb7kKO8H_N95p"
@@ -125,8 +126,15 @@ app.post("/api/square/checkout", async (c) => {
      cleared the free-shipping threshold keeps free shipping after its discount. */
   let discount: { code: string; percent: number; name: string } | null = null
   if (discountCode) {
-    const check = await checkDiscountCode(env, discountCode)
-    if (!check.ok) return c.json({ error: check.error, code: "DISCOUNT_INVALID" }, 400)
+    const shopper = await verifiedShopper(env, c.req.header("authorization"))
+    const check = await checkDiscountCode(env, discountCode, shopper, { requireShopper: true })
+    if (!check.ok) {
+      /* DISCOUNT_INVALID tells the frontend to forget the code - it is spent,
+         unknown, or someone else's. The other refusals keep it: signing in,
+         or Supabase coming back, fixes them. */
+      const code = check.reason === "invalid" ? "DISCOUNT_INVALID" : "DISCOUNT_RETRY"
+      return c.json({ error: check.error, code }, 400)
+    }
     discount = check
   }
 

@@ -4,6 +4,7 @@ import { supabase } from '@/lib/supabase'
 import { clearGrantDraft } from '@/lib/grantDraft'
 import { clearPendingAction } from '@/lib/pendingAction'
 import { clearPersistedCart, clearPersistedWishlist } from '@/lib/basketStorage'
+import { clearDiscountCode } from '@/lib/discountCode'
 import { flushAccountBaskets } from '@/lib/accountBaskets'
 
 interface AuthUser {
@@ -87,6 +88,8 @@ export function useAuth() {
     await flushAccountBaskets()
     clearPersistedWishlist()
     clearPersistedCart()
+    // A welcome code belongs to one email address, so it leaves with its owner.
+    clearDiscountCode()
 
     return supabase.auth.signOut()
   }

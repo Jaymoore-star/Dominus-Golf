@@ -33,12 +33,19 @@ export async function createCheckoutSession(items: CheckoutLineItem[]): Promise<
   // attached to an account afterwards.
   const { data: auth } = await supabase.auth.getUser();
   const userId = auth?.user?.id;
+  // Proof of who is signed in, for the backend to check a discount code
+  // against. See verifiedShopper in backend/email.ts.
+  const { data: sessionData } = await supabase.auth.getSession();
+  const accessToken = sessionData.session?.access_token;
 
   const origin =
     typeof window !== 'undefined' ? window.location.origin : 'https://www.dominusgolf.com';
   const res = await fetch(`${BACKEND_URL}/api/square/checkout`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+    },
     body: JSON.stringify({
       items,
       // Both ride along as Square order metadata and come back on the webhook.

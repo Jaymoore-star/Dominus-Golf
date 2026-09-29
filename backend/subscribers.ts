@@ -7,6 +7,8 @@ import {
   hasSupabase,
   sendEmail,
   serviceHeaders,
+  verifiedShopper,
+  type VerifiedShopper,
 } from "./email"
 
 /**
@@ -91,7 +93,7 @@ function welcomeAnnotationHtml(code: string): string {
 }
 
 /** Exported so the email can be rendered for a preview. */
-export function welcomeEmailHtml(code: string, unsubscribeUrl: string): string {
+export function welcomeEmailHtml(code: string, unsubscribeUrl: string, email: string): string {
   const shopUrl = `${SITE_URL}/?code=${encodeURIComponent(code)}&utm_source=email&utm_medium=welcome&utm_campaign=welcome_code`
   return emailShellHtml({
     head: welcomeAnnotationHtml(code),
@@ -109,7 +111,7 @@ export function welcomeEmailHtml(code: string, unsubscribeUrl: string): string {
         </td></tr>
 
         <tr><td style="padding:14px 40px 4px;font-family:Georgia,serif;color:#4a4a4a;font-size:15px;line-height:1.7;">
-          Enter it in your bag before checkout, or use the button below and it will be applied for you. It works once, on one order.
+          Enter it in your bag before checkout, or use the button below and it will be applied for you. It works once, on one order, when you are signed in with ${escapeHtml(email)}.
         </td></tr>
 
         <tr><td align="center" style="padding:24px 40px 30px;">
@@ -119,7 +121,7 @@ export function welcomeEmailHtml(code: string, unsubscribeUrl: string): string {
   })
 }
 
-function welcomeEmailText(code: string, unsubscribeUrl: string): string {
+function welcomeEmailText(code: string, unsubscribeUrl: string, email: string): string {
   return [
     `Thanks for joining the Dominus Golf list.`,
     ``,
@@ -127,7 +129,7 @@ function welcomeEmailText(code: string, unsubscribeUrl: string): string {
     ``,
     `    ${code}`,
     ``,
-    `Enter it in your bag before checkout. It works once, on one order.`,
+    `Enter it in your bag before checkout. It works once, on one order, when you are signed in with ${email}.`,
     ``,
     `Shop: ${SITE_URL}/?code=${encodeURIComponent(code)}`,
     ``,
@@ -205,7 +207,7 @@ async function resubscribe(env: Env, email: string) {
 
 export type DiscountCheck =
   | { ok: true; code: string; percent: number; name: string }
-  | { ok: false; error: string }
+  | { ok: false; error: string; reason: "invalid" | "sign_in" | "unavailable" }
 
 /**
  * Whether a code can be used right now. Used by the cart (to show the saving)
@@ -216,25 +218,61 @@ export type DiscountCheck =
  * same code before either is paid can both get the discount. That window is
  * minutes and the stake is 10% on one order, so it is accepted rather than
  * reserving codes for checkouts that are mostly never finished.
+ *
+ * A code belongs to the address it was emailed to, and works only for the
+ * account signed in with that address. Without this, a code forwarded, posted,
+ * or opened on a shared computer worked for anyone. `shopper` must come from
+ * verifiedShopper(), never from the request body.
+ *
+ * `requireShopper` is set at checkout, where a code with nobody signed in is
+ * refused. The bag's preview leaves it off: a signed-out shopper still sees the
+ * saving, and checkout makes them sign in before it is applied.
  */
-export async function checkDiscountCode(env: Env, raw: unknown): Promise<DiscountCheck> {
+export async function checkDiscountCode(
+  env: Env,
+  raw: unknown,
+  shopper: VerifiedShopper | null,
+  opts: { requireShopper: boolean },
+): Promise<DiscountCheck> {
+  const unavailable = {
+    ok: false as const,
+    reason: "unavailable" as const,
+    error: "Codes can't be checked right now. Please try again shortly.",
+  }
   const code = normaliseCode(raw)
-  if (!code) return { ok: false, error: "Enter a code." }
-  if (!/^[A-Z0-9-]{4,40}$/.test(code)) return { ok: false, error: "That code isn't valid." }
-  if (!hasSupabase(env)) return { ok: false, error: "Codes can't be checked right now. Please try again shortly." }
+  if (!code) return { ok: false, reason: "invalid", error: "Enter a code." }
+  if (!/^[A-Z0-9-]{4,40}$/.test(code)) return { ok: false, reason: "invalid", error: "That code isn't valid." }
+  if (!hasSupabase(env)) return unavailable
 
   const res = await fetch(
-    `${env.SUPABASE_URL}/rest/v1/email_subscribers?discount_code=eq.${encodeURIComponent(code)}&select=discount_code,code_used_at`,
+    `${env.SUPABASE_URL}/rest/v1/email_subscribers?discount_code=eq.${encodeURIComponent(code)}&select=email,discount_code,code_used_at`,
     { headers: serviceHeaders(env) },
   )
   if (!res.ok) {
     console.error("Discount lookup failed:", res.status, await res.text())
-    return { ok: false, error: "Codes can't be checked right now. Please try again shortly." }
+    return unavailable
   }
-  const rows = (await res.json()) as { discount_code: string; code_used_at: string | null }[]
+  const rows = (await res.json()) as { email: string; discount_code: string; code_used_at: string | null }[]
   const row = rows[0]
-  if (!row) return { ok: false, error: "That code isn't valid." }
-  if (row.code_used_at) return { ok: false, error: "That code has already been used." }
+  if (!row) return { ok: false, reason: "invalid", error: "That code isn't valid." }
+  if (row.code_used_at) return { ok: false, reason: "invalid", error: "That code has already been used." }
+
+  if (!shopper) {
+    if (opts.requireShopper) {
+      return {
+        ok: false,
+        reason: "sign_in",
+        error: "Sign in with the email address your code was sent to, then check out again.",
+      }
+    }
+  } else if (shopper.email !== row.email) {
+    // Deliberately does not say which address it belongs to.
+    return {
+      ok: false,
+      reason: "invalid",
+      error: "That code belongs to a different email address. Sign in with the account for the email your code was sent to.",
+    }
+  }
   return { ok: true, code, percent: WELCOME_DISCOUNT_PERCENT, name: WELCOME_DISCOUNT_NAME }
 }
 
@@ -295,8 +333,8 @@ export function registerSubscriberRoutes(app: Hono) {
     const sent = await sendEmail(env, {
       to: email,
       subject: `Your ${WELCOME_DISCOUNT_PERCENT}% off code - Dominus Golf`,
-      html: welcomeEmailHtml(row.discount_code, unsubscribeUrl),
-      text: welcomeEmailText(row.discount_code, unsubscribeUrl),
+      html: welcomeEmailHtml(row.discount_code, unsubscribeUrl, email),
+      text: welcomeEmailText(row.discount_code, unsubscribeUrl, email),
       tag: "Welcome email",
     })
 
@@ -316,7 +354,8 @@ export function registerSubscriberRoutes(app: Hono) {
   app.post("/api/discount/validate", async (c) => {
     const env = c.env as Env
     const body = (await c.req.json().catch(() => ({}))) as { code?: string }
-    const result = await checkDiscountCode(env, body.code)
+    const shopper = await verifiedShopper(env, c.req.header("authorization"))
+    const result = await checkDiscountCode(env, body.code, shopper, { requireShopper: false })
     return c.json(result, result.ok ? 200 : 400)
   })
 

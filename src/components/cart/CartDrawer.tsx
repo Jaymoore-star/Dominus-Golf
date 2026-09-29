@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { X, ShoppingBag, Plus, Minus, Trash2, Loader2 } from 'lucide-react';
 import { useCart, lineKeyOf } from '../../store/cartStore';
 import { useRequireAuth } from '../../hooks/useRequireAuth';
+import { useAuth } from '../../hooks/useAuth';
 import { useScrollLock } from '../../hooks/useScrollLock';
 import { clearPendingAction, peekPendingAction } from '../../lib/pendingAction';
 import { trackBeginCheckout } from '../../lib/analytics';
@@ -33,10 +34,17 @@ export function CartDrawer() {
   const [codeError, setCodeError] = useState<string | null>(null);
   const [applyingCode, setApplyingCode] = useState(false);
 
-  // A code that arrived on the email link has never been checked; check it the
-  // first time the bag is opened with it.
+  /* Checked whenever the bag opens with a code it has not checked for this
+     account: a code from the email link has never been checked at all, and a
+     code belongs to one email address, so signing in as someone else has to
+     re-check it rather than keep showing a saving checkout will refuse. */
+  const { user } = useAuth();
+  const checkedFor = useRef<string | null>(null);
   useEffect(() => {
-    if (!state.isOpen || !storedCode || applied?.code === storedCode) return;
+    if (!state.isOpen || !storedCode) return;
+    const key = `${storedCode}|${user?.id ?? ''}`;
+    if (checkedFor.current === key) return;
+    checkedFor.current = key;
     let cancelled = false;
     validateDiscountCode(storedCode).then((result) => {
       if (cancelled) return;
@@ -46,13 +54,15 @@ export function CartDrawer() {
       } else {
         setApplied(null);
         setCodeError(result.error);
-        clearDiscountCode();
+        if (result.reason === 'invalid') clearDiscountCode();
+        // Anything else is worth another try next time the bag opens.
+        else checkedFor.current = null;
       }
     });
     return () => {
       cancelled = true;
     };
-  }, [state.isOpen, storedCode, applied?.code]);
+  }, [state.isOpen, storedCode, user?.id]);
 
   // Removed elsewhere (checkout refused it, another tab): drop the line too.
   useEffect(() => {
@@ -67,6 +77,7 @@ export function CartDrawer() {
     const result = await validateDiscountCode(codeInput);
     setApplyingCode(false);
     if (result.ok) {
+      checkedFor.current = `${result.code}|${user?.id ?? ''}`;
       storeDiscountCode(result.code);
       setApplied(result);
       setCodeInput('');
