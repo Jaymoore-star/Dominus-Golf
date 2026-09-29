@@ -5,7 +5,7 @@ const IMG_FEEL_RIGHT_BAND =
   '/images/FeelRiteGolfBand__cc34ac6f.webp';
 
 const IMG_BOOK =
-  '/images/Screenshot_20260324_042207_SamsungInternet__2f2a1710.webp';
+  '/images/book-ultimate-guide__3f8ec230.webp';
 
 const IMG_TOWEL =
   '/images/ChatGPTImageMar24202607_40_17PM__db70f8cf.webp';

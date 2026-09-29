@@ -55,9 +55,9 @@ export const accessories: Product[] = [
     category: 'accessories',
     subcategory: 'Education',
     price: 14.99,
-    image: '/images/Screenshot_20260324_042207_SamsungInternet__2f2a1710.webp',
+    image: '/images/book-ultimate-guide__3f8ec230.webp',
     gallery: [
-      '/images/Screenshot_20260324_042207_SamsungInternet__2f2a1710.webp',
+      '/images/book-ultimate-guide__3f8ec230.webp',
     ],
     badge: 'New',
     paymentUrl: 'https://square.link/u/CY8NyjAv',
@@ -85,7 +85,7 @@ export const accessories: Product[] = [
     subcategory: 'Education',
     price: 9.99,
     compareAtPrice: 14.99,
-    image: '/images/Screenshot_20260324_042207_SamsungInternet__2f2a1710.webp',
+    image: '/images/book-ultimate-guide__3f8ec230.webp',
     badge: 'FREE WITH TRAINER',
     paymentUrl: 'https://square.link/u/dgAr3D7l',
     description:

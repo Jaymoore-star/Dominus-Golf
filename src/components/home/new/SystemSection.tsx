@@ -8,7 +8,7 @@ const SYSTEM_CARDS = [
     text: 'A feedback-based training tool designed to reinforce proper sequencing, improve tempo, and help golfers feel correct swing positions through resistance training.'
   },
   {
-    image: '/images/Screenshot_20260324_042207_SamsungInternet__2f2a1710.webp',
+    image: '/images/book-ultimate-guide__3f8ec230.webp',
     title: 'THE TOUR PURE BLUEPRINT',
     text: 'A structured training manual that removes guesswork and provides a clear step-by-step system for developing swing mechanics, sequencing, and consistency.'
   },

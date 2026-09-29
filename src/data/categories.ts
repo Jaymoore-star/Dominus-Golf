@@ -10,7 +10,7 @@ export const categoryCards: CategoryCard[] = [
   {
     id: 'accessories',
     label: 'Accessories',
-    image: '/images/Screenshot_20260324_042207_SamsungInternet__2f2a1710.webp',
+    image: '/images/book-ultimate-guide__3f8ec230.webp',
     href: '/shop/accessories',
   },
   {

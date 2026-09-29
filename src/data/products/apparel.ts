@@ -75,7 +75,7 @@ export const apparel: Product[] = [
   {
     id: 'dominus-tee-performance-black',
     name: "Performance Tee (Men's)",
-    seoTitle: "Performance Golf T-Shirt - Black (Men's)",
+    seoTitle: "Performance Golf T-Shirt - White (Men's)",
     seoDescription:
       "Men's moisture-wicking golf t-shirt in triblend fabric. Back logo with sleeve branding, built to train and play in.",
     category: 'apparel',
@@ -117,15 +117,15 @@ export const apparel: Product[] = [
     subcategory: "Women's Apparel",
     audience: 'women',
     price: 19.99,
-    image: '/images/unnamed-11__fc5a40f7.webp',
+    image: '/images/tee-womens-black-icon__72061fef.webp',
     hoverImage: '/images/unnamed-16__4cc41a28.webp',
     // Black only. This and the white icon tee are separate products, so each
     // offers just its own colour — listing both made them look like duplicates.
     colorVariants: {
-      Black: '/images/unnamed-11__fc5a40f7.webp',
+      Black: '/images/tee-womens-black-icon__72061fef.webp',
     },
     gallery: [
-      '/images/unnamed-11__fc5a40f7.webp',
+      '/images/tee-womens-black-icon__72061fef.webp',
       '/images/unnamed-16__4cc41a28.webp',
     ],
     badge: 'New',
@@ -193,13 +193,13 @@ export const apparel: Product[] = [
     subcategory: "Women's Apparel",
     audience: 'women',
     price: 19.99,
-    image: '/images/a2d1da0a-6213-4a84-8dca-5122fd81823a__3ed0e102.webp',
+    image: '/images/tee-womens-black-performance__0a43f740.webp',
     // Black only.
     colorVariants: {
-      Black: '/images/a2d1da0a-6213-4a84-8dca-5122fd81823a__3ed0e102.webp',
+      Black: '/images/tee-womens-black-performance__0a43f740.webp',
     },
     gallery: [
-      '/images/a2d1da0a-6213-4a84-8dca-5122fd81823a__3ed0e102.webp',
+      '/images/tee-womens-black-performance__0a43f740.webp',
     ],
     badge: 'New',
     description: "Dominus Golf performance tee for women in black. Moisture-wicking triblend with the iconic D logo-train and play in style.",
