@@ -14,7 +14,12 @@ import {
   readWishlistIds,
   scheduleWishlistSync,
 } from '../lib/accountBaskets';
-import { WISHLIST_STORAGE_KEY as STORAGE_KEY, onWishlistReset } from '../lib/basketStorage';
+import {
+  WISHLIST_STORAGE_KEY as STORAGE_KEY,
+  onWishlistReset,
+  readWishlistOwner,
+  writeWishlistOwner,
+} from '../lib/basketStorage';
 
 function loadPersistedIds(): string[] {
   if (typeof window === 'undefined') return [];
@@ -108,7 +113,12 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     // Arming before the state change lets the mirror effect below do the write,
     // which also persists the merge itself.
     syncArmed.current = true;
-    setIds(mergeWishlistIds(readWishlistIds(user.metadata), idsRef.current));
+    /* Same rule as the cart: a guest's list is folded in, but a list saved by a
+       different account stays with that account. */
+    const owner = readWishlistOwner();
+    const local = owner && owner !== user.id ? [] : idsRef.current;
+    writeWishlistOwner(user.id);
+    setIds(mergeWishlistIds(readWishlistIds(user.metadata), local));
   }, [user]);
 
   useEffect(

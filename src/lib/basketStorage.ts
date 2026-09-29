@@ -21,10 +21,18 @@ export const CART_STORAGE_KEY = 'dominus-cart';
  * should be added on top of the account cart" from "this account's own cart,
  * restored on reload" — summing the latter would double the cart every reload.
  *
- * The wishlist needs no equivalent: merging ids is a set union, so re-merging the
- * same list changes nothing.
+ * It also tells "a guest's cart" from "another account's cart": signing in as B
+ * while A's cart is still on the device (A never signed out, or A's session
+ * lapsed) must not hand B the contents of A's bag.
  */
 const CART_OWNER_KEY = 'dominus-cart-owner';
+
+/**
+ * The same, for the wishlist. A union makes re-merging the same account's list
+ * harmless, so reloads never needed this - but without it, signing in as a
+ * second account merged the first account's saved products into it.
+ */
+const WISHLIST_OWNER_KEY = 'dominus-wishlist-owner';
 
 const WISHLIST_RESET_EVENT = 'dominus-wishlist-reset';
 const CART_RESET_EVENT = 'dominus-cart-reset';
@@ -51,6 +59,12 @@ function subscribe(eventName: string, handler: () => void): () => void {
  * is untouched and comes back on the next sign-in.
  */
 export function clearPersistedWishlist() {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.removeItem(WISHLIST_OWNER_KEY);
+  } catch {
+    // ignore quota / private-mode errors
+  }
   clearAndAnnounce(WISHLIST_STORAGE_KEY, WISHLIST_RESET_EVENT);
 }
 
@@ -80,6 +94,26 @@ export function writeCartOwner(userId: string) {
   if (typeof window === 'undefined') return;
   try {
     window.localStorage.setItem(CART_OWNER_KEY, userId);
+  } catch {
+    // ignore quota / private-mode errors
+  }
+}
+
+/** The account the stored wishlist belongs to, or null if it was built signed out. */
+export function readWishlistOwner(): string | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    return window.localStorage.getItem(WISHLIST_OWNER_KEY);
+  } catch {
+    return null;
+  }
+}
+
+/** Marks the stored wishlist as belonging to this account, after hydrating it. */
+export function writeWishlistOwner(userId: string) {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(WISHLIST_OWNER_KEY, userId);
   } catch {
     // ignore quota / private-mode errors
   }

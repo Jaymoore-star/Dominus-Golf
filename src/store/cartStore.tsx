@@ -262,17 +262,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
     // A cart already marked as this account's is a reload, not a guest cart, so
     // quantities must not be summed again.
-    const localIsSameAccount = readCartOwner() === user.id;
+    const owner = readCartOwner();
+    const localIsSameAccount = owner === user.id;
+    /* Marked as a *different* account's: that account never signed out here
+       (or its session lapsed). Its cart is safe in its own account; this one
+       gets only its own. Only a cart with no owner - a guest's - is merged. */
+    const localLines = owner && !localIsSameAccount ? [] : itemsToLines(itemsRef.current);
     writeCartOwner(user.id);
 
     dispatch({
       type: 'SET_ITEMS',
       items: linesToItems(
-        mergeCartLines(
-          readCartLines(user.metadata),
-          itemsToLines(itemsRef.current),
-          localIsSameAccount,
-        ),
+        mergeCartLines(readCartLines(user.metadata), localLines, localIsSameAccount),
       ),
     });
   }, [user]);
