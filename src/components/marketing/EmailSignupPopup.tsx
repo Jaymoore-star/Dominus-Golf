@@ -7,6 +7,8 @@ import {
   dismissEmailPopup,
   emailPopupRecentlyDismissed,
   hasJoinedEmailList,
+  onOpenEmailSignup,
+  type SignupSource,
 } from '../../lib/emailList';
 
 /** Seconds on the site before the popup offers itself. */
@@ -32,12 +34,27 @@ const QUIET_PREFIXES = ['/checkout', '/account', '/login', '/signup', '/auth', '
  * whichever comes first. A dismissal is remembered for 30 days; joining, for
  * good.
  *
+ * It also opens on request, on any device, when a shopper taps the offer in the
+ * announcement bar. That is the phone route in: Google's interstitial rule is
+ * about popups a visitor did not ask for, not a dialog they tapped to open.
+ *
  * Renders nothing on the server, so it adds nothing to the prerendered HTML.
  */
 export function EmailSignupPopup() {
   const path = useRouterState({ select: (s) => s.location.pathname });
   const [open, setOpen] = useState(false);
   const [armed, setArmed] = useState(false);
+  const [source, setSource] = useState<SignupSource>('popup');
+
+  useEffect(
+    () =>
+      onOpenEmailSignup(() => {
+        setArmed(false);
+        setSource('announcement');
+        setOpen(true);
+      }),
+    [],
+  );
 
   // Decide once, on first mount, whether this visitor should ever see it.
   useEffect(() => {
@@ -52,6 +69,7 @@ export function EmailSignupPopup() {
     if (!armed || open || quiet) return;
     const show = () => {
       setArmed(false);
+      setSource('popup');
       setOpen(true);
     };
     const timer = window.setTimeout(show, DELAY_MS);
@@ -115,7 +133,7 @@ export function EmailSignupPopup() {
 
         {/* Stays open on success so the confirmation is read; closing then
             counts as a dismissal, which is harmless once joined. */}
-        <EmailSignupForm source="popup" tone="light" />
+        <EmailSignupForm source={source} tone="light" />
 
         <button
           onClick={close}

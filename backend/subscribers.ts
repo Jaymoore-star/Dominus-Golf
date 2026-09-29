@@ -308,7 +308,7 @@ export function registerSubscriberRoutes(app: Hono) {
     if (!email || email.length > 254 || !EMAIL_RE.test(email)) {
       return c.json({ error: "Please enter a valid email address." }, 400)
     }
-    const source = ["footer", "popup"].includes(body.source ?? "") ? body.source! : "other"
+    const source = ["footer", "popup", "announcement"].includes(body.source ?? "") ? body.source! : "other"
 
     if (!hasSupabase(env)) {
       console.error("Subscribe: Supabase env missing")

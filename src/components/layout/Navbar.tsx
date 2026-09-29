@@ -19,6 +19,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useScrollLock } from '../../hooks/useScrollLock';
 import { products } from '../../data/products';
 import { href } from '../../lib/routerLinks';
+import { hasJoinedEmailList, onEmailListJoined, openEmailSignup } from '../../lib/emailList';
 
 type MegaMenuKey = 'training' | 'guide' | 'apparel' | 'accessories' | 'pros' | 'company' | null;
 
@@ -175,7 +176,28 @@ export function Navbar() {
   const accountRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const announcements = [
+  /* Whether this browser has joined the email list. Read after mount - the bar
+     is prerendered, and the server cannot know - so the offer is in the static
+     HTML and drops out for someone who has already joined. */
+  const [joinedList, setJoinedList] = useState(false);
+  useEffect(() => {
+    // Back to the first message whenever the list changes length, so the index
+    // can never point past the end and leave the bar blank.
+    setJoinedList(hasJoinedEmailList());
+    setAnnouncementIndex(0);
+    return onEmailListJoined(() => {
+      setJoinedList(true);
+      setAnnouncementIndex(0);
+    });
+  }, []);
+
+  const announcements: { text: string; link: string | null; linkLabel: string | null; onClick?: () => void }[] = [
+    /* First, so it is the message a visitor lands on. The popup is desktop-only,
+       so on a phone this bar is where the offer is seen; tapping it opens the
+       same signup dialog. */
+    ...(joinedList
+      ? []
+      : [{ text: 'Get 10% Off Your First Order -', link: null, linkLabel: 'Join the List', onClick: openEmailSignup }]),
     // Pulled with the grant page: it advertised a closed deadline and linked to
     // a page customers can no longer reach.
     // { text: 'The Dominus Golf Development Grant is Now Open - $5,000 Awarded to One Golfer Nationwide. Apply by August 15.', link: '/grant', linkLabel: 'Apply Now' },
@@ -304,6 +326,16 @@ export function Navbar() {
                   >
                     {item.linkLabel}
                   </Link>
+                )}
+                {item.onClick && (
+                  <button
+                    type="button"
+                    onClick={item.onClick}
+                    tabIndex={i === announcementIndex ? 0 : -1}
+                    className="uppercase underline underline-offset-4 hover:text-white transition-colors duration-200 font-bold"
+                  >
+                    {item.linkLabel}
+                  </button>
                 )}
               </span>
             </div>

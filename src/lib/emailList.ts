@@ -6,11 +6,30 @@ import { trackEmailSignup } from './analytics';
  * shopper their single-use 10% code - see backend/subscribers.ts.
  */
 
-export type SignupSource = 'footer' | 'popup';
+export type SignupSource = 'footer' | 'popup' | 'announcement';
 
 /** Per-browser memory of having joined or dismissed, so the popup stays away. */
 const JOINED_KEY = 'emailListJoined';
 const DISMISSED_KEY = 'emailListPopupDismissedAt';
+
+/** Asks the signup dialog to open - from the announcement bar, on any device. */
+const OPEN_EVENT = 'dominus:email-signup-open';
+/** Announces a successful join, so the bar can stop advertising the offer. */
+const JOINED_EVENT = 'dominus:email-list-joined';
+
+export function openEmailSignup(): void {
+  window.dispatchEvent(new Event(OPEN_EVENT));
+}
+
+export function onOpenEmailSignup(handler: () => void): () => void {
+  window.addEventListener(OPEN_EVENT, handler);
+  return () => window.removeEventListener(OPEN_EVENT, handler);
+}
+
+export function onEmailListJoined(handler: () => void): () => void {
+  window.addEventListener(JOINED_EVENT, handler);
+  return () => window.removeEventListener(JOINED_EVENT, handler);
+}
 
 /** A dismissed popup comes back after this long, not on the next page view. */
 const DISMISS_TTL_MS = 30 * 24 * 60 * 60 * 1000;
@@ -32,6 +51,7 @@ export async function joinEmailList(
   } catch {
     // Only costs a popup the visitor has already answered.
   }
+  window.dispatchEvent(new Event(JOINED_EVENT));
   if (!data.already) trackEmailSignup(source);
   return { already: Boolean(data.already) };
 }
