@@ -13,11 +13,11 @@
  */
 
 export const FILE_DATES: Record<string, string> = {
-  "src/data/categories.ts": "2026-07-22",
+  "src/data/categories.ts": "2026-09-29",
   "src/data/products.ts": "2026-08-27",
-  "src/data/products/accessories.ts": "2026-09-16",
-  "src/data/products/apparel.ts": "2026-09-16",
-  "src/data/products/trainingSystems.ts": "2026-09-16",
+  "src/data/products/accessories.ts": "2026-09-29",
+  "src/data/products/apparel.ts": "2026-09-29",
+  "src/data/products/trainingSystems.ts": "2026-09-29",
   "src/data/types.ts": "2026-09-16",
   "src/pages/AboutPage.tsx": "2026-08-03",
   "src/pages/account/AccountAddressesPage.tsx": "2026-08-11",
@@ -45,6 +45,7 @@ export const FILE_DATES: Record<string, string> = {
   "src/pages/NotFoundPage.tsx": "2026-07-22",
   "src/pages/OrderConfirmedPage.tsx": "2026-08-04",
   "src/pages/PracticeWithProsPage.tsx": "2026-08-11",
+  "src/pages/PrivacyPolicyPage.tsx": "2026-09-29",
   "src/pages/ProDirectoryPage.tsx": "2026-08-02",
   "src/pages/ProductPage.tsx": "2026-09-17",
   "src/pages/SafetyDisclaimerPage.tsx": "2026-08-03",
@@ -53,7 +54,7 @@ export const FILE_DATES: Record<string, string> = {
   "src/pages/SignupPage.tsx": "2026-08-11",
   "src/pages/SustainabilityPage.tsx": "2026-08-03",
   "src/pages/TeamPage.tsx": "2026-08-03",
-  "src/pages/TermsPage.tsx": "2026-08-03",
+  "src/pages/TermsPage.tsx": "2026-09-29",
   "src/pages/TourPureGuidePage.tsx": "2026-08-11",
   "src/pages/WishlistPage.tsx": "2026-07-30",
 };
