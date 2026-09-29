@@ -6,7 +6,7 @@ import { checkDiscountCode, registerSubscriberRoutes } from "./subscribers"
 import { verifiedShopper } from "./email"
 import { registerReviewRequestRoutes, runReviewRequests } from "./reviewRequests"
 
-const EBOOK_URL = "https://drive.google.com/uc?export=download&id=1Ir1DaLgMH-8eVzlQA6xrb7kKO8H_N95p"
+const EBOOK_URL = "https://drive.google.com/uc?export=download&id=1R4xzR1mozZP1qu8wVymm1AMmx3O_q-Zb"
 
 /**
  * The only origins this API answers to, and the only places Square may send a

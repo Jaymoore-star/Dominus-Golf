@@ -18,7 +18,7 @@ import { products } from "../src/data/products"
  * this is the line to change.
  */
 const EBOOK_URL =
-  "https://drive.google.com/uc?export=download&id=1Ir1DaLgMH-8eVzlQA6xrb7kKO8H_N95p"
+  "https://drive.google.com/uc?export=download&id=1R4xzR1mozZP1qu8wVymm1AMmx3O_q-Zb"
 
 /** Keyed by catalogue product id. */
 const DOWNLOADS: Record<string, string> = {
