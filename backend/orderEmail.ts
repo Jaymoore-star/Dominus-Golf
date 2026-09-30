@@ -31,7 +31,7 @@ export type OrderEmailParams = {
   shippingCents?: number
   taxCents?: number
   /** Download links for any digital goods bought. This IS the delivery. */
-  downloads?: { label: string; url: string }[]
+  downloads?: { label: string; url: string; free?: boolean }[]
   /** False for a download-only order: no shipping row, no delivery promise. */
   hasPhysicalItems?: boolean
 }
@@ -82,8 +82,13 @@ function totalRowHtml(label: string, value: string, bold = false): string {
 }
 
 /** The delivery itself for a digital order, so it leads rather than trails. */
-function downloadsHtml(downloads: { label: string; url: string }[]): string {
+/** Said when the guide came free with a trainer, so the buyer knows what it is. */
+const FREE_GUIDE_LINE =
+  "Your Tour Pure trainer comes with a free copy of the Ultimate Guide to Mastering the Game - our 90-day training program."
+
+function downloadsHtml(downloads: { label: string; url: string; free?: boolean }[]): string {
   if (downloads.length === 0) return ""
+  const gift = downloads.some((d) => d.free)
   const buttons = downloads
     .map(
       (d) => `<tr><td align="center" style="padding:6px 0;">
@@ -98,7 +103,8 @@ function downloadsHtml(downloads: { label: string; url: string }[]): string {
 
   return `<tr><td style="padding:18px 40px 4px;">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#faf8f4;border:1px solid #e6e0d4;">
-            <tr><td align="center" style="padding:20px 18px 8px;font-family:Arial,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#8a8375;">Your Download</td></tr>
+            <tr><td align="center" style="padding:20px 18px 8px;font-family:Arial,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:${gift ? "#C4963B" : "#8a8375"};">${gift ? "Your Free Guide" : "Your Download"}</td></tr>
+            ${gift ? `<tr><td align="center" style="padding:0 24px 12px;font-family:Georgia,serif;font-size:15px;line-height:1.6;color:#1a1a1a;">${FREE_GUIDE_LINE}</td></tr>` : ""}
             ${buttons}
             <tr><td align="center" style="padding:8px 18px 20px;font-family:Arial,sans-serif;font-size:11px;color:#8a8375;">This link stays in your inbox - keep this email to download again later.</td></tr>
           </table>
@@ -186,8 +192,15 @@ export function buildOrderEmailText(p: OrderEmailParams): string {
     return `- ${l.name ?? "Item"}${variant} x${l.quantity ?? "1"}  ${money(l.total_money?.amount ?? 0, p.currency)}`
   })
 
+  const gift = downloads.some((d) => d.free)
   const downloadLines = downloads.length
-    ? ["", "YOUR DOWNLOAD", ...downloads.map((d) => `${d.label}: ${d.url}`), "Keep this email to download again later."]
+    ? [
+        "",
+        gift ? "YOUR FREE GUIDE" : "YOUR DOWNLOAD",
+        ...(gift ? [FREE_GUIDE_LINE] : []),
+        ...downloads.map((d) => `${d.label}: ${d.url}`),
+        "Keep this email to download again later.",
+      ]
     : []
 
   return [
