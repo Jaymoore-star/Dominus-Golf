@@ -21,10 +21,9 @@ export const trainingSystems: Product[] = [
     ],
     badge: 'Best Seller',
     description:
-      'Most golfers spend hundreds on new equipment hoping something changes.\n\nNothing changes.\n\nBecause the problem was never the club. It was never the shaft flex, the loft angle, or the grip size. It was the swing path. It was the plane. It was the one thing no equipment purchase has ever fixed - and the one thing every elite golfer has spent thousands of hours learning to master.\n\nTour Pure was built for the golfer who is done guessing.\n\nEvery rep delivers immediate feedback on your swing path and plane - the two fundamentals that separate a consistent, powerful golf swing from everything else. Not after the round. Not after the lesson. Right now. On that rep.\n\nYou feel it when it\'s wrong. You feel it when it\'s right. And over time, right becomes automatic.\n\nThis is not practice. This is training.',
+      'Most golfers spend hundreds on new equipment hoping something changes.\n\nNothing changes.\n\nBecause the problem was never the club. It was never the shaft flex, the loft angle, or the grip size. It was the swing path. It was the plane. It was the one thing no equipment purchase has ever fixed - and the one thing every elite golfer has spent thousands of hours learning to master.\n\nTour Pure was built for the golfer who is done guessing.\n\nEvery rep delivers immediate feedback on your swing path and plane - the two fundamentals that separate a consistent, powerful golf swing from everything else. Not after the round. Not after the lesson. Right now. On that rep.\n\nYou feel it when it\'s wrong. You feel it when it\'s right. And over time, right becomes automatic.\n\nThis is not practice. This is training.\n\nEvery order includes a FREE copy of the Ultimate Guide to Mastering the Game (PDF) - our 90-day training program, emailed to you with your order confirmation.',
     features: [
-      'FREE Ultimate Guide to Mastering the Game (PDF)',
-      'FREE 90-Day Training Manual (PDF)',
+      'FREE Ultimate Guide to Mastering the Game (90-day PDF program)',
       'Improves tempo and sequencing',
       'Promotes repeatable swing path',
       'Builds golf-specific strength',
@@ -59,10 +58,9 @@ export const trainingSystems: Product[] = [
     badge: 'Sold Out',
     paymentUrl: 'https://square.link/u/MwoinSDb',
     description:
-      'Precision weighted swing trainer designed to develop smooth tempo, proper sequencing, and a consistent swing motion. Includes FREE Ultimate Guide to Mastering the Game (90-Day Training Manual) in PDF format.',
+      'Precision weighted swing trainer designed to develop smooth tempo, proper sequencing, and a consistent swing motion. Every order includes a FREE copy of the Ultimate Guide to Mastering the Game (PDF) - our 90-day training program, emailed to you with your order confirmation.',
     features: [
-      'FREE Ultimate Guide to Mastering the Game (PDF)',
-      'FREE 90-Day Training Manual (PDF)',
+      'FREE Ultimate Guide to Mastering the Game (90-day PDF program)',
       'Smooth weighted feel',
       'Improves rhythm and control',
       'Promotes consistent mechanics',
@@ -91,9 +89,9 @@ export const trainingSystems: Product[] = [
     badge: 'Out of Stock',
     paymentUrl: 'https://square.link/u/CRNoOrPM',
     description:
-      'Junior swing trainer designed to build balance, sequencing, and proper mechanics early-without overwhelming weight. Includes FREE 90-Day Training Manual (PDF).',
+      'Junior swing trainer designed to build balance, sequencing, and proper mechanics early-without overwhelming weight. Every order includes a FREE copy of the Ultimate Guide to Mastering the Game (PDF) - our 90-day training program, emailed to you with your order confirmation.',
     features: [
-      'FREE 90-Day Training Manual (PDF)',
+      'FREE Ultimate Guide to Mastering the Game (90-day PDF program)',
       'Junior-friendly weight',
       'Builds balance and timing',
       'Promotes good mechanics',
