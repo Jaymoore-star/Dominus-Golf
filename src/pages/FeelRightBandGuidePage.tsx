@@ -26,7 +26,7 @@ export function FeelRightBandGuidePage() {
               Feel Right Band Training Guide
             </h1>
             <p className="font-sans text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Master the tour-level "floatie drill" mechanics used by world #1 Nelly Korda to build a more repeatable and efficient swing.
+              Feel the position. See the fault. Where to wear the band for each check, and the setup that makes it read true.
             </p>
           </div>
           

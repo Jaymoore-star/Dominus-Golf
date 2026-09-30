@@ -114,9 +114,9 @@ export const PAGE_SEO = {
     breadcrumb: [{ name: 'Tour Pure Training Guide', path: '/tour-pure-guide' }],
   },
   '/feel-right-band-guide': {
-    title: 'Golf Tempo and Connection Drills - Band Guide',
+    title: 'Arm Connection and Wrist Drills - Band Guide',
     description:
-      'Drills for golf tempo, sequencing and arm connection through the swing, using a connection band. Includes the tour floatie drill.',
+      'Where to wear the Feel Right Band for each check - arm connection, a forearm reference line, cupped or bowed wrist - and how to set it up before you hit balls.',
     breadcrumb: [{ name: 'Feel Right Band Guide', path: '/feel-right-band-guide' }],
   },
 
