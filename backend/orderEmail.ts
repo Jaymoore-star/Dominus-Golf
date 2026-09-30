@@ -34,6 +34,8 @@ export type OrderEmailParams = {
   downloads?: { label: string; url: string; free?: boolean }[]
   /** False for a download-only order: no shipping row, no delivery promise. */
   hasPhysicalItems?: boolean
+  /** The order holds a pre-order item, so it ships when stock arrives. */
+  hasPreorder?: boolean
 }
 
 function escapeHtml(s: string): string {
@@ -141,6 +143,7 @@ export function buildOrderEmailHtml(p: OrderEmailParams): string {
         <tr><td style="padding:22px 40px 4px;font-family:Georgia,serif;color:#1a1a1a;font-size:16px;line-height:1.7;">
           <p style="margin:0 0 16px;">Thank you for your order.</p>
           <p style="margin:0 0 16px;">Your payment has been received and your order is confirmed. Here is what you bought:</p>
+          ${p.hasPreorder ? `<p style="margin:0 0 16px;padding:12px 16px;background:#faf8f4;border-left:3px solid #C4963B;font-size:15px;">Your order includes a pre-order item. We will ship it as soon as stock arrives.</p>` : ""}
         </td></tr>
 
         ${downloadsHtml(downloads)}
@@ -207,6 +210,7 @@ export function buildOrderEmailText(p: OrderEmailParams): string {
     `Thank you for your order.`,
     ``,
     `Your payment has been received and your order is confirmed.`,
+    ...(p.hasPreorder ? [``, `Your order includes a pre-order item. We will ship it as soon as stock arrives.`] : []),
     ...downloadLines,
     ``,
     ...lines,

@@ -74,6 +74,12 @@ export type Product = {
   variants?: Variant[];
   inStock: boolean;
   /**
+   * Sold now, shipped when stock arrives. Stays `inStock: true` so it can be
+   * bought; the product page, the order email and the Product schema all say
+   * pre-order, and the Merchant feed leaves it out (see feedProducts).
+   */
+  preorder?: boolean;
+  /**
    * Delivered by email, never shipped. Excluded from the shipping fee, and a
    * cart holding nothing else is not asked for a shipping address at all.
    * See src/lib/shipping.ts.

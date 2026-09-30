@@ -27,6 +27,7 @@ const footerLinks = {
     { label: 'Tour Pure Men', href: '/product/tour-pure-men' },
     { label: 'Tour Pure Women', href: '/product/tour-pure-women' },
     { label: 'Tour Pure Jr', href: '/product/tour-pure-jr' },
+    { label: 'Pro Path Bundle', href: '/product/tour-pure-pro-path-bundle-men' },
     { label: 'Shop All Systems', href: '/shop/training-system' },
     { label: 'Tour Pure Training Guide', href: '/tour-pure-guide' },
     { label: 'Training for Beginners', href: '/beginners' },
@@ -41,6 +42,7 @@ const footerLinks = {
   ],
   'Accessories': [
     { label: 'Feel Right Band', href: '/product/feel-right-band' },
+    { label: 'Laser Path Trainer', href: '/product/laser-path-trainer' },
     { label: 'Dominus Golf Towel', href: '/product/dominus-towel' },
     { label: 'The Ultimate Guide (Book)', href: '/product/mastering-the-game-book' },
     { label: 'Shop All Accessories', href: '/shop/accessories' },

@@ -2,6 +2,10 @@ import type { Hono } from "hono"
 import { sendOrderConfirmationEmail, type OrderEmailLine } from "./orderEmail"
 import { downloadsForLineItems } from "./digitalGoods"
 import { markDiscountCodeUsed } from "./subscribers"
+import { products } from "../src/data/products"
+
+/** Catalogue names of pre-order products; a Square line item carries only the name. */
+const preorderNames = new Set(products.filter((p) => p.preorder).map((p) => p.name))
 
 /**
  * Order recording, driven by a Square webhook.
@@ -528,6 +532,7 @@ export function registerOrderRoutes(app: Hono) {
              DIGITAL one to orders with nothing to ship, which put a shipping
              line on emails for orders that had none. */
           hasPhysicalItems: fulfillment !== null,
+          hasPreorder: lines.some((l) => l.name !== undefined && preorderNames.has(l.name)),
         })
         // The customer got nothing, so do not leave the order marked as emailed.
         if (!sent) await releaseOrderJob(env, String(saved.id), "confirmation_emailed_at")

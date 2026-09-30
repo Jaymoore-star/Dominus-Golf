@@ -20,6 +20,10 @@ const sections = [
     body: `Before each practice session, ensure you have at least 10 feet of clear space in every direction, including overhead clearance. Never use Tour Pure indoors unless in a dedicated training facility with proper clearances. Check for bystanders, pets, and property before every swing.`,
   },
   {
+    title: 'Laser Safety',
+    body: `The Tour Pure Laser Path Trainer is a Class 2/3R laser product. Never look into the beam, and never point it at anyone's eyes - yours, another person's or a pet's. Do not aim it at mirrors, windows or other reflective surfaces. Junior golfers should use it only with adult supervision. Switch the laser off, and remove it from the grip, when you are not training.`,
+  },
+  {
     title: 'Session Duration',
     body: `Limit weighted swing training sessions to 10-15 minutes of active swinging per session. Overuse or prolonged sessions without rest significantly increases injury risk. Allow a minimum of 24 hours of recovery between intense training sessions.`,
   },

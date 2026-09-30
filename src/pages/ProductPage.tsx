@@ -22,6 +22,7 @@ import { ProductAccordion } from '../features/product/components/ProductAccordio
 import { ProductReviews } from '../features/product/components/ProductReviews';
 import { TourPureOverview } from '../features/product/components/TourPureOverview';
 import { FeelRightBandOverview } from '../features/product/components/FeelRightBandOverview';
+import { LaserOverview } from '../features/product/components/LaserOverview';
 
 export function ProductPage() {
   const { id } = useParams({ from: '/product/$id' });
@@ -208,6 +209,7 @@ export function ProductPage() {
             the note on TourPureOverview. Drop `variant` to restore. */}
         {product.id.startsWith('tour-pure') && <TourPureOverview variant="summary" />}
         {product.id === 'feel-right-band' && <FeelRightBandOverview variant="summary" />}
+        {product.id === 'laser-path-trainer' && <LaserOverview />}
 
         {/* Points at the guide page that owns this method. The block above is
             the same component the guide renders, so without a link the two URLs
@@ -274,7 +276,7 @@ export function ProductPage() {
             >
               {isBuyingNow ? (
                 <><Loader2 size={12} className="animate-spin" /> Preparing…</>
-              ) : 'Buy Now'}
+              ) : product.preorder ? 'Pre-Order' : 'Buy Now'}
             </button>
           ) : (
             <button

@@ -56,6 +56,8 @@ const megaMenuData: Partial<Record<NonNullable<MegaMenuKey>, MegaMenuEntry>> = {
           { label: 'Tour Pure Men', href: '/product/tour-pure-men' },
           { label: 'Tour Pure Women', href: '/product/tour-pure-women' },
           { label: 'Tour Pure Jr', href: '/product/tour-pure-jr' },
+          { label: "Pro Path Bundle (Men's)", href: '/product/tour-pure-pro-path-bundle-men' },
+          { label: "Pro Path Bundle (Women's)", href: '/product/tour-pure-pro-path-bundle-women' },
         ],
       },
       {
@@ -111,6 +113,7 @@ const megaMenuData: Partial<Record<NonNullable<MegaMenuKey>, MegaMenuEntry>> = {
         heading: 'Gear',
         links: [
           { label: 'Feel Right Band', href: '/product/feel-right-band' },
+          { label: 'Laser Path Trainer', href: '/product/laser-path-trainer' },
           { label: 'Dominus Golf Towel', href: '/product/dominus-towel' },
         ],
       },

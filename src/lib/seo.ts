@@ -254,7 +254,9 @@ export function productJsonLd(
     url: absoluteUrl(`/product/${product.id}`),
     price: product.price.toFixed(2),
     priceCurrency: 'USD',
-    availability: product.inStock
+    availability: product.preorder
+      ? 'https://schema.org/PreOrder'
+      : product.inStock
       ? 'https://schema.org/InStock'
       : 'https://schema.org/OutOfStock',
     // Recommended for merchant listings, and unambiguous here: everything in

@@ -147,11 +147,16 @@ export function ProductCard({ product, aspectRatio = 'square', priority = false 
             enough for the two buttons underneath. They stack on a phone: the
             grid is 2-up there, so sharing a ~161px row left the name about
             107px and truncated nearly every product. min-w-0 is what lets the
-            name truncate inside the flex row rather than widening it. */}
+            name truncate inside the flex row rather than widening it.
+            max-w-full is the phone half of the same fix: stacked, the row is a
+            column with items-start, where the name sizes to its own text, and
+            truncate's nowrap makes that the whole name. A long one ("Tour Pure
+            Pro Path Bundle (Women's)", the book titles) then ran out of its card
+            and widened the page, so iPhones zoomed out every product page. */}
         <div className="flex flex-col items-start gap-0.5 mb-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
           <h3
             title={product.name}
-            className="font-serif text-base font-semibold text-foreground leading-tight min-w-0 truncate group-hover:text-accent transition-colors duration-200"
+            className="font-serif text-base font-semibold text-foreground leading-tight min-w-0 max-w-full truncate group-hover:text-accent transition-colors duration-200"
           >
             {product.name}
           </h3>
@@ -216,7 +221,7 @@ export function ProductCard({ product, aspectRatio = 'square', priority = false 
             disabled={!product.inStock || isBuyingNow}
             className="flex items-center justify-center gap-1.5 py-3 lg:py-2.5 btn-outline-dark font-sans text-xs font-semibold tracking-widest lg:tracking-wider uppercase transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            {isBuyingNow ? <Loader2 size={12} className="animate-spin" /> : 'Buy Now'}
+            {isBuyingNow ? <Loader2 size={12} className="animate-spin" /> : product.preorder ? 'Pre-Order' : 'Buy Now'}
           </button>
         </div>
       </div>

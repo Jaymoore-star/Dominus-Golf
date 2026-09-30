@@ -188,9 +188,14 @@ function itemXml(product: Product, size: string | null): string {
  * for it, so it is left out rather than described incorrectly. Sold-out items
  * stay in with `out_of_stock`, which is what Google expects - pulling them makes
  * the listing lose its history and start over when stock returns.
+ *
+ * Pre-orders are left out too. Merchant Center requires `availability:
+ * preorder` to carry an `availability_date`, and there is no ship date yet;
+ * advertising one as in_stock would be an availability mismatch, which Google
+ * disapproves. They join the feed on their own once `preorder` is removed.
  */
 export function feedProducts(): Product[] {
-  return products.filter((product) => !product.digital);
+  return products.filter((product) => !product.digital && !product.preorder);
 }
 
 export function buildMerchantFeed(): string {

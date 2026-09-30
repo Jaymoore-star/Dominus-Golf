@@ -170,6 +170,17 @@ export function ProductInfo({
         </div>
       </div>
 
+      {/* Pre-order: payment is taken at checkout, so the page says so before
+          the button rather than in the fine print. */}
+      {product.preorder && (
+        <div className="mb-4 border-l-4 border-accent bg-accent/5 px-4 py-3">
+          <p className="font-sans text-sm font-semibold text-foreground">Pre-order</p>
+          <p className="font-sans text-xs text-muted-foreground mt-1 leading-relaxed">
+            Order now and we will ship as soon as stock arrives. Payment is taken at checkout.
+          </p>
+        </div>
+      )}
+
       {/* Add to Cart */}
       <div className="space-y-4">
         <button
@@ -201,7 +212,7 @@ export function ProductInfo({
                 <Loader2 size={14} className="animate-spin" /> Preparing…
               </>
             ) : (
-              'Buy Now'
+              product.preorder ? 'Pre-Order Now' : 'Buy Now'
             )}
           </button>
         )}
