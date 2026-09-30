@@ -71,7 +71,7 @@ npm run build      # TWO Vite passes + a script, in this order:
                    #   2. vite build --ssr entry-ssr.tsx -> .ssr-build/ (gitignored)
                    #   3. node scripts/prerender.mjs     -> renders each route's
                    #      HEAD AND BODY into dist/**/index.html, + 404.html
-                   # 48 routes. Pass 2/3 exist because crawlers were being served
+                   # 51 routes. Pass 2/3 exist because crawlers were being served
                    # an empty <div id="root">; see docs/SEO.md §3b.
 npm run preview    # preview the production build — see the caveat below
 
@@ -115,7 +115,7 @@ wrangler.toml         Frontend Worker. Read automatically by Workers Builds on
 src/entry-ssr.tsx     Build-time server renderer, never shipped to the browser.
                       Compiled by pass 2 of the build and imported by
                       scripts/prerender.mjs.
-scripts/prerender.mjs Writes the 48 rendered route files into dist/. Read its
+scripts/prerender.mjs Writes the 51 rendered route files into dist/. Read its
                       header before touching the build or main.tsx.
 worker/index.ts       Fallback handler for the site Worker. Static assets match
                       FIRST and are served without invoking it, so every real
@@ -239,6 +239,30 @@ Three things deliberately stayed:
   feature changes what is collected or who receives it (for example, turning on
   the Pixel is already covered, but a new vendor is not).
 
+### Products, pre-orders, the free PDF and Square (30 Sep 2026)
+
+- **Pre-orders:** `preorder: true` on a product (types.ts). The page shows a
+  pre-order notice and "Pre-Order" buttons, the Product schema says PreOrder, the
+  confirmation email adds a line, and **the Merchant feed leaves it out** until
+  there is a ship date (Google requires `availability_date` for preorder).
+  Currently: `laser-path-trainer` ($19.99) and `tour-pure-pro-path-bundle-men` /
+  `-women` ($69.99, was $79.98). **No Jr bundle yet:** Jr is $39.99, so $69.99
+  would cost more than the parts; the price is Jay's call.
+- **There is no bundle system:** a bundle is an ordinary catalogue product.
+  Bundles sit in `training-system` on purpose, so the free-PDF rule covers them.
+- **Free PDF with every trainer:** `backend/digitalGoods.ts` adds the Ultimate
+  Guide download to any order containing a `training-system` product. The email
+  box says "Your Free Guide"; a bought PDF keeps "Your Download".
+- **`product.id.startsWith('tour-pure')` renders TourPureOverview** (ProductPage)
+  and lists the product on the Tour Pure guide, so the laser is deliberately
+  `laser-path-trainer`.
+- **Square item library** (16 items) mirrors the catalogue, with the same photos
+  as the site. Website checkout does NOT use Square catalog ids (it sends ad-hoc
+  priced line items), so the library matters only for POS, stock and reports.
+  Add new products there too. **A catalog batch-upsert clears any field you
+  leave out** - it once wiped every description; history is readable with
+  `catalog_version`.
+
 ### Mobile invariants — each of these was a real bug, do not undo them
 
 - **Form controls must be ≥16px on phones.** Use `text-base sm:text-sm`, never a
@@ -251,6 +275,10 @@ Three things deliberately stayed:
 - **`truncate` inside a flex row needs `min-w-0` on the flex item**, or it does the
   opposite of truncating: `white-space: nowrap` makes min-content the full string
   and the row grows instead.
+- **...and `max-w-full` when the row stacks** (`flex-col items-start` on phones):
+  there the truncated text sizes to its full length and pokes out of its card.
+  Long product names widened every product page and iPhones zoomed out. Check with
+  `window.innerWidth` at 390px under mobile emulation - anything above 390 is a bug.
 - **Avoid horizontal entrance offsets** in Framer Motion (`initial={{ x: … }}`).
   They park an element outside the viewport until it scrolls into view. Use `y`.
 - Measure mobile layout by **visual clipping**, not `scrollWidth`. `html` has
