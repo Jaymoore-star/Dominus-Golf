@@ -56,6 +56,7 @@ export const accessories: Product[] = [
     ],
     inStock: true,
     preorder: true,
+    shipsIn: '5-7 business days',
   },
   {
     id: 'dominus-towel',

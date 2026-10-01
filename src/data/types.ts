@@ -80,6 +80,12 @@ export type Product = {
    */
   preorder?: boolean;
   /**
+   * A pre-order's lead time, e.g. '5-7 business days', when stock is already
+   * on its way. Without it the page and the order email say "as soon as stock
+   * arrives". Phrase it to follow "ships within".
+   */
+  shipsIn?: string;
+  /**
    * Delivered by email, never shipped. Excluded from the shipping fee, and a
    * cart holding nothing else is not asked for a shipping address at all.
    * See src/lib/shipping.ts.

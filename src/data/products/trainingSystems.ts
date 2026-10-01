@@ -124,10 +124,11 @@ export const trainingSystems: Product[] = [
     specs: [
       "In the box: the Tour Pure Men's swing path trainer and the Tour Pure Laser Path Trainer",
       'By email: the Ultimate Guide PDF, with your order confirmation',
-      'Pre-order: ships as soon as stock arrives',
+      'Pre-order: ships within 5-7 business days',
     ],
     inStock: true,
     preorder: true,
+    shipsIn: '5-7 business days',
   },
   {
     id: 'tour-pure-pro-path-bundle-women',
@@ -153,6 +154,39 @@ export const trainingSystems: Product[] = [
     ],
     specs: [
       "In the box: the Tour Pure Women's swing path trainer and the Tour Pure Laser Path Trainer",
+      'By email: the Ultimate Guide PDF, with your order confirmation',
+      'Pre-order: ships as soon as stock arrives',
+    ],
+    inStock: true,
+    preorder: true,
+  },
+  /* No photo of the Jr trainer exists (its own page uses a stock photo), so
+     this leads with the laser rather than pass off the Men's trainer as Jr.
+     Swap in a real bundle shot when Jay sends one. */
+  {
+    id: 'tour-pure-pro-path-bundle-jr',
+    name: 'Tour Pure Pro Path Bundle (Jr)',
+    seoTitle: 'Junior Swing Trainer and Laser Bundle',
+    seoDescription:
+      'The Tour Pure Jr swing trainer, the laser that screws into its grip, and the free 90-day training guide PDF, in one bundle for junior golfers.',
+    category: 'training-system',
+    subcategory: 'Junior Bundle',
+    audience: 'junior',
+    price: 49.99,
+    compareAtPrice: 59.98,
+    image: '/images/laser-on-grip__ead9a20d.webp',
+    gallery: ['/images/laser-on-grip__ead9a20d.webp', '/images/R__3951d4b9.webp', '/images/book-ultimate-guide__3f8ec230.webp'],
+    badge: 'Pre-Order',
+    description:
+      'Everything a junior golfer needs to build their swing path, in one box. The Tour Pure Jr swing trainer builds balance, sequencing and mechanics without overwhelming weight; the Tour Pure Laser Path Trainer screws into its grip and shows the path on the mat with every swing. Every order includes a FREE copy of the Ultimate Guide to Mastering the Game (PDF) - our 90-day training program, emailed to you with your order confirmation.',
+    features: [
+      'Tour Pure Jr swing trainer',
+      'Tour Pure Laser Path Trainer, batteries included',
+      'FREE Ultimate Guide to Mastering the Game (90-day PDF program)',
+      'See it, feel it, build it: laser feedback with a junior-friendly weight',
+    ],
+    specs: [
+      'In the box: the Tour Pure Jr swing trainer and the Tour Pure Laser Path Trainer',
       'By email: the Ultimate Guide PDF, with your order confirmation',
       'Pre-order: ships as soon as stock arrives',
     ],

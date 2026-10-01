@@ -58,6 +58,7 @@ const megaMenuData: Partial<Record<NonNullable<MegaMenuKey>, MegaMenuEntry>> = {
           { label: 'Tour Pure Jr', href: '/product/tour-pure-jr' },
           { label: "Pro Path Bundle (Men's)", href: '/product/tour-pure-pro-path-bundle-men' },
           { label: "Pro Path Bundle (Women's)", href: '/product/tour-pure-pro-path-bundle-women' },
+          { label: 'Pro Path Bundle (Jr)', href: '/product/tour-pure-pro-path-bundle-jr' },
         ],
       },
       {

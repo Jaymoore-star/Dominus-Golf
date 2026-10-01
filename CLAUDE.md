@@ -243,11 +243,18 @@ Three things deliberately stayed:
 
 - **Pre-orders:** `preorder: true` on a product (types.ts). The page shows a
   pre-order notice and "Pre-Order" buttons, the Product schema says PreOrder, the
-  confirmation email adds a line, and **the Merchant feed leaves it out** until
-  there is a ship date (Google requires `availability_date` for preorder).
-  Currently: `laser-path-trainer` ($19.99) and `tour-pure-pro-path-bundle-men` /
-  `-women` ($69.99, was $79.98). **No Jr bundle yet:** Jr is $39.99, so $69.99
-  would cost more than the parts; the price is Jay's call.
+  confirmation email adds a line, and **the Merchant feed leaves it out**
+  (Google requires a fixed `availability_date` for preorder). `shipsIn` adds a
+  lead time to the page and the email; without it they say "as soon as stock
+  arrives". Currently (Jay, 30 Sep 2026):
+  - `laser-path-trainer` ($19.99) and `tour-pure-pro-path-bundle-men` ($69.99,
+    was $79.98): ships within 5-7 business days, because the lasers land in about
+    4. **When they land, remove `preorder` and `shipsIn` from both**, which also
+    puts them in the Merchant feed.
+  - `tour-pure-pro-path-bundle-women` ($69.99) and `-jr` ($49.99, was $59.98):
+    no date. Both trainers are out of stock, and Jay starts the manufacturing run
+    at 300 pre-orders. The Jr bundle leads with the laser photo, since there is
+    no photo of the Jr trainer.
 - **There is no bundle system:** a bundle is an ordinary catalogue product.
   Bundles sit in `training-system` on purpose, so the free-PDF rule covers them.
 - **Free PDF with every trainer:** `backend/digitalGoods.ts` adds the Ultimate

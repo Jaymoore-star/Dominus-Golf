@@ -4,8 +4,23 @@ import { downloadsForLineItems } from "./digitalGoods"
 import { markDiscountCodeUsed } from "./subscribers"
 import { products } from "../src/data/products"
 
-/** Catalogue names of pre-order products; a Square line item carries only the name. */
-const preorderNames = new Set(products.filter((p) => p.preorder).map((p) => p.name))
+/**
+ * Pre-order products by catalogue name (a Square line item carries only the
+ * name), mapped to their lead time, or null when it ships "when stock arrives".
+ */
+const preorderShipsIn = new Map(products.filter((p) => p.preorder).map((p) => [p.name, p.shipsIn ?? null]))
+
+/**
+ * What the email says about pre-orders. The order ships together, so the
+ * slowest item decides: a lead time is promised only when every pre-order line
+ * shares the same one.
+ */
+function preorderTiming(lines: OrderEmailLine[]): { hasPreorder: boolean; preorderShipsIn?: string } {
+  const times = lines.flatMap((l) => (l.name !== undefined && preorderShipsIn.has(l.name) ? [preorderShipsIn.get(l.name)] : []))
+  if (times.length === 0) return { hasPreorder: false }
+  const [first] = times
+  return { hasPreorder: true, preorderShipsIn: first && times.every((t) => t === first) ? first : undefined }
+}
 
 /**
  * Order recording, driven by a Square webhook.
@@ -532,7 +547,7 @@ export function registerOrderRoutes(app: Hono) {
              DIGITAL one to orders with nothing to ship, which put a shipping
              line on emails for orders that had none. */
           hasPhysicalItems: fulfillment !== null,
-          hasPreorder: lines.some((l) => l.name !== undefined && preorderNames.has(l.name)),
+          ...preorderTiming(lines),
         })
         // The customer got nothing, so do not leave the order marked as emailed.
         if (!sent) await releaseOrderJob(env, String(saved.id), "confirmation_emailed_at")

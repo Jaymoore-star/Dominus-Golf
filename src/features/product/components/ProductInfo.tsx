@@ -176,7 +176,10 @@ export function ProductInfo({
         <div className="mb-4 border-l-4 border-accent bg-accent/5 px-4 py-3">
           <p className="font-sans text-sm font-semibold text-foreground">Pre-order</p>
           <p className="font-sans text-xs text-muted-foreground mt-1 leading-relaxed">
-            Order now and we will ship as soon as stock arrives. Payment is taken at checkout.
+            {product.shipsIn
+              ? `Order now and it ships within ${product.shipsIn}.`
+              : 'Order now and we will ship as soon as stock arrives.'}{' '}
+            Payment is taken at checkout.
           </p>
         </div>
       )}
