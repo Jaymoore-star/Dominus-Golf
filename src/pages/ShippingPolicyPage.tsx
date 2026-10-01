@@ -9,16 +9,19 @@ const sections = [
   },
   {
     title: 'Shipping Rates & Delivery Estimates',
-    body: `We offer free standard shipping on all domestic orders over $150. Standard shipping (3-7 business days) is available on all orders. Expedited shipping options are available at checkout. Delivery estimates are provided by the carrier and are not guaranteed by Dominus Golf.`,
+    // Stated as the fixed terms checkout actually charges (src/lib/shipping.ts).
+    // This used to offer "Expedited Shipping" and say rates were "Calculated at
+    // checkout", but there is one flat rate and no expedited option - and
+    // Merchant Center compares this page against the $6.99 in the feed.
+    body: `Standard shipping is a flat $6.99 per order, and free on domestic orders over $150. Orders arrive in 3-7 business days after processing. Digital products, such as the PDF guide, are delivered by email and never carry a shipping charge. Delivery estimates are provided by the carrier and are not guaranteed by Dominus Golf.`,
     list: [
-      'Standard Shipping (3-7 business days): Calculated at checkout',
-      'Expedited Shipping (2-3 business days): Calculated at checkout',
+      'Standard Shipping (3-7 business days): $6.99',
       'Free Standard Shipping on orders over $150',
     ],
   },
   {
     title: 'Domestic Shipping',
-    body: `We ship to all 50 U.S. states including Alaska, Hawaii, and U.S. territories via USPS, UPS, and FedEx. P.O. Box shipping is available for standard shipping methods only.`,
+    body: `We ship to all 50 U.S. states including Alaska, Hawaii, and U.S. territories via USPS, UPS, and FedEx. P.O. Box addresses are accepted.`,
   },
   {
     title: 'International Shipping',

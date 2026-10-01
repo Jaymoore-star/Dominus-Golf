@@ -29,6 +29,9 @@ const footerLinks = {
     { label: 'Tour Pure Jr', href: '/product/tour-pure-jr' },
     { label: 'Pro Path Bundle', href: '/product/tour-pure-pro-path-bundle-men' },
     { label: 'Shop All Systems', href: '/shop/training-system' },
+    // /shop/all had no inbound link anywhere on the site (audit, 1 Oct 2026) -
+    // the sitemap was the only way a crawler found it.
+    { label: 'Shop All Products', href: '/shop/all' },
     { label: 'Tour Pure Training Guide', href: '/tour-pure-guide' },
     { label: 'Training for Beginners', href: '/beginners' },
   ],

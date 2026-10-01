@@ -19,6 +19,15 @@ export function ProductAccordion({
     { id: 'specifications', label: 'Specifications', content: null },
   ];
 
+  /*
+   * Every panel is rendered and the closed ones are `hidden`, rather than
+   * mounting only the open one. With conditional mounting, Features and
+   * Specifications (weight, length, material) existed in no prerendered HTML -
+   * Description is the default-open panel - and a crawler never clicks to open
+   * the others. An SEO audit on 1 Oct 2026 found "3.8 lbs" on zero product
+   * pages. `hidden` keeps the same look and keeps closed panels out of the
+   * accessibility tree; Google indexes accordion content hidden this way.
+   */
   return (
     <div className="divide-y divide-border border-t border-border">
       {accordionItems.map((item) => (
@@ -27,6 +36,8 @@ export function ProductAccordion({
             onClick={() =>
               setOpenAccordion(openAccordion === item.id ? null : item.id)
             }
+            aria-expanded={openAccordion === item.id}
+            aria-controls={`product-panel-${item.id}`}
             className="flex items-center justify-between w-full py-4 font-sans text-sm font-semibold text-foreground tracking-wide"
           >
             {item.label}
@@ -37,42 +48,44 @@ export function ProductAccordion({
               }`}
             />
           </button>
-          {openAccordion === item.id && (
-            <div className="pb-5">
-              {item.id === 'features' ? (
+          <div
+            id={`product-panel-${item.id}`}
+            hidden={openAccordion !== item.id}
+            className="pb-5"
+          >
+            {item.id === 'features' ? (
+              <ul className="space-y-2">
+                {product.features.map((feat) => (
+                  <li
+                    key={feat}
+                    className="flex items-start gap-2.5 font-sans text-sm text-muted-foreground"
+                  >
+                    <span className="w-1 h-1 bg-muted-foreground mt-2 shrink-0" />
+                    {feat}
+                  </li>
+                ))}
+              </ul>
+            ) : item.id === 'specifications' ? (
+              product.specs && product.specs.length > 0 ? (
                 <ul className="space-y-2">
-                  {product.features.map((feat) => (
-                    <li
-                      key={feat}
-                      className="flex items-start gap-2.5 font-sans text-sm text-muted-foreground"
-                    >
+                  {product.specs.map((spec) => (
+                    <li key={spec} className="flex items-start gap-2.5 font-sans text-sm text-muted-foreground">
                       <span className="w-1 h-1 bg-muted-foreground mt-2 shrink-0" />
-                      {feat}
+                      {spec}
                     </li>
                   ))}
                 </ul>
-              ) : item.id === 'specifications' ? (
-                product.specs && product.specs.length > 0 ? (
-                  <ul className="space-y-2">
-                    {product.specs.map((spec) => (
-                      <li key={spec} className="flex items-start gap-2.5 font-sans text-sm text-muted-foreground">
-                        <span className="w-1 h-1 bg-muted-foreground mt-2 shrink-0" />
-                        {spec}
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="font-sans text-sm text-muted-foreground">Specifications coming soon.</p>
-                )
               ) : (
-                <div className="font-sans text-sm text-muted-foreground leading-relaxed space-y-3">
-                  {item.content?.split('\n\n').map((para, i) => (
-                    <p key={i}>{para}</p>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
+                <p className="font-sans text-sm text-muted-foreground">Specifications coming soon.</p>
+              )
+            ) : (
+              <div className="font-sans text-sm text-muted-foreground leading-relaxed space-y-3">
+                {item.content?.split('\n\n').map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       ))}
     </div>

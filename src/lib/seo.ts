@@ -332,6 +332,25 @@ export function productJsonLd(
     offers: offer,
   };
 
+  /* The Specifications panel, as PropertyValue pairs. Each spec is written
+     "Name: value" in the catalogue, and this is exactly the list the page shows
+     in that panel - so the markup cannot describe a product the page does not.
+     It is what tells the men's trainer (3.8 lbs, 18 in) from the women's
+     (2.9 lbs, 16 in) to anything reading the schema. A spec without a "Name:"
+     prefix is left out rather than given an invented name. */
+  const properties = (product.specs ?? []).flatMap((spec) => {
+    const split = spec.indexOf(': ');
+    if (split <= 0) return [];
+    return [
+      {
+        '@type': 'PropertyValue',
+        name: spec.slice(0, split),
+        value: spec.slice(split + 2),
+      },
+    ];
+  });
+  if (properties.length) data.additionalProperty = properties;
+
   /* aggregateRating comes only from real reviews.
      This once emitted hardcoded product figures, which is exactly the invented
      review markup Google penalises. The ratings now come from the Supabase

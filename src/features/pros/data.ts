@@ -39,8 +39,8 @@ export const pros: Pro[] = [
     acuityUrl:
       'https://app.acuityscheduling.com/schedule.php?owner=39236931&calendarID=14032949&ref=booking_button',
     contactEmail: 'leroy@dominusgolf.com',
-    rating: 5.0,
-    reviewCount: 359,
+    // No rating/reviewCount: the 5.0/359 that sat here had no source on the
+    // site, and was removed from his page on 1 Oct 2026 for the same reason.
   },
   /*
    * Added 17 Sep 2026. `/gabe-salvanera` was routed, prerendered, in
@@ -59,9 +59,9 @@ export const pros: Pro[] = [
    * - `contactEmail` is the published support address, not a personal one.
    *   `gabe@dominusgolf.com` would mirror Leroy, but a mailto that bounces is
    *   worse than one that reaches the team. SWAP IT if he has a real mailbox.
-   * - No `rating`/`reviewCount`. Leroy's 5.0/359 are his own; there is no such
-   *   figure for Gabe, and inventing one is the exact mistake that put fake
-   *   aggregateRating into this site's Product schema once already.
+   * - No `rating`/`reviewCount`. There is no such figure for Gabe, and
+   *   inventing one is the exact mistake that put fake aggregateRating into
+   *   this site's Product schema once already.
    */
   {
     id: 'gabe-salvanera',

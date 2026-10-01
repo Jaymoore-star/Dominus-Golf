@@ -320,7 +320,10 @@ export const SHOP_CATEGORIES = {
     label: 'Training Systems',
     seoTitle: 'Golf Swing Trainers and Training Aids',
     description:
-      'Swing path and swing plane training aids built for repeatable mechanics. Weighted trainers and tempo bands for indoor or outdoor practice.',
+      // No "tempo bands": the Feel Right Band is in accessories, so this page
+      // lists none. No "indoor" either - the safety page rules Tour Pure out
+      // indoors except in a dedicated training facility.
+      'Swing path and swing plane training aids built for repeatable mechanics. Weighted Tour Pure trainers and Pro Path bundles for focused range practice.',
   },
   apparel: {
     label: 'Dominus Golf Apparel',
@@ -532,9 +535,17 @@ export function productHead(id: string) {
       // Absent from the snapshot means nobody has reviewed it — productJsonLd
       // then omits aggregateRating rather than inventing one.
       productJsonLd(product, REVIEW_SUMMARIES[product.id]),
+      // The middle step is the product's own category, which is what the
+      // breadcrumb drawn on ProductPage links to. It used to be a fixed
+      // "Shop" -> /shop/all, so all 17 products described a trail the page
+      // did not show. The name is the category's `label`, the same string
+      // that category page's own BreadcrumbList uses.
       breadcrumbJsonLd([
         { name: 'Home', path: '/' },
-        { name: 'Shop', path: '/shop/all' },
+        {
+          name: shopCategoryMeta(product.category)?.label ?? 'Shop',
+          path: `/shop/${product.category}`,
+        },
         { name: product.name, path: `/product/${product.id}` },
       ]),
     ],

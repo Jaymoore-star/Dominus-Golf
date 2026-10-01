@@ -35,8 +35,12 @@ export const MissionSection = () => {
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-10 font-serif uppercase leading-tight text-accent">
               MORE THAN A GOLF COMPANY
             </h2>
+            {/* unpublished - hidden from customers: the original named the
+                Development Program, whose page (/grant) is unpublished. Restore
+                this sentence with it:
+                Dominus Golf supports player development through structured access programs, including the <span className="text-black font-bold">Dominus Golf Development Program</span>, designed to help emerging golfers access training, equipment, and competitive opportunities. The brand also supports community-based golf events focused on participation and skill development. */}
             <p className="text-gray-600 text-base sm:text-lg mb-10 font-sans leading-relaxed">
-              Dominus Golf supports player development through structured access programs, including the <span className="text-black font-bold">Dominus Golf Development Program</span>, designed to help emerging golfers access training, equipment, and competitive opportunities. The brand also supports community-based golf events focused on participation and skill development.
+              Dominus Golf supports player development and community-based golf events focused on participation and skill development.
             </p>
             {/* Mission is the last section, so the shop CTA lives here — otherwise
                 the page ends with no way to buy anything. Primary first. */}

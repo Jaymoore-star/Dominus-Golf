@@ -229,7 +229,7 @@ export function GabeSalvaneraPage() {
         <section className="w-full bg-background py-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <Link
-              to="/"
+              to="/pros"
               className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-8 py-3 border border-border text-muted-foreground hover:border-foreground hover:text-foreground transition-colors duration-200"
             >
               ← Back to Pro Directory

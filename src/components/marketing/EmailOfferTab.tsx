@@ -49,13 +49,16 @@ export function EmailOfferTab() {
 
   if (!visible || QUIET_PREFIXES.some((p) => path.startsWith(p))) return null;
 
-  // Product pages pin Add to Cart to the bottom of a phone screen; sit above it.
+  // Hidden on product pages below desktop width. It used to sit just above the
+  // pinned Add to Cart bar there, which on a phone put it on top of the product
+  // H1 at first load (audit, 1 Oct 2026). The announcement bar still carries the
+  // offer on those pages, and on desktop the tab covers nothing.
   const onProductPage = path.startsWith('/product/');
 
   return (
     <div
-      className={`fixed left-4 z-[35] flex items-stretch shadow-lg animate-in fade-in slide-in-from-bottom-4 duration-300 ${
-        onProductPage ? 'bottom-24 lg:bottom-6' : 'bottom-4 sm:bottom-6'
+      className={`fixed left-4 z-[35] items-stretch shadow-lg animate-in fade-in slide-in-from-bottom-4 duration-300 ${
+        onProductPage ? 'hidden lg:flex lg:bottom-6' : 'flex bottom-4 sm:bottom-6'
       }`}
     >
       <button

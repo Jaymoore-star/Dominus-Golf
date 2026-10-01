@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Link } from '@tanstack/react-router';
-import { Star, CheckCircle2 } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { CartDrawer } from '../components/cart/CartDrawer';
@@ -9,7 +9,10 @@ const stats = [
   { label: 'Foundation', value: 'Golf Junkyz' },
   { label: 'Program', value: 'First Tee' },
   { label: 'Specialty', value: 'Technical Proficiency' },
-  { label: 'Reviews', value: '359+ Verified' },
+  // Was "Reviews: 359+ Verified". Removed 1 Oct 2026 with the other 359 /
+  // "100% Satisfaction" figures on this page: nothing on the site sourced
+  // them, and an unverifiable "verified" count is a trust and FTC review-rule
+  // risk. Review counts below are the testimonials actually shown.
 ];
 
 const credentials = [
@@ -140,7 +143,7 @@ export function LeroyBatesPage() {
                       ))}
                     </div>
                     <span className="font-sans text-[11px] text-muted-foreground group-hover:text-accent transition-colors tracking-widest uppercase underline underline-offset-4">
-                      359 Reviews
+                      {reviews.length} Reviews
                     </span>
                   </a>
                 </div>
@@ -254,8 +257,7 @@ export function LeroyBatesPage() {
                   </div>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-foreground">359+ Verified Reviews</p>
-                  <p className="text-[10px] text-muted-foreground tracking-widest uppercase mt-0.5">100% Satisfaction Rate</p>
+                  <p className="text-sm font-semibold text-foreground">{reviews.length} Student Reviews</p>
                 </div>
               </div>
             </div>
@@ -278,21 +280,11 @@ export function LeroyBatesPage() {
                       </div>
                       <div>
                         <p className="text-sm font-bold text-foreground">{r.author}</p>
-                        <div className="flex items-center gap-1.5 text-[9px] text-accent font-bold tracking-[0.15em] uppercase">
-                          <CheckCircle2 size={10} />
-                          Verified Student
-                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               ))}
-            </div>
-
-            <div className="mt-12 text-center">
-              <button className="font-sans text-xs font-semibold tracking-widest uppercase border border-border px-10 py-4 text-muted-foreground hover:border-accent hover:text-accent transition-colors duration-200">
-                Read All 359 Reviews
-              </button>
             </div>
           </div>
         </section>
@@ -354,7 +346,7 @@ export function LeroyBatesPage() {
         <section className="w-full bg-muted py-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <Link
-              to="/"
+              to="/pros"
               className="inline-block font-sans font-semibold text-xs tracking-widest uppercase px-8 py-3 border border-border text-muted-foreground hover:border-foreground hover:text-foreground transition-colors duration-200"
             >
               ← Back to Pro Directory
