@@ -155,10 +155,11 @@ export const trainingSystems: Product[] = [
     specs: [
       "In the box: the Tour Pure Women's swing path trainer and the Tour Pure Laser Path Trainer",
       'By email: the Ultimate Guide PDF, with your order confirmation',
-      'Pre-order: ships as soon as stock arrives',
+      'Pre-order: ships within 5-7 business days',
     ],
     inStock: true,
     preorder: true,
+    shipsIn: '5-7 business days',
   },
   /* No photo of the Jr trainer exists (its own page uses a stock photo), so
      this leads with the laser rather than pass off the Men's trainer as Jr.
@@ -188,9 +189,10 @@ export const trainingSystems: Product[] = [
     specs: [
       'In the box: the Tour Pure Jr swing trainer and the Tour Pure Laser Path Trainer',
       'By email: the Ultimate Guide PDF, with your order confirmation',
-      'Pre-order: ships as soon as stock arrives',
+      'Pre-order: ships within 5-7 business days',
     ],
     inStock: true,
     preorder: true,
+    shipsIn: '5-7 business days',
   },
 ];

@@ -252,9 +252,11 @@ Three things deliberately stayed:
     4. **When they land, remove `preorder` and `shipsIn` from both**, which also
     puts them in the Merchant feed.
   - `tour-pure-pro-path-bundle-women` ($69.99) and `-jr` ($49.99, was $59.98):
-    no date. Both trainers are out of stock, and Jay starts the manufacturing run
-    at 300 pre-orders. The Jr bundle leads with the laser photo, since there is
-    no photo of the Jr trainer.
+    also say 5-7 business days (Jeet's call), although both trainers show out
+    of stock and Jay's email put the women's manufacturing run at 300
+    pre-orders. Keep these two as pre-orders until the trainers are in hand.
+    The Jr bundle leads with the laser photo, since there is no photo of the
+    Jr trainer.
 - **There is no bundle system:** a bundle is an ordinary catalogue product.
   Bundles sit in `training-system` on purpose, so the free-PDF rule covers them.
 - **Free PDF with every trainer:** `backend/digitalGoods.ts` adds the Ultimate
