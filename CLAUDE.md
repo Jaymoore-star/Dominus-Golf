@@ -71,7 +71,7 @@ npm run build      # TWO Vite passes + a script, in this order:
                    #   2. vite build --ssr entry-ssr.tsx -> .ssr-build/ (gitignored)
                    #   3. node scripts/prerender.mjs     -> renders each route's
                    #      HEAD AND BODY into dist/**/index.html, + 404.html
-                   # 51 routes. Pass 2/3 exist because crawlers were being served
+                   # 52 routes. Pass 2/3 exist because crawlers were being served
                    # an empty <div id="root">; see docs/SEO.md §3b.
 npm run preview    # preview the production build — see the caveat below
 
@@ -115,7 +115,7 @@ wrangler.toml         Frontend Worker. Read automatically by Workers Builds on
 src/entry-ssr.tsx     Build-time server renderer, never shipped to the browser.
                       Compiled by pass 2 of the build and imported by
                       scripts/prerender.mjs.
-scripts/prerender.mjs Writes the 51 rendered route files into dist/. Read its
+scripts/prerender.mjs Writes the 52 rendered route files into dist/. Read its
                       header before touching the build or main.tsx.
 worker/index.ts       Fallback handler for the site Worker. Static assets match
                       FIRST and are served without invoking it, so every real
@@ -223,6 +223,9 @@ Three things deliberately stayed:
   access token, and `verifiedShopper()` in `backend/email.ts` asks Supabase who
   it is. Never decide identity from the `userId` in a request body; the browser
   sets it.
+  The order confirmation lists items at full price plus a "Discount (code)"
+  row from `net_amounts.discount_money`: Square folds an ORDER-scope discount
+  into each line's `total_money`, so lines use `gross_sales_money`.
 - **Review requests:** `backend/reviewRequests.ts`, daily cron at 16:00 UTC
   (`wrangler.backend.toml`). **Enabled** (`REVIEW_REQUESTS_ENABLED` secret =
   `"true"`). The past-order backfill has been sent. Preview:
