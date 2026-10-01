@@ -527,7 +527,9 @@ export function registerOrderRoutes(app: Hono) {
         const netAmounts = (order.net_amounts ?? {}) as {
           service_charge_money?: { amount?: number }
           tax_money?: { amount?: number }
+          discount_money?: { amount?: number }
         }
+        const discountCents = netAmounts.discount_money?.amount ?? 0
         const lines = (order.line_items ?? []) as OrderEmailLine[]
         const downloads = downloadsForLineItems(lines)
         const shippingCents = netAmounts.service_charge_money?.amount ?? 0
@@ -540,6 +542,10 @@ export function registerOrderRoutes(app: Hono) {
           // shipping_fee reaches the order as a service charge.
           shippingCents,
           taxCents: netAmounts.tax_money?.amount ?? 0,
+          // The welcome code is the only discount the site applies.
+          ...(discountCents > 0
+            ? { discount: { label: metadata.discount_code ? `Discount (${metadata.discount_code})` : "Discount", cents: discountCents } }
+            : {}),
           // This email is the delivery for anything digital in the order.
           downloads,
           /* A SHIPMENT fulfilment is the tell that something is actually being

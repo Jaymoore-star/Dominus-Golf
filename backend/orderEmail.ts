@@ -18,6 +18,8 @@ export type OrderEmailLine = {
   name?: string
   quantity?: string
   variation_name?: string
+  /** Before discounts and tax. What the line is listed at when a discount row follows. */
+  gross_sales_money?: { amount?: number }
   total_money?: { amount?: number }
 }
 
@@ -30,6 +32,8 @@ export type OrderEmailParams = {
   /** Shipping charged, in cents. Omitted or 0 renders as "Free". */
   shippingCents?: number
   taxCents?: number
+  /** A discount code's saving, shown as its own row. Lines are then listed before it. */
+  discount?: { label: string; cents: number }
   /** Download links for any digital goods bought. This IS the delivery. */
   downloads?: { label: string; url: string; free?: boolean }[]
   /** False for a download-only order: no shipping row, no delivery promise. */
@@ -59,9 +63,18 @@ function money(cents: number, currency = "USD"): string {
   return `${symbol}${(cents / 100).toFixed(2)}`
 }
 
-/** Goods only. Square reports each line's own total, so this needs no re-pricing. */
+/**
+ * A line's price before any discount. Square spreads an ORDER-scope discount
+ * across the lines, so total_money is already reduced; listing that and then a
+ * discount row would count the saving twice.
+ */
+function lineCents(l: OrderEmailLine): number {
+  return l.gross_sales_money?.amount ?? l.total_money?.amount ?? 0
+}
+
+/** Goods only, before discount. Square reports each line's own amount, so this needs no re-pricing. */
 function subtotalOf(lines: OrderEmailLine[]): number {
-  return lines.reduce((sum, l) => sum + (l.total_money?.amount ?? 0), 0)
+  return lines.reduce((sum, l) => sum + lineCents(l), 0)
 }
 
 function lineRowsHtml(lines: OrderEmailLine[], currency: string): string {
@@ -70,7 +83,7 @@ function lineRowsHtml(lines: OrderEmailLine[], currency: string): string {
       const name = escapeHtml(l.name ?? "Item")
       const variant = l.variation_name ? escapeHtml(l.variation_name) : ""
       const qty = escapeHtml(String(l.quantity ?? "1"))
-      const amount = money(l.total_money?.amount ?? 0, currency)
+      const amount = money(lineCents(l), currency)
       return `<tr>
             <td style="padding:12px 0;border-bottom:1px solid #f0ece2;font-family:Georgia,serif;font-size:15px;color:#1a1a1a;">
               ${name}${variant ? `<span style="color:#8a8375;"> &middot; ${variant}</span>` : ""}
@@ -127,9 +140,11 @@ export function buildOrderEmailHtml(p: OrderEmailParams): string {
   const tax = p.taxCents ?? 0
   const downloads = p.downloads ?? []
   const physical = p.hasPhysicalItems !== false
+  const discount = p.discount && p.discount.cents > 0 ? p.discount : null
 
   const totals = [
     totalRowHtml("Subtotal", money(subtotal, p.currency)),
+    discount ? totalRowHtml(escapeHtml(discount.label), `-${money(discount.cents, p.currency)}`) : "",
     // A download-only order has no shipping row at all; showing "Free" would
     // still imply something is being posted.
     physical ? totalRowHtml("Shipping", shipping > 0 ? money(shipping, p.currency) : "Free") : "",
@@ -197,10 +212,11 @@ export function buildOrderEmailText(p: OrderEmailParams): string {
   const tax = p.taxCents ?? 0
   const downloads = p.downloads ?? []
   const physical = p.hasPhysicalItems !== false
+  const discount = p.discount && p.discount.cents > 0 ? p.discount : null
 
   const lines = p.lines.map((l) => {
     const variant = l.variation_name ? ` (${l.variation_name})` : ""
-    return `- ${l.name ?? "Item"}${variant} x${l.quantity ?? "1"}  ${money(l.total_money?.amount ?? 0, p.currency)}`
+    return `- ${l.name ?? "Item"}${variant} x${l.quantity ?? "1"}  ${money(lineCents(l), p.currency)}`
   })
 
   const gift = downloads.some((d) => d.free)
@@ -224,6 +240,7 @@ export function buildOrderEmailText(p: OrderEmailParams): string {
     ...lines,
     ``,
     `Subtotal: ${money(subtotal, p.currency)}`,
+    ...(discount ? [`${discount.label}: -${money(discount.cents, p.currency)}`] : []),
     ...(physical ? [`Shipping: ${shipping > 0 ? money(shipping, p.currency) : "Free"}`] : []),
     ...(tax > 0 ? [`Tax: ${money(tax, p.currency)}`] : []),
     `Total: ${money(p.totalCents, p.currency)}`,
