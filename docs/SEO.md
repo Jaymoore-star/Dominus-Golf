@@ -17,10 +17,18 @@ body at build time. Two were false alarms worth not re-chasing, recorded in
 duplicate-content split (§1), self-hosted fonts, an image lazy-loading pass,
 and an attempt at `hydrateRoot` that was reverted (§3e).
 
-**Where that leaves the site.** The audit went **B (88) → A (92)**: mobile
-Performance 69 → 80, FCP 3.8s → 1.5s, Speed Index 4.6s → 2.0s, Accessibility
-94 → 96, SEO and Best Practices 100. Every remaining lever is off-page —
-backlinks, reviews, guide depth — except the one item in §3f.
+**1 October 2026** — a full audit (the claude-seo plugin: 11 specialist passes
+over all 40 sitemap URLs) scored the site **72/100** and found that "every
+remaining lever is off-page" was wrong. Five on-page defects and four pieces of
+copy that contradicted the site or each other, all fixed the same day in
+`bf9d2ae` and verified live. Write-up, plus what is still open, in **§3g**.
+
+**Where that leaves the site.** The 17 Sep audit went **B (88) → A (92)**:
+mobile Performance 69 → 80, FCP 3.8s → 1.5s, Speed Index 4.6s → 2.0s,
+Accessibility 94 → 96, SEO and Best Practices 100. That tool scores technical
+checks, which the site passes; the 1 Oct audit weighs content, trust and
+search intent, and scored 72. Both are right about what they measure. What
+is left is mostly off-page or needs Jeet's input — see §3g.
 
 ---
 
@@ -333,6 +341,12 @@ ClaudeBot 200   GPTBot 200   OAI-SearchBot 200   PerplexityBot 200
 Googlebot 200   bingbot 200  CCBot 200  Applebot-Extended 200  Google-Extended 200
 ```
 
+**Re-tested 1 Oct 2026: still holding.** 17 crawler user-agents (GPTBot,
+ClaudeBot, Claude-SearchBot, OAI-SearchBot, ChatGPT-User, PerplexityBot,
+Google-Extended, CCBot, Applebot-Extended and others) all got `200` and a body
+byte-identical to desktop Chrome's. Same caveat as §2.2: spoofed from an
+ordinary IP, so AI Crawl Control's counts remain the authoritative check.
+
 The original instructions are kept below in case it regresses — this setting has
 silently reverted once already, which is what §2.2 records.
 
@@ -588,31 +602,41 @@ the product that solves it, is how a new store in this category actually earns
 traffic.
 
 **The honest ranking order of effort, highest return first** — revised
-17 Sep 2026. Everything technical is now done; what is left is work only Jeet
-can do.
+1 Oct 2026, after the §3g audit. The code items it found are fixed; what is
+left is work only Jeet can do, plus the optional technical items in §3g.
 
 DONE and not to be re-litigated: analytics (§2.5), keyword titles (§3a),
 server-rendered bodies (§3b), the real 404, `Person` and `BreadcrumbList`
 (§3c), the guide/product duplicate-content split (§1), self-hosted fonts and
-image lazy-loading (§3e), and every dashboard fix in §2.
+image lazy-loading (§3e), every dashboard fix in §2, and the 1 Oct fixes in
+§3g.
 
-1. **Backlinks.** Untouched, and by a distance the biggest lever on competitive
+1. **Rebuild the guides as articles, not manuals** (§3g). For "how to fix an
+   over the top swing", "golf swing path drills" and "golf training aid for
+   beginners" the results are multi-drill articles and best-of lists, and the
+   site offers a single-product method. This is a page-type mismatch, so more
+   words alone will not fix it. Several drills (Tour Pure as one of them),
+   photos of each position, a "Reviewed by Leroy Bates" line and a date.
+   Needs Jeet's coaching knowledge.
+2. **Clean up the brand results** (§3g). Old Gust, ZoomInfo and ueniweb
+   listings, and two X accounts, compete for "Dominus Golf". Check the
+   ranking in Search Console first.
+3. **Backlinks.** Untouched, and by a distance the biggest lever on competitive
    terms. The only one that cannot be done in code at all. Cheapest start: both
    pros on `/pros` now have proper indexed profile pages with `Person` schema
-   and breadcrumbs — ask each for a link from their own site or YouTube bio.
+   and breadcrumbs — ask each for a link from their own site or YouTube bio,
+   and from the organisations they are listed with (Golf Junkyz Foundation and
+   First Tee for Leroy, PGA Tour Americas and Grass League for Gabe).
    Then golf YouTubers (send a Tour Pure), local clubs and academies.
-2. **Collect product reviews.** Still **4**, all 5.0, one each on four products.
+4. **Collect product reviews.** Still **4**, all 5.0, one each on four products.
    Feeds §1's star ratings, and review text is real page content. Search
    Console's "missing aggregateRating" on 3 items clears only when real buyers
    review — see [[dominus-no-real-customers-yet]] before assuming there are
    buyers to ask.
-3. **Depth on the guide pages.** ~730 and ~680 words after the §1 split, which
-   is still thin for "how to fix an over-the-top swing". Needs Jeet's coaching
-   knowledge as raw material; the writing itself is not the bottleneck.
-4. **The title/H1 alignment in §3f.** Small, and his copy to approve.
-5. **Streaming SSR (§3e).** The last technical item. Worth LCP ~5.4s → ~2s and
-   Performance ~80 → ~90, worth **zero** extra SEO. Do it when there is time
-   for a proper test round, not before.
+5. **The title/H1 alignment in §3f.** Small, and his copy to approve.
+6. **Streaming SSR (§3e).** The last big technical item. Worth zero extra SEO;
+   a Core Web Vitals and user-experience gain. Re-measure LCP first: the §3g
+   hero fix removed a second cause, so the ~5.4s baseline is out of date.
 
 Set expectations on timing: a new domain that does all of this well typically
 sees long-tail movement in 3–6 months, not weeks.
@@ -779,6 +803,13 @@ lazy-loading pass, Lighthouse mobile went **69 → 80** and the overall grade
 | TBT | 90ms | 60ms |
 | Accessibility | 94 | 96 |
 
+> **1 Oct 2026: there was a second cause, now fixed.** The home hero's Framer
+> Motion `initial={{ opacity: 0 }}` was prerendered as `style="opacity:0"` on
+> the H1, the buttons and the hero image, so the server HTML was painted but
+> invisible until the bundle ran. That is independent of `createRoot`:
+> streaming SSR alone would not have fixed it. The hero's motion is removed
+> (§3g). The numbers below predate that and need re-measuring.
+
 **LCP is the one that did not move, and the cause is known.** LCP 5.4s sits
 0.1s from TTI 5.5s with a TBT of only 60ms — an idle main thread and a paint
 that lands exactly when React finishes. That is `createRoot`: it discards the
@@ -848,7 +879,101 @@ tempo."* That gives the page a heading carrying the target terms without
 touching the hero, and the audit only asks for the two to be *thematically*
 aligned, not identical.
 
-Nothing else on-page is outstanding. §3a-§3e are closed.
+§3a-§3e are closed. The 1 Oct audit's on-page findings are in §3g.
+
+### 3g. Full audit, 1 Oct 2026 — score 72, fixed in `bf9d2ae`
+
+Run with the claude-seo plugin (`/seo audit`): eleven specialist passes —
+technical, content, schema, sitemap, performance, visual/mobile, GEO, agentic,
+search experience, e-commerce, backlinks — plus an image check, over all 40
+sitemap URLs. Every finding below marked **fixed** was confirmed by hand
+against the live HTML or the source before it was acted on.
+
+| Category | Score |
+|---|---|
+| Technical | 86 |
+| Content | 58 |
+| On-page | 78 |
+| Schema | 82 |
+| Performance | 60 (lab, noisy - see limits) |
+| AI search readiness | 55 |
+| Images | 85 |
+
+**Limits of this audit.** No Google API credentials were configured for the
+plugin, so it had no Search Console, CrUX or GA4 data. The public PageSpeed
+quota was exhausted, so performance was a local Lighthouse run on the home
+page only. SERP checks used web search rather than live Google. The domain is
+too new to be in Common Crawl's quarterly graph, so there was no backlink
+data at all.
+
+#### Fixed and verified live
+
+| Defect | Fix |
+|---|---|
+| **Product specs were in no page.** `ProductAccordion` mounted only the open panel, and Description is open by default, so Features and Specifications ("3.8 lbs", "18 in", material) never reached the HTML. Google does not click. | Every panel renders; closed ones carry `hidden`. Specs also go into Product JSON-LD as `additionalProperty`, from the same list the panel shows. |
+| **Product breadcrumb schema described a trail the page did not show:** Home › Shop (`/shop/all`) › product, against a visible Home › {category} › product. | Built from the product's category, named with `SHOP_CATEGORIES` `label` — the same string the category page's own BreadcrumbList uses. |
+| **`/shop/all` had zero inbound internal links.** Only the sitemap reached it. | "Shop All Products" in the footer. |
+| **Home hero invisible until JS ran** (§3e note). | Hero motion removed; below-the-fold sections keep theirs. |
+| **Shipping page offered "Expedited Shipping"** and said rates were "Calculated at checkout". Checkout has one flat rate (`shippingFeeFor()`), and Merchant Center compares this page with the $6.99 in the feed. | Copy states the real terms. Jeet approved the wording. |
+| **Indoor use contradicted itself.** The safety page: "Never use Tour Pure indoors unless in a dedicated training facility". The home hero: "Used indoors or outdoors". The training-system description also said indoor practice. | Both now match the safety page. Jeet's call. |
+| **`/shop/training-system` promised "tempo bands"**, but the Feel Right Band is `category: 'accessories'`. | Description no longer mentions them. The band was deliberately **not** moved: `training-system` products trigger the free PDF (`backend/digitalGoods.ts`). |
+| **`/leroy-bates` showed "359+ Verified Reviews" and "100% Satisfaction Rate"** next to 8 quotes, with a dead "Read All 359 Reviews" button. Nothing on the site sourced them. | Removed, along with the "Verified Student" labels and the unused 5.0/359 in `features/pros/data.ts`. The count shown is the testimonials on the page. Jeet's call. |
+| **Home still named the Development Program**, unpublished 2 Sep. | Sentence commented out with the "unpublished - hidden from customers" marker, so it restores with the rest of `/grant`. |
+| **The mobile "10% OFF" tab covered the product H1** at first load. | Hidden on product pages below `lg`. |
+| **"Back to Pro Directory"** went to `/`. | Now `/pros`. |
+
+#### Not defects, do not chase
+
+- **`/images/*` should be `immutable`** (the performance pass said so). No: those
+  filenames are not content-hashed; see `public/_headers`.
+- **"One system. Three tools." lists two.** No: `SystemSection` has three cards.
+- **"Feel Right Band targets the wrong query."** Already handled: its
+  `seoTitle` is "Golf Arm Connection and Wrist Training Band".
+- **`three.js` bundle weight.** Not imported anywhere in `src`.
+
+#### Still open
+
+Off-page, or Jeet's input:
+
+- **Brand results.** One search for "Dominus Golf" was led by X, Gust,
+  ZoomInfo, Facebook and an old ueniweb site describing a "soon-to-launch
+  retail shop" in Chandler, AZ (the schema says Florence). There are **two X
+  accounts**: `@GolfDominus` (in `sameAs` and the footer) and `@dominusgolf`.
+  Bing still lists a dead `/collections`. Check the brand ranking in Search
+  Console before acting; this came from web search, not live Google.
+- **Guides are the wrong page type** for their informational queries (§3 item
+  1). Main text measured ~610 words on `/tour-pure-guide` and ~300 on
+  `/feel-right-band-guide`, which is thinner than the ~680 recorded above.
+  `/beginners` has 0 images. No page has video. Article schema and
+  `VideoObject` should follow once there is a named reviewer and real video.
+- **"swing path trainer" on its own is a baseball search**: 9 of 9 results were
+  baseball trainers. Target "golf swing path trainer".
+- **Copy to check:** the Tour Pure guide's P9 says "Lead arm parallel", normally
+  the trail arm. "Patented" appears with no patent number. The laser is
+  described as "Class 2/3R"; state the one class on its label. `/about` says
+  "13-to-3 Protocol" against the guide's 9-to-3, and calls the Feel Right Band
+  "upcoming". The men's and women's bundle pages are ~91% identical text.
+
+Optional technical, none urgent:
+
+- No security headers (HSTS, `X-Content-Type-Options`, `Referrer-Policy`).
+  A `/*` block in `public/_headers` does not conflict with the `/assets/*`
+  cache rule the way the reverted `no-cache` attempt did, but verify with
+  `wrangler dev`.
+- No route-level code splitting: one bundle for 52 routes, ~52% of it unused
+  on the home page.
+- Review text is client-only (`ProductReviews` shows a spinner until Supabase
+  answers), though `aggregateRating` is in the schema. Seed it from the
+  generated snapshot.
+- No `srcset`: 1920px images go to phones.
+- IndexNow, `llms.txt`, `priceValidUntil` on discounted offers, and a 308
+  rather than a 307 for the trailing slash. All cheap, none moves rankings
+  much.
+
+**Re-running it.** Configure the plugin's Google credentials first
+(`google_auth.py --setup`), so the next run has Search Console and field data.
+After that, `/seo drift baseline https://www.dominusgolf.com/` gives
+deploy-to-deploy regression checks.
 
 ---
 

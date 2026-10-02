@@ -37,19 +37,30 @@ See [Blink Migration](#blink-migration) below — **do not break the running app
   before any SEO work**; also `docs/HANDOFF.md` §2b.
   `main.tsx` uses **`createRoot`**, so React replaces that markup rather than
   hydrating it. Crawlers still get the real page (the HTML is correct before
-  any JS runs); the cost is a second paint, which holds mobile LCP at ~5.4s.
+  any JS runs); the cost is a second paint, which held mobile LCP at ~5.4s.
   `hydrateRoot` was tried and reverted on 17 Sep 2026 - it conflicts with the
   way head tags are split between `<head>` and the body. **Read the header of
   `scripts/prerender.mjs` before touching `main.tsx`**; the conflict and the
   fix (a move to streaming SSR) are written up there and in `docs/SEO.md` §3e.
   As of 17 Sep 2026 Search Console, Bing Webmaster Tools, Merchant Center and
-  GA4 are all connected, every dashboard fix in §2 is done, and §3a-§3e are
-  closed. An external audit puts the site at **Grade A (92)** — mobile
-  Performance 80, SEO 100, Best Practices 100, Accessibility 96.
-  **Everything still open is off-page and cannot be done in this repo:**
-  backlinks, customer reviews (still 4), and depth on the two guide pages.
-  The one on-page item left is the `title_h1_mismatch` the audit reports, and
-  that is user-facing copy — see §3f.
+  GA4 are all connected and every dashboard fix in §2 is done. An external
+  audit put the site at **Grade A (92)** — mobile Performance 80, SEO 100,
+  Best Practices 100, Accessibility 96.
+  **A full audit on 1 Oct 2026 scored it 72** (it weighs content, trust and
+  search intent, where the site is weak) and found on-page defects the
+  17 Sep "everything left is off-page" verdict had missed. They are fixed
+  in `bf9d2ae` and written up in **`docs/SEO.md` §3g**, along with what is
+  still open: stale off-site brand profiles and two X accounts, guides that
+  are the wrong page type for their queries, backlinks, reviews (still 4),
+  and the §3f title/H1 copy. Two rules came out of it, because each was a
+  real bug:
+  - **Content a crawler must read cannot be conditionally mounted.** Google
+    does not click. Render closed accordions/tabs with `hidden` (see
+    `ProductAccordion.tsx`), and put links in the footer, not only in a menu
+    that mounts on open (see the comment in `Footer.tsx`).
+  - **No `initial={{ opacity: 0 }}` on above-the-fold motion.** The
+    prerenderer bakes it in as `style="opacity:0"`, so the server-rendered
+    hero is invisible until the bundle runs. Below the fold is fine.
 - **Analytics:** GA4 is live (measurement ID is in the Cloudflare build
   variables and in local `.env.production`, not in any tracked file — it is not
   a secret, but the rule below is "no env values in the repo").
