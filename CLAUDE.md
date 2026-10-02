@@ -154,10 +154,11 @@ src/
 - Path alias `@/` → `src/` (configured in `vite.config.ts` and `tsconfig.json`).
 - Product/category/pro images are currently remote URLs stored in `src/data/*.ts`.
 - **`product.name` is canonical; `product.seoTitle` is for search.** `name` runs
-  the cart, the Square checkout line item and the Merchant Center feed, so
-  changing it alters real receipts and makes Google re-review all 36 feed
-  entries. `seoTitle` / `seoDescription` drive only the `<title>` and the on-page
-  `<h1>`. Rename for search there, not in `name`. `SHOP_CATEGORIES` has the same
+  the cart and the Square checkout line item, so changing it alters real
+  receipts. `seoTitle` / `seoDescription` drive the `<title>`, the on-page
+  `<h1>` and (since 1 Oct 2026) the Merchant feed's `g:title`, so editing a
+  `seoTitle` sends that feed entry back through Google review for a few days.
+  Rename for search there, not in `name`. `SHOP_CATEGORIES` has the same
   `label` (short: sidebar, breadcrumb) / `seoTitle` (search: title, h1) split.
 - **Category naming lives only in `SHOP_CATEGORIES`** in `src/lib/pageSeo.ts`.
   `ShopPage.tsx` used to keep a second table and the two silently drifted apart.

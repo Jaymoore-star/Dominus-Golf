@@ -308,6 +308,10 @@ export const PAGE_SEO = {
  *   wraps and reads badly.
  * - `seoTitle` — the <title> tag and the on-page <h1>. Carries the search term,
  *   because "Training Systems" is not what anyone types. Falls back to `label`.
+ *
+ * `intro` is the paragraph ShopPage renders under the grid. Keep prices and
+ * shipping rates out of it: they change, and nothing would flag this copy as
+ * stale when they do.
  */
 export const SHOP_CATEGORIES = {
   all: {
@@ -315,6 +319,8 @@ export const SHOP_CATEGORIES = {
     seoTitle: 'Shop All Golf Training Gear',
     description:
       'Every Dominus Golf product in one place: swing trainers, training bands, golf apparel and accessories. Free shipping over $150.',
+    intro:
+      "Everything Dominus Golf makes, in one place. The Tour Pure swing trainers and Pro Path bundles teach swing path and swing plane with immediate feedback on every rep, in men's, women's and junior sizes. The Feel Right Band and the Laser Path Trainer add feel and a visual check to the same practice. Every Tour Pure trainer comes with the Ultimate Guide to Mastering the Game, a 90-day training program, as a PDF.",
   },
   'training-system': {
     label: 'Training Systems',
@@ -324,18 +330,24 @@ export const SHOP_CATEGORIES = {
       // lists none. No "indoor" either - the safety page rules Tour Pure out
       // indoors except in a dedicated training facility.
       'Swing path and swing plane training aids built for repeatable mechanics. Weighted Tour Pure trainers and Pro Path bundles for focused range practice.',
+    intro:
+      "Tour Pure is a weighted swing trainer built to teach one thing: a repeatable swing path and swing plane. It gives immediate feedback on every rep and works on the full swing, chipping and putting alignment. It comes in three sizes: Men's (3.8 lbs, 18 in), Women's (2.9 lbs, 16 in) and Junior, which builds balance and sequencing without overwhelming weight. The Pro Path bundles pair each trainer with the Laser Path Trainer, which screws into the grip and shows your path on the mat as you swing. Every trainer and bundle includes the 90-day Ultimate Guide PDF.",
   },
   apparel: {
     label: 'Dominus Golf Apparel',
     seoTitle: 'Golf T-Shirts and Apparel',
     description:
       'Dominus Golf t-shirts and apparel for men and women. Premium cotton and moisture-wicking triblend, built for the course and beyond.',
+    intro:
+      'Dominus Golf t-shirts for men and women, in icon, wordmark and performance designs. Each is a Next Level 6010 triblend crew (50% polyester, 25% combed ring-spun cotton, 25% rayon) with an athletic fit and plenty of stretch, built for the course and the gym. Sizes S to XXL.',
   },
   accessories: {
     label: 'Accessories',
     seoTitle: 'Golf Accessories and Training Add-Ons',
     description:
       'Golf towels, training manuals and practice add-ons from Dominus Golf. The small gear that makes a practice session work.',
+    intro:
+      'The add-ons that make a practice session work. The Feel Right Band is a neoprene band you wear while you swing, so what feels right and what is right finally match. The Laser Path Trainer screws into the rear port of a Tour Pure grip and projects a laser line onto the mat, so you can watch your backswing and downswing paths. The Ultimate Guide to Mastering the Game is a 90-day, day-by-day training curriculum, as a spiral-bound book that stays flat on the range or as a PDF. The Dominus Golf towel rounds out the bag.',
   },
   /* "Apparel", not "Gear". These two pages are apparel-only on purpose (see the
      comment on productsInShopCategory), and a visitor who arrives on "men's
@@ -346,14 +358,18 @@ export const SHOP_CATEGORIES = {
     seoTitle: "Men's Golf Apparel",
     description:
       "Men's golf t-shirts and apparel from Dominus Golf. Premium cotton and moisture-wicking triblend in icon, wordmark and performance cuts.",
+    intro:
+      "Men's Dominus Golf t-shirts in three designs: the minimalist Icon tee, the Wordmark tee with arched lettering and the D logo, and the Performance tee. All three are Next Level 6010 men's triblend crews with an athletic fit, in sizes S to XXL. Looking for training gear? The Tour Pure swing trainers are in Training Systems.",
   },
   'womens-gear': {
     label: "Women's Gear",
     seoTitle: "Women's Golf Apparel",
     description:
       "Women's golf t-shirts and apparel from Dominus Golf. Premium cotton and moisture-wicking triblend in icon and performance cuts.",
+    intro:
+      "Women's Dominus Golf t-shirts: the Icon tee in black or white, and the Performance tee in black. All are Next Level 6010 women's triblend crews with an athletic fit, in sizes S to XXL. The women's Tour Pure swing trainer is in Training Systems.",
   },
-} satisfies Record<string, { label: string; seoTitle: string; description: string }>;
+} satisfies Record<string, { label: string; seoTitle: string; description: string; intro?: string }>;
 
 export type StaticPath = keyof typeof PAGE_SEO;
 
@@ -456,7 +472,7 @@ export function pageHead(path: StaticPath) {
 // These take the route param rather than a router context, so the prerender
 // plugin can call them with a plain string.
 
-type ShopCategoryMeta = { label: string; seoTitle: string; description: string };
+type ShopCategoryMeta = { label: string; seoTitle: string; description: string; intro?: string };
 
 /**
  * A category's naming, or undefined for an unknown slug.

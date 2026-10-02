@@ -120,7 +120,12 @@ function itemXml(product: Product, size: string | null): string {
     lines.push(tag('g:size', size));
   }
 
-  lines.push(tag('g:title', product.name));
+  // The search title, not `name`. Shopping matches a query against g:title
+  // first, and "Tour Pure Men" carries none of the words a shopper types;
+  // "Tour Pure Swing Path Trainer - Men's" does. Switched 1 Oct 2026 (Jeet's
+  // call), accepting the one-off Google re-review of every entry that a title
+  // change triggers. Receipts and checkout still use `name`.
+  lines.push(tag('g:title', product.seoTitle ?? product.name));
   // The catalogue's own opening paragraph, as on the product page, minus the
   // promotional sentences — see feedDescription.
   lines.push(tag('g:description', feedDescription(product)));

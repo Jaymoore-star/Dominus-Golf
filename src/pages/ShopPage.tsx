@@ -401,6 +401,20 @@ export function ShopPage() {
                 )}
               </div>
             )}
+
+            {/* Category intro, BELOW the grid on purpose: above it, ~100 words
+                would push the products off the first screen on a phone, and
+                Google reads it the same either way. Before 1 Oct 2026 every
+                /shop page was a grid with no text, which gave Google nothing
+                to rank it for "golf swing trainers" on. Copy lives in
+                SHOP_CATEGORIES with the rest of the category naming. */}
+            {categoryMeta?.intro && (
+              <section className="mt-16 pt-10 border-t border-border max-w-3xl">
+                <p className="font-sans text-sm text-muted-foreground leading-relaxed">
+                  {categoryMeta.intro}
+                </p>
+              </section>
+            )}
           </main>
         </div>
       </div>

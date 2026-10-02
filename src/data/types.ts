@@ -34,12 +34,13 @@ export type Product = {
   gallery?: string[];
   badge?: string;
   /**
-   * Search-facing name, used for the <title> tag and the on-page <h1>.
+   * Search-facing name, used for the <title> tag, the on-page <h1> and, since
+   * 1 Oct 2026, the Merchant Center feed's g:title.
    *
-   * `name` stays canonical and is what the cart, the Square checkout line item
-   * and the Merchant Center feed use — so a product can be renamed for search
-   * without changing what a customer sees on their receipt, and without
-   * triggering a Google re-review of all 36 feed entries.
+   * `name` stays canonical and is what the cart and the Square checkout line
+   * item use — so a product can be renamed for search without changing what a
+   * customer sees on their receipt. Changing this DOES change the feed title,
+   * which sends that entry back through Google's review for a few days.
    *
    * It exists because `name` is a product name, not a search term. "Tour Pure
    * Men" is what someone types only if they already know the brand; the page

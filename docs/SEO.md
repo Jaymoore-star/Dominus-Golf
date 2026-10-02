@@ -922,6 +922,20 @@ data at all.
 | **The mobile "10% OFF" tab covered the product H1** at first load. | Hidden on product pages below `lg`. |
 | **"Back to Pro Directory"** went to `/`. | Now `/pros`. |
 
+**Later the same day** (Jeet approved both):
+
+- **The Merchant feed's `g:title` is now `seoTitle`**, not `name`. Shopping
+  matches queries against the title first, and "Tour Pure Men" carried none of
+  the words a shopper types. Cost: every entry went back through Google review
+  for a few days. One trade-off: the band's Shopping title is "Golf Arm
+  Connection and Wrist Training Band", without "Feel Right" in it.
+- **Category intros.** All six `/shop/` pages were a grid with no text. Each now
+  has 44-98 words from `SHOP_CATEGORIES.intro`, rendered *below* the grid so the
+  products stay first on a phone.
+- **A first article is drafted**, not live:
+  `docs/drafts/how-to-fix-over-the-top-swing.md`. It waits on Jeet's answers to
+  the questions at its top (reviewer, coaching check, photos).
+
 #### Not defects, do not chase
 
 - **`/images/*` should be `immutable`** (the performance pass said so). No: those
