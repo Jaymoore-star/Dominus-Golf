@@ -12,12 +12,12 @@ export const trainingSystems: Product[] = [
     subcategory: 'Performance',
     price: 59.99,
     compareAtPrice: 79.99,
-    image: '/images/Photoroom-20251125_1425462241__e480e1c6.webp',
-    hoverImage: '/images/2021-03-09__196c2c33.webp',
+    image: '/images/Photoroom-20251125_1425462241-square__995a1dfa.webp',
+    hoverImage: '/images/2021-03-09-square__39aaeaa5.webp',
     gallery: [
-      '/images/Photoroom-20251125_1425462241__e480e1c6.webp',
-      '/images/2021-03-09__196c2c33.webp',
-      '/images/Gemini_Generated_Image_ofjfkaofjfkaofjf__1e06169b.webp',
+      '/images/Photoroom-20251125_1425462241-square__995a1dfa.webp',
+      '/images/2021-03-09-square__39aaeaa5.webp',
+      '/images/Gemini_Generated_Image_ofjfkaofjfkaofjf-square__4c492fba.webp',
     ],
     badge: 'Best Seller',
     description:
@@ -85,7 +85,7 @@ export const trainingSystems: Product[] = [
     audience: 'junior',
     subcategory: 'Junior Performance',
     price: 39.99,
-    image: '/images/R__3951d4b9.webp',
+    image: '/images/R-square__5f0049bb.webp',
     badge: 'Out of Stock',
     paymentUrl: 'https://square.link/u/CRNoOrPM',
     description:
@@ -111,7 +111,7 @@ export const trainingSystems: Product[] = [
     price: 69.99,
     compareAtPrice: 79.98,
     image: '/images/bundle-men__0cb06a4b.webp',
-    gallery: ['/images/bundle-men__0cb06a4b.webp', '/images/Photoroom-20251125_1425462241__e480e1c6.webp', '/images/laser-on-grip__ead9a20d.webp', '/images/book-ultimate-guide__3f8ec230.webp'],
+    gallery: ['/images/bundle-men__0cb06a4b.webp', '/images/Photoroom-20251125_1425462241-square__995a1dfa.webp', '/images/laser-on-grip__ead9a20d.webp', '/images/book-ultimate-guide__3f8ec230.webp'],
     badge: 'Pre-Order',
     description:
       "Everything you need to build your swing path, in one box. The Tour Pure Men's swing path trainer builds the positions; the Tour Pure Laser Path Trainer screws into its grip and shows your path on the mat as you swing. Every order includes a FREE copy of the Ultimate Guide to Mastering the Game (PDF) - our 90-day training program, emailed to you with your order confirmation.",
@@ -176,7 +176,7 @@ export const trainingSystems: Product[] = [
     price: 49.99,
     compareAtPrice: 59.98,
     image: '/images/bundle-jr__3223630f.webp',
-    gallery: ['/images/bundle-jr__3223630f.webp', '/images/R__3951d4b9.webp', '/images/laser-on-grip__ead9a20d.webp', '/images/book-ultimate-guide__3f8ec230.webp'],
+    gallery: ['/images/bundle-jr__3223630f.webp', '/images/R-square__5f0049bb.webp', '/images/laser-on-grip__ead9a20d.webp', '/images/book-ultimate-guide__3f8ec230.webp'],
     badge: 'Pre-Order',
     description:
       'Everything a junior golfer needs to build their swing path, in one box. The Tour Pure Jr swing trainer builds balance, sequencing and mechanics without overwhelming weight; the Tour Pure Laser Path Trainer screws into its grip and shows the path on the mat with every swing. Every order includes a FREE copy of the Ultimate Guide to Mastering the Game (PDF) - our 90-day training program, emailed to you with your order confirmation.',

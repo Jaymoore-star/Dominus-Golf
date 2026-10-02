@@ -92,7 +92,7 @@ export function AccountOrdersPage() {
                           src={thumbnail}
                           alt=""
                           loading="lazy"
-                          className="w-14 h-14 object-cover bg-muted"
+                          className="w-14 h-14 object-contain p-1 bg-white border border-border"
                         />
                       ) : (
                         // Product renamed or retired since the order was placed.

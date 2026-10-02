@@ -272,7 +272,7 @@ export function CartDrawer() {
                       decoding="async"
                       src={item.product.image}
                       alt={item.product.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain p-1"
                     />
                   </Link>
 

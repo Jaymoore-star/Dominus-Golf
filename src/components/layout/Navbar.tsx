@@ -501,7 +501,7 @@ export function Navbar() {
                                     decoding="async"
                                     src={p.image}
                                     alt={p.name}
-                                    className="w-full h-full object-cover"
+                                    className="w-full h-full object-contain p-0.5"
                                   />
                                 </div>
                                 <div className="min-w-0 flex-1">

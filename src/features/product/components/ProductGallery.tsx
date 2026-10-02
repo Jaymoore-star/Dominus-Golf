@@ -15,9 +15,13 @@ export function ProductGallery({
 }: ProductGalleryProps) {
   return (
     <div className="space-y-4">
-      {/* Main image - constrained, centered, premium presentation */}
+      {/* Main image - constrained, centered, premium presentation.
+          The frame is a fixed square, the same shape as the shop cards, so
+          switching between photos of different proportions never resizes it
+          or shifts the page. Product photos are squared in public/images to
+          fill it; object-contain is the fallback for one that is not. */}
       <div className="w-full flex justify-center items-center bg-white py-8 px-4 border border-border">
-        <div className="w-full max-w-[85vw] md:max-w-[520px] lg:max-w-[560px]">
+        <div className="w-full max-w-[85vw] md:max-w-[520px] aspect-square">
           {/* The LCP element on a product page, so it is told to jump the
               queue and is never lazy. The thumbnails below are. */}
           <img
@@ -25,8 +29,7 @@ export function ProductGallery({
             alt={productName}
             fetchPriority="high"
             decoding="async"
-            className="w-full h-auto object-contain transition-opacity duration-300"
-            style={{ maxHeight: '520px' }}
+            className="w-full h-full object-contain transition-opacity duration-300"
           />
         </div>
       </div>

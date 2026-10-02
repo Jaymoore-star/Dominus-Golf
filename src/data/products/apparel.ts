@@ -12,14 +12,14 @@ export const apparel: Product[] = [
     subcategory: "Men's Apparel",
     audience: 'men',
     price: 19.99,
-    image: '/images/Gemini_Generated_Image_a1fmgba1fmgba1fm__03713416.webp',
-    hoverImage: '/images/Gemini_Generated_Image_j0e7ykj0e7ykj0e7__7f763146.webp',
+    image: '/images/Gemini_Generated_Image_a1fmgba1fmgba1fm-square__c5e52c9e.webp',
+    hoverImage: '/images/Gemini_Generated_Image_j0e7ykj0e7ykj0e7-square__24a3b57f.webp',
     colorVariants: {
-      White: '/images/Gemini_Generated_Image_a1fmgba1fmgba1fm__03713416.webp',
+      White: '/images/Gemini_Generated_Image_a1fmgba1fmgba1fm-square__c5e52c9e.webp',
     },
     gallery: [
-      '/images/Gemini_Generated_Image_a1fmgba1fmgba1fm__03713416.webp',
-      '/images/Gemini_Generated_Image_j0e7ykj0e7ykj0e7__7f763146.webp',
+      '/images/Gemini_Generated_Image_a1fmgba1fmgba1fm-square__c5e52c9e.webp',
+      '/images/Gemini_Generated_Image_j0e7ykj0e7ykj0e7-square__24a3b57f.webp',
     ],
     badge: 'New',
     description: 'Clean Dominus Golf icon tee. Minimalist design, premium feel-built for the course and beyond.',
@@ -82,12 +82,12 @@ export const apparel: Product[] = [
     subcategory: "Men's Apparel",
     audience: 'men',
     price: 19.99,
-    image: '/images/unnamed-18__5cee2081.webp',
+    image: '/images/unnamed-18-square__965291a0.webp',
     colorVariants: {
-      White: '/images/unnamed-18__5cee2081.webp',
+      White: '/images/unnamed-18-square__965291a0.webp',
     },
     gallery: [
-      '/images/unnamed-18__5cee2081.webp',
+      '/images/unnamed-18-square__965291a0.webp',
     ],
     badge: 'New',
     description: 'Dominus Golf performance tee. Back logo with sleeve branding on moisture-wicking triblend fabric-train and play in style.',
@@ -118,7 +118,7 @@ export const apparel: Product[] = [
     audience: 'women',
     price: 19.99,
     image: '/images/tee-womens-black-icon__72061fef.webp',
-    hoverImage: '/images/unnamed-16__4cc41a28.webp',
+    hoverImage: '/images/unnamed-16-square__2647aee8.webp',
     // Black only. This and the white icon tee are separate products, so each
     // offers just its own colour — listing both made them look like duplicates.
     colorVariants: {
@@ -126,7 +126,7 @@ export const apparel: Product[] = [
     },
     gallery: [
       '/images/tee-womens-black-icon__72061fef.webp',
-      '/images/unnamed-16__4cc41a28.webp',
+      '/images/unnamed-16-square__2647aee8.webp',
     ],
     badge: 'New',
     description: "Dominus Golf icon tee for women in black. Bold logo, premium feel-built for the course and beyond.",
@@ -155,16 +155,16 @@ export const apparel: Product[] = [
     subcategory: "Women's Apparel",
     audience: 'women',
     price: 19.99,
-    image: '/images/unnamed-12__3c0a4238.webp',
-    hoverImage: '/images/unnamed-13__94ffe0c4.webp',
+    image: '/images/unnamed-12-square__24aceb8d.webp',
+    hoverImage: '/images/unnamed-13-square__b12db29e.webp',
     // White only. It used to list Black first, and the card defaults to the first
     // colour in COLOR_ORDER — which is why this product showed the black shirt.
     colorVariants: {
-      White: '/images/unnamed-12__3c0a4238.webp',
+      White: '/images/unnamed-12-square__24aceb8d.webp',
     },
     gallery: [
-      '/images/unnamed-12__3c0a4238.webp',
-      '/images/unnamed-13__94ffe0c4.webp',
+      '/images/unnamed-12-square__24aceb8d.webp',
+      '/images/unnamed-13-square__b12db29e.webp',
     ],
     badge: 'New',
     description: "Dominus Golf icon tee for women in white. Clean, minimalist design-built for the course and beyond.",
