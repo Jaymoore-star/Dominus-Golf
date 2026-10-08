@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router';
 import { categoryCards } from '../../data/products';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
+import { responsiveImage } from '../../lib/responsiveImage';
 
 export function CategoryGrid() {
   const ref = useScrollAnimation();
@@ -31,6 +32,7 @@ export function CategoryGrid() {
                   loading="lazy"
                   decoding="async"
                   src={cat.image}
+                  {...responsiveImage(cat.image, '(min-width: 640px) 25vw, 50vw')}
                   alt={cat.label}
                   className="w-full h-full object-cover"
                 />

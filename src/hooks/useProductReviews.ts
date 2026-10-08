@@ -4,11 +4,38 @@ import {
   fetchReviewSummaries,
   summariseReviews,
   type ProductReview,
+  type ReviewsResult,
   type ReviewSummary,
 } from '../lib/reviews';
+import { REVIEW_SNAPSHOT, REVIEW_SUMMARIES } from '../data/reviewSummaries.generated';
 
 export const productReviewsKey = (productId: string) => ['product-reviews', productId] as const;
 export const reviewSummariesKey = ['product-review-summaries'] as const;
+
+/*
+ * Both queries start from the build-time snapshot (scripts/fetch-review-summaries.mjs)
+ * rather than from nothing. The prerenderer never runs a queryFn, so without
+ * initialData the static HTML held a spinner where the reviews go, and Google
+ * saw stars in the schema with no review text on the page. Every product gets
+ * an entry, an empty one when it has no reviews, so the HTML says "No reviews
+ * yet" instead of spinning.
+ *
+ * initialDataUpdatedAt: 0 marks the snapshot as already stale, so the live
+ * fetch still runs on mount and replaces it. The snapshot is the first paint,
+ * never the answer.
+ */
+const snapshotSummaries = () => new Map(Object.entries(REVIEW_SUMMARIES));
+
+function snapshotReviews(productId: string): ReviewsResult {
+  const reviews: ProductReview[] = (REVIEW_SNAPSHOT[productId] ?? []).map((review) => ({
+    ...review,
+    productId,
+    // Not in the snapshot; only used to label the viewer's own review, which
+    // the live fetch fills in.
+    userId: '',
+  }));
+  return { status: 'ok', reviews };
+}
 
 /**
  * Ratings for every product, shared by all cards on a page.
@@ -20,6 +47,8 @@ export function useReviewSummaries() {
   const query = useQuery({
     queryKey: reviewSummariesKey,
     queryFn: fetchReviewSummaries,
+    initialData: snapshotSummaries,
+    initialDataUpdatedAt: 0,
     staleTime: 60_000,
   });
 
@@ -44,6 +73,8 @@ export function useProductReviews(productId: string) {
   const query = useQuery({
     queryKey: productReviewsKey(productId),
     queryFn: () => fetchProductReviews(productId),
+    initialData: () => snapshotReviews(productId),
+    initialDataUpdatedAt: 0,
     staleTime: 30_000,
   });
 

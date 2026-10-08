@@ -968,21 +968,36 @@ Off-page, or Jeet's input:
   "13-to-3 Protocol" against the guide's 9-to-3, and calls the Feel Right Band
   "upcoming". The men's and women's bundle pages are ~91% identical text.
 
-Optional technical, none urgent:
+Optional technical. **Done 8 Oct 2026** (verified with `wrangler dev` and
+headless Edge at 390px):
 
-- No security headers (HSTS, `X-Content-Type-Options`, `Referrer-Policy`).
-  A `/*` block in `public/_headers` does not conflict with the `/assets/*`
-  cache rule the way the reverted `no-cache` attempt did, but verify with
-  `wrangler dev`.
-- No route-level code splitting: one bundle for 52 routes, ~52% of it unused
-  on the home page.
-- Review text is client-only (`ProductReviews` shows a spinner until Supabase
-  answers), though `aggregateRating` is in the schema. Seed it from the
-  generated snapshot.
-- No `srcset`: 1920px images go to phones.
-- IndexNow, `llms.txt`, `priceValidUntil` on discounted offers, and a 308
-  rather than a 307 for the trailing slash. All cheap, none moves rankings
-  much.
+- **Security headers**: a `/*` block in `public/_headers` (HSTS without
+  includeSubDomains, nosniff, Referrer-Policy, X-Frame-Options,
+  Permissions-Policy). No CSP, on purpose; see the comment there. The
+  `/assets` and `/images` cache rules are unchanged.
+- **Review text in the HTML**: the snapshot now carries the reviews themselves
+  (`REVIEW_SNAPSHOT`, no user ids) and both review queries start from it, then
+  refetch live. Unreviewed products say "No reviews yet" instead of a spinner.
+- **`srcset`**: `npm run images:responsive` writes 640px and 1080px copies;
+  `responsiveImage()` adds them to cards, gallery, category grid and hero. A
+  phone now loads 640px cards and a 1080px main product photo.
+- **IndexNow**: key file in `public/`, `npm run seo:indexnow` to ping after a
+  deploy is live.
+- **Merchant feed apparel details**: `g:material`, `g:pattern` and a
+  "Color / Pattern / Material" sentence in each tee's feed description, after
+  a Merchant Center "add details to descriptions" prompt.
+
+Still open:
+
+- **The main bundle is 234 KB gzipped.** Routes are already lazy; what is left
+  is shared. About a third is supabase-js, which nothing needs for first paint.
+  Loading it lazily is the next real JS saving, but it changes when the auth
+  client starts, and OAuth sign-in and password reset both rely on it reading
+  the URL at startup. Do it with a test round of both, plus a discount-code
+  checkout.
+- `llms.txt` (Google ignores it), `priceValidUntil` (only with a real sale end
+  date; inventing one is the kind of overstatement the feed rules forbid), and
+  a 308 rather than a 307 for the trailing slash.
 
 **Re-running it.** Configure the plugin's Google credentials first
 (`google_auth.py --setup`), so the next run has Search Console and field data.

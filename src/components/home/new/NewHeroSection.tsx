@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router';
 import { Check } from 'lucide-react';
+import { responsiveImage } from '../../../lib/responsiveImage';
 
 const IMAGES = {
   redShirt1: '/images/455082619_8098523016902786_920092106083080418_n__592fb000.webp',
@@ -90,7 +91,8 @@ export const NewHeroSection = () => {
                 loading eagerly and competing for bandwidth. The other six are
                 now lazy; this one is told to jump the queue. */}
             <img 
-              src={IMAGES.redShirt1} 
+              src={IMAGES.redShirt1}
+              {...responsiveImage(IMAGES.redShirt1, '(min-width: 768px) 512px, 100vw')}
               alt="Professional golfer training with Tour Pure System" 
               fetchPriority="high"
               decoding="async"

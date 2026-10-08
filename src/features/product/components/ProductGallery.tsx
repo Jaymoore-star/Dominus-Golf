@@ -1,4 +1,5 @@
 import React from 'react';
+import { responsiveImage } from '../../../lib/responsiveImage';
 
 interface ProductGalleryProps {
   productName: string;
@@ -26,6 +27,7 @@ export function ProductGallery({
               queue and is never lazy. The thumbnails below are. */}
           <img
             src={galleryImages[activeImage]}
+            {...responsiveImage(galleryImages[activeImage], '(min-width: 1024px) 50vw, 100vw')}
             alt={productName}
             fetchPriority="high"
             decoding="async"
@@ -45,6 +47,7 @@ export function ProductGallery({
             >
               <img
                 src={img}
+                {...responsiveImage(img, '96px')}
                 alt={`${productName} view ${i + 1}`}
                 loading="lazy"
                 decoding="async"

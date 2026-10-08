@@ -10,6 +10,7 @@ import { useReviewSummaries } from '../../hooks/useProductReviews';
 import { createCheckoutSession } from '../../lib/checkout';
 import { resolveCardVariant, variantLabel, variantDescriptor } from '../../lib/productVariants';
 import { trackBeginCheckout } from '../../lib/analytics';
+import { responsiveImage } from '../../lib/responsiveImage';
 
 interface ProductCardProps {
   product: Product;
@@ -105,6 +106,7 @@ export function ProductCard({ product, aspectRatio = 'square', priority = false 
             : { loading: 'lazy' as const })}
           decoding="async"
           src={product.image}
+          {...responsiveImage(product.image, '(min-width: 640px) 33vw, 50vw')}
           alt={product.name}
           className="product-image w-full h-full object-contain p-3 transition-transform duration-300"
         />

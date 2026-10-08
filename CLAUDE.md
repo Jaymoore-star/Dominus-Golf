@@ -98,6 +98,10 @@ npm run lint:css   # stylelint --fix
 
 # Assets
 npm run og:images  # regenerate social share images after adding/changing a product
+npm run images:responsive # 640/1080px copies for srcset, after adding or replacing
+                    # anything in public/images; commit the copies + generated module
+npm run seo:indexnow -- /product/x  # AFTER a deploy is live: ping Bing & co. about
+                    # changed pages (no args = whole sitemap, first run only)
 npm run seo:reviews # refresh the real review ratings used for star ratings in Google
                     # (runs automatically as part of `npm run build`)
 npm run seo:dates   # refresh sitemap <lastmod> after editing page/product content,

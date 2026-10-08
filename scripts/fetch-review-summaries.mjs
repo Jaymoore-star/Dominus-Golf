@@ -60,7 +60,7 @@ function skip(reason) {
   process.exit(0)
 }
 
-function writeFile(summaries) {
+function writeFile(summaries, reviews = new Map()) {
   const entries = [...summaries.entries()].sort(([a], [b]) => a.localeCompare(b))
 
   const body = entries
@@ -68,6 +68,11 @@ function writeFile(summaries) {
       ([id, { average, count }]) =>
         `  ${JSON.stringify(id)}: { average: ${average}, count: ${count} },`,
     )
+    .join("\n")
+
+  const reviewBody = [...reviews.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([id, list]) => `  ${JSON.stringify(id)}: ${JSON.stringify(list, null, 2).replace(/\n/g, "\n  ")},`)
     .join("\n")
 
   const contents = `/**
@@ -83,12 +88,31 @@ function writeFile(summaries) {
  * Products with no reviews are absent rather than zero: schema.org has no way to
  * say "rated zero out of five", and inventing a rating is the exact thing Google
  * penalises.
+ *
+ * REVIEW_SNAPSHOT holds the reviews themselves, newest first, so the product
+ * page renders them into the static HTML instead of a spinner. The page still
+ * refetches them live on load; this is only the first paint. No user ids: the
+ * page needs them only to label the viewer's own review, which the live fetch
+ * supplies.
  */
 
 export type ReviewSummarySnapshot = { average: number; count: number };
 
+export type ReviewSnapshot = {
+  id: string;
+  authorName: string;
+  rating: number;
+  title: string;
+  body: string;
+  createdAt: string;
+};
+
 export const REVIEW_SUMMARIES: Record<string, ReviewSummarySnapshot> = {
 ${body}
+};
+
+export const REVIEW_SNAPSHOT: Record<string, ReviewSnapshot[]> = {
+${reviewBody}
 };
 `
 
@@ -118,7 +142,8 @@ if (!url || !key) skip("no Supabase keys, keeping the existing snapshot")
 let rows
 try {
   const response = await fetch(
-    `${url}/rest/v1/product_reviews?select=product_id,rating`,
+    // Public-read columns only - no user_id. See REVIEW_SNAPSHOT above.
+    `${url}/rest/v1/product_reviews?select=id,product_id,author_name,rating,title,body,created_at&order=created_at.desc`,
     { headers: { apikey: key, Authorization: `Bearer ${key}` } },
   )
 
@@ -150,4 +175,19 @@ for (const [productId, { sum, count }] of totals) {
   })
 }
 
-writeFile(summaries)
+// Newest first, as fetched - the order the product page shows them in.
+const reviews = new Map()
+for (const row of rows) {
+  const list = reviews.get(row.product_id) ?? []
+  list.push({
+    id: row.id,
+    authorName: row.author_name,
+    rating: row.rating,
+    title: row.title,
+    body: row.body,
+    createdAt: row.created_at,
+  })
+  reviews.set(row.product_id, list)
+}
+
+writeFile(summaries, reviews)

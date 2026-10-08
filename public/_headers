@@ -7,6 +7,24 @@
 # Syntax: a path pattern on its own line, then INDENTED header name/value pairs.
 # Limits: 100 rules, 2,000 characters per line.
 
+# Security headers on every asset, added 8 Oct 2026 (docs/SEO.md §3g listed
+# them as open; audits score Best Practices on them). None is a Cache-Control
+# header, so merging with the rules below is harmless - the merge problem
+# described at the bottom of this file is specific to Cache-Control.
+#
+# - HSTS without includeSubDomains or preload: those reach every subdomain,
+#   including mail ones, and preload cannot be undone quickly.
+# - No Content-Security-Policy. GA4, Square, Supabase and Resend-linked pages
+#   would each need allow-listing, and a wrong entry breaks checkout silently.
+# - X-Frame-Options SAMEORIGIN: nothing embeds this site in a frame.
+# - Permissions-Policy: the site uses no camera, microphone or location.
+/*
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
 # Vite writes content-hashed filenames here (index-BATQLzSO.js), so the contents
 # behind a given URL can never change — a new build produces a new filename.
 # That is precisely the case `immutable` exists for: the browser reuses the file

@@ -11,6 +11,7 @@ import { createCheckoutSession } from '../../lib/checkout';
 import { resolveCardVariant, variantLabel, variantDescriptor } from '../../lib/productVariants';
 import { trackBeginCheckout } from '../../lib/analytics';
 import { displayProductName } from '../../lib/productName';
+import { responsiveImage } from '../../lib/responsiveImage';
 
 interface ApparelProductCardProps {
   product: Product;
@@ -120,6 +121,7 @@ export function ApparelProductCard({ product, priority = false }: ApparelProduct
             : { loading: 'lazy' as const })}
           decoding="async"
           src={displayImage}
+          {...responsiveImage(displayImage, '(min-width: 640px) 33vw, 50vw')}
           alt={`${product.name}${selectedColor ? ` - ${selectedColor}` : ''}`}
           className="w-full h-full object-contain p-3 transition-all duration-300 group-hover:scale-105"
         />

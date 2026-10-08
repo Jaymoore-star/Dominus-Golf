@@ -17,7 +17,9 @@
     "lint": "npm run lint:types && npm run lint:js && npm run lint:css",
     "dev:backend": "wrangler dev -c wrangler.backend.toml --port 8787 --local --ip 127.0.0.1",
     "deploy:backend": "wrangler deploy -c wrangler.backend.toml",
-    "deploy:site": "wrangler deploy"
+    "deploy:site": "wrangler deploy",
+    "images:responsive": "node scripts/generate-responsive-images.mjs",
+    "seo:indexnow": "node scripts/indexnow.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router';
 import { ShoppingBag } from 'lucide-react';
 import type { Product } from '../../data/products';
 import { useCart } from '../../store/cartStore';
+import { responsiveImage } from '../../lib/responsiveImage';
 
 interface BundleProductCardProps {
   product: Product;
@@ -25,6 +26,7 @@ export function BundleProductCard({ product }: BundleProductCardProps) {
           loading="lazy"
           decoding="async"
           src={product.image}
+          {...responsiveImage(product.image, '(min-width: 640px) 33vw, 50vw')}
           alt={product.name}
           className="product-image w-full h-full object-contain p-3 transition-transform duration-300"
         />
@@ -74,6 +76,7 @@ export function BundleProductCard({ product }: BundleProductCardProps) {
                   <div className="w-10 h-10 bg-background border border-border flex items-center justify-center overflow-hidden shrink-0">
                     <img
                       src={item.image}
+                      {...responsiveImage(item.image, '40px')}
                       alt={item.label}
                       className="w-full h-full object-contain p-1"
                       loading="lazy"
