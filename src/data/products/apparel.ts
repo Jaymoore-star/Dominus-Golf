@@ -17,6 +17,7 @@ export const apparel: Product[] = [
     colorVariants: {
       White: '/images/Gemini_Generated_Image_a1fmgba1fmgba1fm-square__c5e52c9e.webp',
     },
+    pattern: 'Logo print',
     gallery: [
       '/images/Gemini_Generated_Image_a1fmgba1fmgba1fm-square__c5e52c9e.webp',
       '/images/Gemini_Generated_Image_j0e7ykj0e7ykj0e7-square__24a3b57f.webp',
@@ -52,6 +53,7 @@ export const apparel: Product[] = [
     colorVariants: {
       White: '/images/ninjapod_11843683_f_4980_00_f__c9a61eee.webp',
     },
+    pattern: 'Logo print',
     gallery: [
       '/images/ninjapod_11843683_f_4980_00_f__c9a61eee.webp',
     ],
@@ -86,6 +88,7 @@ export const apparel: Product[] = [
     colorVariants: {
       White: '/images/unnamed-18-square__965291a0.webp',
     },
+    pattern: 'Logo print',
     gallery: [
       '/images/unnamed-18-square__965291a0.webp',
     ],
@@ -124,6 +127,7 @@ export const apparel: Product[] = [
     colorVariants: {
       Black: '/images/tee-womens-black-icon__72061fef.webp',
     },
+    pattern: 'Logo print',
     gallery: [
       '/images/tee-womens-black-icon__72061fef.webp',
       '/images/unnamed-16-square__2647aee8.webp',
@@ -162,6 +166,7 @@ export const apparel: Product[] = [
     colorVariants: {
       White: '/images/unnamed-12-square__24aceb8d.webp',
     },
+    pattern: 'Logo print',
     gallery: [
       '/images/unnamed-12-square__24aceb8d.webp',
       '/images/unnamed-13-square__b12db29e.webp',
@@ -198,6 +203,7 @@ export const apparel: Product[] = [
     colorVariants: {
       Black: '/images/tee-womens-black-performance__0a43f740.webp',
     },
+    pattern: 'Logo print',
     gallery: [
       '/images/tee-womens-black-performance__0a43f740.webp',
     ],

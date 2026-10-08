@@ -97,6 +97,12 @@ export type Product = {
      invented figures that also reached Google as aggregateRating markup. */
   includedImages?: { label: string; image: string }[];
   colorVariants?: Record<string, string>;
+  /**
+   * Garment pattern for the Merchant feed's `g:pattern`, e.g. 'Logo print'.
+   * Apparel only. Set per product rather than assumed for all apparel, so a
+   * plain tee added later is not advertised as printed.
+   */
+  pattern?: string;
   paymentUrl?: string;
 };
 

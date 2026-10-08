@@ -54,6 +54,41 @@ function colorOf(product: Product): string | null {
   return colors.length === 1 ? colors[0] : null;
 }
 
+/** The fabric spec as written, e.g. '50% Polyester, 25% Combed Ring-Spun Cotton, 25% Rayon'. */
+function fabricOf(product: Product): string | null {
+  const spec = product.specs?.find((s) => s.startsWith('Fabric:'));
+  return spec ? spec.slice('Fabric:'.length).trim() : null;
+}
+
+/**
+ * `g:material` wants the fibres, primary first and slash-separated, not the
+ * percentages: '50% Polyester, 25% Combed Ring-Spun Cotton' -> 'Polyester/Cotton'.
+ * The fibre is the last word of each part.
+ */
+function materialOf(product: Product): string | null {
+  const fabric = fabricOf(product);
+  if (!fabric) return null;
+  const fibres = fabric.split(',').map((part) => part.trim().split(/\s+/).pop() ?? '');
+  return fibres.filter(Boolean).join('/') || null;
+}
+
+/**
+ * Colour, pattern and fabric as a sentence, for apparel only. Merchant Center
+ * reads the description for these ("Update product descriptions to include
+ * details customers are looking for", Oct 2026) and the structured attributes
+ * alone did not satisfy it. Built from the same fields the product page shows,
+ * so it states nothing the page does not.
+ */
+function apparelDetails(product: Product): string {
+  if (!genderOf(product)) return '';
+  const parts = [
+    colorOf(product) && `Color: ${colorOf(product)}.`,
+    product.pattern && `Pattern: ${product.pattern}.`,
+    fabricOf(product) && `Material: ${fabricOf(product)}.`,
+  ];
+  return parts.filter(Boolean).join(' ');
+}
+
 /** Sizes from the Size variant, or [null] for anything not sold by size. */
 function sizesOf(product: Product): Array<string | null> {
   const sizeVariant = product.variants?.find((v) => v.label === 'Size');
@@ -104,8 +139,9 @@ export function feedDescription(product: Product): string {
 
   // If every sentence looked promotional, keep the original rather than emit an
   // empty description — a missing description fails the feed outright.
-  const cleaned = kept.join('').trim();
-  return clamp(cleaned || opening, 500);
+  const cleaned = kept.join('').trim() || opening;
+  const details = apparelDetails(product);
+  return clamp(details ? `${cleaned} ${details}` : cleaned, 500);
 }
 
 function itemXml(product: Product, size: string | null): string {
@@ -170,6 +206,11 @@ function itemXml(product: Product, size: string | null): string {
 
   const color = colorOf(product);
   if (color) lines.push(tag('g:color', color));
+  if (gender) {
+    const material = materialOf(product);
+    if (material) lines.push(tag('g:material', material));
+    if (product.pattern) lines.push(tag('g:pattern', product.pattern));
+  }
 
   // The same rate checkout charges, from the same function.
   lines.push(
