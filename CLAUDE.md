@@ -26,6 +26,14 @@ See [Blink Migration](#blink-migration) below — **do not break the running app
   `src/data/reviewSummaries.generated.ts` at build time, to emit `aggregateRating`
   in Product JSON-LD — never write that file by hand, and never emit a rating for a
   product with no real reviews.
+  **Review reads are cached** (10 Oct 2026): the browser reads
+  `/api/reviews/*` on the site Worker (edge cache, 60 s), falling back to
+  Supabase directly on any failure; React Query then holds them 2-5 min.
+  Star ratings come from the `product_review_summaries` view (migration 0011),
+  one row per product. Nothing purges the edge cache on a write, so the
+  writer's browser skips it for 2 min after saving (`src/lib/reviews.ts`).
+  The edge route needs `SUPABASE_URL` and `SUPABASE_ANON_KEY` as **secrets**
+  on the `tit` Worker; without them it 503s and the client reads Supabase.
 - **Hosting:** two Cloudflare Workers — `dominus-golf-backend` (the API,
   `wrangler.backend.toml`) and `tit` (the site, `wrangler.toml`). `tit` serves
   prerendered static assets; its only script is `worker/index.ts`, a fallback
@@ -138,7 +146,8 @@ worker/index.ts       Fallback handler for the site Worker. Static assets match
                       when nothing matched, and returns a real 404 (or the SPA
                       shell for /account/*). Added because an unmatched URL used
                       to serve the home page with a 200, which Google reported
-                      as Soft 404.
+                      as Soft 404. Also serves the cached /api/reviews/* reads
+                      (no /api path is a file, so they are misses too).
 wrangler.backend.toml Backend Worker. Nothing reads it implicitly — pass -c.
 backend/index.ts      Hono API: /api/square/checkout, /api/grant/checkout, /api/grant/complete
 src/

@@ -52,7 +52,58 @@ export type ReviewsResult =
   | { status: 'ok'; reviews: ProductReview[] }
   | { status: 'unavailable'; reviews: [] };
 
+/*
+ * The public review reads go through the site Worker's edge cache
+ * (/api/reviews/*, worker/index.ts) and fall back to Supabase directly whenever
+ * that fails: in `npm run dev`, which has no Worker, under `vite preview`, whose
+ * SPA fallback answers with HTML, and if the Worker's secrets are not set.
+ *
+ * Nothing purges the edge copy when a review is written, so the writer's own
+ * browser skips it until any copy cached before the write has expired. Without
+ * that, a reviewer reloading the page would see their review missing.
+ */
+
+/** Keep in step with REVIEWS_EDGE_TTL_SECONDS in worker/index.ts. */
+const REVIEWS_EDGE_TTL_MS = 60_000;
+const REVIEW_WRITTEN_AT_KEY = 'dominus:review-written-at';
+
+function noteReviewWritten() {
+  try {
+    localStorage.setItem(REVIEW_WRITTEN_AT_KEY, String(Date.now()));
+  } catch {
+    // Storage blocked: the writer may see the cached list for up to a minute.
+  }
+}
+
+function edgeCacheUsable(): boolean {
+  if (import.meta.env.DEV) return false;
+  try {
+    const writtenAt = Number(localStorage.getItem(REVIEW_WRITTEN_AT_KEY) ?? 0);
+    // Doubled for clock skew between this device and Cloudflare.
+    return Date.now() - writtenAt > 2 * REVIEWS_EDGE_TTL_MS;
+  } catch {
+    return true;
+  }
+}
+
+/** The cached route's JSON, or null for any failure so the caller reads Supabase. */
+async function fromEdgeCache<T>(path: string): Promise<T | null> {
+  if (!edgeCacheUsable()) return null;
+  try {
+    const res = await fetch(path);
+    if (!res.ok || !res.headers.get('content-type')?.includes('application/json')) return null;
+    return (await res.json()) as T;
+  } catch {
+    return null;
+  }
+}
+
 export async function fetchProductReviews(productId: string): Promise<ReviewsResult> {
+  const cached = await fromEdgeCache<ReviewRow[]>(
+    `/api/reviews/product/${encodeURIComponent(productId)}`,
+  );
+  if (cached) return { status: 'ok', reviews: cached.map(toReview) };
+
   const { data, error } = await supabase
     .from('product_reviews')
     .select(SELECT)
@@ -70,15 +121,65 @@ export async function fetchProductReviews(productId: string): Promise<ReviewsRes
 export type ReviewSummary = { average: number; count: number };
 
 /**
+ * True when the product_review_summaries view does not exist yet, i.e. migration
+ * 0011 has not been run. PostgREST reports a relation missing from its schema
+ * cache as PGRST205; Postgres itself says 42P01.
+ */
+function isMissingSummariesView(error: { code?: string; message?: string }): boolean {
+  return (
+    error.code === 'PGRST205' ||
+    error.code === '42P01' ||
+    /product_review_summaries/i.test(error.message ?? '')
+  );
+}
+
+function toSummaries(totals: Iterable<[string, { sum: number; count: number }]>) {
+  const summaries = new Map<string, ReviewSummary>();
+  for (const [productId, { sum, count }] of totals) {
+    summaries.set(productId, {
+      average: Math.round((sum / count) * 10) / 10,
+      count,
+    });
+  }
+  return summaries;
+}
+
+/**
  * Rating and count for every reviewed product, in one request.
  *
  * A shop grid needs a rating per card. Asking per card would fire one query per
- * product on every listing page, so this fetches the two columns it needs for the
- * whole table and aggregates client-side. Cheap while the store is young; if
- * review volume ever makes that wasteful, replace it with a Postgres view or an
- * RPC that returns the aggregate and keep this signature.
+ * product on every listing page, so this reads the per-product totals for the
+ * whole catalogue at once: one row per reviewed product, from the
+ * product_review_summaries view (supabase/migrations/0011). It used to download
+ * every review and add them up here, which grew with each review ever written
+ * and was the most frequent query on the database.
  */
 export async function fetchReviewSummaries(): Promise<Map<string, ReviewSummary>> {
+  type SummaryRow = { product_id: string; rating_sum: number; review_count: number };
+
+  let rows = await fromEdgeCache<SummaryRow[]>('/api/reviews/summaries');
+  if (!rows) {
+    const { data, error } = await supabase
+      .from('product_review_summaries')
+      .select('product_id, rating_sum, review_count');
+
+    if (error) {
+      if (isMissingSummariesView(error)) return fetchReviewSummariesFromRows();
+      throw new Error(error.message);
+    }
+    rows = data as SummaryRow[];
+  }
+
+  return toSummaries(
+    rows.map((row) => [row.product_id, { sum: row.rating_sum, count: row.review_count }]),
+  );
+}
+
+/**
+ * The pre-0011 path: every review's rating, totalled here. Used only until the
+ * view exists, so the frontend can deploy before the migration runs.
+ */
+async function fetchReviewSummariesFromRows(): Promise<Map<string, ReviewSummary>> {
   const { data, error } = await supabase.from('product_reviews').select('product_id, rating');
 
   // Same as fetchProductReviews: a missing table means the migration has not run,
@@ -95,15 +196,7 @@ export async function fetchReviewSummaries(): Promise<Map<string, ReviewSummary>
     entry.count += 1;
     totals.set(row.product_id, entry);
   }
-
-  const summaries = new Map<string, ReviewSummary>();
-  for (const [productId, { sum, count }] of totals) {
-    summaries.set(productId, {
-      average: Math.round((sum / count) * 10) / 10,
-      count,
-    });
-  }
-  return summaries;
+  return toSummaries(totals);
 }
 
 export type ReviewDraft = {
@@ -151,12 +244,14 @@ export async function saveProductReview(
     throw new Error(error.message);
   }
 
+  noteReviewWritten();
   return toReview(data as ReviewRow);
 }
 
 export async function deleteProductReview(id: string): Promise<void> {
   const { error } = await supabase.from('product_reviews').delete().eq('id', id);
   if (error) throw new Error(error.message);
+  noteReviewWritten();
 }
 
 /**

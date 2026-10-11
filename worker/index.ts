@@ -33,10 +33,98 @@
  *
  * So the split below is the whole point: the SPA fallback survives exactly
  * where it is load-bearing, and everywhere else a missing URL is honestly a 404.
+ *
+ * ── /api/reviews/*: the shared review cache (added 10 Oct 2026) ────────────
+ *
+ * The star ratings and review lists are the only public data every visitor
+ * fetched, each browser straight from Supabase. These two GET routes serve the
+ * same data through Cloudflare's edge cache, so one Supabase read per minute
+ * per Cloudflare location answers every visitor there. No /api/* path is a
+ * file, so they run here, after the asset lookup, like any other miss.
+ *
+ *   GET /api/reviews/summaries        -> product_review_summaries (migration 0011)
+ *   GET /api/reviews/product/<id>     -> one product's reviews, newest first
+ *
+ * Public data only: the same rows Supabase already serves to anyone holding the
+ * anon key. Nothing per-user is ever cached here.
+ *
+ * Nothing purges this cache. Review writes go straight from the browser to
+ * Supabase, never through here, and the Cache API only clears one location.
+ * Instead the entries are short-lived (REVIEWS_EDGE_TTL_SECONDS), and a browser
+ * that has just written a review skips this route until anything it could have
+ * cached has expired (src/lib/reviews.ts, edgeCacheUsable). Everyone else sees a
+ * new review within the TTL.
+ *
+ * Every failure (no Supabase secrets, Supabase error) returns a non-2xx that is
+ * not cached, and the client then reads Supabase directly, as it did before.
+ * SUPABASE_URL and SUPABASE_ANON_KEY are Worker secrets on `tit`, set in the
+ * Cloudflare dashboard; secrets survive deploys, plain dashboard variables do not.
  */
 
 interface Env {
   ASSETS: Fetcher;
+  SUPABASE_URL?: string;
+  SUPABASE_ANON_KEY?: string;
+}
+
+/** Keep in step with REVIEWS_EDGE_TTL_MS in src/lib/reviews.ts. */
+const REVIEWS_EDGE_TTL_SECONDS = 60;
+
+/** Matches every Product.id in src/data/products.ts; also stops odd cache keys. */
+const PRODUCT_ID = /^[a-z0-9-]{1,100}$/;
+
+/** The columns fetchProductReviews selects (src/lib/reviews.ts SELECT). */
+const REVIEW_COLUMNS = 'id,product_id,user_id,author_name,rating,title,body,created_at';
+
+function jsonError(status: number, message: string): Response {
+  return new Response(JSON.stringify({ error: message }), {
+    status,
+    headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
+  });
+}
+
+async function handleReviewsApi(
+  request: Request,
+  env: Env,
+  ctx: ExecutionContext,
+  url: URL,
+): Promise<Response> {
+  if (request.method !== 'GET') return jsonError(405, 'Method not allowed');
+
+  let query: string;
+  const product = url.pathname.match(/^\/api\/reviews\/product\/([^/]+)$/);
+  if (url.pathname === '/api/reviews/summaries') {
+    query = 'product_review_summaries?select=product_id,rating_sum,review_count';
+  } else if (product && PRODUCT_ID.test(product[1])) {
+    query = `product_reviews?select=${REVIEW_COLUMNS}&product_id=eq.${product[1]}&order=created_at.desc`;
+  } else {
+    return jsonError(404, 'Not found');
+  }
+
+  if (!env.SUPABASE_URL || !env.SUPABASE_ANON_KEY) {
+    return jsonError(503, 'Review cache not configured');
+  }
+
+  // Keyed on the path alone, so a query string can neither bypass the cache nor
+  // fill it with copies of the same answer.
+  const cacheKey = new Request(new URL(url.pathname, url.origin).toString());
+  const cache = caches.default;
+  const hit = await cache.match(cacheKey);
+  if (hit) return hit;
+
+  const upstream = await fetch(`${env.SUPABASE_URL}/rest/v1/${query}`, {
+    headers: { apikey: env.SUPABASE_ANON_KEY, Accept: 'application/json' },
+  });
+  if (!upstream.ok) return jsonError(502, `Supabase returned ${upstream.status}`);
+
+  const response = new Response(await upstream.text(), {
+    headers: {
+      'Content-Type': 'application/json',
+      'Cache-Control': `public, max-age=${REVIEWS_EDGE_TTL_SECONDS}`,
+    },
+  });
+  ctx.waitUntil(cache.put(cacheKey, response.clone()));
+  return response;
 }
 
 /**
@@ -54,8 +142,12 @@ interface Env {
 const SPA_FALLBACK_PREFIXES = ['/account/'];
 
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
+
+    if (url.pathname.startsWith('/api/reviews/')) {
+      return handleReviewsApi(request, env, ctx, url);
+    }
 
     if (SPA_FALLBACK_PREFIXES.some((prefix) => url.pathname.startsWith(prefix))) {
       return env.ASSETS.fetch(new URL('/index.html', url.origin));

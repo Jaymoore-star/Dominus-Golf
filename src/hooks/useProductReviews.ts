@@ -26,6 +26,23 @@ export const reviewSummariesKey = ['product-review-summaries'] as const;
  */
 const snapshotSummaries = () => new Map(Object.entries(REVIEW_SUMMARIES));
 
+/*
+ * How long a visitor's browser reuses each answer before asking Supabase again.
+ * These two reads are the only public data every visitor fetches (pg_stat_statements,
+ * 10 Oct 2026: ~1,550 summary and ~780 per-product calls since July), and reviews
+ * change a few times a year. Someone else's new review reaching this visitor a few
+ * minutes late is harmless; the reviewer's own new or edited review is never
+ * late, because ProductReviews calls refresh() after saving, which invalidates
+ * both queries in their browser.
+ *
+ * This is the per-browser layer. Behind it, the fetches read through the shared
+ * edge cache in worker/index.ts (one minute), which the reviewer's own browser
+ * skips right after a write (src/lib/reviews.ts). Worst case, another visitor
+ * sees a new review about six minutes after it was posted.
+ */
+const SUMMARIES_STALE_MS = 5 * 60_000;
+const PRODUCT_REVIEWS_STALE_MS = 2 * 60_000;
+
 function snapshotReviews(productId: string): ReviewsResult {
   const reviews: ProductReview[] = (REVIEW_SNAPSHOT[productId] ?? []).map((review) => ({
     ...review,
@@ -49,7 +66,7 @@ export function useReviewSummaries() {
     queryFn: fetchReviewSummaries,
     initialData: snapshotSummaries,
     initialDataUpdatedAt: 0,
-    staleTime: 60_000,
+    staleTime: SUMMARIES_STALE_MS,
   });
 
   const summaries: Map<string, ReviewSummary> = query.data ?? new Map();
@@ -75,7 +92,7 @@ export function useProductReviews(productId: string) {
     queryFn: () => fetchProductReviews(productId),
     initialData: () => snapshotReviews(productId),
     initialDataUpdatedAt: 0,
-    staleTime: 30_000,
+    staleTime: PRODUCT_REVIEWS_STALE_MS,
   });
 
   const reviews: ProductReview[] = query.data?.reviews ?? [];
