@@ -1,0 +1,31 @@
+-- Index product_reviews by reviewer.
+--
+-- Run this on its own (it must be the only statement in the query):
+--   Dashboard → SQL Editor → New query → paste → Run.
+-- or: node scripts/run-migration.mjs supabase/migrations/0009_product_reviews_user_idx.sql
+--
+-- What it speeds up: the daily review-request job (backend/reviewRequests.ts,
+-- reviewedByUser) asks which products each of up to 500 buyers has already
+-- reviewed:
+--   select user_id, product_id from product_reviews where user_id in (...)
+-- The two existing indexes both start with product_id. Measured on 10 Oct 2026,
+-- Postgres could still answer this through the (product_id, user_id) unique
+-- index by stepping through every product in it, which stays cheap while the
+-- catalogue is small. This index lets it go straight to each reviewer instead.
+-- A small gain, kept because reviews are rarely written, so it costs little.
+--
+-- It also covers the foreign key to auth.users (on delete cascade): deleting an
+-- account has to find that user's reviews, which is the same full-table read
+-- without this index. orders.user_id is already covered by orders_user_created_idx.
+--
+-- CONCURRENTLY builds the index without blocking inserts or updates, so reviews
+-- can still be saved while it runs. It cannot run inside a transaction, which is
+-- why this file holds a single statement. If the build fails part-way it leaves an
+-- INVALID index behind that IF NOT EXISTS would then skip; check with the last
+-- block of supabase/diagnostics/query-performance.sql, drop it, and run this again.
+--
+-- To undo:
+--   drop index concurrently if exists public.product_reviews_user_idx;
+
+create index concurrently if not exists product_reviews_user_idx
+  on public.product_reviews (user_id);
