@@ -109,22 +109,40 @@ async function handleReviewsApi(
   // fill it with copies of the same answer.
   const cacheKey = new Request(new URL(url.pathname, url.origin).toString());
   const cache = caches.default;
+
+  /* The expiry is enforced here, from our own timestamp, rather than trusted to
+     Cache-Control. Verified live on 11 Oct 2026: a cached copy came back with
+     `max-age=14400`, the zone's Browser Cache TTL, in place of the 60 we stored,
+     so the zone settings rewrite what the Cache API hands back. Checking the age
+     ourselves and always answering with our own headers keeps both the edge TTL
+     and what browsers are told at REVIEWS_EDGE_TTL_SECONDS whatever the zone says. */
   const hit = await cache.match(cacheKey);
-  if (hit) return hit;
+  const cachedAt = Number(hit?.headers.get('X-Cached-At') ?? 0);
+  if (hit && Date.now() - cachedAt < REVIEWS_EDGE_TTL_SECONDS * 1000) {
+    return reviewsResponse(await hit.text(), cachedAt);
+  }
 
   const upstream = await fetch(`${env.SUPABASE_URL}/rest/v1/${query}`, {
     headers: { apikey: env.SUPABASE_ANON_KEY, Accept: 'application/json' },
   });
   if (!upstream.ok) return jsonError(502, `Supabase returned ${upstream.status}`);
 
-  const response = new Response(await upstream.text(), {
-    headers: {
-      'Content-Type': 'application/json',
-      'Cache-Control': `public, max-age=${REVIEWS_EDGE_TTL_SECONDS}`,
-    },
-  });
+  const response = reviewsResponse(await upstream.text(), Date.now());
   ctx.waitUntil(cache.put(cacheKey, response.clone()));
   return response;
+}
+
+/** Browsers may keep it only for what is left of the edge TTL. */
+function reviewsResponse(body: string, cachedAt: number): Response {
+  const ageSeconds = Math.floor((Date.now() - cachedAt) / 1000);
+  const maxAge = Math.max(0, REVIEWS_EDGE_TTL_SECONDS - ageSeconds);
+  return new Response(body, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Cache-Control': `public, max-age=${maxAge}`,
+      'X-Cached-At': String(cachedAt),
+    },
+  });
 }
 
 /**
