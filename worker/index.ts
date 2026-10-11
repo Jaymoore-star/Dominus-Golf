@@ -122,12 +122,22 @@ async function handleReviewsApi(
     return reviewsResponse(await hit.text(), cachedAt);
   }
 
-  const upstream = await fetch(`${env.SUPABASE_URL}/rest/v1/${query}`, {
-    headers: { apikey: env.SUPABASE_ANON_KEY, Accept: 'application/json' },
-  });
-  if (!upstream.ok) return jsonError(502, `Supabase returned ${upstream.status}`);
+  /* A dropped connection throws rather than returning a bad status. Uncaught, it
+     surfaced as a bare Worker exception (seen in the 11 Oct 2026 load test,
+     "Network connection lost."); caught, it is the same uncached 502 as any
+     other Supabase failure, and the browser reads Supabase itself. */
+  let body: string;
+  try {
+    const upstream = await fetch(`${env.SUPABASE_URL}/rest/v1/${query}`, {
+      headers: { apikey: env.SUPABASE_ANON_KEY, Accept: 'application/json' },
+    });
+    if (!upstream.ok) return jsonError(502, `Supabase returned ${upstream.status}`);
+    body = await upstream.text();
+  } catch (err) {
+    return jsonError(502, `Supabase unreachable: ${err instanceof Error ? err.message : String(err)}`);
+  }
 
-  const response = reviewsResponse(await upstream.text(), Date.now());
+  const response = reviewsResponse(body, Date.now());
   ctx.waitUntil(cache.put(cacheKey, response.clone()));
   return response;
 }
