@@ -116,6 +116,17 @@ npm run seo:dates   # refresh sitemap <lastmod> after editing page/product conte
                     # then COMMIT the result. Deliberately not part of the build:
                     # the Cloudflare build only has a shallow clone, where git
                     # reports every file as changed in the tip commit.
+
+# Load testing (k6, `brew install k6`) - LOCAL ONLY, see loadtest/run.sh
+npm run loadtest                 # 20 -> 50 -> 100 shoppers, ~13 min, report in loadtest/results/
+PROFILE=stress npm run loadtest  # up to 800. Square/Supabase/Resend are mocked (loadtest/mock-backend.ts)
+                    # Never run plain `wrangler dev` / `dev:backend` under load: they read the
+                    # root .dev.vars (production keys). On an M5 Mac (11 Oct 2026) 100 shoppers
+                    # gave p95 13 ms; ~200 crashed wrangler dev's proxy - a local-tool limit.
+                    # EVERY service is on a FREE plan, so the report's "Free plan budget" is
+                    # the real answer: Resend's 100 emails/day runs out first (~1,500
+                    # visits/day at 3% signup + 2% orders), Workers' 100k/day at ~37,000.
+                    # The mock Resend enforces 100/day, so long runs show signups refused.
 ```
 
 Lint state (17 Sep 2026): `lint:types` is clean, and `lint:js` is down to **2**

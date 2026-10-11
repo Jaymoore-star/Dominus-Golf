@@ -1,0 +1,25 @@
+# LOCAL LOAD TESTING ONLY - never `wrangler deploy` this file.
+#
+# The site Worker exactly as /wrangler.toml describes it (same Worker script,
+# same dist/, same asset handling), except that /api/reviews/* reads the mock
+# Supabase served by the mock backend instead of the real one.
+#
+# It is a separate file, in loadtest/, because the root wrangler.toml shares a
+# directory with the root .dev.vars, which holds the production SUPABASE_URL;
+# `wrangler dev` there would point the review route at the live database.
+#
+# Keep html_handling and not_found_handling in step with /wrangler.toml.
+
+name = "tit-loadtest"
+main = "../worker/index.ts"
+compatibility_date = "2024-11-01"
+
+[assets]
+directory = "../dist"
+binding = "ASSETS"
+html_handling = "drop-trailing-slash"
+not_found_handling = "none"
+
+[vars]
+SUPABASE_URL = "http://127.0.0.1:8787/__mock/supabase"
+SUPABASE_ANON_KEY = "mock"

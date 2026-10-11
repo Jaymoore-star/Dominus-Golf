@@ -97,6 +97,7 @@ export default tseslint.config(
       '*.config.{js,cjs,mjs,ts}',
       'scripts/**/*.{js,cjs,mjs}',
       'backend/**/*.ts',
+      'loadtest/**/*.{ts,mjs}',
     ],
     languageOptions: {
       globals: { ...globals.node },
@@ -104,6 +105,14 @@ export default tseslint.config(
     rules: {
       // CommonJS config files legitimately use require()/module.exports.
       '@typescript-eslint/no-require-imports': 'off',
+    },
+  },
+
+  // k6 scripts run in k6's own runtime, which injects __ENV.
+  {
+    files: ['loadtest/**/*.js'],
+    languageOptions: {
+      globals: { __ENV: 'readonly', __VU: 'readonly', __ITER: 'readonly' },
     },
   },
 );

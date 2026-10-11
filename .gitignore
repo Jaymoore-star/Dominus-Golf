@@ -40,3 +40,6 @@ secrets.json
 
 # Personal Claude Code permissions. Shared settings belong in .claude/settings.json.
 .claude/settings.local.json
+
+# k6 load-test output (loadtest/run.sh). Large, and specific to one machine.
+loadtest/results/

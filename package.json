@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "seo:reviews": "node scripts/fetch-review-summaries.mjs",
     "seo:dates": "node scripts/generate-file-dates.mjs",
+    "loadtest": "bash loadtest/run.sh",
     "lint:css": "stylelint \"src/**/*.css\" --fix --quiet",
     "lint:js": "eslint . --report-unused-disable-directives",
     "lint:types": "tsc --noEmit",

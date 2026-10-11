@@ -1,0 +1,25 @@
+# LOCAL LOAD TESTING ONLY - never `wrangler deploy` this file.
+#
+# The backend API with every third-party call mocked; see mock-backend.ts.
+# It lives in loadtest/ on purpose: wrangler reads .dev.vars from the config's
+# own directory, so the root .dev.vars (production keys) is never loaded.
+# No account_id, so it cannot quietly deploy into the real account either.
+
+name = "dominus-golf-backend-loadtest"
+main = "mock-backend.ts"
+compatibility_date = "2024-11-01"
+
+# Dummies. Each one only has to be non-empty for the backend to take the code
+# path a real request takes; every call they authorise is answered by the mock.
+[vars]
+SQUARE_ACCESS_TOKEN = "mock"
+SQUARE_LOCATION_ID = "MOCKLOCATION"
+RESEND_API_KEY = "mock"
+RESEND_FROM = "Dominus Golf <loadtest@example.com>"
+SUPABASE_URL = "https://mock-supabase.invalid"
+SUPABASE_ANON_KEY = "mock"
+SUPABASE_SERVICE_ROLE_KEY = "mock"
+
+# Resend Free allows 100 emails a day; the mock refuses mail past this, as Resend
+# would. Set a large number to switch the cap off for a run.
+MOCK_RESEND_DAILY_QUOTA = "100"
