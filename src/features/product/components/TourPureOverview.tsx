@@ -208,7 +208,7 @@ export function TourPureOverview({ variant = 'full' }: { variant?: 'full' | 'sum
             The Dominus 9 o’clock-to-3 o’clock Training Method
           </h2>
           <p className="font-sans text-muted-foreground max-w-2xl mx-auto italic mb-10">
-            This system is built around one principle: train impact first, then build the swing around it. Repeat these steps daily 100 reps per day.
+            This system is built around one principle: train impact first, then build the swing around it. Repeat these steps daily: 20-30 reps a day. It is a weighted club, so quality beats volume.
           </p>
         </div>
 
