@@ -21,7 +21,7 @@ export const trainingSystems: Product[] = [
     ],
     badge: 'Best Seller',
     description:
-      'Most golfers spend hundreds on new equipment hoping something changes.\n\nNothing changes.\n\nBecause the problem was never the club. It was never the shaft flex, the loft angle, or the grip size. It was the swing path. It was the plane. It was the one thing no equipment purchase has ever fixed - and the one thing every elite golfer has spent thousands of hours learning to master.\n\nTour Pure was built for the golfer who is done guessing.\n\nEvery rep delivers immediate feedback on your swing path and plane - the two fundamentals that separate a consistent, powerful golf swing from everything else. Not after the round. Not after the lesson. Right now. On that rep.\n\nYou feel it when it\'s wrong. You feel it when it\'s right. And over time, right becomes automatic.\n\nThis is not practice. This is training.\n\nEvery order includes a FREE copy of the Ultimate Guide to Mastering the Game (PDF) - our 90-day training program, emailed to you with your order confirmation.',
+      'Most golfers spend hundreds on new equipment hoping something changes.\n\nNothing changes.\n\nBecause the problem was never the club. It was never the shaft flex, the loft angle, or the grip size. It was the swing path. It was the plane. It was the one thing no equipment purchase has ever fixed - and the one thing every elite golfer has spent thousands of hours learning to master.\n\nTour Pure was built for the golfer who is done guessing.\n\nEvery rep delivers immediate feedback on your swing path and plane - the two fundamentals that separate a consistent, powerful golf swing from everything else. Not after the round. Not after the lesson. Right now. On that rep.\n\nYou feel it when it\'s wrong. You feel it when it\'s right. And over time, right becomes automatic.\n\nThis is not practice. This is training.\n\nEvery order includes a FREE copy of the Ultimate Guide to Mastering the Game (PDF) - our 90-day training program, available as an instant download.',
     features: [
       'FREE Ultimate Guide to Mastering the Game (90-day PDF program)',
       'Improves tempo and sequencing',
@@ -58,7 +58,7 @@ export const trainingSystems: Product[] = [
     badge: 'Sold Out',
     paymentUrl: 'https://square.link/u/MwoinSDb',
     description:
-      'Precision weighted swing trainer designed to develop smooth tempo, proper sequencing, and a consistent swing motion. Every order includes a FREE copy of the Ultimate Guide to Mastering the Game (PDF) - our 90-day training program, emailed to you with your order confirmation.',
+      'Precision weighted swing trainer designed to develop smooth tempo, proper sequencing, and a consistent swing motion. Every order includes a FREE copy of the Ultimate Guide to Mastering the Game (PDF) - our 90-day training program, available as an instant download.',
     features: [
       'FREE Ultimate Guide to Mastering the Game (90-day PDF program)',
       'Smooth weighted feel',
@@ -89,7 +89,7 @@ export const trainingSystems: Product[] = [
     badge: 'Out of Stock',
     paymentUrl: 'https://square.link/u/CRNoOrPM',
     description:
-      'Junior swing trainer designed to build balance, sequencing, and proper mechanics early-without overwhelming weight. Every order includes a FREE copy of the Ultimate Guide to Mastering the Game (PDF) - our 90-day training program, emailed to you with your order confirmation.',
+      'Junior swing trainer designed to build balance, sequencing, and proper mechanics early-without overwhelming weight. Every order includes a FREE copy of the Ultimate Guide to Mastering the Game (PDF) - our 90-day training program, available as an instant download.',
     features: [
       'FREE Ultimate Guide to Mastering the Game (90-day PDF program)',
       'Junior-friendly weight',
@@ -100,21 +100,22 @@ export const trainingSystems: Product[] = [
     inStock: false,
   },
   {
-    id: 'tour-pure-pro-path-bundle-men',
+    id: 'tour-pure-pro-path-bundle-men",
     name: "Tour Pure Pro Path Bundle (Men's)",
     seoTitle: "Swing Trainer and Laser Bundle (Men's)",
     seoDescription:
       "The Tour Pure men's swing path trainer, the laser that screws into its grip, and the free 90-day training guide PDF, in one bundle.",
     category: 'training-system',
     subcategory: "Men's Bundle",
-    audience: 'men',
+    audience: 'men's',
     price: 69.99,
     compareAtPrice: 79.98,
     image: '/images/bundle-men__0cb06a4b.webp',
-    gallery: ['/images/bundle-men__0cb06a4b.webp', '/images/Photoroom-20251125_1425462241-square__995a1dfa.webp', '/images/laser-on-grip__ead9a20d.webp', '/images/book-ultimate-guide__3f8ec230.webp'],
+    gallery: ['/images/bundle-men__0cb06a4b.webp', '/images/Photoroom-20251125_1425462241-square__995a1dfa.webp',
+    '/images/laser-on-grip__ead9a20d.webp', '/images/book-ultimate-guide__3f8ec230.webp'],
     badge: 'Pre-Order',
     description:
-      "Everything you need to build your swing path, in one box. The Tour Pure Men's swing path trainer builds the positions; the Tour Pure Laser Path Trainer screws into its grip and shows your path on the mat as you swing. Every order includes a FREE copy of the Ultimate Guide to Mastering the Game (PDF) - our 90-day training program, emailed to you with your order confirmation.",
+      "Everything you need to build your swing path, in one box. The Tour Pure Men's swing path trainer builds the positions; the Tour Pure Laser Path Trainer screws into its grip and shows your path on the mat as you swing. Every order includes a FREE copy of the Ultimate Guide to Mastering the Game (PDF) - our 90-day training program, available as an instant download.",
     features: [
       "Tour Pure Men's swing path trainer",
       'Tour Pure Laser Path Trainer, batteries included',
@@ -123,7 +124,6 @@ export const trainingSystems: Product[] = [
     ],
     specs: [
       "In the box: the Tour Pure Men's swing path trainer and the Tour Pure Laser Path Trainer",
-      'By email: the Ultimate Guide PDF, with your order confirmation',
       'Pre-order: ships within 5-7 business days',
     ],
     inStock: true,
@@ -145,7 +145,7 @@ export const trainingSystems: Product[] = [
     gallery: ['/images/bundle-women__da7cc957.webp', '/images/tour-pure-women__b5d79756.webp', '/images/laser-on-grip__ead9a20d.webp', '/images/book-ultimate-guide__3f8ec230.webp'],
     badge: 'Pre-Order',
     description:
-      "Everything you need to build your swing path, in one box. The Tour Pure Women's swing path trainer builds the positions; the Tour Pure Laser Path Trainer screws into its grip and shows your path on the mat as you swing. Every order includes a FREE copy of the Ultimate Guide to Mastering the Game (PDF) - our 90-day training program, emailed to you with your order confirmation.",
+      "Everything you need to build your swing path, in one box. The Tour Pure Women's swing path trainer builds the positions; the Tour Pure Laser Path Trainer screws into its grip and shows your path on the mat as you swing. Every order includes a FREE copy of the Ultimate Guide to Mastering the Game (PDF) - our 90-day training program, available as an instant download.",
     features: [
       "Tour Pure Women's swing path trainer",
       'Tour Pure Laser Path Trainer, batteries included',
@@ -154,16 +154,13 @@ export const trainingSystems: Product[] = [
     ],
     specs: [
       "In the box: the Tour Pure Women's swing path trainer and the Tour Pure Laser Path Trainer",
-      'By email: the Ultimate Guide PDF, with your order confirmation',
+      'Instant download: the Ultimate Guide PDF',
       'Pre-order: ships within 5-7 business days',
     ],
     inStock: true,
     preorder: true,
     shipsIn: '5-7 business days',
   },
-  /* Same layout as the other two bundles, but the top slot is the Tour Pure Jr
-     product photo: there is no cutout of the Jr trainer. Swap in a real bundle
-     shot when Jay sends one. */
   {
     id: 'tour-pure-pro-path-bundle-jr',
     name: 'Tour Pure Pro Path Bundle (Jr)',
@@ -179,7 +176,7 @@ export const trainingSystems: Product[] = [
     gallery: ['/images/bundle-jr__3223630f.webp', '/images/R-square__5f0049bb.webp', '/images/laser-on-grip__ead9a20d.webp', '/images/book-ultimate-guide__3f8ec230.webp'],
     badge: 'Pre-Order',
     description:
-      'Everything a junior golfer needs to build their swing path, in one box. The Tour Pure Jr swing trainer builds balance, sequencing and mechanics without overwhelming weight; the Tour Pure Laser Path Trainer screws into its grip and shows the path on the mat with every swing. Every order includes a FREE copy of the Ultimate Guide to Mastering the Game (PDF) - our 90-day training program, emailed to you with your order confirmation.',
+      'Everything a junior golfer needs to build their swing path, in one box. The Tour Pure Jr swing trainer builds balance, sequencing and mechanics without overwhelming weight; the Tour Pure Laser Path Trainer screws into its grip and shows the path on the mat with every swing. Every order includes a FREE copy of the Ultimate Guide to Mastering the Game (PDF) - our 90-day training program, available as an instant download.',
     features: [
       'Tour Pure Jr swing trainer',
       'Tour Pure Laser Path Trainer, batteries included',
@@ -188,7 +185,7 @@ export const trainingSystems: Product[] = [
     ],
     specs: [
       'In the box: the Tour Pure Jr swing trainer and the Tour Pure Laser Path Trainer',
-      'By email: the Ultimate Guide PDF, with your order confirmation',
+      'Instant download: the Ultimate Guide PDF',
       'Pre-order: ships within 5-7 business days',
     ],
     inStock: true,
