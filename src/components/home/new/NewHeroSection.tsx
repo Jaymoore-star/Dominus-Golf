@@ -20,13 +20,11 @@ export const NewHeroSection = () => {
   return (
     <section className="relative pt-20 sm:pt-28 pb-20 sm:pb-24 overflow-hidden bg-white text-black">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="max-w-4xl mx-auto text-center mb-12">
-          {/* Leads with the niche: an at-home and on-range workout system (Jay,
-              Oct 2026). The count is reps, not minutes, on purpose: the safety
-              page caps weighted swinging at 10-15 minutes a session, and 20-30
-              reps sits well inside that. "At home" means outside at home - the
-              same safety page rules Tour Pure out indoors except in a training
-              facility, which is why the last bullet says "outside". */}
+        <div className="max-w-4xl xl mx-auto text-center mb-12">
+          {/* The daily recommendation is 30 minutes of practice. This is total
+              practice time, not a direction to swing the weighted trainer for
+              30 continuous minutes; the safety page limits active weighted
+              swinging to 10-15 minutes per session. */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 font-serif leading-[1.08] text-accent">
             {/* nowrap: the browser may break after a hyphen, which left "ON-" on
                 one line and "RANGE" on the next at desktop width. */}
@@ -35,12 +33,12 @@ export const NewHeroSection = () => {
           {/* Same type as the bullets below (size, colour, line height), so the
               hero has one body style under the H1. */}
           <p className="text-base md:text-lg text-gray-600 font-sans leading-relaxed mb-10">
-            20-30 weighted reps a day. See it, feel it, repeat it.
+            30 minutes of practice per day. See it, feel it, repeat it.
           </p>
 
           {/* The bullets and the buttons share one shrink-to-fit column.
-              Centring them separately gave each its own width and so its own left
-              edge — the list sat about 48px inside the buttons, which is what read
+              Centering them separately gave each its own width and so its own left
+              edge - the list sat about 48px inside the buttons, which is what read
               as misaligned. Sizing them together means one left edge for both.
               max-w-full so the long bullets wrap on a phone instead of overflowing. */}
           <div className="w-fit max-w-full mx-auto">
@@ -65,7 +63,8 @@ export const NewHeroSection = () => {
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-12">
               <Link
-                to="/shop/$category" params={{ category: 'training-system' }}
+                to="/shop/$category"
+                params={{ category: 'training-system' }}
                 className="px-10 py-4 bg-black text-white font-bold tracking-widest uppercase hover:bg-gray-800 transition-colors text-xs text-center"
               >
                 SHOP THE TOUR PURE SYSTEM
@@ -127,7 +126,6 @@ export const NewHeroSection = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
           </div>
         </div>
-      </div>
 
       {/* Removed: a 20%-opacity blurred black circle anchored at -top-1/4 -left-1/4.
           On a wide screen it washed the top-left quarter grey, which made a centred
