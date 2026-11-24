@@ -1,1 +1,272 @@
-aW1wb3J0IHsgQ2hlY2ssIEluZm8sIFRhcmdldCwgWmFwLCBXYXZlcywgQWN0aXZpdHksIEFycm93UmlnaHQgfSBmcm9tICdsdWNpZGUtcmVhY3QnOwoKLyoqCiAqIGB2YXJpYW50YCBleGlzdHMgdG8gc3RvcCB0aGlzIGJsb2NrIGNhbm5pYmFsaXNpbmcgaXRzIG93biBndWlkZSBwYWdlLgogKgogKiBJdCByZW5kZXJzIGluIGZ1bGwgb24gL3RvdXItcHVyZS1ndWlkZSBBTkQgb24gYWxsIHRocmVlIC9wcm9kdWN0L3RvdXItcHVyZS0qCiAqIHBhZ2VzLiBPbmNlIGJvZGllcyBzdGFydGVkIGJlaW5nIHNlcnZlci1yZW5kZXJlZCAoc2NyaXB0cy9wcmVyZW5kZXIubWpzKSwKICogdGhhdCBiZWNhbWUgbWVhc3VyYWJsZTogYWZ0ZXIgc3RyaXBwaW5nIG5hdiBhbmQgZm9vdGVyIGJvaWxlcnBsYXRlLCB0aGUgZ3VpZGUKICogYW5kIGVhY2ggcHJvZHVjdCBwYWdlIHNoYXJlZCB+OTAlIG9mIHRoZWlyIHVuaXF1ZSB0ZXh0LCBhbmQgdGhlIHRocmVlIHByb2R1Y3QKICogcGFnZXMgc2hhcmVkIDg2LTg4JSB3aXRoIGVhY2ggb3RoZXIuIE9uZSB+NTQwLXdvcmQgYmxvY2sgd2FzIDYwJSsgb2YgdGhlCiAqIGNvbnRlbnQgb24gZm91ciBVUkxzLCB3aGljaCBpcyB3aGF0IG5lYXItZHVwbGljYXRlIGRlbW90aW9uIGV4aXN0cyB0byBjYXRjaCAtCiAqIGFuZCBpdCBsZWZ0IEdvb2dsZSBjaG9vc2luZyB3aGljaCBvZiBmb3VyIHBhZ2VzIGFuc3dlcnMgInN3aW5nIHBhdGggZHJpbGxzIi4KICoKICogICAnZnVsbCcgICAgLSBldmVyeSBzZWN0aW9uLiBUaGUgZ3VpZGUgcGFnZSwgd2hpY2ggc2hvdWxkIG93biB0aGUgbWV0aG9kLgogKiAgICdzdW1tYXJ5JyAtIHRoZSBvdmVydmlldyBvbmx5OiBXaGF0IGl0IGlzIC8gV2hvIGl0J3MgZm9yIC8gVGhlIFByb21pc2UuCiAqICAgICAgICAgICAgICAgVGhlIHByb2R1Y3QgcGFnZSBrZWVwcyB0aGUgcGVyc3Vhc2l2ZSBtYXRlcmlhbCBhbmQgaXRzIG93bgogKiAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uLCBmZWF0dXJlcywgc3BlY3MgYW5kIHJldmlld3MsIGFuZCBhbHJlYWR5IGxpbmtzIHRvCiAqICAgICAgICAgICAgICAgdGhlIGZ1bGwgZ3VpZGUuCiAqCiAqIE5vIGNvcHkgd2FzIHJld3JpdHRlbiBmb3IgdGhpczogdGhlIHNlY3Rpb25zIGFyZSB0aGUgZXhpc3Rpbmcgb25lcywgcmVuZGVyZWQKICogaW4gb25lIHBsYWNlIGluc3RlYWQgb2YgZm91ci4gVG8gcHV0IHRoZSB3aG9sZSBibG9jayBiYWNrIG9uIHByb2R1Y3QgcGFnZXMsCiAqIGRyb3AgdGhlIGB2YXJpYW50YCBwcm9wIGF0IHRoZSBQcm9kdWN0UGFnZSBjYWxsIHNpdGUuCiAqLwpleHBvcnQgZnVuY3Rpb24gVG91clB1cmVPdmVydmlldyh7IHZhcmlhbnQgPSAnZnVsbCcgfTogeyB2YXJpYW50PzogJ2Z1bGwnIHwgJ3N1bW1hcnknIH0gPSB7fSkgewogIGNvbnN0IHN0ZXBzID0gWwogICAgewogICAgICBudW1iZXI6ICdQMScsCiAgICAgIHRpdGxlOiAnU2V0dXAgUG9zaXRpb24nLAogICAgICBpY29uOiA8VGFyZ2V0IGNsYXNzTmFtZT0idy01IGgtNSB0ZXh0LWFjY2VudCIgLz4sCiAgICAgIGNvbnRlbnQ6ICgKICAgICAgICA8dWwgY2xhc3NOYW1lPSJzcGFjZS15LTEiPgogICAgICAgICAgPGxpPuKAoiBGZWV0IHRvZ2V0aGVyIHRvIGVzdGFibGlzaCBiYWxhbmNlPC9saT4KICAgICAgICAgIDxsaT7igKIgU3RlcCBpbnRvIGF0aGxldGljIHN0YW5jZSAoc2hvdWxkZXItd2lkdGgpPC9saT4KICAgICAgICAgIDxsaT7igKIgSGluZ2UgZnJvbSB0aGUgaGlwcyB0byBhcHByb3hpbWF0ZWx5IDQ1IGRlZ3JlZXM8L2xpPgogICAgICAgICAgPGxpPuKAoiBOZXV0cmFsIHNwaW5lIG1haW50YWluZWQ8L2xpPgogICAgICAgICAgPGxpPuKAoiBUcmFpbmVyIHNldCBwYXJhbGxlbCB0byB0aGUgZ3JvdW5kIGF0IGFkZHJlc3MgKFRoZSBUb3VyIFB1cmUgc2hvdWxkIG5vdCBiZSBwb2ludGVkIGRvd253YXJkKTwvbGk+CiAgICAgICAgICA8bGk+4oCiIEFybXMgaGFuZyBuYXR1cmFsbHkgYmVuZWF0aCB0aGUgc2hvdWxkZXJzPC9saT4KICAgICAgICA8L3VsPgogICAgICApCiAgICB9LAogICAgewogICAgICBudW1iZXI6ICdQMicsCiAgICAgIHRpdGxlOiAnVGFrZWF3YXknLAogICAgICBpY29uOiA8WmFwIGNsYXNzTmFtZT0idy01IGgtNSB0ZXh0LWFjY2VudCIgLz4sCiAgICAgIGNvbnRlbnQ6ICgKICAgICAgICA8dWwgY2xhc3NOYW1lPSJzcGFjZS15LTEiPgogICAgICAgICAgPGxpPuKAoiBJbml0aWF0ZSB0aGUgbW92ZW1lbnQgd2l0aCB0aGUgY2hlc3QgYW5kIHNob3VsZGVycy48L2xpPgogICAgICAgICAgPGxpPuKAoiBLZWVwIHRoZSBhcm1zIGNvbm5lY3RlZCB0byB0aGUgYm9keS48L2xpPgogICAgICAgICAgPGxpPuKAoiBNYWludGFpbiBwb3N0dXJlIGFuZCBiYWxhbmNlLjwvbGk+CiAgICAgICAgICA8bGk+4oCiIFRoZSB0cmFpbmVyIHJlbWFpbnMgaW4gZnJvbnQgb2YgdGhlIGNoZXN0LjwvbGk+CiAgICAgICAgICA8bGk+4oCiIEF2b2lkIGxpZnRpbmcgdGhlIGFybXMgaW5kZXBlbmRlbnRseS48L2xpPgogICAgICAgIDwvdWw+CiAgICAgICkKICAgIH0sCiAgICB7CiAgICAgIG51bWJlcjogJ1AzJywKICAgICAgdGl0bGU6ICc5IE/igJlDbG9jayBQb3NpdGlvbicsCiAgICAgIGljb246IDxBY3Rpdml0eSBjbGFzc05hbWU9InctNSBoLTUgdGV4dC1hY2NlbnQiIC8+LAogICAgICBjb250ZW50OiAoCiAgICAgICAgPHVsIGNsYXNzTmFtZT0ic3BhY2UteS0xIj4KICAgICAgICAgIDxsaT7igKIgTGVhZCBhcm0gcGFyYWxsZWwgdG8gdGhlIGdyb3VuZDwvbGk+CiAgICAgICAgICA8bGk+4oCiIFdyaXN0IGhpbmdlIGVzdGFibGlzaGVkPC9saT4KICAgICAgICAgIDxsaT7igKIgQ2x1YiBzaGFmdCB2ZXJ0aWNhbDwvbGk+CiAgICAgICAgICA8bGk+4oCiIENoZXN0IHJvdGF0ZWQgYXdheSBmcm9tIHRhcmdldDwvbGk+CiAgICAgICAgICA8bGk+4oCiIFN0cnVjdHVyZSBtYWludGFpbmVkIGluIGJvdGggYXJtczwvbGk+CiAgICAgICAgICA8bGkgY2xhc3NOYW1lPSJwdC0yIHRleHQteHMgaXRhbGljIG9wYWNpdHktNzAiPlRoaXMgY29tcGxldGVzIHRoZSBiYWNrc3dpbmcgc3RydWN0dXJlIHVzZWQgaW4gdGhlIDktdG8tMyBzeXN0ZW0uPC9saT4KICAgICAgICA8L3VsPgogICAgICApCiAgICB9LAogICAgewogICAgICBudW1iZXI6ICdQNicsCiAgICAgIHRpdGxlOiAnRGVsaXZlcnkgUG9zaXRpb24nLAogICAgICBpY29uOiA8V2F2ZXMgY2xhc3NOYW1lPSJ3LTUgaC01IHRleHQtYWNjZW50IiAvPiwKICAgICAgY29udGVudDogKAogICAgICAgIDxkaXYgY2xhc3NOYW1lPSJzcGFjZS15LTMiPgogICAgICAgICAgPHVsIGNsYXNzTmFtZT0ic3BhY2UteS0xIj4KICAgICAgICAgICAgPGxpPuKAoiBIYW5kcyBsZWFkIHRoZSBUb3VyIFB1cmUgdHJhaW5lciBpbnRvIHRoZSBzdHJpa2Ugem9uZTwvbGk+CiAgICAgICAgICAgIDxsaT7igKIgVHJhaW5lciByZW1haW5zIHBhcmFsbGVsIHRvIHRoZSBncm91bmQ8L2xpPgogICAgICAgICAgICA8bGk+4oCiIFdyaXN0IGFuZ2xlcyBwcmVzZXJ2ZWQgZnJvbSBQMzwvbGk+CiAgICAgICAgICAgIDxsaT7igKIgTG93ZXIgYm9keSBpbml0aWF0ZXMgcm90YXRpb24gdG93YXJkIHRhcmdldCAoUm90YXRlIHRoZSB0cmFpbCBhbmt sZSB0b3dhcmRzIHRoZSB0YXJnZXQpPC9saT4KICAgICAgICAgICAgPGxpPuKAoiBQcmVzc3VyZSBzaGlmdGluZyBpbnRvIGxlYWQgc2lkZTwvbGk+CiAgICAgICAgICAgIDxsaT7igKIgQ2hlc3QgcmVtYWlucyBjb250cm9sbGVkLCBub3QgZnVsbHkgb3BlbjwvbGk+CiAgICAgICAgICA8L3VsPgogICAgICAgICAgPGRpdiBjbGFzc05hbWU9ImJnLWFjY2VudC81IHAtNCByb3VuZGVkLXNtIGJvcmRlciBib3JkZXItYWNjZW50LzEwIHNwYWNlLXktMiI+CiAgICAgICAgICAgIDxwIGNsYXNzTmFtZT0idGV4dC14cyBmb250LWJvbGQgdGV4dC1hY2NlbnQgdXBwZXJjYXNlIHRyYWNraW5nLXdpZGVyIj5Ud28gdGhpbmdzIGhhcHBlbiBoZXJlOjwvcD4KICAgICAgICAgICAgPG9sIGNsYXNzTmFtZT0idGV4dC14cyBzcGFjZS15LTEgbGlzdC1kZWNpbWFsIG1sLTQiPgogICAgICAgICAgICAgIDxsaT5UaGUgaGlwcyBuYXR1cmFsbHkgc2xpZGUgdG93YXJkcyB0YXJnZXQuPC9saT4KICAgICAgICAgICAgICA8bGk+VGhlIGhhbmRzIGFuZCBlbGJvdyBzbGlkZXMgaW5zaWRlIG5vdCBvdmVyIHRoZSB0b3AuPC9saT4KICAgICAgICAgICAgPC9vbD4KICAgICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LXhzIGZvbnQtbWVkaXVtIHB0LTIgYm9yZGVyLXQgYm9yZGVyLWFjY2VudC8xMCI+PHN0cm9uZz5DaGVja3BvaW50Ojwvc3Ryb25nPiBUcmFpbmVyIGlzIGJlaW5nIGRlbGl2ZXJlZCBpbnRvIGltcGFjdCB3aXRoIHN0cnVjdHVyZSBpbnRhY3QsIG5vdCByZWxlYXNlZDwvcD4KICAgICAgICAgIDwvZGl2PgogICAgICAgIDwvZGl2PgogICAgICAgKQogICAgfSwKICAgIHsKICAgICAgbnVtYmVyOiAnUDcnLAogICAgICB0aXRsZTogJ0ltcGFjdCBQb3NpdGlvbicsCiAgICAgIGljb246IDxUYXJnZXQgY2xhc3NOYW1lPSJ3LTUgaC01IHRleHQtYWNjZW50IiAvPiwKICAgICAgY29udGVudDogKAogICAgICAgIDxkaXYgY2xhc3NOYW1lPSJzcGFjZS15LTQiPgogICAgICAgICAgPHVsIGNsYXNzTmFtZT0ic3BhY2UteS0xIj4KICAgICAgICAgICAgPGxpPuKAoiBXZWlnaHQgZnVsbHkgaW50byBsZWFkIHNpZGU8L2xpPgogICAgICAgICAgICA8bGk+4oCiIEhhbmRzIGFoZWFkIG9mIHRoZSB0cmFpbmVyPC9saT4KICAgICAgICAgICAgPGxpPuKAoiBMZWFkIHdyaXN0IGZsYXQgYW5kIHN0YWJsZTwvbGk+CiAgICAgICAgICAgIDxsaT7igKIgSGlwcyBvcGVuIHRvIHRhcmdldDwvbGk+CiAgICAgICAgICAgIDxsaT7igKIgQ2hlc3Qgcm90YXRpbmcgdGhyb3VnaCBpbXBhY3Q8L2xpPgogICAgICAgICAgPC91bD4KICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJiZy1ncmF5LTEwMCBib3JkZXIgYm9yZGVyLWFjY2VudC8zMCBwLTQgcm91bmRlZC1zbSI+CiAgICAgICAgICAgIDxwIGNsYXNzTmFtZT0idGV4dC1hY2NlbnQgZm9udC1ib2xkIHRleHQtWzEwcHhdIHVwcGVyY2FzZSB0cmFja2luZy1bMC4yZW1dIG1iLTIiPkRvbWludXMgTG9nbyBDaGVjazwvcD4KICAgICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LXNtIG1iLTMiPkF0IFA3LCB5b3Ugc2hvdWxkIGJlIGFibGUgdG8gY2xlYXJseSBzZWUgdGhlIERvbWludXMgR29sZiBsb2dvIG9uIHRoZSB0cmFpbmVyLjwvcD4KICAgICAgICAgICAgPHVsIGNsYXNzTmFtZT0idGV4dC14cyBzcGFjZS15LTEgb3BhY2l0eS04MCI+CiAgICAgICAgICAgICAgPGxpPuKAoiA8c3BhbiBjbGFzc05hbWU9InRleHQtZ3JlZW4tNjAwIGZvbnQtYm9sZCI+TG9nbyB2aXNpYmxlOjwvc3Bhbj4gSW1wYWN0IHBvc2l0aW9uIGlzIGNvcnJlY3Q8L2xpPgogICAgICAgICAgICAgIDxsaT7igKIgPHNwYW4gY2xhc3NOYW1lPSJ0ZXh0LXJlZC02MDAgZm9udC1ib2xkIj5Mb2dvIG5vdCB2aXNpYmxlOjwvc3Bhbj4gRWFybHkgcmVsZWFzZSBvciBsb3NzIG9mIHN0cnVjdHVyZSBoYXMg b2NjdXJyZWQ8L2xpPgogICAgICAgICAgICAgPC91bD4KICAgICAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LVsxMHB4XSBtdC00IHB0LTMgYm9yZGVyLXQgYm9yZGVyLWJsYWNrLzUgdXBwZXJjYXNlIHRyYWNraW5nLXdpZGVzdCBvcGFjaXR5LTYwIj5UaGlzIGlzIHRoZSBwcmltYXJ5IGZlZWRiYWNrIG1lY2hhbmlzbSBvZiBUb3VyIFB1cmUuPC9wPgogICAgICAgICAgPC9kaXY+CiAgICAgICAgPC9kaXY+CiAgICAgICAgKQogICAgfSwKICAgIHsKICAgICAgbnVtYmVyOiAnUDgnLAogICAgICB0aXRsZTogJ0V4dGVuc2lvbicsCiAgICAgIGljb246IDxBcnJvd1JpZ2h0IGNsYXNzTmFtZT0idy01IGgtNSB0ZXh0LWFjY2VudCIgLz4sCiAgICAgIGNvbnRlbnQ6ICgKICAgICAgICA8dWwgY2xhc3NOYW1lPSJzcGFjZS15LTEiPgogICAgICAgICAgPGxpPuKAoiBBcm1zIGV4dGVuZCBkb3duIHRoZSB0YXJnZXQgbGluZTwvbGk+CiAgICAgICAgICA8bGk+4oCiIEJvZHkgY29udGludWVzIHJvdGF0aW5nIHRocm91Z2ggaW1wYWN0PC9saT4KICAgICAgICAgIDxsaT7igKIgUG9zdHVyZSByZW1haW5zIHN0YWJsZTwvbGk+CiAgICAgICAgICA8bGk+4oCiIENvbnRyb2xsZWQgcmVsZWFzZSBvZiB0aGUgdHJhaW5lcjwvbGk+CiAgICAgICAgPC91bD4KICAgICAgKQogICAgfSwKICAgIHsKICAgICAgbnVtYmVyOiAnUDknLAogICAgICB0aXRsZTogJ0ZpbmlzaCcsCiAgICAgIGljb246IDxDaGVjayBjbGFzc05hbWU9InctNSBoLTUgdGV4dC1hY2NlbnQiIC8+LAogICAgICBjb250ZW50OiAoCiAgICAgICAgPHVsIGNsYXNzTmFtZT0ic3BhY2UteS0xIj4KICAgICAgICAgIDxsaT7igKIgTGVhZCBhcm0gcGFyYWxsZWwgdG8gdGhlIGdyb3VuZDwvbGk+CiAgICAgICAgICA8bGk+4oCiIENsdWIgc2hhZnQgdmVydGljYWw8L2xpPgogICAgICAgICAgPGxpPuKAoiBDaGVzdCBmdWxseSBmYWNpbmcgdGFyZ2V0PC9saT4KICAgICAgICAgIDxsaT7igKIgV2VpZ2h0IGZ1bGx5IHN0YWNrZWQgb24gbGVhZCBzaWRlPC9saT4KICAgICAgICAgIDxsaT7igKIgQmFsYW5jZWQsIGF0aGxldGljIGZpbmlzaCBwb3NpdGlvbjwvbGk+CiAgICAgICAgPC91bD4KICAgICAgKQogICAgfQogIF07Cgo gY29uc3QgdGlwcyA9IFsKICAgICdQcmFjdGljZSBmb3IgMzAgbWludXRlcyBwZXIgZGF5IHRvIGJ1aWxkIGJvZHkgbWVtb3J5LicsCiAgICAnTW92ZSBmcm9tIFAxIOKGkiBQMywgdGhlbiB0cmFuc2l0aW9uIGludG8gUDYg4oaSIFA3LicsCiAgICAnRXh0ZW5kIHRocm91Z2ggUDggYW5kIGZpbmlzaCBhdCBQOS4nLAogICAgJ0ZvY3VzIG9uIHN0cnVjdHVyZSwgYmFsYW5jZSwgYW5kIHJlcGVhdGFiaWxpdHkgcmF0aGVyIHRoYW4gc3BlZWQuJywKICAgICdEbyBub3Qgc3dpbmcgZmFzdC4gVGhlIG9iamVjdGl2ZSBpcyBidWlsZGluZyBhIHJlcGVhdGFibGUgaW1wYWN0IHBvc2l0aW9uLicsCiAgICAnQnVpbGQgY29uc2lzdGVudCBjb250YWN0IGFuZCBjb21wcmVzc2lvbiB0aHJvdWdoIHByb3BlciBzZXF1ZW5jaW5nLicKICBdOwoKICByZXR1cm4gKAogICAgPGRpdiBjbGFzc05hbWU9Im10LTIwIHNwYWNlLXktMjQiPgogICAgICB7LyogT3ZlcnZpZXcgU2VjdGlvbiAqL30KICAgICAgPHNlY3Rpb24gaWQ9Im92ZXJ2aWV3IiBjbGFzc05hbWU9InJlbGF0aXZlIG92ZXJmbG93LWhpZGRlbiBiZy1ncmF5LTUwIHRleHQtYmxhY2sgcHktMjAgcHgtNiBib3JkZXIgYm9yZGVyLWJsYWNrLzEwIj4KICAgICAgICA8ZGl2IGNsYXNzTmFtZT0ibWF4LXctNHhsIG14LWF1dG8iPgogICAgICAgICAgPGRpdiBjbGFzcz1cImZsZXggZmxleC1jb2wgaXRlbXMtY2VudGVyIHRleHQtY2VudGVyIG1iLTEyXCI+CiAgICAgICAgICAgIDxwIGNsYXNzTmFtZT1cImZvbnQtc2FucyB0ZXh0LVsxMXB4XSBmb250LXNlbWlib2xkIHRyYWNraW5nLVswLjRl bV0gdXBwZXJjYXNlIHRleHQtYWNjZW50IG1iLTRcIj4KICAgICAgICAgICAgICBPdmVydmlldwogICAgICAgICAgICA8L3A+CiAgICAgICAgICAgIDxoMiBjbGFzcz1cImZvbnQtc2VyaWYgdGV4dC0zeGwgc206dGV4dC00eGwg bGc6dGV4dC01eGwgZm9udC1ib2xkIG1iLTZcIj4KICAgICAgICAgICAgICBUb3VyIFB1cmUgU3dpbmcgVHJhaW5lcgogICAgICAgICAgICA8L2gyPgogICAgICAgICAgICA8ZGl2IGNsYXNzPVwidy0yMCBoLTEgYmctYWNjZW50IG1iLThcIiAvPgogICAgICAgICAgPC9kaXY+CiAgICAgICAgPC9kaXY+CiAgICAgICAge3ZhcmlhbnQgPT09ICdmdWxsJyAmJiAoCiAgICAgICAgICA8PgogICAgICAgIDxzZWN0aW9uIGlkPVwibWV0aG9kb2xvZ3lcIiBjbGFzc05hbWU9XCJtYXgtdy01eGwgbXgtYXV0b1wiPgogICAgICAgIDwvZGl2PgogICAgICAgPC9kaXY+CiAgICAgICkKICAgICAgPC9kaXY+CiAgICAgIDwvPgoK
+import { Check, Info, Target, Zap, Waves, Activity, ArrowRight } from 'lucide-react';
+
+/**
+ * `variant` exists to stop this block cannibalising its own guide page.
+ *
+ * It renders in full on /tour-pure-guide AND on all three /product/tour-pure-*
+ * pages. Once bodies started being server-rendered (scripts/prerender.mjs),
+ * that became measurable: after stripping nav and footer boilerplate, the guide
+ * and each product page shared ~90% of their unique text, and the three product
+ * pages shared 86-88% with each other. One ~540-word block was 60%+ of the
+ * content on four URLs, which is what near-duplicate demotion exists to catch -
+ * and it left Google choosing which of four pages answers "swing path drills".
+ *
+ *   'full'    - every section. The guide page, which should own the method.
+ *   'summary' - the overview only: What it is / Who it's for / The Promise.
+ *               The product page keeps the persuasive material and its own
+ *               description, features, specs and reviews, and already links to
+ *               the full guide.
+ *
+ * No copy was rewritten for this: the sections are the existing ones, rendered
+ * in one place instead of four. To put the whole block back on product pages,
+ * drop the `variant` prop at the ProductPage call site.
+ */
+export function TourPureOverview({ variant = 'full' }: { variant?: 'full' | 'summary' } = {}) {
+  const steps = [
+    {
+      number: 'P1',
+      title: 'Setup Position',
+      icon: <Target className="w-5 h-5 text-accent" />,
+      content: (
+        <ul className="space-y-1">
+          <li>• Feet together to establish balance</li>
+          <li>• Step into athletic stance (shoulder-width)</li>
+          <li>• Hinge from the hips to approximately 45 degrees</li>
+          <li>• Neutral spine maintained</li>
+          <li>• Trainer set parallel to the ground at address (The Tour Pure should not be pointed downward)</li>
+          <li>• Arms hang naturally beneath the shoulders</li>
+        </ul>
+      )
+    },
+    {
+      number: 'P2',
+      title: 'Takeaway',
+      icon: <Zap className="w-5 h-5 text-accent" />,
+      content: (
+        <ul className="space-y-1">
+          <li>• Initiate the movement with the chest and shoulders.</li>
+          <li>• Keep the arms connected to the body.</li>
+          <li>• Maintain posture and balance.</li>
+          <li>• The trainer remains in front of the chest.</li>
+          <li>• Avoid lifting the arms independently.</li>
+        </ul>
+      )
+    },
+    {
+      number: 'P3',
+      title: '9 O’Clock Position',
+      icon: <Activity className="w-5 h-5 text-accent" />,
+      content: (
+        <ul className="space-y-1">
+          <li>• Lead arm parallel to the ground</li>
+          <li>• Wrist hinge established</li>
+          <li>• Club shaft vertical</li>
+          <li>• Chest rotated away from target</li>
+          <li>• Structure maintained in both arms</li>
+          <li className="pt-2 text-xs italic opacity-70">This completes the backswing structure used in the 9-to-3 system.</li>
+        </ul>
+      )
+    },
+    {
+      number: 'P6',
+      title: 'Delivery Position',
+      icon: <Waves className="w-5 h-5 text-accent" />,
+      content: (
+        <div className="space-y-3">
+          <ul className="space-y-1">
+            <li>• Hands lead the Tour Pure trainer into the strike zone</li>
+            <li>• Trainer remains parallel to the ground</li>
+            <li>• Wrist angles preserved from P3</li>
+            <li>• Lower body initiates rotation toward target (Rotate the trail ankle towards the target)</li>
+            <li>• Pressure shifting into lead side</li>
+            <li>• Chest remains controlled, not fully open</li>
+          </ul>
+          <div className="bg-accent/5 p-4 rounded-sm border border-accent/10 space-y-2">
+            <p className="text-xs font-bold text-accent uppercase tracking-wider">Two things happen here:</p>
+            <ol className="text-xs space-y-1 list-decimal ml-4">
+              <li>The hips naturally slide towards target.</li>
+              <li>The hands and elbow slides inside not over the top.</li>
+            </ol>
+            <p className="text-xs font-medium pt-2 border-t border-accent/10"><strong>Checkpoint:</strong> Trainer is being delivered into impact with structure intact, not released.</p>
+          </div>
+        </div>
+      )
+    },
+    {
+      number: 'P7',
+      title: 'Impact Position',
+      icon: <Target className="w-5 h-5 text-accent" />,
+      content: (
+        <div className="space-y-4">
+          <ul className="space-y-1">
+            <li>• Weight fully into lead side</li>
+            <li>• Hands ahead of the trainer</li>
+            <li>• Lead wrist flat and stable</li>
+            <li>• Hips open to target</li>
+            <li>• Chest rotating through impact</li>
+          </ul>
+          <div className="bg-gray-100 border border-accent/30 p-4 rounded-sm">
+            <p className="text-accent font-bold text-[10px] uppercase tracking-[0.2em] mb-2">Dominus Logo Check:</p>
+            <p className="text-sm mb-3">At P7, you should be able to clearly see the Dominus Golf logo on the trainer.</p>
+            <ul className="text-xs space-y-1 opacity-80">
+              <li>• <span className="text-green-600 font-bold">Logo visible:</span> Impact position is correct</li>
+              <li>• <span className="text-red-600 font-bold">Logo not visible:</span> Early release or loss of structure has occurred</li>
+            </ul>
+            <p className="text-[10px] mt-4 pt-3 border-t border-black/5 uppercase tracking-widest opacity-60">This is the primary feedback mechanism of Tour Pure.</p>
+          </div>
+        </div>
+      )
+    },
+    {
+      number: 'P8',
+      title: 'Extension',
+      icon: <ArrowRight className="w-5 h-5 text-accent" />,
+      content: (
+        <ul className="space-y-1">
+          <li>• Arms extend down the target line</li>
+          <li>• Body continues rotating through impact</li>
+          <li>• Posture remains stable</li>
+          <li>• Controlled release of the trainer</li>
+        </ul>
+      )
+    },
+    {
+      number: 'P9',
+      title: 'Finish',
+      icon: <Check className="w-5 h-5 text-accent" />,
+      content: (
+        <ul className="space-y-1">
+          <li>• Lead arm parallel to the ground</li>
+          <li>• Club shaft vertical</li>
+          <li>• Chest fully facing target</li>
+          <li>• Weight fully stacked on lead side</li>
+          <li>• Balanced, athletic finish position</li>
+        </ul>
+      )
+    }
+  ];
+
+  const tips = [
+    'Perform 100 repetitions daily to build body memory.',
+    'Move from P1 → P3, then transition into P6 → P7.',
+    'Extend through P8 and finish at P9.',
+    'Focus on structure, balance, and repeatability rather than speed.',
+    'Do not swing fast. The objective is building a repeatable impact position.',
+    'Build consistent contact and compression through proper sequencing.'
+  ];
+
+  return (
+    <div className="mt-20 space-y-24">
+      {/* Overview Section */}
+      <section id="overview" className="relative overflow-hidden bg-gray-50 text-black py-20 px-6 border border-black/10">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex flex-col items-center text-center mb-12">
+            <p className="font-sans text-[11px] font-semibold tracking-[0.4em] uppercase text-accent mb-4">
+              Overview
+            </p>
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
+              Tour Pure Swing Trainer
+            </h2>
+            <div className="w-20 h-1 bg-accent mb-8" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+            <div className="space-y-4">
+              <div className="flex justify-center"><Info className="text-accent" size={24} /></div>
+              <h3 className="font-serif text-xl font-bold italic underline decoration-accent/30 underline-offset-8 decoration-2">What it is</h3>
+              <p className="font-sans text-sm text-gray-600 leading-relaxed">
+                Dominus Golf's patented multifunctional weighted golf trainer, the Tour Pure, is an all-in-one swing mechanics tool, putting aid, and fitness trainer.
+              </p>
+            </div>
+            <div className="space-y-4">
+              <div className="flex justify-center"><Target className="text-accent" size={24} /></div>
+              <h3 className="font-serif text-xl font-bold italic underline decoration-accent/30 underline-offset-8 decoration-2">Who it's for</h3>
+              <p className="font-sans text-sm text-gray-600 leading-relaxed">
+                The Tour Pure is an excellent training aid for beginners, while low handicap golfers can use it to focus and sharpen skills already developed.
+              </p>
+            </div>
+            <div className="space-y-4">
+              <div className="flex justify-center"><Zap className="text-accent" size={24} /></div>
+              <h3 className="font-serif text-xl font-bold italic underline decoration-accent/30 underline-offset-8 decoration-2">The Promise</h3>
+              <p className="font-sans text-sm text-gray-600 leading-relaxed">
+                Designed to build a more consistent, repeatable swing in just minutes a day - for golfers serious about developing real mechanics, better tempo, and lasting improvement on the course.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {variant === 'full' && (
+        <>
+      {/* Usage Guide */}
+      <section id="methodology" className="max-w-5xl mx-auto px-4">
+        <div className="flex flex-col items-center text-center mb-16">
+          <p className="font-sans text-[11px] font-semibold tracking-[0.4em] uppercase text-accent mb-4">
+            Methodology
+          </p>
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold mb-6">
+            The Dominus 9 o’clock-to-3 o’clock Training Method
+          </h2>
+          <p className="font-sans text-muted-foreground max-w-2xl mx-auto italic mb-10">
+            This system is built around one principle: train impact first, then build the swing around it. Repeat these steps daily: 20-30 reps a day. It is a weighted club, so quality beats volume.
+          </p>
+        </div>
+
+        <div className="space-y-12">
+          {steps.map((step, idx) => (
+            <div key={idx} className="group relative bg-white/5 hover:bg-white/10 border border-border/10 p-8 sm:p-10 transition-all duration-300 rounded-lg shadow-sm">
+              <div className="flex flex-col sm:flex-row gap-6 sm:gap-10 items-start">
+                <div className="flex-shrink-0 flex items-center gap-4">
+                  <span className="font-serif text-3xl sm:text-4xl font-bold text-accent/20 group-hover:text-accent/30 transition-colors">
+                    {step.number}
+                  </span>
+                  <div className="sm:hidden">{step.icon}</div>
+                </div>
+                <div className="flex-grow">
+                  <div className="hidden sm:block mb-4">{step.icon}</div>
+                  <h3 className="font-serif text-2xl font-bold mb-3">{step.title}</h3>
+                  <div className="font-sans text-muted-foreground leading-relaxed">
+                    {step.content}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Training Protocol */}
+      <section id="protocol" className="bg-accent/5 border-y border-accent/10 py-20 px-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center gap-4 mb-10">
+            <Target className="text-accent" size={32} />
+            <h2 className="font-serif text-3xl font-bold uppercase tracking-tight">Training Protocol</h2>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
+            <div className="space-y-6">
+              <p className="font-sans text-sm text-foreground/80 leading-relaxed font-medium">
+                The objective is not swing speed. <span className="text-accent font-bold">Do not swing fast.</span>
+              </p>
+              <p className="font-sans text-sm text-foreground/60 leading-relaxed">
+                The objective is building a repeatable impact position that produces consistent contact and compression.
+              </p>
+            </div>
+            <div className="space-y-4">
+              {tips.map((tip, idx) => (
+                <div key={idx} className="flex gap-4 items-start">
+                  <div className="mt-1.5 p-1 bg-accent/20 rounded-full flex-shrink-0">
+                    <Check size={14} className="text-accent" />
+                  </div>
+                  <p className="font-sans text-sm text-foreground/80 leading-relaxed">{tip}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+        </>
+      )}
+    </div>
+  );
+}

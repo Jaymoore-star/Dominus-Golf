@@ -1,4 +1,57 @@
-aW1wb3J0IHsgTGluayB9IGZyb20gJ0B0YW5zdGFjay9yZWFjdC1yb3V0ZXInOwppbXBvcnQgeyBDaGVjayB9IGZyb20gJ2x1Y2lkZS1yZWFjdCc7CmltcG9ydCB7IHJlc3BvbnNpdmVJbWFnZSB9IGZyb20gJy4uLy4uLy4uL2xpYi9yZXNwb25zaXZlSW1hZ2UnOwoKY29uc3QgSU1BR0VTID0gewogIHJlZFNoaXJ0MTogJy9pbWFnZXMvNDU1MDgyNjE5XzgwOTg1MjMwMTY5MDI3ODZfOTIwMDkyMTA2MDgzMDgwNDE4X25fXzU5MmZiMDAwLndlYnAnLAogIHJlZFNoaXJ0MjogJy9pbWFnZXMvMzAxNTAzMjIxXzQ1Njg1NjM2MzE1MTExOV8xMjQ4NTQzMTEwMDczODg0NDM0X25fX2IyMTc0M2Q5LndlYnAnCn07CgovKgogKiBObyBlbnRyYW5jZSBhbmltYXRpb24gYW55d2hlcmUgaW4gdGhlIGhlcm8sIG9uIHB1cnBvc2UuIEl0IHVzZWQgRnJhbWVyCiAqIE1vdGlvbidzIGluaXRpYWw9e3sgb3BhY2l0eTogMCB9fSwgd2hpY2ggdGhlIGJ1aWxkIHByZXJlbmRlcnMgYXMKICogc3R5bGU9Im9wYWNpdHk6MCI6IHRoZSBzZXJ2ZXItcmVuZGVyZWQgaGVhZGxpbmUsIGJ1dHRvbnMgYW5kIGhlcm8gaW1hZ2Ugd2VyZQogKiBpbiB0aGUgSFRNTCBidXQgaW52aXNpYmxlIHVudGlsIHRoZSBKUyBidW5kbGUgcmFuIGFuZCBmYWRlZCB0aGVtIGluLiBUaGUgSDEKICogaXMgdGhlIG1vYmlsZSBMQ1AgZWxlbWVudCwgc28gdGhhdCBoZWxkIExDUCBiYWNrIG9uIGl0cyBvd24sIHNlcGFyYXRlbHkgZnJvbQogKiBjcmVhdGVSb290IChkb2NzL1NFTy5tZCAzZSkuIFJlbW92ZWQgMSBPY3QgMjAyNjsgdGhlIHNlY3Rpb25zIGJlbG93IHRoZSBmb2xkCiAqIGtlZXAgdGhlaXIgc2Nyb2xsLWluIGFuaW1hdGlvbnMuCiAqLwpleHBvcnQgY29uc3QgTmV3SGVyb1NlY3Rpb24gPSAoKSA9PiB7CiAgcmV0dXJuICgKICAgIDxzZWN0aW9uIGNsYXNzTmFtZT0icmVsYXRpdmUgcHQtMjAgc206cHQtMjggcGItMjAgc206cGItMjQgb3ZlcmZsb3ctaGlkZGVuIGJnLXdoaXRlIHRleHQtYmxhY2siPgogICAgICA8ZGl2IGNsYXNzTmFtZT0ibWF4LXctc2NyZWVuLXhsIG14LWF1dG8gcHgtNCBzbTpweC02IGxnOnB4LTggcmVsYXRpdmUgei0xMCI+CiAgICAgICAgPGRpdiBjbGFzcz0ibWF4LXctNHhsIG14LWF1dG8gdGV4dC1jZW50ZXIgbWItMTIiPgogICAgICAgICAgey8qIFRoZSBkYWlseSByZWNvbW1lbmRhdGlvbiBpcyAzMCBtaW51dGVzIG9mIHByYWN0aWNlLiBUaGlzIGlzIHRvdGFsCiAgICAgICAgICAgICAgcHJhY3RpY2UgdGltZSwgbm90IGEgZGlyZWN0aW9uIHRvIHN3aW5nIHRoZSB3ZWlnaHRlZCB0cmFpbmVyIGZvcgogICAgICAgICAgICAgIDMwIGNvbnRpbnVvdXMgbWludXRlczsgdGhlIHNhZmV0eSBwYWdlIGxpbWl0cyBhY3RpdmUgd2VpZ2h0ZWQKICAgICAgICAgICAgICBzd2luZ2luZyB0byAxMC0xNSBtaW51dGVzIHBlciBzZXNzaW9uLiAqL30KICAgICAgICAgIDxoMSBjbGFzc05hbWU9InRleHQtNHhsIHNtOnRleHQtNXhsIGxnOnRleHQtNnhsIGZvbnQtYm9sZCB0cmFja2luZy10aWdodCBtYi02IGZvbnQtc2VyaWYgbGVhZGluZy1bMS4wOF0gdGV4dC1hY2NlbnQiPgogICAgICAgICAgICB7Lyogbm93cmFwOiB0aGUgYnJvd3NlciBtYXkgYnJlYWsgYWZ0ZXIgYSBoeXBoZW4sIHdoaWNoIGxlZnQgIk9OLSIgb24KICAgICAgICAgICAgICAgIG9uZSBsaW5lIGFuZCAiUkFOR0UiIG9uIHRoZSBuZXh0IGF0IGRlc2t0b3Agd2lkdGguICovfQogICAgICAgICAgICBZT1VSIDxzcGFuIGNsYXNzTmFtZT0id2hpdGVzcGFjZS1ub3dyYXAiPkFULUhPTUU8L3NwYW4+IEFORCA8c3BhbiBjbGFzc05hbWU9IndoaXRlc3BhY2Utbm93cmFwIj5PTi1SQU5HRTwvc3Bhbj48YnIgLz48c3BhbiBjbGFzc05hbWU9InRleHQtYmxhY2siPkdPTEYgV09SS09VVC48L3NwYW4+CiAgICAgICAgICA8L2gxPgogICAgICAgICAgey8qIFNhbWUgdHlwZSBhcyB0aGUgYnVsbGV0cyBiZWxvdyAoc2l6ZSwgY29sb3VyLCBsaW5lIGhlaWdodCksIHNvIHRoZQogICAgICAgICAgICAgIGhlcm8gaGFzIG9uZSBib2R5IHN0eWxlIHVuZGVyIHRoZSBIMS4gKi99CiAgICAgICAgICA8cCBjbGFzc05hbWU9InRleHQtYmFzZSBtZDp0ZXh0LWxnIHRleHQtZ3JheS02MDAgZm9udC1zYW5zIGxlYWRpbmctcmVsYXhlZCBtYi0xMCI+CiAgICAgICAgICAgIDMwIG1pbnV0ZXMgb2YgcHJhY3RpY2UgcGVyIGRheS4gU2VlIGl0LCBmZWVsIGl0LCByZXBlYXQgaXQuCiAgICAgICAgICA8L3A+CgogICAgICAgICAgey8qIFRoZSBidWxsZXRzIGFuZCB0aGUgYnV0dG9ucyBzaGFyZSBvbmUgc2hyaW5rLXRvLWZpdCBjb2x1bW4uCiAgICAgICAgICAgICAgQ2VudHJpbmcgdGhlbSBzZXBhcmF0ZWx5IGdhdmUgZWFjaCBpdHMgb3duIHdpZHRoIGFuZCBzbyBpdHMgb3duIGxlZnQKICAgICAgICAgICAgICBlZGdlIC0gdGhlIGxpc3Qgc2F0IGFib3V0IDQ4cHggaW5zaWRlIHRoZSBidXR0b25zLCB3aGljaCBpcyB3aGF0IHJlYWQKICAgICAgICAgICAgICBhcyBtaXNhbGlnbmVkLiBTaXppbmcgdGhlbSB0b2dldGhlciBtZWFucyBvbmUgbGVmdCBlZGdlIGZvciBib3RoLgogICAgICAgICAgICAgIG1heC13LWZ1bGwgc28gdGhlIGxvbmcgYnVsbGV0cyB3cmFwIG9uIGEgcGhvbmUgaW5zdGVhZCBvZiBvdmVyZmxvd2luZy4gKi99CiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0idy1maXQgbWF4LXctZnVsbCBteC1hdXRvIj4KICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9Im1iLTEwIHRleHQtbGVmdCI+CiAgICAgICAgICAgICAgPHVsIGNsYXNzTmFtZT0ic3BhY2UteS0yLjUiPgogICAgICAgICAgICAgICAge1sKICAgICAgICAgICAgICAgICAgJ1dlaWdodGVkIHRyYWluaW5nIHN5c3RlbScsCiAgICAgICAgICAgICAgICAgICdUZWFjaGVzIHN3aW5nIHBhdGggYW5kIHN3aW5nIHBsYW5lJywKICAgICAgICAgICAgICAgICAgJ0ltbWVkaWF0ZSBmZWVkYmFjayBvbiBldmVyeSByZXAnLAogICAgICAgICAgICAgICAgICAnV29ya3Mgb24gZnVsbCBzd2luZywgY2hpcHBpbmcsIHB1dHRpbmcgYWxpZ25tZW50JywKICAgICAgICAgICAgICAgICAgJ1RyYWluIG91dHNpZGUgYXQgaG9tZSwgb24gdGhlIHJhbmdlLCBvciBpbiBhIHRyYWluaW5nIGZhY2lsaXR5JywKICAgICAgICAgICAgICAgIF0ubWFwKChpdGVtLCBpKSA9PiAoCiAgICAgICAgICAgICAgICAgIDxsaSB keye?}{key} className="flex items-start gap-3">
+import { Link } from '@tanstack/react-router';
+import { Check } from 'lucide-react';
+import { responsiveImage } from '../../../lib/responsiveImage';
+
+const IMAGES = {
+  redShirt1: '/images/455082619_8098523016902786_920092106083080418_n__592fb000.webp',
+  redShirt2: '/images/301503221_456856363151119_1248543110073884434_n__b21743d9.webp'
+};
+
+/*
+ * No entrance animation anywhere in the hero, on purpose. It used Framer
+ * Motion's initial={{ opacity: 0 }}, which the build prerenders as
+ * style="opacity:0": the server-rendered headline, buttons and hero image were
+ * in the HTML but invisible until the JS bundle ran and faded them in. The H1
+ * is the mobile LCP element, so that held LCP back on its own, separately from
+ * createRoot (docs/SEO.md 3e). Removed 1 Oct 2026; the sections below the fold
+ * keep their scroll-in animations.
+ */
+export const NewHeroSection = () => {
+  return (
+    <section className="relative pt-20 sm:pt-28 pb-20 sm:pb-24 overflow-hidden bg-white text-black">
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-4xl xl mx-auto text-center mb-12">
+          {/* The daily recommendation is 30 minutes of practice. This is total
+              practice time, not a direction to swing the weighted trainer for
+              30 continuous minutes; the safety page limits active weighted
+              swinging to 10-15 minutes per session. */}
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 font-serif leading-[1.08] text-accent">
+            {/* nowrap: the browser may break after a hyphen, which left "ON-" on
+                one line and "RANGE" on the next at desktop width. */}
+            YOUR <span className="whitespace-nowrap">AT-HOME</span> AND <span className="whitespace-nowrap">ON-RANGE</span><br /><span className="text-black">GOLF WORKOUT.</span>
+          </h1>
+          {/* Same type as the bullets below (size, colour, line height), so the
+              hero has one body style under the H1. */}
+          <p className="text-base md:text-lg text-gray-600 font-sans leading-relaxed mb-10">
+            30 minutes of practice per day. See it, feel it, repeat it.
+          </p>
+
+          {/* The bullets and the buttons share one shrink-to-fit column.
+              Centering them separately gave each its own width and so its own left
+              edge - the list sat about 48px inside the buttons, which is what read
+              as misaligned. Sizing them together means one left edge for both.
+              max-w-full so the long bullets wrap on a phone instead of overflowing. */}
+          <div className="w-fit max-w-full mx-auto">
+            <div className="mb-10 text-left">
+              <ul className="space-y-2.5">
+                {[
+                  'Weighted training system',
+                  'Teaches swing path and swing plane',
+                  'Immediate feedback on every rep',
+                  'Works on full swing, chipping, putting alignment',
+                  'Train outside at home, on the range, or in a training facility',
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3">
                     <span className="mt-2 w-1.5 h-1.5 bg-accent shrink-0" />
                     <span className="text-base md:text-lg text-gray-600 font-sans leading-relaxed">
                       {item}
